@@ -18,7 +18,7 @@ const NAV_SECTIONS = [
     links: [
       { href: "/docs/theming", label: "Theming", icon: "◑" },
       { href: "/docs/compiler", label: "Compiler", icon: "⚙" },
-      { href: "/docs/migration", label: "Migration", icon: "→" },
+      // { href: "/docs/migration", label: "Migration", icon: "→" },
     ],
   },
   {
@@ -118,7 +118,7 @@ export function SidebarNav({ open = false, onClose }: SidebarNavProps) {
           }}
         >
           <a
-            href="https://github.com/stareezy-ui"
+            href="https://github.com/stareezy-1/stareezy-ui"
             target="_blank"
             rel="noopener noreferrer"
             className="sidebar-link"

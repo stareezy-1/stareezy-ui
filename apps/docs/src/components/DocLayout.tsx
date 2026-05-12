@@ -1,23 +1,23 @@
-import type { ReactNode } from 'react'
-import Link from 'next/link'
+import type { ReactNode } from "react";
+import Link from "next/link";
 
 interface NavItem {
-  href: string
-  label: string
+  href: string;
+  label: string;
 }
 
 const NAV_ITEMS: NavItem[] = [
-  { href: '/docs/installation', label: 'Installation' },
-  { href: '/docs/usage', label: 'Usage' },
-  { href: '/docs/components', label: 'Component API' },
-  { href: '/docs/theming', label: 'Theming' },
-  { href: '/docs/compiler', label: 'Compiler' },
-  { href: '/docs/migration', label: 'Migration' },
-  { href: '/docs/architecture', label: 'Architecture' },
-]
+  { href: "/docs/installation", label: "Installation" },
+  { href: "/docs/usage", label: "Usage" },
+  { href: "/docs/components", label: "Component API" },
+  { href: "/docs/theming", label: "Theming" },
+  { href: "/docs/compiler", label: "Compiler" },
+  { href: "/docs/migration", label: "Migration" },
+  { href: "/docs/architecture", label: "Architecture" },
+];
 
 interface DocLayoutProps {
-  children: ReactNode
+  children: ReactNode;
 }
 
 export default function DocLayout({ children }: DocLayoutProps) {
@@ -31,7 +31,7 @@ export default function DocLayout({ children }: DocLayoutProps) {
           <div className="top-nav-links">
             <Link href="/docs/installation">Docs</Link>
             <a
-              href="https://github.com/stareezy-ui"
+              href="https://github.com/stareezy-1/stareezy-ui"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="GitHub repository (opens in new tab)"
@@ -69,5 +69,5 @@ export default function DocLayout({ children }: DocLayoutProps) {
         </p>
       </footer>
     </div>
-  )
+  );
 }

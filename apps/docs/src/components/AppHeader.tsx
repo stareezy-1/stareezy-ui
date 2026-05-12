@@ -7,7 +7,7 @@ import { useState } from "react";
 // Storybook is deployed separately — update this after deploying to Vercel
 const STORYBOOK_URL =
   process.env["NEXT_PUBLIC_STORYBOOK_URL"] ??
-  "https://storybook-stareezy-ui.vercel.app";
+  "https://stareezy-ui-storybook.vercel.app/";
 
 const SECTIONS = [
   {
@@ -196,7 +196,7 @@ export function AppHeader() {
       {/* Right actions */}
       <div className="app-header-actions">
         <a
-          href="https://github.com/stareezy-ui"
+          href="https://github.com/stareezy-1/stareezy-ui"
           target="_blank"
           rel="noopener noreferrer"
           className="app-header-action-btn"
