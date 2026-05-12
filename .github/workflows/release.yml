@@ -6,6 +6,11 @@ on:
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
+# Required for changesets to create PRs and push branches
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
   release:
     name: Release
@@ -14,6 +19,8 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          # Use a PAT so the bot can push and create PRs
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - uses: pnpm/action-setup@v3
         with:
