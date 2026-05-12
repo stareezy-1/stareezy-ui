@@ -1,14 +1,18 @@
 # @stareezy-ui/stylesheet
 
-Atomic CSS sheet management and CSS variable injection for Stareezy UI.
+Atomic CSS sheet management and CSS variable injection for Stareezy UI web builds.
 
-## Installation
+[![npm](https://img.shields.io/npm/v/@stareezy-ui/stylesheet)](https://www.npmjs.com/package/@stareezy-ui/stylesheet)
 
-```sh
-npm install @stareezy-ui/stylesheet
+## Install
+
+```bash
+pnpm add @stareezy-ui/stylesheet
 ```
 
 ## Usage
+
+Used internally by `@stareezy-ui/runtime`. You only need this directly for custom runtime adapters.
 
 ```ts
 import { AtomicStyleSheet } from "@stareezy-ui/stylesheet";
@@ -19,15 +23,10 @@ const sheet = new AtomicStyleSheet();
 sheet.injectRootVariables([{ id: "celurenBlue-500", value: "#024CCE" }]);
 
 // Inject an atomic CSS rule (deduplicates by token ID)
-const className = sheet.inject(
-  "celurenBlue-500",
-  "background-color",
-  "#024CCE",
-);
-// Returns 'sz-celurenBlue-500'
-// Inserts: .sz-celurenBlue-500 { background-color: var(--celurenBlue-500); }
+sheet.inject("celurenBlue-500", "background-color", "#024CCE");
+// → .sz-celurenBlue-500 { background-color: var(--celurenBlue-500); }
 ```
 
-## How it works
+## License
 
-`AtomicStyleSheet` manages a `<style>` tag in the document head. Each call to `inject()` generates a unique class name from the token ID and inserts a single CSS rule. Duplicate token IDs are deduplicated — the rule is only inserted once.
+MIT

@@ -2,41 +2,56 @@
 
 Shared utilities, hooks, and platform helpers for Stareezy UI.
 
-## Installation
+[![npm](https://img.shields.io/npm/v/@stareezy-ui/core)](https://www.npmjs.com/package/@stareezy-ui/core)
 
-```sh
-npm install @stareezy-ui/core
+## Install
+
+```bash
+pnpm add @stareezy-ui/core
 ```
 
-## Usage
+## Utilities
 
 ```ts
 import {
-  convertSpacing,
-  useDeviceLayout,
+  // Guards
   isEmptyList,
   isEmptyString,
+  isUndefinied,
+  isZero,
+  // String
+  textToUppercaseSubstring,
+  // Date
   formatDate,
+  formatDateWithYear,
+  formatDateWithYearHours,
+  formatDateWithMonth,
+  getTodayDate,
+  generateDaysBeforeDate,
+  // Currency
   formatToRupiah,
+  // Spacing
+  convertSpacing,
+  // Weeks
   isoWeeks,
 } from "@stareezy-ui/core";
 
-// Platform-aware spacing (raw number on web, ms() scaled on React Native)
-const size = convertSpacing(16);
-
-// Device layout hook
-function MyComponent() {
-  const { width, height, isTablet } = useDeviceLayout();
-  return null;
-}
-
-// Guard utilities
-isEmptyList([]); // true
-isEmptyString(""); // true
-
-// Date formatting
-formatDate(new Date()); // '01/01/2024'
-
-// Currency formatting
-formatToRupiah(50000); // 'Rp 50.000'
+formatToRupiah(1000000); // "Rp 1.000.000"
+formatToRupiah(1000000, true); // "1.000.000"
+convertSpacing(16); // 16 on web, ms(16) on RN
 ```
+
+## Hooks
+
+```ts
+import { useDeviceLayout } from "@stareezy-ui/core";
+
+function MyComponent() {
+  const { width, height, isSmall } = useDeviceLayout();
+  // ...
+}
+```
+
+## License
+
+MIT

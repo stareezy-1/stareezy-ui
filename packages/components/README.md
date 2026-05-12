@@ -1,42 +1,94 @@
 # @stareezy-ui/components
 
-70+ cross-platform React Native and web components for Stareezy UI.
+70+ cross-platform UI components for React Native and web, built on the Stareezy UI token system.
 
-## Installation
+[![npm](https://img.shields.io/npm/v/@stareezy-ui/components)](https://www.npmjs.com/package/@stareezy-ui/components)
 
-```sh
-npm install @stareezy-ui/components
-```
+## Install
 
-## Peer Dependencies
-
-```sh
-npm install react
-# For React Native projects:
-npm install react-native
+```bash
+pnpm add @stareezy-ui/tokens @stareezy-ui/components @stareezy-ui/runtime
 ```
 
 ## Usage
 
-```tsx
-import { Box, Text, Button, HStack, VStack } from "@stareezy-ui/components";
-import { colors, spacing, radius } from "@stareezy-ui/tokens";
+### Primitives
 
-function MyScreen() {
-  return (
-    <Box bg={colors.celurenBlue[500]} p={spacing.medium} rounded={radius.md}>
-      <Text color={colors.base.white} fontSize={typography.fontSize.md}>
-        Hello, Stareezy UI
-      </Text>
-      <HStack>
-        <Button variant="primary" text="Confirm" onPress={() => {}} />
-        <Button variant="secondary" text="Cancel" onPress={() => {}} />
-      </HStack>
-    </Box>
-  );
+```tsx
+import { Box, Text, HStack, VStack } from '@stareezy-ui/components'
+import { colors, spacing, radius } from '@stareezy-ui/tokens'
+
+// Box — foundational layout primitive
+<Box
+  bg={colors.celurenBlue[500]}
+  p={spacing[4]}
+  rounded={radius.md}
+  flexDirection="row"
+  alignItems="center"
+/>
+
+// Text — typography with 50+ variants
+<Text type="M-heading-bold" text="Hello world" />
+<Text type="S-paragraph-regular" text="Body copy" color="#024CCE" />
+<Text text="" emptyState="—" />  // emptyState fallback
+
+// Layout stacks
+<HStack gap={8}>
+  <Text text="Left" />
+  <Text text="Right" />
+</HStack>
+
+<VStack gap={16}>
+  <Text text="Top" />
+  <Text text="Bottom" />
+</VStack>
+```
+
+### Button
+
+```tsx
+import { Button } from '@stareezy-ui/components'
+
+<Button variant="primary"   size="md" text="Submit" onPress={() => {}} />
+<Button variant="secondary" size="md" text="Cancel" />
+<Button variant="primary"   size="md" text="Loading" loading />
+<Button variant="primary"   size="md" text="Disabled" disabled />
+```
+
+**Variants:** `primary` | `secondary` | `tertiary` | `link` | `transparent`  
+**Sizes:** `sm` | `md` | `lg` | `xl` | `xxl`
+
+### Responsive props
+
+All style props accept breakpoint maps:
+
+```tsx
+<Box
+  flexDirection={{ base: "column", md: "row" }}
+  p={{ base: spacing[2], lg: spacing[6] }}
+/>
+```
+
+## Full component list
+
+`Box`, `Text`, `HStack`, `VStack`, `Button`, `Input`, `Checkbox`, `CheckboxOption`,
+`Dropdown`, `FilterButton`, `PinCode`, `Ratings`, `Screen`, `ViewStack`, `Spacer`,
+`Line`, `Dot`, `CardBox`, `Card`, `GroupContainer`, `Footer`, `Header`, `Topbar`,
+`BaseModal`, `BottomSheets`, `Drawer`, `ImageModal`, `CalendarModal`,
+`DateRangeCalendarModal`, `MonthCalendarModal`, `Labels`, `Badges`, `BadgesStatus`,
+`Avatars`, `Loading`, `LoadingSpinner`, `ProgressBar`, `Toast`, `EmptyState`,
+`Calendar`, `CalendarV2`, `BirthdateCalendar`, `LineChart`, `RadarChart`, `BarChart`,
+`Table`, `TopTabs`, `Pagination`, `SummaryCard`, `Photo`, `UploadPhoto`, and more.
+
+## Peer dependencies
+
+```json
+{
+  "react": ">=18.0.0",
+  "react-native": ">=0.73.0" // optional, for RN usage
 }
 ```
 
-## Available Components
+## License
 
-`Screen`, `ViewStack`, `Box`, `Text`, `HStack`, `VStack`, `Button`, `Input`, `Checkbox`, `CheckboxOption`, `Dropdown`, `FilterButton`, `Card`, `CardBox`, `Spacer`, `Line`, `Dot`, `Badges`, `BadgesStatus`, `Labels`, `ActionText`, `Avatars`, `Loading`, `LoadingSpinner`, `ProgressBar`, `Toast`, `EmptyState`, `Info`, `Limit`, `ContentLength`, `Version`, `BaseModal`, `BottomSheets`, `Drawer`, `ImageModal`, `PreviewImageModal`, `UploadFileModal`, `UploadImageModal`, `CalendarModal`, `DateRangeCalendarModal`, `MonthCalendarModal`, `MonthRangePickerModal`, `Calendar`, `CalendarV2`, `BirthdateCalendar`, `LineChart`, `RadarChart`, `BarChart`, `CustomChartTooltip`, `Table`, `TableHeaderItem`, `TopTabs`, `Pagination`, `SummaryCard`, `PipelineSummaryProgressCard`, `ListApprovalNote`, `ListAndAction`, `CollapsibleCard`, `GeneralHorizontalColumn`, `Photo`, `UploadPhoto`, `Header`, `Footer`, `Topbar`, `GroupContainer`, `PinCode`, `Pins`, `Ratings`, `ApprovalOption`, `ApprovalRadio`, `ListCheckboxRadioButton`, `TextContainer`, `ImagePickerModal`.
+MIT
