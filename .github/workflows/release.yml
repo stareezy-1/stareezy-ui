@@ -6,7 +6,6 @@ on:
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
-# Required for changesets to create PRs and push branches
 permissions:
   contents: write
   pull-requests: write
@@ -19,7 +18,10 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          # Use a PAT so the bot can push and create PRs
+          # PAT gives the bot permission to push branches and create PRs.
+          # If you don't have a PAT, set GITHUB_TOKEN write permissions in
+          # Settings → Actions → General → Workflow permissions → Read and write
+          # AND enable "Allow GitHub Actions to create and approve pull requests"
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - uses: pnpm/action-setup@v3
@@ -38,12 +40,16 @@ jobs:
       - name: Build packages
         run: pnpm run build
 
-      - name: Create Release Pull Request or Publish
+      - name: Create Release Pull Request or Publish to npm
+        id: changesets
         uses: changesets/action@v1
         with:
+          # When a changeset PR is merged, this publishes to npm
           publish: pnpm changeset publish
           title: "chore: release packages"
           commit: "chore: release packages"
+          # Create the version PR automatically
+          createGithubReleases: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
