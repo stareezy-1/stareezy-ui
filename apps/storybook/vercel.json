@@ -1,0 +1,6 @@
+{
+  "buildCommand": "cd ../.. && pnpm run build:tokens && pnpm run build:core && pnpm run build:runtime && pnpm run build:stylesheet && pnpm run build:components && cd apps/storybook && pnpm run build-storybook",
+  "installCommand": "pnpm install --frozen-lockfile",
+  "outputDirectory": "storybook-static",
+  "framework": null
+}

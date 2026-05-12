@@ -1,0 +1,30 @@
+{
+  "name": "@stareezy-ui/docs",
+  "version": "0.0.1",
+  "description": "Stareezy UI documentation website — Next.js + MDX",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "typecheck": "tsc --noEmit",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@next/mdx": "^14.2.0",
+    "@mdx-js/loader": "^3.0.0",
+    "next": "^14.2.0",
+    "next-sitemap": "^4.2.3",
+    "react": "^18.3.0",
+    "react-dom": "^18.3.0",
+    "rehype-pretty-code": "^0.13.0",
+    "shiki": "^1.6.0"
+  },
+  "devDependencies": {
+    "@types/mdx": "^2.0.13",
+    "@types/node": "^20.0.0",
+    "@types/react": "^18.3.0",
+    "@types/react-dom": "^18.3.0",
+    "typescript": "^5.4.0"
+  }
+}

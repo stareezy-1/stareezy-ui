@@ -1,0 +1,10 @@
+{
+  "buildCommand": "cd ../.. && pnpm run build:tokens && pnpm run build:core && pnpm run build:runtime && pnpm run build:stylesheet && pnpm run build:components && cd apps/docs && pnpm run build",
+  "installCommand": "pnpm install --frozen-lockfile",
+  "outputDirectory": ".next",
+  "framework": "nextjs",
+  "env": {
+    "NEXT_PUBLIC_SITE_URL": "https://stareezy-ui.vercel.app",
+    "NEXT_PUBLIC_STORYBOOK_URL": "https://storybook-stareezy-ui.vercel.app"
+  }
+}

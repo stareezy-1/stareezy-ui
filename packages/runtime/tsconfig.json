@@ -1,0 +1,17 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "dist",
+    "composite": true,
+    "paths": {
+      "@stareezy-ui/tokens": ["../tokens/src/index.ts"],
+      "@stareezy-ui/tokens/*": ["../tokens/src/*"],
+      "@stareezy-ui/stylesheet": ["../stylesheet/src/index.ts"],
+      "@stareezy-ui/stylesheet/*": ["../stylesheet/src/*"]
+    }
+  },
+  "references": [{ "path": "../tokens" }, { "path": "../stylesheet" }],
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist", "**/*.test.ts", "**/*.test.tsx"]
+}

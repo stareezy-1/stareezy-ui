@@ -1,0 +1,45 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "jsx": "react-jsx",
+    "strict": true,
+    "exactOptionalPropertyTypes": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": false,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true,
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "composite": true,
+    "baseUrl": ".",
+    "paths": {
+      "@stareezy-ui/tokens": ["packages/tokens/src/index.ts"],
+      "@stareezy-ui/tokens/*": ["packages/tokens/src/*"],
+      "@stareezy-ui/core": ["packages/core/src/index.ts"],
+      "@stareezy-ui/core/*": ["packages/core/src/*"],
+      "@stareezy-ui/runtime": ["packages/runtime/src/index.ts"],
+      "@stareezy-ui/runtime/*": ["packages/runtime/src/*"],
+      "@stareezy-ui/compiler": ["packages/compiler/src/index.ts"],
+      "@stareezy-ui/compiler/*": ["packages/compiler/src/*"],
+      "@stareezy-ui/stylesheet": ["packages/stylesheet/src/index.ts"],
+      "@stareezy-ui/stylesheet/*": ["packages/stylesheet/src/*"],
+      "@stareezy-ui/components": ["packages/components/src/index.ts"],
+      "@stareezy-ui/components/*": ["packages/components/src/*"]
+    }
+  },
+  "references": [
+    { "path": "packages/tokens" },
+    { "path": "packages/core" },
+    { "path": "packages/runtime" },
+    { "path": "packages/stylesheet" },
+    { "path": "packages/compiler" },
+    { "path": "packages/components" }
+  ],
+  "exclude": ["node_modules", "**/dist/**", "**/node_modules/**"]
+}

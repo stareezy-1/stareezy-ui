@@ -1,0 +1,29 @@
+{
+  "name": "stareezy-ui-monorepo",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Stareezy UI — typed design token system and component library for React Native and web",
+  "packageManager": "pnpm@9.0.0",
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=9.0.0"
+  },
+  "scripts": {
+    "build": "pnpm run build:tokens && pnpm run build:core && pnpm run build:runtime && pnpm run build:stylesheet && pnpm run build:compiler && pnpm run build:components",
+    "build:tokens": "pnpm --filter @stareezy-ui/tokens build",
+    "build:core": "pnpm --filter @stareezy-ui/core build",
+    "build:runtime": "pnpm --filter @stareezy-ui/runtime build",
+    "build:stylesheet": "pnpm --filter @stareezy-ui/stylesheet build",
+    "build:compiler": "pnpm --filter @stareezy-ui/compiler build",
+    "build:components": "pnpm --filter @stareezy-ui/components build",
+    "build:apps": "pnpm --filter './apps/**' build",
+    "typecheck": "pnpm -r typecheck",
+    "test": "pnpm -r test",
+    "lint": "pnpm -r lint",
+    "clean": "pnpm -r clean && rm -rf node_modules"
+  },
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ]
+}

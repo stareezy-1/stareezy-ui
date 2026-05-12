@@ -1,0 +1,220 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap");
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+
+  /* Stareezy UI token CSS variables */
+  --brand-50: #e6edfa;
+  --brand-100: #b3c9f0;
+  --brand-200: #81a6e7;
+  --brand-400: #1b5ed3;
+  --brand-500: #024cce;
+  --brand-600: #0146c5;
+  --brand-700: #023da5;
+
+  --color-bg: #0d0f14;
+  --color-surface: #13161e;
+  --color-surface-2: #1a1e28;
+  --color-border: rgba(255, 255, 255, 0.08);
+  --color-border-2: rgba(255, 255, 255, 0.05);
+  --color-text: #f0f2f8;
+  --color-text-2: #8892a4;
+  --color-muted: #5a6478;
+
+  --spacing-1: 4px;
+  --spacing-2: 8px;
+  --spacing-3: 12px;
+  --spacing-4: 16px;
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+
+  --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.4);
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  font-family: var(--font-sans);
+  background: var(--color-bg);
+  color: var(--color-text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* ── Playground layout ───────────────────────────────────────────────────── */
+.playground-root {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.playground-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--spacing-4);
+  height: 52px;
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  flex-shrink: 0;
+  gap: var(--spacing-2);
+}
+
+.playground-main {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+.playground-editor {
+  width: 45%;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid var(--color-border);
+  overflow: hidden;
+}
+
+.playground-preview-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.playground-breakpoint-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-1);
+  padding: 0.5rem var(--spacing-4);
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-surface);
+  flex-wrap: wrap;
+}
+
+.playground-preview-content {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+}
+
+.playground-side-panel {
+  width: 260px;
+  border-left: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--color-surface);
+}
+
+.playground-statusbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--spacing-4);
+  height: 26px;
+  background: var(--brand-500);
+  flex-shrink: 0;
+}
+
+/* ── Mobile responsive ───────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .playground-topbar {
+    padding: 0 var(--spacing-3);
+    height: 48px;
+  }
+  .playground-main {
+    flex-direction: column;
+  }
+  .playground-editor {
+    width: 100%;
+    height: 45vh;
+    border-right: none;
+    border-bottom: 1px solid var(--color-border);
+  }
+  .playground-preview-area {
+    height: 55vh;
+  }
+  .playground-side-panel {
+    display: none;
+  }
+  .playground-side-panel.mobile-visible {
+    display: flex;
+    position: fixed;
+    bottom: 26px;
+    left: 0;
+    right: 0;
+    height: 50vh;
+    width: 100%;
+    border-left: none;
+    border-top: 1px solid var(--color-border);
+    z-index: 50;
+    animation: fadeUp 0.2s ease;
+  }
+  .example-tabs {
+    overflow-x: auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .playground-topbar {
+    height: 44px;
+  }
+  .run-label {
+    display: none;
+  }
+}

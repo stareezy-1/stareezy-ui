@@ -1,0 +1,15 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "dist",
+    "composite": true,
+    "paths": {
+      "@stareezy-ui/tokens": ["../tokens/src/index.ts"],
+      "@stareezy-ui/tokens/*": ["../tokens/src/*"]
+    }
+  },
+  "references": [{ "path": "../tokens" }],
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist", "**/*.test.ts", "**/*.test.tsx"]
+}

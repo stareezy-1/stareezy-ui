@@ -1,0 +1,23 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "dist",
+    "composite": true,
+    "paths": {
+      "@stareezy-ui/tokens": ["../tokens/src/index.ts"],
+      "@stareezy-ui/tokens/*": ["../tokens/src/*"],
+      "@stareezy-ui/core": ["../core/src/index.ts"],
+      "@stareezy-ui/core/*": ["../core/src/*"],
+      "@stareezy-ui/runtime": ["../runtime/src/index.ts"],
+      "@stareezy-ui/runtime/*": ["../runtime/src/*"]
+    }
+  },
+  "references": [
+    { "path": "../tokens" },
+    { "path": "../core" },
+    { "path": "../runtime" }
+  ],
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist", "**/*.test.ts", "**/*.test.tsx"]
+}

@@ -1,0 +1,48 @@
+{
+  "name": "@stareezy-ui/runtime",
+  "version": "0.0.1",
+  "description": "Stareezy UI runtime — O(1) token-to-style lookup and platform adapters",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist/",
+    "README.md"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "stareezy-ui",
+    "runtime",
+    "style-registry"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/stareezy-ui/stareezy-ui.git",
+    "directory": "packages/runtime"
+  },
+  "scripts": {
+    "build": "tsup src/index.ts --format cjs,esm --dts --clean",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "pnpm run build && pnpm run typecheck",
+    "test": "vitest run",
+    "lint": "eslint src --ext .ts,.tsx",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@stareezy-ui/tokens": "workspace:*",
+    "@stareezy-ui/stylesheet": "workspace:*"
+  },
+  "devDependencies": {
+    "tsup": "^8.0.0",
+    "typescript": "^5.4.0",
+    "vitest": "^1.6.0",
+    "fast-check": "^3.19.0"
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "name": "@stareezy-ui/stylesheet",
+  "version": "0.0.1",
+  "description": "Stareezy UI stylesheet — atomic CSS sheet management and CSS variable injection",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist/",
+    "README.md"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "stareezy-ui",
+    "stylesheet",
+    "atomic-css",
+    "css-variables"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/stareezy-ui/stareezy-ui.git",
+    "directory": "packages/stylesheet"
+  },
+  "scripts": {
+    "build": "tsup src/index.ts --format cjs,esm --dts --clean",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "pnpm run build && pnpm run typecheck",
+    "test": "vitest run",
+    "lint": "eslint src --ext .ts,.tsx",
+    "clean": "rm -rf dist"
+  },
+  "devDependencies": {
+    "fast-check": "^3.19.0",
+    "jsdom": "^29.1.1",
+    "tsup": "^8.0.0",
+    "typescript": "^5.4.0",
+    "vitest": "^1.6.0"
+  }
+}
