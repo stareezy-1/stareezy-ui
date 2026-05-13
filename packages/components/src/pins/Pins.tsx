@@ -9,6 +9,7 @@ import { useThemedColors } from "../shared/useThemedColors";
 
 import { isWeb } from "../shared/platform";
 import { View } from "../primitives/Box";
+import { flattenStyle } from '../shared/flattenStyle';
 
 export interface IPinsProps {
   type: "Success" | "Failed" | "On_Progress";
@@ -70,7 +71,7 @@ export const Pins: React.FC<IPinsProps> = ({ type, icon, text, textStyle }) => {
             fontSize: spacing[12].value,
             fontWeight: "600",
             color: textColor,
-            ...(textStyle as React.CSSProperties),
+            ...flattenStyle(textStyle),
           }}>
             {text}
           </span>
@@ -106,7 +107,7 @@ export const Pins: React.FC<IPinsProps> = ({ type, icon, text, textStyle }) => {
     >
       {icon}
       {text && (
-        <RNText style={{ fontSize: spacing[12].value, fontWeight: "600", color: textColor, ...(textStyle as Record<string, unknown>) }} allowFontScaling={false}>
+        <RNText style={{ fontSize: spacing[12].value, fontWeight: "600", color: textColor, ...flattenStyle(textStyle) }} allowFontScaling={false}>
           {text}
         </RNText>
       )}

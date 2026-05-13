@@ -9,6 +9,7 @@ import { useThemedColors } from "../shared/useThemedColors";
 import { isWeb } from "../shared/platform";
 import { View } from "../primitives/Box";
 import { TouchableOpacity } from "../primitives/TouchableOpacity";
+import { flattenStyle } from '../shared/flattenStyle';
 
 export enum EButtonEditPositionUploadPhoto {
   inImage = "In-Image",
@@ -40,7 +41,7 @@ export const UploadPhoto: React.FC<IUploadPhotoProps> = ({
 
   if (isWeb) {
     return (
-      <div style={{display:"flex",flexDirection:"column",gap:spacing[8].value,...(style as React.CSSProperties)}} data-testid={testID}>
+      <div style={{display:"flex",flexDirection:"column",gap:spacing[8].value,...flattenStyle(style)}} data-testid={testID}>
         {title && (
           <div style={{color:themed.textPrimary,fontSize:spacing[14].value,fontWeight:600}}>
             {title}{isRequired && <span style={{color:themed.textDanger,marginLeft:2}}>*</span>}
@@ -85,7 +86,7 @@ export const UploadPhoto: React.FC<IUploadPhotoProps> = ({
 
   };
   return (
-    <View style={{...(style as Record<string,unknown>)}} testID={testID}>
+    <View style={{...flattenStyle(style)}} testID={testID}>
       {title && (
         <View style={{flexDirection:"row",marginBottom:spacing[8].value}}>
           <Text style={{color:themed.textPrimary,fontSize:spacing[14].value,fontWeight:"600"}}>{title}</Text>

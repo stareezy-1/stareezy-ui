@@ -18,6 +18,7 @@ import { colors, spacing, typography } from "@stareezy-ui/tokens";
 import { isWeb } from "../shared/platform";
 import { View } from "../primitives/Box";
 import { TouchableOpacity } from "../primitives/TouchableOpacity";
+import { flattenStyle } from '../shared/flattenStyle';
 
 // ---------------------------------------------------------------------------
 // ITopbarProps
@@ -69,7 +70,7 @@ export const Topbar: React.FC<ITopbarProps> = ({
       borderBottomStyle: "solid",
       borderBottomColor: colors.beauBlue[100].value,
       minHeight: 56,
-      ...(style as React.CSSProperties | undefined),
+      ...flattenStyle(style),
     };
 
     const titleStyle: React.CSSProperties = {
@@ -150,7 +151,7 @@ export const Topbar: React.FC<ITopbarProps> = ({
     borderBottomWidth: 1,
     borderBottomColor: colors.beauBlue[100].value,
     minHeight: 56,
-    ...(style as Record<string, unknown> | undefined),
+    ...flattenStyle(style),
   };
 
   const titleRnStyle: Record<string, unknown> = {

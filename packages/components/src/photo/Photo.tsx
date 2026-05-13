@@ -9,6 +9,7 @@ import { useThemedColors } from "../shared/useThemedColors";
 import { isWeb } from "../shared/platform";
 import { View } from "../primitives/Box";
 import { TouchableOpacity } from "../primitives/TouchableOpacity";
+import { flattenStyle } from '../shared/flattenStyle';
 
 export interface IPhotoProps {
   onPress?: () => void;
@@ -26,7 +27,7 @@ export const Photo: React.FC<IPhotoProps> = ({
   if (isWeb) {
     const src = typeof source === "string" ? source : (source as { uri?: string })?.uri ?? "";
     return (
-      <div style={{position:"relative",display:"inline-block",...(style as React.CSSProperties)}}>
+      <div style={{position:"relative",display:"inline-block",...flattenStyle(style)}}>
         <img
           src={src}
           alt="Photo"
@@ -53,7 +54,7 @@ export const Photo: React.FC<IPhotoProps> = ({
   };
   const imgSource = typeof source === "string" ? { uri: source } : source;
   return (
-    <View style={{position:"relative",...(style as Record<string,unknown>)}}>
+    <View style={{position:"relative",...flattenStyle(style)}}>
       <TouchableOpacity onPress={onPress} disabled={!onPress} accessibilityLabel="Photo">
         <Image source={imgSource} style={{borderRadius:radius.md.value}} accessibilityLabel="Photo"/>
       </TouchableOpacity>

@@ -11,6 +11,7 @@ import { EApprovalOptionState } from "../shared/types";
 import { isWeb } from "../shared/platform";
 import { View } from "../primitives/Box";
 import { TouchableOpacity } from "../primitives/TouchableOpacity";
+import { flattenStyle } from '../shared/flattenStyle';
 
 // Re-export from shared/types so consumers can import from here
 export { EApprovalOptionState };
@@ -76,7 +77,7 @@ export const ApprovalOption: React.FC<IApprovalOptionProps> = ({
           backgroundColor: bgColor,
           cursor: isDisabled ? "not-allowed" : "pointer",
           opacity: isDisabled ? 0.6 : 1,
-          ...(style as React.CSSProperties),
+          ...flattenStyle(style),
         }}
         onClick={() => { if (!isDisabled) onPress(); }}
         onKeyDown={(e) => {
@@ -135,7 +136,7 @@ export const ApprovalOption: React.FC<IApprovalOptionProps> = ({
         borderColor,
         backgroundColor: bgColor,
         opacity: isDisabled ? 0.6 : 1,
-        ...(style as Record<string, unknown>),
+        ...flattenStyle(style),
       }}
     >
       <View style={{

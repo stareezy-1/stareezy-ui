@@ -16,6 +16,7 @@ import { colors } from "@stareezy-ui/tokens";
 
 import { isWeb } from "../shared/platform";
 import { View } from "../primitives/Box";
+import { flattenStyle } from '../shared/flattenStyle';
 
 // ---------------------------------------------------------------------------
 // ILineProps
@@ -62,7 +63,7 @@ export const Line: React.FC<ILineProps> = ({
 
     return (
       <div
-        style={{ ...webStyle, ...(style as React.CSSProperties | undefined) }}
+        style={{ ...webStyle, ...flattenStyle(style) }}
         role="separator"
         aria-orientation={vertical ? "vertical" : "horizontal"}
       />
@@ -86,7 +87,7 @@ export const Line: React.FC<ILineProps> = ({
       };
 
   const mergedStyle = style
-    ? { ...rnStyle, ...(style as Record<string, unknown>) }
+    ? { ...rnStyle, ...flattenStyle(style) }
     : rnStyle;
 
   return <View style={mergedStyle} accessibilityRole={"none" as never} />;

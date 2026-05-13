@@ -9,6 +9,7 @@ import { useThemedColors } from "../shared/useThemedColors";
 
 import { isWeb } from "../shared/platform";
 import { View } from "../primitives/Box";
+import { flattenStyle } from '../shared/flattenStyle';
 
 export enum ElabelsSize {
   Sm = "Sm",
@@ -79,9 +80,9 @@ export const Labels: React.FC<ILabelsProps> = ({
 
   if (isWeb) {
     return (
-      <div style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: spacing[4].value, ...(style as React.CSSProperties) }}>
+      <div style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: spacing[4].value, ...flattenStyle(style) }}>
         {hintTextIcon && <span style={{ display: "flex", alignItems: "center" }}>{hintTextIcon}</span>}
-        <span style={{ fontSize, fontWeight: fontWeight as React.CSSProperties["fontWeight"], color: resolvedTextColor, ...(textStyle as React.CSSProperties) }}>
+        <span style={{ fontSize, fontWeight: fontWeight as React.CSSProperties["fontWeight"], color: resolvedTextColor, ...flattenStyle(textStyle) }}>
           {text}
           {isRequired && <span style={{ color: colors.danger.main.value, marginLeft: spacing[2].value }}>*</span>}
         </span>
@@ -98,9 +99,9 @@ export const Labels: React.FC<ILabelsProps> = ({
   };
 
   return (
-    <View style={{ flexDirection: "row", alignItems: "center", ...(style as Record<string, unknown>) }}>
+    <View style={{ flexDirection: "row", alignItems: "center", ...flattenStyle(style) }}>
       {hintTextIcon}
-      <RNText style={{ fontSize, fontWeight, color: resolvedTextColor, ...(textStyle as Record<string, unknown>) }} allowFontScaling={false}>
+      <RNText style={{ fontSize, fontWeight, color: resolvedTextColor, ...flattenStyle(textStyle) }} allowFontScaling={false}>
         {text}
         {isRequired && <RNText style={{ color: colors.danger.main.value }}>{" *"}</RNText>}
       </RNText>

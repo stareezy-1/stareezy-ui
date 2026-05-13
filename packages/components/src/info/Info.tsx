@@ -10,6 +10,7 @@ import { Text, ETextType } from "../primitives/Text";
 
 import { isWeb } from "../shared/platform";
 import { View } from "../primitives/Box";
+import { flattenStyle } from '../shared/flattenStyle';
 
 export interface IInfoProps {
   text: string;
@@ -46,7 +47,7 @@ export const Info: React.FC<IInfoProps> = ({
           backgroundColor: resolvedBg,
           borderRadius: radius.md.value,
           padding: spacing[12].value,
-          ...(style as React.CSSProperties),
+          ...flattenStyle(style),
         }}
       >
         {icon && <span style={{ display: "flex", alignItems: "center", flexShrink: 0 }}>{icon}</span>}
@@ -66,7 +67,7 @@ export const Info: React.FC<IInfoProps> = ({
         backgroundColor: resolvedBg,
         borderRadius: radius.md.value,
         padding: spacing[12].value,
-        ...(style as Record<string, unknown>),
+        ...flattenStyle(style),
       }}
     >
       {icon && <View style={{ marginRight: spacing[8].value }}>{icon}</View>}

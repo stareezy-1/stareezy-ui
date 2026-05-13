@@ -9,6 +9,7 @@ import { useThemedColors } from "../shared/useThemedColors";
 import { isWeb } from "../shared/platform";
 import { View } from "../primitives/Box";
 import { TouchableOpacity } from "../primitives/TouchableOpacity";
+import { flattenStyle } from '../shared/flattenStyle';
 
 export enum EPipelineSummaryProgress {
   WaitingApproval = "Menunggu Approval",
@@ -45,7 +46,7 @@ export const PipelineSummaryProgressCard: React.FC<IPipelineSummaryProgressCardP
 
   if (isWeb) {
     return (
-      <div style={{backgroundColor:themed.bgPrimary,borderRadius:radius.xl.value,border:`1px solid ${themed.borderDefault}`,padding:spacing[16].value,cursor:onPress?"pointer":"default",...(style as React.CSSProperties)}}
+      <div style={{backgroundColor:themed.bgPrimary,borderRadius:radius.xl.value,border:`1px solid ${themed.borderDefault}`,padding:spacing[16].value,cursor:onPress?"pointer":"default",...flattenStyle(style)}}
         onClick={onPress} role={onPress?"button":undefined} tabIndex={onPress?0:undefined}
         onKeyDown={onPress?(e)=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();onPress();}}:undefined}
         aria-label={title}>
@@ -66,7 +67,7 @@ export const PipelineSummaryProgressCard: React.FC<IPipelineSummaryProgressCardP
 
   };
   const inner = (
-    <View style={{backgroundColor:themed.bgPrimary,borderRadius:radius.xl.value,borderWidth:1,borderColor:themed.borderDefault,padding:spacing[16].value,...(style as Record<string,unknown>)}}>
+    <View style={{backgroundColor:themed.bgPrimary,borderRadius:radius.xl.value,borderWidth:1,borderColor:themed.borderDefault,padding:spacing[16].value,...flattenStyle(style)}}>
       <View style={{flexDirection:"row",alignItems:"center",justifyContent:"space-between",marginBottom:spacing[8].value}}>
         {title ? <Text style={{color:themed.textPrimary,fontSize:spacing[16].value,fontWeight:"600"}}>{title}</Text> : <View/>}
         <View style={{backgroundColor:progressColor,borderRadius:radius.full.value,paddingHorizontal:spacing[8].value,paddingVertical:spacing[4].value}}>

@@ -12,6 +12,7 @@ import { useThemedColors } from "../shared/useThemedColors";
 import { isWeb } from "../shared/platform";
 import { View } from "../primitives/Box";
 import { TouchableOpacity } from "../primitives/TouchableOpacity";
+import { flattenStyle } from '../shared/flattenStyle';
 
 export interface IMonthCalendarModalProps {
   onClose: () => void;
@@ -147,7 +148,7 @@ export const MonthCalendarModal: React.FC<IMonthCalendarModalProps> = ({
             display: "flex",
             flexDirection: "column",
             gap: spacing[16].value,
-            ...(style as React.CSSProperties | undefined),
+            ...flattenStyle(style),
           }}
         >
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
@@ -259,7 +260,7 @@ export const MonthCalendarModal: React.FC<IMonthCalendarModalProps> = ({
             borderRadius: radius.xl.value,
             padding: spacing[24].value,
             width: "90%",
-            ...(style as Record<string, unknown> | undefined),
+            ...flattenStyle(style),
           }}
         >
           <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginBottom: spacing[16].value }}>

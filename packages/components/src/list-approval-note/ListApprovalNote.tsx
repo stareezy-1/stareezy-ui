@@ -9,6 +9,7 @@ import { useThemedColors } from "../shared/useThemedColors";
 import { isWeb } from "../shared/platform";
 import { View } from "../primitives/Box";
 import { TouchableOpacity } from "../primitives/TouchableOpacity";
+import { flattenStyle } from '../shared/flattenStyle';
 
 export enum EListApprovalNoteType {
   Default = "Default",
@@ -40,7 +41,7 @@ export const ListApprovalNote: React.FC<IListApprovalNoteProps> = ({
 
   if (isWeb) {
     return (
-      <div style={{display:"flex",flexDirection:"row",alignItems:"flex-start",padding:spacing[12].value,borderRadius:radius.md.value,border:`1px solid ${themed.borderDefault}`,backgroundColor:themed.bgPrimary,cursor:onPress?"pointer":"default",...(style as React.CSSProperties)}}
+      <div style={{display:"flex",flexDirection:"row",alignItems:"flex-start",padding:spacing[12].value,borderRadius:radius.md.value,border:`1px solid ${themed.borderDefault}`,backgroundColor:themed.bgPrimary,cursor:onPress?"pointer":"default",...flattenStyle(style)}}
         onClick={onPress} role={onPress?"button":undefined} tabIndex={onPress?0:undefined}
         onKeyDown={onPress?(e)=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();onPress();}}:undefined}
         aria-label={title}>
@@ -61,7 +62,7 @@ export const ListApprovalNote: React.FC<IListApprovalNoteProps> = ({
 
   };
   const inner = (
-    <View style={{flexDirection:"row",alignItems:"flex-start",padding:spacing[12].value,borderRadius:radius.md.value,borderWidth:1,borderColor:themed.borderDefault,backgroundColor:themed.bgPrimary,...(style as Record<string,unknown>)}}>
+    <View style={{flexDirection:"row",alignItems:"flex-start",padding:spacing[12].value,borderRadius:radius.md.value,borderWidth:1,borderColor:themed.borderDefault,backgroundColor:themed.bgPrimary,...flattenStyle(style)}}>
       <View style={{width:4,borderRadius:radius.full.value,backgroundColor:accentColor,alignSelf:"stretch",marginRight:spacing[12].value,minHeight:40}}/>
       <View style={{flex:1}}>
         <Text style={{color:themed.textPrimary,fontSize:spacing[14].value,fontWeight:"600"}}>{title}</Text>

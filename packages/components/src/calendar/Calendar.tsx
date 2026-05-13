@@ -9,6 +9,7 @@ import { useThemedColors } from "../shared/useThemedColors";
 import { isWeb } from "../shared/platform";
 import { View } from "../primitives/Box";
 import { TouchableOpacity } from "../primitives/TouchableOpacity";
+import { flattenStyle } from '../shared/flattenStyle';
 
 export enum ECalendarType {
   Date = "Date",
@@ -118,7 +119,7 @@ export const Calendar: React.FC<ICalendarProps> = ({
 
   if (isWeb) {
     return (
-      <div style={{backgroundColor:bg,borderRadius:radius.xl.value,border:`1px solid ${bc}`,padding:spacing[16].value,userSelect:"none",...(style as React.CSSProperties)}} role="application" aria-label="Calendar">
+      <div style={{backgroundColor:bg,borderRadius:radius.xl.value,border:`1px solid ${bc}`,padding:spacing[16].value,userSelect:"none",...flattenStyle(style)}} role="application" aria-label="Calendar">
         <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:spacing[12].value}}>
           <button type="button" onClick={prev} aria-label="Previous month" style={{background:"none",border:"none",cursor:"pointer",color:hc,fontSize:18}}>&#8249;</button>
           <span style={{color:hc,fontWeight:600,fontSize:spacing[16].value}}>{MONTHS_EN[vm]} {vy}</span>
@@ -147,7 +148,7 @@ export const Calendar: React.FC<ICalendarProps> = ({
 
   };
   return (
-    <View style={{backgroundColor:bg,borderRadius:radius.xl.value,padding:spacing[16].value,...(style as Record<string,unknown>)}}>
+    <View style={{backgroundColor:bg,borderRadius:radius.xl.value,padding:spacing[16].value,...flattenStyle(style)}}>
       <View style={{flexDirection:"row",alignItems:"center",justifyContent:"space-between",marginBottom:spacing[12].value}}>
         <TouchableOpacity onPress={prev} accessibilityLabel="Previous month"><Text style={{color:hc,fontSize:18}}>{"<"}</Text></TouchableOpacity>
         <Text style={{color:hc,fontWeight:"600",fontSize:spacing[16].value}}>{MONTHS_EN[vm]} {vy}</Text>

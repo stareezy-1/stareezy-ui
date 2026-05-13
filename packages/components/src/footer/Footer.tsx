@@ -18,6 +18,7 @@ import { useThemedColors } from "../shared/useThemedColors";
 import { isWeb } from "../shared/platform";
 import { View } from "../primitives/Box";
 import { TouchableOpacity } from "../primitives/TouchableOpacity";
+import { flattenStyle } from '../shared/flattenStyle';
 
 // ---------------------------------------------------------------------------
 // IFooterProps
@@ -108,7 +109,7 @@ export const Footer: React.FC<IFooterProps> = ({
       borderTopWidth: 1,
       borderTopStyle: "solid",
       borderTopColor: themed.borderTertiary,
-      ...(style as React.CSSProperties | undefined),
+      ...flattenStyle(style),
     };
 
     const btnBase: React.CSSProperties = {
@@ -196,7 +197,7 @@ export const Footer: React.FC<IFooterProps> = ({
     backgroundColor: themed.surface,
     borderTopWidth: 1,
     borderTopColor: themed.borderTertiary,
-    ...(style as Record<string, unknown> | undefined),
+    ...flattenStyle(style),
   };
 
   const btnRnBase: Record<string, unknown> = {

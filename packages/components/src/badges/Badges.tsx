@@ -11,6 +11,7 @@ import { useThemedColors } from "../shared/useThemedColors";
 
 import { isWeb } from "../shared/platform";
 import { View } from "../primitives/Box";
+import { flattenStyle } from '../shared/flattenStyle';
 
 export enum EBadgesType {
   badge = "badge",
@@ -194,7 +195,7 @@ export const Badges: React.FC<IBadgesProps> = ({
               fontSize: spacing[12].value,
               fontWeight: "500",
               color: textColor,
-              ...(textStyle as React.CSSProperties),
+              ...flattenStyle(textStyle),
             }}
           >
             {text}
@@ -235,7 +236,7 @@ export const Badges: React.FC<IBadgesProps> = ({
             fontSize: spacing[12].value,
             fontWeight: "500",
             color: textColor,
-            ...(textStyle as Record<string, unknown>),
+            ...flattenStyle(textStyle),
           }}
         >
           {text}

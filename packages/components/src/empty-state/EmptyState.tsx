@@ -10,6 +10,7 @@ import { Text, ETextType } from "../primitives/Text";
 
 import { isWeb } from "../shared/platform";
 import { View } from "../primitives/Box";
+import { flattenStyle } from '../shared/flattenStyle';
 
 export interface IEmptyStateProps {
   icon: React.ReactNode;
@@ -45,7 +46,7 @@ export const EmptyState: React.FC<IEmptyStateProps> = ({
           textAlign: "center",
           padding: spacing[24].value,
           gap: spacing[12].value,
-          ...(style as React.CSSProperties),
+          ...flattenStyle(style),
         }}
       >
         {spacerHeight !== undefined && <div style={{ height: spacerHeight }} />}
@@ -65,7 +66,7 @@ export const EmptyState: React.FC<IEmptyStateProps> = ({
         alignItems: "center",
         justifyContent: "center",
         padding: spacing[24].value,
-        ...(style as Record<string, unknown>),
+        ...flattenStyle(style),
       }}
     >
       {spacerHeight !== undefined && <View style={{ height: spacerHeight }} />}

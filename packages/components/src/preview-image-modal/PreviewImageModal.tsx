@@ -12,6 +12,7 @@ import { useThemedColors } from "../shared/useThemedColors";
 import { isWeb } from "../shared/platform";
 import { View } from "../primitives/Box";
 import { TouchableOpacity } from "../primitives/TouchableOpacity";
+import { flattenStyle } from '../shared/flattenStyle';
 
 // ---------------------------------------------------------------------------
 // IPreviewImageModalProps — exact faithful port
@@ -62,7 +63,7 @@ export const PreviewImageModal: React.FC<IPreviewImageModalProps> = ({
           backgroundColor: themed.bgPrimaryBlack,
           display: "flex",
           flexDirection: "column",
-          ...(style as React.CSSProperties | undefined),
+          ...flattenStyle(style),
         }}
       >
         {/* Header */}
@@ -189,7 +190,7 @@ export const PreviewImageModal: React.FC<IPreviewImageModalProps> = ({
         style={{
           flex: 1,
           backgroundColor: themed.bgPrimaryBlack,
-          ...(style as Record<string, unknown> | undefined),
+          ...flattenStyle(style),
         }}
       >
         {/* Header */}

@@ -22,6 +22,7 @@ import { useThemedColors } from "../shared/useThemedColors";
 // ---------------------------------------------------------------------------
 
 import { isWeb } from "../shared/platform";
+import { flattenStyle } from "../shared/flattenStyle";
 
 // ---------------------------------------------------------------------------
 // ETextType — mirrors rekosistem-components/src/components/text/text.props.ts
@@ -596,9 +597,7 @@ export const Text: React.FC<TextProps> = (props) => {
         : {}),
       ...(isItalic ? { fontStyle: "italic" } : {}),
       ...(isUnderline ? { textDecorationLine: "underline" } : {}),
-      ...(Array.isArray(style)
-        ? Object.assign({}, ...style.filter(Boolean))
-        : (style as React.CSSProperties | undefined)),
+      ...flattenStyle(style),
     };
 
     return (
@@ -628,7 +627,7 @@ export const Text: React.FC<TextProps> = (props) => {
     color: resolvedColor,
     ...(isItalic ? { fontStyle: "italic" } : {}),
     ...(isUnderline ? { textDecorationLine: "underline" } : {}),
-    ...(style as Record<string, unknown> | undefined),
+    ...flattenStyle(style),
   };
 
   const rnProps: Record<string, unknown> = {

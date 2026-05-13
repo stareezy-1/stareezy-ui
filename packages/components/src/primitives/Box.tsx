@@ -38,6 +38,7 @@ export type {
 
 /** True when running in a browser (web) environment. */
 import { isWeb } from "../shared/platform";
+import { flattenStyle } from "../shared/flattenStyle";
 
 // ---------------------------------------------------------------------------
 // Lazy runtime singleton — created once per platform on first use
@@ -736,12 +737,7 @@ export const Box: React.FC<BoxProps> = (props) => {
       .join(" ");
 
     const finalStyle: React.CSSProperties = style
-      ? {
-          ...inlineStyle,
-          ...(Array.isArray(style)
-            ? Object.assign({}, ...style.filter(Boolean))
-            : (style as React.CSSProperties)),
-        }
+      ? { ...inlineStyle, ...flattenStyle(style) }
       : inlineStyle;
 
     return (

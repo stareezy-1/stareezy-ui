@@ -4,6 +4,7 @@
  */
 import React from "react";
 import { Box, type BoxProps } from "./Box";
+import { flattenStyle } from "../shared/flattenStyle";
 
 export interface TouchableOpacityProps extends BoxProps {
   onPress?: ((event: unknown) => void) | undefined;
@@ -35,7 +36,7 @@ export const TouchableOpacity: React.FC<TouchableOpacityProps> = ({
         ...(typeof document !== "undefined" && onPress && !disabled
           ? { transition: "opacity 0.1s" }
           : {}),
-        ...(style as React.CSSProperties | undefined),
+        ...flattenStyle(style),
       }}
       accessibilityState={
         rest.accessibilityState ??

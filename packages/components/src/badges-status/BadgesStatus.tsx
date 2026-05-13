@@ -10,6 +10,7 @@ import { useThemedColors } from "../shared/useThemedColors";
 
 import { isWeb } from "../shared/platform";
 import { View } from "../primitives/Box";
+import { flattenStyle } from '../shared/flattenStyle';
 
 export enum EBadgesStatusType {
   // Approval / workflow
@@ -163,7 +164,7 @@ export const BadgesStatus: React.FC<IBadgesStatusProps> = ({ type, style, textSt
           paddingRight: spacing[8].value,
           paddingTop: spacing[4].value,
           paddingBottom: spacing[4].value,
-          ...(style as React.CSSProperties),
+          ...flattenStyle(style),
         }}
       >
         <span
@@ -171,7 +172,7 @@ export const BadgesStatus: React.FC<IBadgesStatusProps> = ({ type, style, textSt
             fontSize: spacing[12].value,
             fontWeight: "500",
             color: config.text,
-            ...(textStyle as React.CSSProperties),
+            ...flattenStyle(textStyle),
           }}
         >
           {config.label}
@@ -197,7 +198,7 @@ export const BadgesStatus: React.FC<IBadgesStatusProps> = ({ type, style, textSt
         borderRadius: radius.full.value,
         paddingHorizontal: spacing[8].value,
         paddingVertical: spacing[4].value,
-        ...(style as Record<string, unknown>),
+        ...flattenStyle(style),
       }}
     >
       <RNText
@@ -206,7 +207,7 @@ export const BadgesStatus: React.FC<IBadgesStatusProps> = ({ type, style, textSt
           fontSize: spacing[12].value,
           fontWeight: "500",
           color: config.text,
-          ...(textStyle as Record<string, unknown>),
+          ...flattenStyle(textStyle),
         }}
       >
         {config.label}

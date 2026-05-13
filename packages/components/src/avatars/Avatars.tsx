@@ -10,6 +10,7 @@ import { useThemedColors } from "../shared/useThemedColors";
 import { isWeb } from "../shared/platform";
 import { View } from "../primitives/Box";
 import { TouchableOpacity } from "../primitives/TouchableOpacity";
+import { flattenStyle } from '../shared/flattenStyle';
 
 export enum EAvatarType {
   ImageOnly = "ImageOnly",
@@ -114,7 +115,7 @@ export const Avatars: React.FC<IAvatarProps> = ({
           : themed.bgSecondary,
       ...(borderColor ? { border: `2px solid ${borderColor}` } : {}),
       cursor: onPress ? "pointer" : undefined,
-      ...(style as React.CSSProperties),
+      ...flattenStyle(style),
     };
 
     const inner =
@@ -190,7 +191,7 @@ export const Avatars: React.FC<IAvatarProps> = ({
         ? colors.celurenBlue[100].value
         : themed.bgSecondary,
     ...(borderColor ? { borderWidth: 2, borderColor } : {}),
-    ...(style as Record<string, unknown>),
+    ...flattenStyle(style),
   };
 
   const inner =

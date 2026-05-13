@@ -8,6 +8,7 @@ import { useThemedColors } from "../shared/useThemedColors";
 
 import { isWeb } from "../shared/platform";
 import { View } from "../primitives/Box";
+import { flattenStyle } from '../shared/flattenStyle';
 
 export interface ISummaryCardProps {
   style?: React.CSSProperties | Record<string, unknown>;
@@ -28,7 +29,7 @@ export const SummaryCard: React.FC<ISummaryCardProps> = ({
 
   if (isWeb) {
     return (
-      <div style={{backgroundColor:themed.bgPrimary,borderRadius:radius.xl.value,border:`1px solid ${themed.borderDefault}`,padding:spacing[16].value,...(style as React.CSSProperties)}}>
+      <div style={{backgroundColor:themed.bgPrimary,borderRadius:radius.xl.value,border:`1px solid ${themed.borderDefault}`,padding:spacing[16].value,...flattenStyle(style)}}>
         {isEmpty ? (
           <div style={{textAlign:"center",padding:spacing[16].value}}>
             <div style={{color:themed.textSecondary,fontSize:spacing[16].value,fontWeight:600}}>{emptyTitle}</div>
@@ -58,7 +59,7 @@ export const SummaryCard: React.FC<ISummaryCardProps> = ({
 
   };
   return (
-    <View style={{backgroundColor:themed.bgPrimary,borderRadius:radius.xl.value,borderWidth:1,borderColor:themed.borderDefault,padding:spacing[16].value,...(style as Record<string,unknown>)}}>
+    <View style={{backgroundColor:themed.bgPrimary,borderRadius:radius.xl.value,borderWidth:1,borderColor:themed.borderDefault,padding:spacing[16].value,...flattenStyle(style)}}>
       {isEmpty ? (
         <View style={{alignItems:"center",padding:spacing[16].value}}>
           <Text style={{color:themed.textSecondary,fontSize:spacing[16].value,fontWeight:"600"}}>{emptyTitle}</Text>

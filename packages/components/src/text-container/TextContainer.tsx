@@ -11,6 +11,7 @@ import { useThemedColors } from "../shared/useThemedColors";
 import { isWeb } from "../shared/platform";
 import { View } from "../primitives/Box";
 import { TouchableOpacity } from "../primitives/TouchableOpacity";
+import { flattenStyle } from '../shared/flattenStyle';
 
 export enum ETextContainerType {
   Default = "Default",
@@ -58,9 +59,9 @@ export const TextContainer: React.FC<ITextContainerProps> = ({
 
   if (isWeb) {
     return (
-      <div style={{ display: "flex", flexDirection: "column", gap: spacing[4].value, ...(style as React.CSSProperties) }}>
+      <div style={{ display: "flex", flexDirection: "column", gap: spacing[4].value, ...flattenStyle(style) }}>
         <div style={isWithAction ? { display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between" } : undefined}>
-          <span style={{ fontSize: titleFontSize, fontWeight: titleFontWeight as React.CSSProperties["fontWeight"], color: themed.textPrimary, ...(titleStyle as React.CSSProperties) }}>
+          <span style={{ fontSize: titleFontSize, fontWeight: titleFontWeight as React.CSSProperties["fontWeight"], color: themed.textPrimary, ...flattenStyle(titleStyle) }}>
             {title}
           </span>
           {isWithAction && actionIcon && (
@@ -97,7 +98,7 @@ export const TextContainer: React.FC<ITextContainerProps> = ({
 
   const titleRow = isWithAction ? (
     <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
-      <RNText allowFontScaling={false} style={{ fontSize: titleFontSize, fontWeight: titleFontWeight, color: themed.textPrimary, ...(titleStyle as Record<string, unknown>) }}>
+      <RNText allowFontScaling={false} style={{ fontSize: titleFontSize, fontWeight: titleFontWeight, color: themed.textPrimary, ...flattenStyle(titleStyle) }}>
         {title}
       </RNText>
       {actionIcon && (
@@ -107,7 +108,7 @@ export const TextContainer: React.FC<ITextContainerProps> = ({
       )}
     </View>
   ) : (
-    <RNText allowFontScaling={false} style={{ fontSize: titleFontSize, fontWeight: titleFontWeight, color: themed.textPrimary, ...(titleStyle as Record<string, unknown>) }}>
+    <RNText allowFontScaling={false} style={{ fontSize: titleFontSize, fontWeight: titleFontWeight, color: themed.textPrimary, ...flattenStyle(titleStyle) }}>
       {title}
     </RNText>
   );

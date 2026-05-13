@@ -18,6 +18,7 @@ import { useThemedColors } from "../shared/useThemedColors";
 // Platform detection
 // ---------------------------------------------------------------------------
 
+import { flattenStyle } from "../shared/flattenStyle";
 import { isWeb } from "../shared/platform";
 import { View } from "../primitives/Box";
 import { TouchableOpacity } from "../primitives/TouchableOpacity";
@@ -325,9 +326,7 @@ function ActivityIndicatorShim({
   // eslint-disable-next-line @typescript-eslint/no-require-imports
 
   const { ActivityIndicator } = require("react-native") as {
-
     ActivityIndicator: React.ComponentType<Record<string, unknown>>;
-
   };
   return <ActivityIndicator size={size} color={color} />;
 }
@@ -364,7 +363,7 @@ export const Button: React.FC<ButtonProps> = (props) => {
 
   // Resolve container style
   const typePreset = TYPE_PRESETS[type] ?? TYPE_PRESETS[EButtonType.Primary];
-  const disabledPreset = disabled ? (DISABLED_PRESETS[type] ?? {}) : {};
+  const disabledPreset = disabled ? DISABLED_PRESETS[type] ?? {} : {};
   const sizePreset = size
     ? icon
       ? ICON_SIZE_PRESETS[size]
@@ -431,7 +430,7 @@ export const Button: React.FC<ButtonProps> = (props) => {
             data-testid={testID}
             style={{
               ...presetToWebStyle(containerPreset),
-              ...(style as React.CSSProperties | undefined),
+              ...flattenStyle(style),
               border: "none",
               outline: "none",
               background: "none",
@@ -453,7 +452,7 @@ export const Button: React.FC<ButtonProps> = (props) => {
           testID={testID}
           style={{
             ...presetToRnStyle(containerPreset),
-            ...(style as Record<string, unknown> | undefined),
+            ...flattenStyle(style),
           }}
         >
           {labelContent}
@@ -485,7 +484,7 @@ export const Button: React.FC<ButtonProps> = (props) => {
           data-testid={testID}
           style={{
             ...presetToWebStyle(iconPreset),
-            ...(style as React.CSSProperties | undefined),
+            ...flattenStyle(style),
             border: "none",
             outline: "none",
             cursor: disabled ? "not-allowed" : "pointer",
@@ -504,7 +503,7 @@ export const Button: React.FC<ButtonProps> = (props) => {
         testID={testID}
         style={{
           ...presetToRnStyle(iconPreset),
-          ...(style as Record<string, unknown> | undefined),
+          ...flattenStyle(style),
         }}
       >
         {children ?? icon}
@@ -525,7 +524,7 @@ export const Button: React.FC<ButtonProps> = (props) => {
         data-testid={testID}
         style={{
           ...presetToWebStyle(containerPreset),
-          ...(style as React.CSSProperties | undefined),
+          ...flattenStyle(style),
           border: containerPreset.borderWidth
             ? `${containerPreset.borderWidth}px solid ${containerPreset.borderColor}`
             : "none",
@@ -547,7 +546,7 @@ export const Button: React.FC<ButtonProps> = (props) => {
       testID={testID}
       style={{
         ...presetToRnStyle(containerPreset),
-        ...(style as Record<string, unknown> | undefined),
+        ...flattenStyle(style),
       }}
     >
       {labelContent}

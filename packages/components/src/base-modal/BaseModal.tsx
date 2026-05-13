@@ -15,6 +15,7 @@ import { useThemedColors } from "../shared/useThemedColors";
 import { isWeb } from "../shared/platform";
 import { View } from "../primitives/Box";
 import { TouchableOpacity } from "../primitives/TouchableOpacity";
+import { flattenStyle } from '../shared/flattenStyle';
 
 export interface IBaseModalProps {
   onClose?(): void;
@@ -118,7 +119,7 @@ export const BaseModal: React.FC<IBaseModalProps> = ({
             maxWidth: "90vw",
             maxHeight: "90vh",
             overflow: "auto",
-            ...(style as React.CSSProperties | undefined),
+            ...flattenStyle(style),
           }}
         >
           <button
@@ -182,7 +183,7 @@ export const BaseModal: React.FC<IBaseModalProps> = ({
                 borderRadius: radius.xl.value,
                 padding: spacing[16].value,
                 maxWidth: "90%",
-                ...(style as Record<string, unknown> | undefined),
+                ...flattenStyle(style),
               }}
             >
               <TouchableOpacity

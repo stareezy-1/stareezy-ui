@@ -10,6 +10,7 @@ import { useThemedColors } from "../shared/useThemedColors";
 import { isWeb } from "../shared/platform";
 import { View } from "../primitives/Box";
 import { TouchableOpacity } from "../primitives/TouchableOpacity";
+import { flattenStyle } from '../shared/flattenStyle';
 
 export interface OptionProps<T = unknown> {
   id?: string | number;
@@ -122,7 +123,7 @@ export function Dropdown<T = unknown>({
   if (isWeb) {
     return (
       <div
-        style={{ display: "flex", flexDirection: "column", gap: spacing[4].value, position: "relative", ...(style as React.CSSProperties) }}
+        style={{ display: "flex", flexDirection: "column", gap: spacing[4].value, position: "relative", ...flattenStyle(style) }}
         data-testid={testID}
       >
         {label && (
@@ -302,7 +303,7 @@ export function Dropdown<T = unknown>({
   };
 
   return (
-    <View style={{ gap: spacing[4].value, ...(style as Record<string, unknown>) }}>
+    <View style={{ gap: spacing[4].value, ...flattenStyle(style) }}>
       {label && (
         <RNText style={{ fontSize: spacing[14].value, fontWeight: "500", color: themed.textPrimary }} allowFontScaling={false}>
           {label}

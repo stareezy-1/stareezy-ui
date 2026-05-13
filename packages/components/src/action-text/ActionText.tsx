@@ -10,6 +10,7 @@ import { useThemedColors } from "../shared/useThemedColors";
 import { isWeb } from "../shared/platform";
 import { View } from "../primitives/Box";
 import { TouchableOpacity } from "../primitives/TouchableOpacity";
+import { flattenStyle } from '../shared/flattenStyle';
 
 export interface IActionTextProps {
   text: string;
@@ -36,7 +37,7 @@ export const ActionText: React.FC<IActionTextProps> = ({
           gap: spacing[4].value,
           fontSize: spacing[14].value,
           color: themed.textSecondary,
-          ...(style as React.CSSProperties),
+          ...flattenStyle(style),
         }}
       >
         {text}
@@ -72,7 +73,7 @@ export const ActionText: React.FC<IActionTextProps> = ({
   };
 
   return (
-    <View style={{ flexDirection: "row", alignItems: "center", ...(style as Record<string, unknown>) }}>
+    <View style={{ flexDirection: "row", alignItems: "center", ...flattenStyle(style) }}>
       <RNText allowFontScaling={false} style={{ fontSize: spacing[14].value, color: themed.textSecondary }}>
         {text}
       </RNText>

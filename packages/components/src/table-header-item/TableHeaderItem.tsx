@@ -12,6 +12,7 @@ export { ETextType };
 import { isWeb } from "../shared/platform";
 import { View } from "../primitives/Box";
 import { TouchableOpacity } from "../primitives/TouchableOpacity";
+import { flattenStyle } from '../shared/flattenStyle';
 
 export interface ITableHeaderItemProps {
   testID?: string;
@@ -46,7 +47,7 @@ export const TableHeaderItem: React.FC<ITableHeaderItemProps> = ({
         aria-label={title}>
         {children ?? (
           <>
-            <span style={{color:themed.textSecondary,fontSize:spacing[12].value,fontWeight:600,...(titleStyle as React.CSSProperties)}}>{title}</span>
+            <span style={{color:themed.textSecondary,fontSize:spacing[12].value,fontWeight:600,...flattenStyle(titleStyle)}}>{title}</span>
             {sortIcon}
           </>
         )}
@@ -69,7 +70,7 @@ export const TableHeaderItem: React.FC<ITableHeaderItemProps> = ({
   };
   const inner = children ?? (
     <>
-      <Text style={{color:themed.textSecondary,fontSize:spacing[12].value,fontWeight:"600",...(titleStyle as Record<string,unknown>)}}>{title}</Text>
+      <Text style={{color:themed.textSecondary,fontSize:spacing[12].value,fontWeight:"600",...flattenStyle(titleStyle)}}>{title}</Text>
       {sortIcon}
     </>
   );

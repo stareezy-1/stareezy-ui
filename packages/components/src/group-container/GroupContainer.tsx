@@ -14,6 +14,7 @@ import { colors, spacing, typography } from "@stareezy-ui/tokens";
 // Platform detection
 // ---------------------------------------------------------------------------
 
+import { flattenStyle } from "../shared/flattenStyle";
 import { isWeb } from "../shared/platform";
 import { View } from "../primitives/Box";
 
@@ -42,7 +43,7 @@ export const GroupContainer: React.FC<IGroupContainerProps> = ({
     const containerStyle: React.CSSProperties = {
       display: "flex",
       flexDirection: "column",
-      ...(style as React.CSSProperties | undefined),
+      ...flattenStyle(style),
     };
 
     const titleStyle: React.CSSProperties = {
@@ -66,14 +67,12 @@ export const GroupContainer: React.FC<IGroupContainerProps> = ({
   // eslint-disable-next-line @typescript-eslint/no-require-imports
 
   const { Text } = require("react-native") as {
-
     Text: React.ComponentType<Record<string, unknown>>;
-
   };
 
   const containerRnStyle: Record<string, unknown> = {
     flexDirection: "column",
-    ...(style as Record<string, unknown> | undefined),
+    ...flattenStyle(style),
   };
 
   const titleRnStyle: Record<string, unknown> = {

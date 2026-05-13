@@ -9,6 +9,7 @@ import { useThemedColors } from "../shared/useThemedColors";
 import { isWeb } from "../shared/platform";
 import { View } from "../primitives/Box";
 import { TouchableOpacity } from "../primitives/TouchableOpacity";
+import { flattenStyle } from '../shared/flattenStyle';
 
 export interface PaginationType {
   page: number;
@@ -53,7 +54,7 @@ export const Pagination: React.FC<IPaginationProps> = ({
       background: "none", cursor: "pointer", fontSize: spacing[14].value, display: "flex", alignItems: "center", justifyContent: "center",
     };
     return (
-      <div style={{display:"flex",alignItems:"center",gap:spacing[8].value,...(style as React.CSSProperties)}} data-testid={testID}>
+      <div style={{display:"flex",alignItems:"center",gap:spacing[8].value,...flattenStyle(style)}} data-testid={testID}>
         {leftComponent}
         <button type="button" onClick={()=>goTo(page-1)} disabled={page<=1} aria-label="Previous page"
           style={{...btnBase,color:page<=1?themed.textDisabled:themed.textPrimary,cursor:page<=1?"not-allowed":"pointer"}}>&#8249;</button>
@@ -81,7 +82,7 @@ export const Pagination: React.FC<IPaginationProps> = ({
 
   };
   return (
-    <View style={{flexDirection:"row",alignItems:"center",...(style as Record<string,unknown>)}} testID={testID}>
+    <View style={{flexDirection:"row",alignItems:"center",...flattenStyle(style)}} testID={testID}>
       {leftComponent}
       <TouchableOpacity onPress={()=>goTo(page-1)} disabled={page<=1} accessibilityLabel="Previous page" style={{padding:spacing[8].value}}>
         <Text style={{color:page<=1?themed.textDisabled:themed.textPrimary,fontSize:spacing[16].value}}>{"<"}</Text>

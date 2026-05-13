@@ -16,6 +16,7 @@ import { colors } from "@stareezy-ui/tokens";
 
 import { isWeb } from "../shared/platform";
 import { View } from "../primitives/Box";
+import { flattenStyle } from '../shared/flattenStyle';
 
 // ---------------------------------------------------------------------------
 // Enums
@@ -92,7 +93,7 @@ export const Dot: React.FC<IDotProps> = ({
 
     return (
       <span
-        style={{ ...webStyle, ...(style as React.CSSProperties | undefined) }}
+        style={{ ...webStyle, ...flattenStyle(style) }}
         role="img"
         aria-label={`${type} indicator`}
       />
@@ -112,7 +113,7 @@ export const Dot: React.FC<IDotProps> = ({
   };
 
   const mergedStyle = style
-    ? { ...rnStyle, ...(style as Record<string, unknown>) }
+    ? { ...rnStyle, ...flattenStyle(style) }
     : rnStyle;
 
   return <View style={mergedStyle} accessibilityLabel={`${type} indicator`} />;

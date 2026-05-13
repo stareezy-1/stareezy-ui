@@ -11,6 +11,7 @@ import { ELabelsType, EHintTextType } from "../shared/types";
 import { isWeb } from "../shared/platform";
 import { View } from "../primitives/Box";
 import { TouchableOpacity } from "../primitives/TouchableOpacity";
+import { flattenStyle } from '../shared/flattenStyle';
 
 export enum EInputType {
   TextField = "TextField",
@@ -143,7 +144,7 @@ export const Input: React.FC<IInputProps> = ({
 
     return (
       <div
-        style={{ display: "flex", flexDirection: "column", gap: spacing[4].value, ...(style as React.CSSProperties) }}
+        style={{ display: "flex", flexDirection: "column", gap: spacing[4].value, ...flattenStyle(style) }}
         onClick={onPress}
       >
         {topChildren}
@@ -272,7 +273,7 @@ export const Input: React.FC<IInputProps> = ({
   };
 
   return (
-    <View style={{ gap: spacing[4].value, ...(style as Record<string, unknown>) }}>
+    <View style={{ gap: spacing[4].value, ...flattenStyle(style) }}>
       {topChildren}
       {label && (
         <RNText style={{ fontSize: spacing[14].value, fontWeight: "500", color: themed.textPrimary }} allowFontScaling={false}>

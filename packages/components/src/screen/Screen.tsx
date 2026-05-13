@@ -19,6 +19,7 @@ import { colors } from "@stareezy-ui/tokens";
 // Platform detection
 // ---------------------------------------------------------------------------
 
+import { flattenStyle } from "../shared/flattenStyle";
 import { isWeb } from "../shared/platform";
 
 // ---------------------------------------------------------------------------
@@ -100,7 +101,7 @@ export const Screen: React.FC<IScreenProps> = ({
       flexDirection: "column",
       flex: 1,
       overflow: isScrollable ? "auto" : "hidden",
-      ...(style as React.CSSProperties | undefined),
+      ...flattenStyle(style),
     };
 
     return (
@@ -160,7 +161,7 @@ export const Screen: React.FC<IScreenProps> = ({
 
   const innerRnStyle: Record<string, unknown> = {
     flex: 1,
-    ...(style as Record<string, unknown> | undefined),
+    ...flattenStyle(style),
   };
 
   const keyboardOffsetValue = KEYBOARD_OFFSET_VALUES[keyboardOffset];

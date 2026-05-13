@@ -19,6 +19,7 @@ import { IInputProps } from "../input/Input";
 import { isWeb } from "../shared/platform";
 import { View } from "../primitives/Box";
 import { TouchableOpacity } from "../primitives/TouchableOpacity";
+import { flattenStyle } from '../shared/flattenStyle';
 
 // ---------------------------------------------------------------------------
 // Enums
@@ -200,7 +201,7 @@ export const BottomSheets: React.FC<IBottomSheetsProps> = ({
             maxWidth: 600,
             maxHeight: "90vh",
             overflow: "auto",
-            ...(style as React.CSSProperties | undefined),
+            ...flattenStyle(style),
           }}
         >
           {/* Drag handle */}
@@ -293,7 +294,7 @@ export const BottomSheets: React.FC<IBottomSheetsProps> = ({
             borderTopRightRadius: radius["2xl"].value,
             padding: spacing[24].value,
             maxHeight: "90%",
-            ...(style as Record<string, unknown> | undefined),
+            ...flattenStyle(style),
           }}
         >
           <View
