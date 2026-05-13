@@ -15,7 +15,9 @@ import { isWeb } from "../shared/platform";
 export interface TouchableOpacityProps extends Omit<BoxProps, "style"> {
   onPress?:
     | React.MouseEventHandler<HTMLDivElement>
-    | ((event: GestureResponderEvent) => void);
+    | ((event: import("react-native").GestureResponderEvent) => void)
+    | (() => void)
+    | undefined;
   disabled?: boolean | undefined;
   activeOpacity?: number | undefined;
   style?: StyleProp;

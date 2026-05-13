@@ -258,6 +258,7 @@ export interface BoxProps {
   onPress?:
     | React.MouseEventHandler<HTMLDivElement>
     | ((event: import("react-native").GestureResponderEvent) => void)
+    | (() => void)
     | undefined;
   role?: React.AriaRole | undefined;
   tabIndex?: number | undefined;
