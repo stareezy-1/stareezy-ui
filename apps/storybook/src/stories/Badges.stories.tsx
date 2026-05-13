@@ -15,6 +15,7 @@ import {
   EBadgesState,
   EBadgesStyle,
 } from "@stareezy-ui/components";
+import React from "react";
 
 const meta: Meta<typeof Badges> = {
   title: "Components/Badges",
@@ -237,7 +238,6 @@ export const WithRightIcon: Story = {
 export const AllStates: Story = {
   name: "All States",
   render: () => {
-    const React = require("react");
     return React.createElement(
       "div",
       { style: { display: "flex", gap: 8, flexWrap: "wrap" } },

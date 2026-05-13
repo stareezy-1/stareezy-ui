@@ -832,7 +832,7 @@ export const Box: React.FC<BoxProps> = (props) => {
           aria-orientation={ariaOrientation}
           role={role}
           tabIndex={tabIndex}
-          onClick={onClick}
+          onClick={onClick ?? onPress}
           onMouseDown={onMouseDown}
           onMouseUp={onMouseUp}
           onMouseEnter={onMouseEnter}

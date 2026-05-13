@@ -21,6 +21,9 @@ const withThemeProvider: Decorator = (Story, context) => {
           background: theme === "dark" ? "#0F1010" : "#FAFBFF",
           minHeight: "100%",
           fontFamily: '"Inter", system-ui, sans-serif',
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "flex-start",
         }}
       >
         <Story />

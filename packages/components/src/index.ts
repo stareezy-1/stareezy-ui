@@ -11,8 +11,26 @@ export type { ViewProps } from "./primitives/View";
 export { Text, ETextType, EFontStyle } from "./primitives/Text";
 export type { TextProps } from "./primitives/Text";
 
-export { HStack, VStack } from "./primitives/Stack";
+export {
+  HStack,
+  VStack,
+  EStackAlign,
+  EStackJustify,
+  EStackGap,
+  stackGapValues,
+} from "./primitives/Stack";
 export type { HStackProps, VStackProps } from "./primitives/Stack";
+
+export {
+  EFlexDirection,
+  EAlignItems,
+  EJustifyContent,
+  EAlignSelf,
+  EFlexWrap,
+  EOverflow,
+  EPosition,
+  ECursor,
+} from "./primitives/Box.style";
 
 export { TouchableOpacity } from "./primitives/TouchableOpacity";
 export type { TouchableOpacityProps } from "./primitives/TouchableOpacity";

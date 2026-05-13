@@ -2,12 +2,19 @@
  * HStack and VStack — flex layout primitives.
  *
  * Thin wrappers around Box with a pre-set flexDirection.
+ * All visual styles live in Stack.style.ts — no inline styles here.
  * All BoxProps are accepted and any prop can be overridden.
  */
 
 import React from "react";
 import { Box } from "./Box";
 import type { BoxProps } from "./Box";
+export {
+  EStackAlign,
+  EStackJustify,
+  EStackGap,
+  stackGapValues,
+} from "./Stack.style";
 
 export type HStackProps = BoxProps;
 export type VStackProps = BoxProps;

@@ -56,6 +56,7 @@ export const TouchableOpacity: React.FC<TouchableOpacityProps> = ({
         onMouseDown={disabled ? undefined : () => setPressed(true)}
         onMouseUp={disabled ? undefined : () => setPressed(false)}
         onMouseLeave={disabled ? undefined : () => setPressed(false)}
+        onClick={onPress}
         {...rest}
       >
         {children}

@@ -1,16 +1,14 @@
 /**
- * Button — full port of rekosistem-components/src/components/button/button.tsx.
- * Replaces Tamagui with the new token system.
+ * Button — cross-platform button component for Stareezy UI.
  *
- * Supports all EButtonType variants, all EButtonSize values, icon-only mode,
- * AbsoluteBottomWithBorder layout, loading/disabled states, and full
- * accessibility attributes.
+ * All visual styles live in Button.style.ts — no inline styles here.
+ * Enums live in Button.types.ts to avoid circular imports with Button.style.ts.
  *
  * Requirements: 13.1–13.5, 17.1, 17.3, 17.4
  */
 
 import React from "react";
-import { colors, spacing, radius, ss } from "@stareezy-ui/tokens";
+import { colors, spacing } from "@stareezy-ui/tokens";
 import { Text, ETextType } from "../primitives/Text";
 import { useThemedColors } from "../shared/useThemedColors";
 import { flattenStyle } from "../shared/flattenStyle";
@@ -18,167 +16,30 @@ import { isWeb } from "../shared/platform";
 import { View } from "../primitives/View";
 import type { StyleProp } from "../primitives/Box";
 import { TouchableOpacity } from "../primitives/TouchableOpacity";
+import {
+  webBase,
+  webTypeGeometry,
+  webSizePresets,
+  webDefaultPadding,
+  webIconSizePresets,
+  webIconDefaultPadding,
+  webDisabledOverride,
+  webAbsoluteBottomOuter,
+  webSpinner,
+  nativeBase,
+  nativeSizePresets,
+  nativeDefaultPadding,
+  nativeIconSizePresets,
+  nativeIconDefaultPadding,
+  nativeAbsoluteBottomOuterGeometry,
+  BUTTON_BORDER_RADIUS,
+  BUTTON_BORDER_WIDTH,
+  SPINNER_COLOR_FALLBACK,
+} from "./Button.style";
 
-// ---------------------------------------------------------------------------
-// Enums — mirrors button.props.ts
-// ---------------------------------------------------------------------------
-
-export enum EButtonType {
-  Primary = "Primary",
-  Secondary = "Secondary",
-  Tertiary = "Tertiary",
-  Link = "link",
-  WithBorder = "with-border",
-  AbsoluteBottom = "absolute-bottom",
-  AbsoluteBottomWithBorder = "absolute-bottom-with-border",
-  Transparent = "transparent",
-}
-
-export enum EButtonSize {
-  SM = "SM",
-  MD = "MD",
-  LG = "LG",
-  XL = "XL",
-  XXL = "XXL",
-}
-
-// ---------------------------------------------------------------------------
-// Style presets — built at render time from themed colors
-// ---------------------------------------------------------------------------
-
-interface ButtonStylePreset {
-  backgroundColor?: string;
-  borderColor?: string;
-  borderWidth?: number;
-  borderRadius?: number;
-  paddingVertical?: number;
-  paddingHorizontal?: number;
-  padding?: number;
-  width?: string | number;
-  alignSelf?: string;
-  position?: string;
-  bottom?: number;
-  right?: number;
-  left?: number;
-  borderTopColor?: string;
-  borderTopWidth?: number;
-  justifyContent?: string;
-  opacity?: number;
-}
-
-interface TextColorPreset {
-  color: string;
-}
-
-// Base (spacing/radius only — no colors)
-const BASE: ButtonStylePreset = {
-  paddingVertical: ss.lG.value,
-  borderRadius: radius.full.value,
-};
-
-// Size presets (no colors — safe to define at module level)
-const SIZE_PRESETS: Record<EButtonSize, ButtonStylePreset> = {
-  [EButtonSize.SM]: {
-    paddingVertical: ss.sM.value,
-    paddingHorizontal: ss.lG.value,
-  },
-  [EButtonSize.MD]: {
-    paddingVertical: spacing[8].value,
-    paddingHorizontal: ss.xL.value,
-  },
-  [EButtonSize.LG]: {
-    paddingVertical: spacing[10].value,
-    paddingHorizontal: ss["2xL"].value,
-  },
-  [EButtonSize.XL]: {
-    paddingVertical: ss.lG.value,
-    paddingHorizontal: ss["3xL"].value,
-  },
-  [EButtonSize.XXL]: {
-    paddingVertical: ss.xL.value,
-    paddingHorizontal: ss["4xL"].value,
-  },
-};
-
-const ICON_SIZE_PRESETS: Record<EButtonSize, ButtonStylePreset> = {
-  [EButtonSize.SM]: { padding: ss.sM.value },
-  [EButtonSize.MD]: { padding: ss.mD.value },
-  [EButtonSize.LG]: { padding: spacing[10].value },
-  [EButtonSize.XL]: { padding: ss.lG.value },
-  [EButtonSize.XXL]: { padding: ss.xL.value },
-};
-
-/**
- * Build color-bearing presets at render time using the active theme.
- * Called inside the component so dark/light switching is reflected.
- */
-function buildThemedPresets(themed: ReturnType<typeof useThemedColors>) {
-  const TYPE_PRESETS: Record<EButtonType, ButtonStylePreset> = {
-    [EButtonType.Primary]: {
-      ...BASE,
-      backgroundColor: themed.surfaceDark,
-    },
-    [EButtonType.Secondary]: {
-      ...BASE,
-      backgroundColor: themed.surface,
-      borderColor: themed.borderDefault,
-      borderWidth: spacing[1].value,
-    },
-    [EButtonType.Tertiary]: {
-      ...BASE,
-      backgroundColor: themed.transparent,
-      borderWidth: 0,
-    },
-    [EButtonType.Link]: {
-      backgroundColor: themed.transparent,
-    },
-    [EButtonType.WithBorder]: {
-      ...BASE,
-      backgroundColor: themed.surface,
-      borderColor: themed.borderDefault,
-      borderWidth: spacing[1].value,
-    },
-    [EButtonType.AbsoluteBottom]: {
-      ...BASE,
-      backgroundColor: themed.surfaceDark,
-    },
-    [EButtonType.AbsoluteBottomWithBorder]: {
-      ...BASE,
-      backgroundColor: themed.surfaceDark,
-    },
-    [EButtonType.Transparent]: {
-      backgroundColor: themed.transparent,
-      borderWidth: 0,
-      padding: 0,
-      borderRadius: 0,
-      paddingVertical: 0,
-      paddingHorizontal: 0,
-    },
-  };
-
-  const DISABLED_PRESETS: Partial<Record<EButtonType, ButtonStylePreset>> = {
-    [EButtonType.Primary]: { backgroundColor: themed.bgDisabled },
-    [EButtonType.Secondary]: {
-      backgroundColor: themed.bgDisabled,
-      borderColor: themed.borderSecondary,
-      borderWidth: spacing[1].value,
-    },
-    [EButtonType.Tertiary]: { backgroundColor: themed.transparent },
-  };
-
-  const TEXT_COLOR_PRESETS: Record<EButtonType, TextColorPreset> = {
-    [EButtonType.Primary]: { color: themed.textInverse },
-    [EButtonType.Secondary]: { color: themed.textPrimary },
-    [EButtonType.Tertiary]: { color: themed.textPrimary },
-    [EButtonType.Link]: { color: themed.textPrimary },
-    [EButtonType.WithBorder]: { color: themed.textPrimary },
-    [EButtonType.AbsoluteBottom]: { color: themed.textInverse },
-    [EButtonType.AbsoluteBottomWithBorder]: { color: themed.textInverse },
-    [EButtonType.Transparent]: { color: themed.textPrimary },
-  };
-
-  return { TYPE_PRESETS, DISABLED_PRESETS, TEXT_COLOR_PRESETS };
-}
+// Re-export enums from types file so consumers import from "Button" as before
+export { EButtonType, EButtonSize } from "./Button.types";
+import { EButtonType, EButtonSize } from "./Button.types";
 
 // ---------------------------------------------------------------------------
 // ButtonProps
@@ -189,7 +50,7 @@ export interface ButtonProps {
   text?: string;
   /** Button type / variant. Default: Primary. */
   type?: EButtonType;
-  /** Button size. Default: full-width mobile. */
+  /** Button size. Default: full-width. */
   size?: EButtonSize;
   /** Text type for the label. Default: button. */
   textType?: ETextType;
@@ -211,117 +72,14 @@ export interface ButtonProps {
   children?: React.ReactNode;
   /** Press handler. */
   onPress?: () => void;
-  /** Style override — accepts CSSProperties, RN StyleSheet styles, plain objects, or arrays. */
+  /** Style override. */
   style?: StyleProp;
-  /** Text style override — accepts CSSProperties, RN StyleSheet styles, plain objects, or arrays. */
+  /** Text style override. */
   textStyle?: StyleProp;
   testID?: string;
   accessibilityLabel?: string;
-  /** Full-width on mobile (default true for non-icon buttons). */
+  /** Full-width — stretches button to 100% of its container. Default: false. */
   fullWidth?: boolean;
-}
-
-// ---------------------------------------------------------------------------
-// Helpers
-// ---------------------------------------------------------------------------
-
-function mergeStyles(
-  ...styles: (ButtonStylePreset | undefined)[]
-): ButtonStylePreset {
-  return Object.assign({}, ...styles.filter(Boolean));
-}
-
-function presetToWebStyle(preset: ButtonStylePreset): React.CSSProperties {
-  const s: React.CSSProperties = {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    cursor: "pointer",
-    boxSizing: "border-box",
-  };
-
-  if (preset.backgroundColor !== undefined)
-    s.backgroundColor = preset.backgroundColor;
-  if (preset.borderRadius !== undefined) s.borderRadius = preset.borderRadius;
-  if (preset.width !== undefined) s.width = preset.width;
-  if (preset.alignSelf !== undefined)
-    s.alignSelf = preset.alignSelf as React.CSSProperties["alignSelf"];
-  if (preset.position !== undefined)
-    s.position = preset.position as React.CSSProperties["position"];
-  if (preset.bottom !== undefined) s.bottom = preset.bottom;
-  if (preset.right !== undefined) s.right = preset.right;
-  if (preset.left !== undefined) s.left = preset.left;
-  if (preset.justifyContent !== undefined)
-    s.justifyContent =
-      preset.justifyContent as React.CSSProperties["justifyContent"];
-
-  // Border — use shorthand to avoid unit issues with individual borderWidth
-  if (preset.borderWidth !== undefined && preset.borderWidth > 0) {
-    s.border = `${preset.borderWidth}px solid ${
-      preset.borderColor ?? "transparent"
-    }`;
-  } else if (preset.borderWidth === 0) {
-    s.border = "none";
-  }
-
-  // borderTop is separate from the main border shorthand
-  if (preset.borderTopWidth !== undefined && preset.borderTopWidth > 0) {
-    s.borderTop = `${preset.borderTopWidth}px solid ${
-      preset.borderTopColor ?? "transparent"
-    }`;
-  }
-  if (
-    preset.borderTopColor !== undefined &&
-    preset.borderTopWidth === undefined
-  ) {
-    s.borderTopColor = preset.borderTopColor;
-  }
-
-  // Padding — use paddingTop/Bottom/Left/Right to avoid conflict with padding shorthand
-  if (preset.padding !== undefined) {
-    s.padding = preset.padding;
-  } else {
-    if (preset.paddingVertical !== undefined) {
-      s.paddingTop = preset.paddingVertical;
-      s.paddingBottom = preset.paddingVertical;
-    }
-    if (preset.paddingHorizontal !== undefined) {
-      s.paddingLeft = preset.paddingHorizontal;
-      s.paddingRight = preset.paddingHorizontal;
-    }
-  }
-
-  return s;
-}
-
-function presetToRnStyle(preset: ButtonStylePreset): Record<string, unknown> {
-  const s: Record<string, unknown> = {};
-  if (preset.backgroundColor !== undefined)
-    s["backgroundColor"] = preset.backgroundColor;
-  if (preset.borderColor !== undefined) s["borderColor"] = preset.borderColor;
-  if (preset.borderWidth !== undefined) s["borderWidth"] = preset.borderWidth;
-  if (preset.borderRadius !== undefined)
-    s["borderRadius"] = preset.borderRadius;
-  if (preset.paddingVertical !== undefined)
-    s["paddingVertical"] = preset.paddingVertical;
-  if (preset.paddingHorizontal !== undefined)
-    s["paddingHorizontal"] = preset.paddingHorizontal;
-  if (preset.padding !== undefined) s["padding"] = preset.padding;
-  if (preset.width !== undefined) s["width"] = preset.width;
-  if (preset.alignSelf !== undefined) s["alignSelf"] = preset.alignSelf;
-  if (preset.position !== undefined) s["position"] = preset.position;
-  if (preset.bottom !== undefined) s["bottom"] = preset.bottom;
-  if (preset.right !== undefined) s["right"] = preset.right;
-  if (preset.left !== undefined) s["left"] = preset.left;
-  if (preset.borderTopColor !== undefined)
-    s["borderTopColor"] = preset.borderTopColor;
-  if (preset.borderTopWidth !== undefined)
-    s["borderTopWidth"] = preset.borderTopWidth;
-  if (preset.justifyContent !== undefined)
-    s["justifyContent"] = preset.justifyContent;
-  s["flexDirection"] = "row";
-  s["alignItems"] = "center";
-  return s;
 }
 
 // ---------------------------------------------------------------------------
@@ -338,26 +96,166 @@ function ActivityIndicatorShim({
   if (isWeb) {
     return (
       <span
-        style={{
-          display: "inline-block",
-          width: size ?? 16,
-          height: size ?? 16,
-          border: `2px solid ${color ?? "#ccc"}`,
-          borderTopColor: "transparent",
-          borderRadius: "50%",
-          animation: "sz-spin 0.7s linear infinite",
-          marginLeft: 8,
-        }}
+        style={{ ...webSpinner, borderColor: color ?? SPINNER_COLOR_FALLBACK }}
         aria-hidden="true"
       />
     );
   }
   // eslint-disable-next-line @typescript-eslint/no-require-imports
-
   const { ActivityIndicator } = require("react-native") as {
     ActivityIndicator: React.ComponentType<Record<string, unknown>>;
   };
   return <ActivityIndicator size={size} color={color} />;
+}
+
+// ---------------------------------------------------------------------------
+// Theme-aware color resolver
+// ---------------------------------------------------------------------------
+
+function useButtonColors(
+  type: EButtonType,
+  disabled: boolean,
+  themed: ReturnType<typeof useThemedColors>,
+) {
+  const bgMap: Record<EButtonType, string> = {
+    [EButtonType.Primary]: themed.surfaceDark,
+    [EButtonType.Secondary]: themed.surface,
+    [EButtonType.Tertiary]: themed.transparent,
+    [EButtonType.Link]: themed.transparent,
+    [EButtonType.WithBorder]: themed.surface,
+    [EButtonType.AbsoluteBottom]: themed.surfaceDark,
+    [EButtonType.AbsoluteBottomWithBorder]: themed.surfaceDark,
+    [EButtonType.Transparent]: themed.transparent,
+  };
+
+  const disabledBgMap: Partial<Record<EButtonType, string>> = {
+    [EButtonType.Primary]: themed.bgDisabled,
+    [EButtonType.Secondary]: themed.bgDisabled,
+    [EButtonType.Tertiary]: themed.transparent,
+  };
+
+  const borderColorMap: Partial<Record<EButtonType, string>> = {
+    [EButtonType.Secondary]: themed.borderDefault,
+    [EButtonType.WithBorder]: themed.borderDefault,
+  };
+
+  const disabledBorderColorMap: Partial<Record<EButtonType, string>> = {
+    [EButtonType.Secondary]: themed.borderSecondary,
+  };
+
+  const textColorMap: Record<EButtonType, string> = {
+    [EButtonType.Primary]: themed.textInverse,
+    [EButtonType.Secondary]: themed.textPrimary,
+    [EButtonType.Tertiary]: themed.textPrimary,
+    [EButtonType.Link]: themed.textPrimary,
+    [EButtonType.WithBorder]: themed.textPrimary,
+    [EButtonType.AbsoluteBottom]: themed.textInverse,
+    [EButtonType.AbsoluteBottomWithBorder]: themed.textInverse,
+    [EButtonType.Transparent]: themed.textPrimary,
+  };
+
+  return {
+    backgroundColor: disabled
+      ? disabledBgMap[type] ?? bgMap[type]
+      : bgMap[type],
+    borderColor: disabled
+      ? disabledBorderColorMap[type] ?? borderColorMap[type]
+      : borderColorMap[type],
+    textColor: disabled ? themed.textDisabled : textColorMap[type],
+  };
+}
+
+// ---------------------------------------------------------------------------
+// Web style builder
+// ---------------------------------------------------------------------------
+
+function buildWebContainerStyle(
+  type: EButtonType,
+  size: EButtonSize | undefined,
+  isIconOnly: boolean,
+  disabled: boolean,
+  fullWidth: boolean,
+  backgroundColor: string,
+  borderColor: string | undefined,
+  callerStyle: React.CSSProperties | null,
+): React.CSSProperties {
+  const geometry = webTypeGeometry[type];
+  const sizeStyle = isIconOnly
+    ? size
+      ? webIconSizePresets[size]
+      : webIconDefaultPadding
+    : size
+    ? webSizePresets[size]
+    : webDefaultPadding;
+
+  const border =
+    geometry.borderWidth && geometry.borderWidth > 0
+      ? `${geometry.borderWidth}px ${geometry.borderStyle ?? "solid"} ${
+          borderColor ?? "transparent"
+        }`
+      : "none";
+
+  return {
+    ...webBase,
+    ...sizeStyle,
+    backgroundColor,
+    borderRadius: geometry.borderRadius,
+    border,
+    ...(fullWidth && !isIconOnly
+      ? {
+          display: "flex",
+          width: "100%",
+          height: undefined,
+          alignSelf: "auto",
+          flexShrink: undefined,
+        }
+      : {}),
+    ...(isIconOnly ? { width: "fit-content", height: "fit-content" } : {}),
+    ...(disabled ? webDisabledOverride : {}),
+    ...(callerStyle ?? {}),
+  };
+}
+
+// ---------------------------------------------------------------------------
+// Native style builder
+// ---------------------------------------------------------------------------
+
+function buildNativeContainerStyle(
+  type: EButtonType,
+  size: EButtonSize | undefined,
+  isIconOnly: boolean,
+  disabled: boolean,
+  fullWidth: boolean,
+  backgroundColor: string,
+  borderColor: string | undefined,
+  callerStyle: Record<string, unknown> | null,
+): Record<string, unknown> {
+  const geometry = webTypeGeometry[type];
+  const sizeStyle = isIconOnly
+    ? size
+      ? nativeIconSizePresets[size]
+      : nativeIconDefaultPadding
+    : size
+    ? nativeSizePresets[size]
+    : nativeDefaultPadding;
+
+  return {
+    ...nativeBase,
+    ...sizeStyle,
+    backgroundColor,
+    borderRadius: geometry.borderRadius,
+    ...(geometry.borderWidth && geometry.borderWidth > 0
+      ? {
+          borderWidth: BUTTON_BORDER_WIDTH,
+          borderColor: borderColor ?? "transparent",
+          borderStyle: "solid",
+        }
+      : {}),
+    ...(fullWidth && !isIconOnly ? { width: "100%" } : {}),
+    ...(isIconOnly ? { alignSelf: "center" } : {}),
+    ...(disabled ? { opacity: 0.6 } : {}),
+    ...(callerStyle ?? {}),
+  };
 }
 
 // ---------------------------------------------------------------------------
@@ -372,7 +270,7 @@ export const Button: React.FC<ButtonProps> = (props) => {
     textType = ETextType.button,
     textProps,
     loading,
-    disabled,
+    disabled = false,
     icon,
     leftIcon,
     rightIcon,
@@ -382,35 +280,21 @@ export const Button: React.FC<ButtonProps> = (props) => {
     textStyle,
     testID,
     accessibilityLabel,
-    fullWidth = !icon,
+    fullWidth = false,
   } = props;
 
-  // Read theme-aware colors at render time.
   const themed = useThemedColors();
-  const { TYPE_PRESETS, DISABLED_PRESETS, TEXT_COLOR_PRESETS } =
-    buildThemedPresets(themed);
+  const { backgroundColor, borderColor, textColor } = useButtonColors(
+    type,
+    disabled,
+    themed,
+  );
 
-  // Resolve container style
-  const typePreset = TYPE_PRESETS[type] ?? TYPE_PRESETS[EButtonType.Primary];
-  const disabledPreset = disabled ? DISABLED_PRESETS[type] ?? {} : {};
-  const sizePreset = size
-    ? icon
-      ? ICON_SIZE_PRESETS[size]
-      : SIZE_PRESETS[size]
-    : {};
-
-  const containerPreset = mergeStyles(typePreset, disabledPreset, sizePreset);
-  if (fullWidth && !icon) containerPreset.width = "100%";
-
-  // Resolve text color
-  const textColorPreset =
-    TEXT_COLOR_PRESETS[type] ?? TEXT_COLOR_PRESETS[EButtonType.Primary];
-  const textColor = disabled ? themed.textDisabled : textColorPreset.color;
-
-  // Accessibility
   const a11yLabel = accessibilityLabel ?? testID;
+  const isIconOnly = !!icon && !text && !children;
+  const callerFlat = flattenStyle(style) as Record<string, unknown> | null;
 
-  // Content
+  // ── Label content ──────────────────────────────────────────────────────────
   const labelContent = children ?? (
     <>
       {leftIcon}
@@ -431,24 +315,26 @@ export const Button: React.FC<ButtonProps> = (props) => {
     </>
   );
 
-  // AbsoluteBottomWithBorder layout
+  // ── AbsoluteBottomWithBorder ───────────────────────────────────────────────
   if (type === EButtonType.AbsoluteBottomWithBorder) {
-    const outerPreset: ButtonStylePreset = {
-      position: "absolute",
-      bottom: 0,
-      right: 0,
-      left: 0,
-      borderTopColor: themed.borderTertiary,
-      borderTopWidth: spacing[1].value,
-      backgroundColor: themed.surface,
-      justifyContent: "center",
-      paddingVertical: spacing.extraMedium.value,
-      paddingHorizontal: spacing.extraMedium.value,
-    };
-
     if (isWeb) {
+      const outerStyle: React.CSSProperties = {
+        ...webAbsoluteBottomOuter,
+        backgroundColor: themed.surface,
+        borderTop: `${BUTTON_BORDER_WIDTH}px solid ${themed.borderTertiary}`,
+      };
+      const innerStyle = buildWebContainerStyle(
+        type,
+        size,
+        false,
+        disabled,
+        false,
+        backgroundColor,
+        borderColor,
+        callerFlat as React.CSSProperties | null,
+      );
       return (
-        <div style={presetToWebStyle(outerPreset)}>
+        <div style={outerStyle}>
           <button
             type="button"
             onClick={onPress}
@@ -457,32 +343,39 @@ export const Button: React.FC<ButtonProps> = (props) => {
             aria-busy={loading}
             aria-label={a11yLabel}
             data-testid={testID}
-            style={{
-              ...presetToWebStyle(containerPreset),
-              ...flattenStyle(style),
-              border: "none",
-              outline: "none",
-              background: "none",
-              cursor: disabled ? "not-allowed" : "pointer",
-            }}
+            style={innerStyle}
           >
             {labelContent}
           </button>
         </div>
       );
     }
+
+    const outerNativeStyle = {
+      ...nativeAbsoluteBottomOuterGeometry,
+      backgroundColor: themed.surface,
+      borderTopWidth: BUTTON_BORDER_WIDTH,
+      borderTopColor: themed.borderTertiary,
+    };
+    const innerNativeStyle = buildNativeContainerStyle(
+      type,
+      size,
+      false,
+      disabled,
+      false,
+      backgroundColor,
+      borderColor,
+      callerFlat,
+    );
     return (
-      <View style={presetToRnStyle(outerPreset)}>
+      <View style={outerNativeStyle}>
         <TouchableOpacity
           onPress={onPress}
           disabled={disabled}
           accessibilityLabel={a11yLabel}
           accessibilityState={{ disabled: !!disabled, busy: !!loading }}
           testID={testID}
-          style={{
-            ...presetToRnStyle(containerPreset),
-            ...flattenStyle(style),
-          }}
+          style={innerNativeStyle}
         >
           {labelContent}
         </TouchableOpacity>
@@ -490,18 +383,19 @@ export const Button: React.FC<ButtonProps> = (props) => {
     );
   }
 
-  // Icon-only mode
-  if (icon) {
-    const iconPreset = mergeStyles(
-      { ...BASE, padding: ss.lG.value, borderRadius: radius.full.value },
-      typePreset,
-      disabledPreset,
-      sizePreset,
-    );
-    delete iconPreset.width;
-    iconPreset.alignSelf = "center";
-
+  // ── Icon-only ──────────────────────────────────────────────────────────────
+  if (isIconOnly) {
     if (isWeb) {
+      const iconStyle = buildWebContainerStyle(
+        type,
+        size,
+        true,
+        disabled,
+        false,
+        backgroundColor,
+        borderColor,
+        callerFlat as React.CSSProperties | null,
+      );
       return (
         <button
           type="button"
@@ -511,18 +405,22 @@ export const Button: React.FC<ButtonProps> = (props) => {
           aria-busy={loading}
           aria-label={a11yLabel}
           data-testid={testID}
-          style={{
-            ...presetToWebStyle(iconPreset),
-            ...flattenStyle(style),
-            border: "none",
-            outline: "none",
-            cursor: disabled ? "not-allowed" : "pointer",
-          }}
+          style={iconStyle}
         >
           {children ?? icon}
         </button>
       );
     }
+    const iconNativeStyle = buildNativeContainerStyle(
+      type,
+      size,
+      true,
+      disabled,
+      false,
+      backgroundColor,
+      borderColor,
+      callerFlat,
+    );
     return (
       <TouchableOpacity
         onPress={onPress}
@@ -530,18 +428,25 @@ export const Button: React.FC<ButtonProps> = (props) => {
         accessibilityLabel={a11yLabel}
         accessibilityState={{ disabled: !!disabled, busy: !!loading }}
         testID={testID}
-        style={{
-          ...presetToRnStyle(iconPreset),
-          ...flattenStyle(style),
-        }}
+        style={iconNativeStyle}
       >
         {children ?? icon}
       </TouchableOpacity>
     );
   }
 
-  // Standard button
+  // ── Standard button ────────────────────────────────────────────────────────
   if (isWeb) {
+    const containerStyle = buildWebContainerStyle(
+      type,
+      size,
+      false,
+      disabled,
+      fullWidth,
+      backgroundColor,
+      borderColor,
+      callerFlat as React.CSSProperties | null,
+    );
     return (
       <button
         type="button"
@@ -551,21 +456,23 @@ export const Button: React.FC<ButtonProps> = (props) => {
         aria-busy={loading}
         aria-label={a11yLabel}
         data-testid={testID}
-        style={{
-          ...presetToWebStyle(containerPreset),
-          ...flattenStyle(style),
-          border: containerPreset.borderWidth
-            ? `${containerPreset.borderWidth}px solid ${containerPreset.borderColor}`
-            : "none",
-          outline: "none",
-          cursor: disabled ? "not-allowed" : "pointer",
-          opacity: disabled ? 0.7 : 1,
-        }}
+        style={containerStyle}
       >
         {labelContent}
       </button>
     );
   }
+
+  const containerNativeStyle = buildNativeContainerStyle(
+    type,
+    size,
+    false,
+    disabled,
+    fullWidth,
+    backgroundColor,
+    borderColor,
+    callerFlat,
+  );
   return (
     <TouchableOpacity
       onPress={onPress}
@@ -573,10 +480,7 @@ export const Button: React.FC<ButtonProps> = (props) => {
       accessibilityLabel={a11yLabel}
       accessibilityState={{ disabled: !!disabled, busy: !!loading }}
       testID={testID}
-      style={{
-        ...presetToRnStyle(containerPreset),
-        ...flattenStyle(style),
-      }}
+      style={containerNativeStyle}
     >
       {labelContent}
     </TouchableOpacity>
