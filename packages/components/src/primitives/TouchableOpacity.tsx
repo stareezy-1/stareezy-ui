@@ -46,8 +46,8 @@ export const TouchableOpacity: React.FC<TouchableOpacityProps> = ({
     return (
       <Box
         {...(disabled || !onPress ? {} : { onPress })}
-        opacity={resolvedOpacity}
-        cursor={resolvedCursor}
+        {...(resolvedOpacity !== undefined ? { opacity: resolvedOpacity } : {})}
+        {...(resolvedCursor !== undefined ? { cursor: resolvedCursor } : {})}
         style={webStyle as React.CSSProperties}
         accessibilityState={
           rest.accessibilityState ??
