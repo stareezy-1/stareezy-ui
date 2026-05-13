@@ -144,13 +144,13 @@ function useButtonColors(
   };
 
   const textColorMap: Record<EButtonType, string> = {
-    [EButtonType.Primary]: themed.textInverse,
+    [EButtonType.Primary]: "#ffffff",
     [EButtonType.Secondary]: themed.textPrimary,
     [EButtonType.Tertiary]: themed.textPrimary,
     [EButtonType.Link]: themed.textPrimary,
     [EButtonType.WithBorder]: themed.textPrimary,
-    [EButtonType.AbsoluteBottom]: themed.textInverse,
-    [EButtonType.AbsoluteBottomWithBorder]: themed.textInverse,
+    [EButtonType.AbsoluteBottom]: "#ffffff",
+    [EButtonType.AbsoluteBottomWithBorder]: "#ffffff",
     [EButtonType.Transparent]: themed.textPrimary,
   };
 
@@ -201,6 +201,8 @@ function buildWebContainerStyle(
     backgroundColor,
     borderRadius: geometry.borderRadius,
     border,
+    width: "fit-content",
+    height: "fit-content",
     ...(fullWidth && !isIconOnly
       ? {
           display: "flex",
@@ -210,7 +212,6 @@ function buildWebContainerStyle(
           flexShrink: undefined,
         }
       : {}),
-    ...(isIconOnly ? { width: "fit-content", height: "fit-content" } : {}),
     ...(disabled ? webDisabledOverride : {}),
     ...(callerStyle ?? {}),
   };

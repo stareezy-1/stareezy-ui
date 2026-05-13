@@ -19,11 +19,11 @@ const withThemeProvider: Decorator = (Story, context) => {
         style={{
           padding: "1.5rem",
           background: theme === "dark" ? "#0F1010" : "#FAFBFF",
-          minHeight: "100%",
           fontFamily: '"Inter", system-ui, sans-serif',
-          display: "flex",
+          display: "inline-flex",
           flexDirection: "column",
           alignItems: "flex-start",
+          gap: "1rem",
         }}
       >
         <Story />

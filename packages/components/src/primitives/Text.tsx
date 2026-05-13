@@ -588,12 +588,14 @@ export const Text: React.FC<TextProps> = (props) => {
 
   if (isWeb) {
     const webStyle: React.CSSProperties = {
+      display: "inline",
       fontFamily: preset.fontFamily,
       fontSize: preset.fontSize,
       ...(preset.fontWeight
         ? { fontWeight: preset.fontWeight as React.CSSProperties["fontWeight"] }
         : {}),
-      ...(preset.lineHeight ? { lineHeight: preset.lineHeight } : {}),
+      // lineHeight from presets is a pixel value — append "px" for web
+      ...(preset.lineHeight ? { lineHeight: `${preset.lineHeight}px` } : {}),
       ...(preset.letterSpacing ? { letterSpacing: preset.letterSpacing } : {}),
       color: resolvedColor,
       ...(preset.textAlign

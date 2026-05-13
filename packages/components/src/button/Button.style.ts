@@ -29,8 +29,6 @@ export const webBase: React.CSSProperties = {
   alignItems: "center",
   justifyContent: "center",
   alignSelf: "flex-start",
-  height: "fit-content",
-  width: "fit-content",
   boxSizing: "border-box",
   outline: "none",
   border: "none",
@@ -40,6 +38,9 @@ export const webBase: React.CSSProperties = {
   gap: spacing[8].value,
   whiteSpace: "nowrap",
   flexShrink: 0,
+  // Prevent button from inheriting height from flex parent
+  maxHeight: "none",
+  minHeight: 0,
 };
 
 // ---------------------------------------------------------------------------
