@@ -163,7 +163,7 @@ export const FlexRow: Story = {
   render: () => (
     <Box
       flexDirection="row"
-      gap={spacing[8].value}
+      gap={spacing[8]}
       p={spacing[16]}
       bg={colors.beauBlue[50]}
     >
@@ -185,7 +185,7 @@ export const FlexColumn: Story = {
   render: () => (
     <Box
       flexDirection="column"
-      gap={spacing[8].value}
+      gap={spacing[8]}
       p={spacing[16]}
       bg={colors.beauBlue[50]}
     >

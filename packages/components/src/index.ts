@@ -3,10 +3,10 @@
 
 // ── Primitives ───────────────────────────────────────────────────────────────
 export { Box } from "./primitives/Box";
-export type { BoxProps } from "./primitives/Box";
+export type { BoxProps, StyleProp } from "./primitives/Box";
 
-export { View } from "./primitives/Box";
-export type { ViewProps } from "./primitives/Box";
+export { View } from "./primitives/View";
+export type { ViewProps } from "./primitives/View";
 
 export { Text, ETextType, EFontStyle } from "./primitives/Text";
 export type { TextProps } from "./primitives/Text";

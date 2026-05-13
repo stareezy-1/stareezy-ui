@@ -13,14 +13,10 @@ import React from "react";
 import { colors, spacing, radius, ss } from "@stareezy-ui/tokens";
 import { Text, ETextType } from "../primitives/Text";
 import { useThemedColors } from "../shared/useThemedColors";
-
-// ---------------------------------------------------------------------------
-// Platform detection
-// ---------------------------------------------------------------------------
-
 import { flattenStyle } from "../shared/flattenStyle";
 import { isWeb } from "../shared/platform";
-import { View } from "../primitives/Box";
+import { View } from "../primitives/View";
+import type { StyleProp } from "../primitives/Box";
 import { TouchableOpacity } from "../primitives/TouchableOpacity";
 
 // ---------------------------------------------------------------------------
@@ -215,10 +211,10 @@ export interface ButtonProps {
   children?: React.ReactNode;
   /** Press handler. */
   onPress?: () => void;
-  /** Style override. */
-  style?: React.CSSProperties | Record<string, unknown>;
-  /** Text style override. */
-  textStyle?: React.CSSProperties | Record<string, unknown>;
+  /** Style override — accepts CSSProperties, RN StyleSheet styles, plain objects, or arrays. */
+  style?: StyleProp;
+  /** Text style override — accepts CSSProperties, RN StyleSheet styles, plain objects, or arrays. */
+  textStyle?: StyleProp;
   testID?: string;
   accessibilityLabel?: string;
   /** Full-width on mobile (default true for non-icon buttons). */
@@ -236,33 +232,66 @@ function mergeStyles(
 }
 
 function presetToWebStyle(preset: ButtonStylePreset): React.CSSProperties {
-  return {
-    backgroundColor: preset.backgroundColor,
-    borderColor: preset.borderColor,
-    borderWidth: preset.borderWidth,
-    borderStyle: preset.borderWidth ? "solid" : undefined,
-    borderRadius: preset.borderRadius,
-    paddingTop: preset.paddingVertical,
-    paddingBottom: preset.paddingVertical,
-    paddingLeft: preset.paddingHorizontal ?? preset.padding,
-    paddingRight: preset.paddingHorizontal ?? preset.padding,
-    padding: preset.padding,
-    width: preset.width,
-    alignSelf: preset.alignSelf as React.CSSProperties["alignSelf"],
-    position: preset.position as React.CSSProperties["position"],
-    bottom: preset.bottom,
-    right: preset.right,
-    left: preset.left,
-    borderTopColor: preset.borderTopColor,
-    borderTopWidth: preset.borderTopWidth,
-    justifyContent:
-      preset.justifyContent as React.CSSProperties["justifyContent"],
+  const s: React.CSSProperties = {
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
     cursor: "pointer",
     boxSizing: "border-box",
   };
+
+  if (preset.backgroundColor !== undefined)
+    s.backgroundColor = preset.backgroundColor;
+  if (preset.borderRadius !== undefined) s.borderRadius = preset.borderRadius;
+  if (preset.width !== undefined) s.width = preset.width;
+  if (preset.alignSelf !== undefined)
+    s.alignSelf = preset.alignSelf as React.CSSProperties["alignSelf"];
+  if (preset.position !== undefined)
+    s.position = preset.position as React.CSSProperties["position"];
+  if (preset.bottom !== undefined) s.bottom = preset.bottom;
+  if (preset.right !== undefined) s.right = preset.right;
+  if (preset.left !== undefined) s.left = preset.left;
+  if (preset.justifyContent !== undefined)
+    s.justifyContent =
+      preset.justifyContent as React.CSSProperties["justifyContent"];
+
+  // Border — use shorthand to avoid unit issues with individual borderWidth
+  if (preset.borderWidth !== undefined && preset.borderWidth > 0) {
+    s.border = `${preset.borderWidth}px solid ${
+      preset.borderColor ?? "transparent"
+    }`;
+  } else if (preset.borderWidth === 0) {
+    s.border = "none";
+  }
+
+  // borderTop is separate from the main border shorthand
+  if (preset.borderTopWidth !== undefined && preset.borderTopWidth > 0) {
+    s.borderTop = `${preset.borderTopWidth}px solid ${
+      preset.borderTopColor ?? "transparent"
+    }`;
+  }
+  if (
+    preset.borderTopColor !== undefined &&
+    preset.borderTopWidth === undefined
+  ) {
+    s.borderTopColor = preset.borderTopColor;
+  }
+
+  // Padding — use paddingTop/Bottom/Left/Right to avoid conflict with padding shorthand
+  if (preset.padding !== undefined) {
+    s.padding = preset.padding;
+  } else {
+    if (preset.paddingVertical !== undefined) {
+      s.paddingTop = preset.paddingVertical;
+      s.paddingBottom = preset.paddingVertical;
+    }
+    if (preset.paddingHorizontal !== undefined) {
+      s.paddingLeft = preset.paddingHorizontal;
+      s.paddingRight = preset.paddingHorizontal;
+    }
+  }
+
+  return s;
 }
 
 function presetToRnStyle(preset: ButtonStylePreset): Record<string, unknown> {

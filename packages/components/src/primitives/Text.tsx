@@ -16,6 +16,7 @@
 import React from "react";
 import { colors, spacing, typography } from "@stareezy-ui/tokens";
 import { useThemedColors } from "../shared/useThemedColors";
+import type { StyleProp } from "./Box";
 
 // ---------------------------------------------------------------------------
 // Platform detection
@@ -526,8 +527,11 @@ export interface TextProps {
   color?: string;
   /** Child nodes (alternative to `text` prop). */
   children?: React.ReactNode;
-  /** Style override — merged last. */
-  style?: React.CSSProperties | Record<string, unknown>;
+  /**
+   * Style override — accepts CSSProperties, RN StyleSheet styles (numbers),
+   * plain objects, AtomicStylesheet class strings, or arrays of any of these.
+   */
+  style?: StyleProp;
   testID?: string;
   accessibilityLabel?: string;
   numberOfLines?: number;

@@ -1,13 +1,13 @@
 /**
- * Box — the foundational layout primitive for Stareezy UI.
+ * Box / View — foundational layout primitive for Stareezy UI.
  *
- * Cross-platform: renders a `<div>` on web and a `<View>` on React Native.
+ * Cross-platform: renders a <div> on web and a <View> on React Native.
  *
- * Token props are resolved via the platform runtime adapter (O(1) lookup).
- * Plain string/number fallback values are applied as inline styles.
- * Responsive props (breakpoint maps) are resolved per-platform.
- *
- * Requirements: 11.1, 11.4, 11.5, 11.6, 16.2
+ * style prop accepts:
+ *   - React.CSSProperties (web inline styles)
+ *   - React Native StyleSheet styles (number IDs or plain objects)
+ *   - AtomicStylesheet class name strings
+ *   - Arrays of any of the above (falsy entries are skipped)
  */
 
 import React, { useId, useEffect, useRef } from "react";
@@ -20,9 +20,11 @@ import {
   buildMediaQueryEntries,
 } from "./breakpoints";
 import type { Responsive } from "./breakpoints";
+import { isWeb } from "../shared/platform";
+import { flattenStyle } from "../shared/flattenStyle";
 
 // ---------------------------------------------------------------------------
-// Re-exports from breakpoints
+// Re-exports
 // ---------------------------------------------------------------------------
 
 export { configureBreakpoints, getBreakpoints } from "./breakpoints";
@@ -33,19 +35,23 @@ export type {
 } from "./breakpoints";
 
 // ---------------------------------------------------------------------------
-// Platform detection
+// Style type — accepts CSSProperties, RN StyleSheet IDs, plain objects, arrays
 // ---------------------------------------------------------------------------
 
-/** True when running in a browser (web) environment. */
-import { isWeb } from "../shared/platform";
-import { flattenStyle } from "../shared/flattenStyle";
+export type StyleProp =
+  | React.CSSProperties
+  | Record<string, unknown>
+  | number
+  | null
+  | undefined
+  | false
+  | StyleProp[];
 
 // ---------------------------------------------------------------------------
-// Lazy runtime singleton — created once per platform on first use
+// Runtime singleton
 // ---------------------------------------------------------------------------
 
 let _runtime: RuntimeAdapter | null = null;
-
 function getRuntime(): RuntimeAdapter {
   if (_runtime === null) {
     _runtime = isWeb ? createWebRuntime() : createNativeRuntime();
@@ -54,13 +60,9 @@ function getRuntime(): RuntimeAdapter {
 }
 
 // ---------------------------------------------------------------------------
-// Prop-to-CSS-property mapping (web only)
+// Prop → CSS / RN style mappings
 // ---------------------------------------------------------------------------
 
-/**
- * Maps Box prop names to their corresponding CSS property names.
- * Multi-value props (px, py, mx, my) map to an array of CSS properties.
- */
 const propToCssProp: Record<string, string | string[]> = {
   bg: "background-color",
   color: "color",
@@ -87,11 +89,11 @@ const propToCssProp: Record<string, string | string[]> = {
   flexDirection: "flex-direction",
   alignItems: "align-items",
   justifyContent: "justify-content",
+  gap: "gap",
+  rowGap: "row-gap",
+  columnGap: "column-gap",
 };
 
-/**
- * Maps Box prop names to their corresponding React Native style property names.
- */
 const propToRnStyle: Record<string, string> = {
   bg: "backgroundColor",
   color: "color",
@@ -118,16 +120,17 @@ const propToRnStyle: Record<string, string> = {
   flexDirection: "flexDirection",
   alignItems: "alignItems",
   justifyContent: "justifyContent",
+  gap: "gap",
+  rowGap: "rowGap",
+  columnGap: "columnGap",
 };
 
 // ---------------------------------------------------------------------------
 // Type helpers
 // ---------------------------------------------------------------------------
 
-/** A prop that accepts either a typed Token or a plain fallback value. */
 type TokenOrValue<T> = Token<T> | T;
 
-/** Checks whether a value is a Token object. */
 function isToken(value: unknown): value is Token<unknown> {
   return (
     value !== null &&
@@ -141,15 +144,10 @@ function isToken(value: unknown): value is Token<unknown> {
 // ---------------------------------------------------------------------------
 
 export interface BoxProps {
-  // ── Color props ──────────────────────────────────────────────────────────
-  /** Background color — accepts a Token<string> or a plain CSS color string. */
+  // ── Token / shorthand props ───────────────────────────────────────────────
   bg?: Responsive<TokenOrValue<string>>;
-  /** Text/foreground color — accepts a Token<string> or a plain CSS color string. */
   color?: Responsive<TokenOrValue<string>>;
-  /** Border color — accepts a Token<string> or a plain CSS color string. */
   borderColor?: Responsive<TokenOrValue<string>>;
-
-  // ── Spacing token props ───────────────────────────────────────────────────
   p?: Responsive<TokenOrValue<number> | string>;
   px?: Responsive<TokenOrValue<number> | string>;
   py?: Responsive<TokenOrValue<number> | string>;
@@ -164,22 +162,16 @@ export interface BoxProps {
   mb?: Responsive<TokenOrValue<number> | string>;
   ml?: Responsive<TokenOrValue<number> | string>;
   mr?: Responsive<TokenOrValue<number> | string>;
-
-  // ── Border token props ────────────────────────────────────────────────────
   rounded?: Responsive<TokenOrValue<number> | string>;
   borderWidth?: Responsive<TokenOrValue<number> | string>;
-
-  // ── Dimension token props ─────────────────────────────────────────────────
   width?: Responsive<TokenOrValue<number> | string>;
   height?: Responsive<TokenOrValue<number> | string>;
-
-  // ── Flex token props ──────────────────────────────────────────────────────
   flex?: Responsive<TokenOrValue<number>>;
   flexDirection?: Responsive<TokenOrValue<string>>;
   alignItems?: Responsive<TokenOrValue<string>>;
   justifyContent?: Responsive<TokenOrValue<string>>;
 
-  // ── Layout plain props ────────────────────────────────────────────────────
+  // ── Layout props ──────────────────────────────────────────────────────────
   position?: Responsive<React.CSSProperties["position"]>;
   top?: Responsive<number | string>;
   bottom?: Responsive<number | string>;
@@ -197,16 +189,16 @@ export interface BoxProps {
   alignSelf?: Responsive<React.CSSProperties["alignSelf"]>;
   alignContent?: Responsive<React.CSSProperties["alignContent"]>;
   justifySelf?: Responsive<React.CSSProperties["justifySelf"]>;
-  gap?: Responsive<number | string>;
-  rowGap?: Responsive<number | string>;
-  columnGap?: Responsive<number | string>;
+  gap?: Responsive<TokenOrValue<number> | string>;
+  rowGap?: Responsive<TokenOrValue<number> | string>;
+  columnGap?: Responsive<TokenOrValue<number> | string>;
   minWidth?: Responsive<number | string>;
   maxWidth?: Responsive<number | string>;
   minHeight?: Responsive<number | string>;
   maxHeight?: Responsive<number | string>;
   aspectRatio?: Responsive<number | string>;
 
-  // ── Border plain props ────────────────────────────────────────────────────
+  // ── Border props ──────────────────────────────────────────────────────────
   borderStyle?: Responsive<React.CSSProperties["borderStyle"]>;
   borderTopWidth?: Responsive<number | string>;
   borderBottomWidth?: Responsive<number | string>;
@@ -221,7 +213,7 @@ export interface BoxProps {
   borderBottomLeftRadius?: Responsive<number | string>;
   borderBottomRightRadius?: Responsive<number | string>;
 
-  // ── Visual plain props ────────────────────────────────────────────────────
+  // ── Visual props ──────────────────────────────────────────────────────────
   opacity?: Responsive<number>;
   backgroundColor?: Responsive<string>;
   shadowColor?: string;
@@ -230,7 +222,7 @@ export interface BoxProps {
   shadowOffset?: { width: number; height: number };
   elevation?: number;
 
-  // ── Spacing longhand plain props ──────────────────────────────────────────
+  // ── Spacing longhand ──────────────────────────────────────────────────────
   paddingTop?: Responsive<number | string>;
   paddingBottom?: Responsive<number | string>;
   paddingLeft?: Responsive<number | string>;
@@ -244,15 +236,25 @@ export interface BoxProps {
   marginHorizontal?: Responsive<number | string>;
   marginVertical?: Responsive<number | string>;
 
-  // ── Misc plain props ──────────────────────────────────────────────────────
+  // ── Misc ──────────────────────────────────────────────────────────────────
   cursor?: Responsive<React.CSSProperties["cursor"]>;
   pointerEvents?: Responsive<React.CSSProperties["pointerEvents"]>;
   transform?: Responsive<React.CSSProperties["transform"]>;
   boxSizing?: Responsive<React.CSSProperties["boxSizing"]>;
   userSelect?: Responsive<React.CSSProperties["userSelect"]>;
 
-  // ── Interaction / accessibility props ─────────────────────────────────────
+  // ── Scroll ────────────────────────────────────────────────────────────────
+  /** Renders a ScrollView on native / overflow:auto div on web */
+  scrollable?: boolean;
+  /** Horizontal scroll (requires scrollable=true) */
+  horizontal?: boolean;
+
+  // ── Interaction / accessibility ───────────────────────────────────────────
   onClick?: React.MouseEventHandler<HTMLDivElement>;
+  onMouseDown?: React.MouseEventHandler<HTMLDivElement>;
+  onMouseUp?: React.MouseEventHandler<HTMLDivElement>;
+  onMouseEnter?: React.MouseEventHandler<HTMLDivElement>;
+  onMouseLeave?: React.MouseEventHandler<HTMLDivElement>;
   onPress?: ((event: unknown) => void) | undefined;
   role?: React.AriaRole;
   tabIndex?: number;
@@ -272,16 +274,20 @@ export interface BoxProps {
   accessibilityRole?: string | undefined;
   accessibilityState?: Record<string, unknown> | undefined;
 
-  // ── Standard React / RN props ─────────────────────────────────────────────
+  // ── Standard React / RN ───────────────────────────────────────────────────
   children?: React.ReactNode;
-  style?: React.CSSProperties | Record<string, unknown>;
+  /**
+   * Style override — accepts CSSProperties, RN StyleSheet styles (numbers),
+   * plain objects, AtomicStylesheet class strings, or arrays of any of these.
+   */
+  style?: StyleProp;
   testID?: string | undefined;
   accessibilityLabel?: string | undefined;
   className?: string;
 }
 
 // ---------------------------------------------------------------------------
-// Token prop names (the full list of props that can carry Token values)
+// Prop name lists
 // ---------------------------------------------------------------------------
 
 const TOKEN_PROP_NAMES = [
@@ -310,13 +316,11 @@ const TOKEN_PROP_NAMES = [
   "flexDirection",
   "alignItems",
   "justifyContent",
+  "gap",
+  "rowGap",
+  "columnGap",
 ] as const;
 
-// ---------------------------------------------------------------------------
-// Plain style prop names — folded into inlineStyle on web / style on RN
-// ---------------------------------------------------------------------------
-
-/** Plain props that map 1:1 to camelCase CSS/RN style properties. */
 const PLAIN_STYLE_PROPS: Array<keyof BoxProps> = [
   "position",
   "top",
@@ -335,9 +339,6 @@ const PLAIN_STYLE_PROPS: Array<keyof BoxProps> = [
   "alignSelf",
   "alignContent",
   "justifySelf",
-  "gap",
-  "rowGap",
-  "columnGap",
   "minWidth",
   "maxWidth",
   "minHeight",
@@ -367,31 +368,36 @@ const PLAIN_STYLE_PROPS: Array<keyof BoxProps> = [
   "paddingBottom",
   "paddingLeft",
   "paddingRight",
+  "marginTop",
+  "marginBottom",
+  "marginLeft",
+  "marginRight",
   "cursor",
   "pointerEvents",
   "transform",
   "boxSizing",
   "userSelect",
-  "marginTop",
-  "marginBottom",
-  "marginLeft",
-  "marginRight",
 ];
 
-/** All props consumed by Box that must NOT be forwarded to the DOM element. */
-const ALL_CONSUMED_PROPS: Array<keyof BoxProps> = [
+const ALL_CONSUMED_PROPS: string[] = [
   ...TOKEN_PROP_NAMES,
-  ...PLAIN_STYLE_PROPS,
+  ...PLAIN_STYLE_PROPS.map(String),
   "paddingHorizontal",
   "paddingVertical",
   "marginHorizontal",
   "marginVertical",
+  "scrollable",
+  "horizontal",
   "children",
   "style",
   "testID",
   "accessibilityLabel",
   "className",
   "onClick",
+  "onMouseDown",
+  "onMouseUp",
+  "onMouseEnter",
+  "onMouseLeave",
   "onPress",
   "role",
   "tabIndex",
@@ -413,20 +419,14 @@ const ALL_CONSUMED_PROPS: Array<keyof BoxProps> = [
 ];
 
 // ---------------------------------------------------------------------------
-// ResponsiveStyleTag — injects media-query CSS into document.head
+// Responsive style tag (web only)
 // ---------------------------------------------------------------------------
 
-interface ResponsiveStyleTagProps {
-  css: string;
-  scopeClass: string;
-}
-
-const ResponsiveStyleTag: React.FC<ResponsiveStyleTagProps> = ({
+const ResponsiveStyleTag: React.FC<{ css: string; scopeClass: string }> = ({
   css,
   scopeClass,
 }) => {
   const styleRef = useRef<HTMLStyleElement | null>(null);
-
   useEffect(() => {
     if (!css) return;
     const el = document.createElement("style");
@@ -435,174 +435,140 @@ const ResponsiveStyleTag: React.FC<ResponsiveStyleTagProps> = ({
     document.head.appendChild(el);
     styleRef.current = el;
     return () => {
-      if (styleRef.current && styleRef.current.parentNode) {
-        styleRef.current.parentNode.removeChild(styleRef.current);
-      }
+      styleRef.current?.parentNode?.removeChild(styleRef.current);
       styleRef.current = null;
     };
   }, [css, scopeClass]);
-
   return null;
 };
 
 // ---------------------------------------------------------------------------
-// Web rendering
+// CSS unit helper — appends "px" to numbers for dimensional CSS properties
+// ---------------------------------------------------------------------------
+
+const UNITLESS_CSS_PROPS = new Set([
+  "opacity",
+  "flex",
+  "flexGrow",
+  "flexShrink",
+  "zIndex",
+  "fontWeight",
+  "lineHeight",
+  "order",
+  "tabSize",
+  "orphans",
+  "widows",
+  "animationIterationCount",
+  "columnCount",
+  "fillOpacity",
+  "floodOpacity",
+  "stopOpacity",
+  "strokeDasharray",
+  "strokeDashoffset",
+  "strokeMiterlimit",
+  "strokeOpacity",
+  "strokeWidth",
+]);
+
+function toCssValue(cssProp: string, value: unknown): unknown {
+  if (typeof value === "number" && !UNITLESS_CSS_PROPS.has(cssProp)) {
+    return `${value}px`;
+  }
+  return value;
+}
+
+// ---------------------------------------------------------------------------
+// Web prop resolution
 // ---------------------------------------------------------------------------
 
 function resolveWebProps(
   props: BoxProps,
-  runtime: RuntimeAdapter,
   scopeClass: string,
 ): {
-  className: string;
-  inlineStyle: React.CSSProperties;
+  inlineStyle: Record<string, unknown>;
   responsiveCss: string;
-  hasResponsive: boolean;
 } {
-  const classNames: string[] = [];
-  const inlineStyle: React.CSSProperties = {};
+  const inlineStyle: Record<string, unknown> = {};
   const cssRules: string[] = [];
 
-  // Helper: convert a CSS property + value into a scoped media-query rule
+  function camel(kebab: string) {
+    return kebab.replace(/-([a-z])/g, (_, c: string) => c.toUpperCase());
+  }
+
   function addResponsiveRule(
     cssProp: string,
     entries: Array<{ minWidth: number | null; value: unknown }>,
-  ): void {
+  ) {
     for (const entry of entries) {
-      const cssValue = String(entry.value);
+      const cssVal = toCssValue(camel(cssProp), entry.value);
       if (entry.minWidth === null) {
-        // Base value — goes into inline style
-        const camel = cssProp.replace(/-([a-z])/g, (_, c: string) =>
-          c.toUpperCase(),
-        );
-        (inlineStyle as Record<string, unknown>)[camel] = entry.value;
+        inlineStyle[camel(cssProp)] = cssVal;
       } else {
         cssRules.push(
-          `@media(min-width:${entry.minWidth}px){.${scopeClass}{${cssProp}:${cssValue}}}`,
+          `@media(min-width:${
+            entry.minWidth
+          }px){.${scopeClass}{${cssProp}:${String(cssVal)}}}`,
         );
       }
     }
   }
 
-  // Register all token props before resolving
-  const tokensToRegister: Token<unknown>[] = [];
-  for (const propName of TOKEN_PROP_NAMES) {
-    const rawVal = props[propName];
-    // Unwrap responsive to find any tokens inside
-    const val = isResponsive(rawVal) ? undefined : rawVal;
-    if (isToken(val)) {
-      tokensToRegister.push(val as Token<unknown>);
-    }
-  }
-  if (tokensToRegister.length > 0) {
-    runtime.register(tokensToRegister);
-  }
-
-  // Resolve token props
+  // Resolve token props — extract .value from tokens, apply px units
   for (const propName of TOKEN_PROP_NAMES) {
     const rawVal = props[propName];
     if (rawVal === undefined || rawVal === null) continue;
 
     if (isResponsive(rawVal)) {
-      // Responsive breakpoint map — build media query entries
       const cssPropDef = propToCssProp[propName];
+      // Unwrap token values inside the responsive map
+      const unwrappedMap: Partial<Record<string, unknown>> = {};
+      for (const [bp, bpVal] of Object.entries(
+        rawVal as Record<string, unknown>,
+      )) {
+        unwrappedMap[bp] = isToken(bpVal)
+          ? (bpVal as Token<unknown>).value
+          : bpVal;
+      }
       const entries = buildMediaQueryEntries(
-        rawVal as Partial<Record<string, unknown>>,
+        unwrappedMap as Partial<Record<string, unknown>>,
       );
       if (Array.isArray(cssPropDef)) {
-        for (const cp of cssPropDef) {
-          addResponsiveRule(cp, entries);
-        }
+        for (const cp of cssPropDef) addResponsiveRule(cp, entries);
       } else if (cssPropDef) {
         addResponsiveRule(cssPropDef, entries);
       }
-    } else if (isToken(rawVal)) {
-      const className = runtime.resolve(rawVal as Token<unknown>) as string;
-      if (className) {
-        classNames.push(className);
-      }
     } else {
+      // Resolve token to its value, or use plain value directly
+      const resolved = isToken(rawVal)
+        ? (rawVal as Token<unknown>).value
+        : rawVal;
       const cssProp = propToCssProp[propName];
       if (Array.isArray(cssProp)) {
         for (const cp of cssProp) {
-          const camel = cp.replace(/-([a-z])/g, (_, c: string) =>
-            c.toUpperCase(),
-          );
-          (inlineStyle as Record<string, unknown>)[camel] = rawVal;
+          inlineStyle[camel(cp)] = toCssValue(camel(cp), resolved);
         }
       } else if (cssProp) {
-        const camel = cssProp.replace(/-([a-z])/g, (_, c: string) =>
-          c.toUpperCase(),
-        );
-        (inlineStyle as Record<string, unknown>)[camel] = rawVal;
+        inlineStyle[camel(cssProp)] = toCssValue(camel(cssProp), resolved);
       }
     }
   }
 
-  // Fold plain style props into inlineStyle (or responsive CSS)
+  // Plain style props
   for (const propName of PLAIN_STYLE_PROPS) {
     const rawVal = props[propName];
     if (rawVal === undefined || rawVal === null) continue;
-
     if (isResponsive(rawVal)) {
       const entries = buildMediaQueryEntries(
         rawVal as Partial<Record<string, unknown>>,
       );
-      // Convert camelCase prop to kebab-case for CSS
       const kebab = (propName as string).replace(
         /([A-Z])/g,
         (c) => `-${c.toLowerCase()}`,
       );
       addResponsiveRule(kebab, entries);
     } else {
-      (inlineStyle as Record<string, unknown>)[propName as string] = rawVal;
+      inlineStyle[propName as string] = toCssValue(propName as string, rawVal);
     }
-  }
-
-  // ── Auto-inject display:flex when flex layout props are used ──────────────
-  // On web, flexDirection/alignItems/justifyContent etc. require display:flex.
-  // We inject it only if the caller hasn't already set display explicitly.
-  const flexTriggerProps: Array<keyof BoxProps> = [
-    "flexDirection",
-    "alignItems",
-    "justifyContent",
-    "flexWrap",
-    "alignContent",
-    "alignSelf",
-    "gap",
-    "rowGap",
-    "columnGap",
-  ];
-  const hasFlexProp = flexTriggerProps.some(
-    (p) => props[p] !== undefined && props[p] !== null,
-  );
-  const hasFlexToken =
-    TOKEN_PROP_NAMES.includes("flex" as never) &&
-    props["flex"] !== undefined &&
-    props["flex"] !== null;
-  if (
-    (hasFlexProp || hasFlexToken) &&
-    !(inlineStyle as Record<string, unknown>)["display"]
-  ) {
-    (inlineStyle as Record<string, unknown>)["display"] = "flex";
-  }
-
-  // ── Auto-inject borderStyle:solid when borderWidth is set ─────────────────
-  const borderWidthProps: Array<keyof BoxProps> = [
-    "borderWidth",
-    "borderTopWidth",
-    "borderBottomWidth",
-    "borderLeftWidth",
-    "borderRightWidth",
-  ];
-  const hasBorderWidth = borderWidthProps.some(
-    (p) => props[p] !== undefined && props[p] !== null,
-  );
-  if (
-    hasBorderWidth &&
-    !(inlineStyle as Record<string, unknown>)["borderStyle"]
-  ) {
-    (inlineStyle as Record<string, unknown>)["borderStyle"] = "solid";
   }
 
   // Expand paddingHorizontal / paddingVertical / marginHorizontal / marginVertical
@@ -619,29 +585,64 @@ function resolveWebProps(
       const entries = buildMediaQueryEntries(
         rawVal as Partial<Record<string, unknown>>,
       );
-      const kebabA = a.replace(/([A-Z])/g, (c) => `-${c.toLowerCase()}`);
-      const kebabB = b.replace(/([A-Z])/g, (c) => `-${c.toLowerCase()}`);
-      addResponsiveRule(kebabA, entries);
-      addResponsiveRule(kebabB, entries);
+      addResponsiveRule(
+        a.replace(/([A-Z])/g, (c) => `-${c.toLowerCase()}`),
+        entries,
+      );
+      addResponsiveRule(
+        b.replace(/([A-Z])/g, (c) => `-${c.toLowerCase()}`),
+        entries,
+      );
     } else {
-      (inlineStyle as Record<string, unknown>)[a] = rawVal;
-      (inlineStyle as Record<string, unknown>)[b] = rawVal;
+      inlineStyle[a] = toCssValue(a, rawVal);
+      inlineStyle[b] = toCssValue(b, rawVal);
     }
   }
 
-  const responsiveCss = cssRules.join("\n");
-  const hasResponsive = cssRules.length > 0;
+  // Auto display:flex — only when no explicit display is set
+  const flexTriggers: Array<keyof BoxProps> = [
+    "flexDirection",
+    "alignItems",
+    "justifyContent",
+    "flexWrap",
+    "alignContent",
+    "gap",
+    "rowGap",
+    "columnGap",
+  ];
+  const hasFlexTrigger = flexTriggers.some(
+    (p) => props[p] !== undefined && props[p] !== null,
+  );
+  const hasFlexProp = props.flex !== undefined && props.flex !== null;
+  if ((hasFlexTrigger || hasFlexProp) && inlineStyle["display"] === undefined) {
+    inlineStyle["display"] = "flex";
+  }
+
+  // Auto borderStyle:solid
+  const borderWidthTriggers: Array<keyof BoxProps> = [
+    "borderWidth",
+    "borderTopWidth",
+    "borderBottomWidth",
+    "borderLeftWidth",
+    "borderRightWidth",
+  ];
+  if (
+    borderWidthTriggers.some(
+      (p) => props[p] !== undefined && props[p] !== null,
+    ) &&
+    inlineStyle["borderStyle"] === undefined
+  ) {
+    inlineStyle["borderStyle"] = "solid";
+  }
 
   return {
-    className: classNames.join(" "),
     inlineStyle,
-    responsiveCss,
-    hasResponsive,
+    responsiveCss: cssRules.join("\n"),
   };
 }
 
 // ---------------------------------------------------------------------------
-// React Native rendering
+// Native prop resolution
 // ---------------------------------------------------------------------------
 
 function resolveNativeProps(
@@ -652,69 +653,51 @@ function resolveNativeProps(
   const styles: Array<number | Record<string, unknown>> = [];
   const plainStyle: Record<string, unknown> = {};
 
-  // Helper: unwrap a potentially responsive value for the current window width
   function unwrap<T>(val: Responsive<T> | undefined): T | undefined {
     if (val === undefined || val === null) return undefined;
     if (isResponsive(val)) return resolveResponsiveValue(val, windowWidth);
     return val as T;
   }
 
-  // Register all token props before resolving
+  // Register tokens
   const tokensToRegister: Token<unknown>[] = [];
   for (const propName of TOKEN_PROP_NAMES) {
     const val = unwrap(props[propName]);
-    if (isToken(val)) {
-      tokensToRegister.push(val as Token<unknown>);
-    }
+    if (isToken(val)) tokensToRegister.push(val as Token<unknown>);
   }
-  if (tokensToRegister.length > 0) {
-    runtime.register(tokensToRegister);
-  }
+  if (tokensToRegister.length > 0) runtime.register(tokensToRegister);
 
   // Resolve token props
   for (const propName of TOKEN_PROP_NAMES) {
     const val = unwrap(props[propName]);
     if (val === undefined || val === null) continue;
-
     if (isToken(val)) {
       const styleId = runtime.resolve(val as Token<unknown>) as number;
-      if (styleId !== undefined) {
-        styles.push(styleId);
-      }
+      if (styleId !== undefined) styles.push(styleId);
     } else {
       const rnProp = propToRnStyle[propName];
-      if (rnProp) {
-        plainStyle[rnProp] = val;
-      }
+      if (rnProp) plainStyle[rnProp] = val;
     }
   }
 
-  // Fold plain style props directly into the style object
+  // Plain style props
   for (const propName of PLAIN_STYLE_PROPS) {
     const val = unwrap(props[propName] as Responsive<unknown>);
-    if (val !== undefined && val !== null) {
-      plainStyle[propName as string] = val;
-    }
+    if (val !== undefined && val !== null) plainStyle[propName as string] = val;
   }
 
-  // Pass paddingHorizontal / paddingVertical / marginHorizontal / marginVertical directly (RN supports them)
-  const rnPassthrough: Array<keyof BoxProps> = [
+  // RN passthrough
+  for (const propName of [
     "paddingHorizontal",
     "paddingVertical",
     "marginHorizontal",
     "marginVertical",
-  ];
-  for (const propName of rnPassthrough) {
+  ] as const) {
     const val = unwrap(props[propName] as Responsive<unknown>);
-    if (val !== undefined) {
-      plainStyle[propName as string] = val;
-    }
+    if (val !== undefined) plainStyle[propName] = val;
   }
 
-  if (Object.keys(plainStyle).length > 0) {
-    styles.push(plainStyle);
-  }
-
+  if (Object.keys(plainStyle).length > 0) styles.push(plainStyle);
   return styles;
 }
 
@@ -725,13 +708,13 @@ function resolveNativeProps(
 export const Box: React.FC<BoxProps> = (props) => {
   const runtime = getRuntime();
 
-  // Build a rest object that excludes all consumed props to avoid DOM warnings
+  // useId must be called unconditionally (React hook rules)
+  const uid = useId(); // Strip consumed props from rest to avoid DOM warnings
+  const consumedSet = new Set<string>(ALL_CONSUMED_PROPS);
   const rest: Record<string, unknown> = {};
-  const consumedSet = new Set<string>(ALL_CONSUMED_PROPS as string[]);
   for (const key of Object.keys(props)) {
-    if (!consumedSet.has(key)) {
+    if (!consumedSet.has(key))
       rest[key] = (props as Record<string, unknown>)[key];
-    }
   }
 
   const {
@@ -741,6 +724,10 @@ export const Box: React.FC<BoxProps> = (props) => {
     accessibilityLabel,
     className: extraClassName,
     onClick,
+    onMouseDown,
+    onMouseUp,
+    onMouseEnter,
+    onMouseLeave,
     onPress,
     role,
     tabIndex,
@@ -759,53 +746,39 @@ export const Box: React.FC<BoxProps> = (props) => {
     "data-theme": dataTheme,
     accessibilityRole,
     accessibilityState,
+    scrollable,
+    horizontal,
   } = props;
 
   if (isWeb) {
-    // ── Web rendering ──────────────────────────────────────────────────────
-    // Generate a stable scope class for responsive media queries
-    const uid = useId();
     const scopeClass = `szr-${uid.replace(/:/g, "")}`;
+    const { inlineStyle, responsiveCss } = resolveWebProps(props, scopeClass);
 
-    const {
-      className: tokenClassNames,
-      inlineStyle,
-      responsiveCss,
-      hasResponsive,
-    } = resolveWebProps(props, runtime, scopeClass);
+    const hasResponsive = responsiveCss.length > 0;
 
-    const finalClassName = [
-      tokenClassNames,
-      hasResponsive ? scopeClass : undefined,
-      extraClassName,
-    ]
-      .filter(Boolean)
-      .join(" ");
+    // Merge: token-derived styles → caller style override
+    const flatCaller = flattenStyle(style);
+    const merged: Record<string, unknown> = { ...inlineStyle, ...flatCaller };
 
-    const finalStyle: React.CSSProperties = style
-      ? { ...inlineStyle, ...flattenStyle(style) }
-      : inlineStyle;
-
-    // Auto-inject display:flex if the merged style has flex layout props but no display
-    const mergedForCheck = finalStyle as Record<string, unknown>;
+    // After merge, re-check display:flex (caller style may have set flexDirection etc.)
     const flexCssProps = [
       "flexDirection",
       "alignItems",
       "justifyContent",
       "flexWrap",
       "alignContent",
-      "alignSelf",
       "gap",
       "rowGap",
       "columnGap",
     ];
     if (
-      flexCssProps.some((p) => mergedForCheck[p] !== undefined) &&
-      !mergedForCheck["display"]
+      flexCssProps.some((p) => merged[p] !== undefined) &&
+      merged["display"] === undefined
     ) {
-      mergedForCheck["display"] = "flex";
+      merged["display"] = "flex";
     }
-    // Auto-inject borderStyle:solid if borderWidth is set but no borderStyle
+
+    // After merge, re-check borderStyle
     const borderCssProps = [
       "borderWidth",
       "borderTopWidth",
@@ -814,11 +787,24 @@ export const Box: React.FC<BoxProps> = (props) => {
       "borderRightWidth",
     ];
     if (
-      borderCssProps.some((p) => mergedForCheck[p] !== undefined) &&
-      !mergedForCheck["borderStyle"]
+      borderCssProps.some((p) => merged[p] !== undefined) &&
+      merged["borderStyle"] === undefined
     ) {
-      mergedForCheck["borderStyle"] = "solid";
+      merged["borderStyle"] = "solid";
     }
+
+    // Scrollable on web
+    if (scrollable) {
+      merged["overflow"] =
+        merged["overflow"] ?? (horizontal ? "auto hidden" : "hidden auto");
+    }
+
+    const finalClassName = [
+      hasResponsive ? scopeClass : undefined,
+      extraClassName,
+    ]
+      .filter(Boolean)
+      .join(" ");
 
     return (
       <>
@@ -828,7 +814,11 @@ export const Box: React.FC<BoxProps> = (props) => {
         <div
           id={id}
           className={finalClassName || undefined}
-          style={Object.keys(finalStyle).length > 0 ? finalStyle : undefined}
+          style={
+            Object.keys(merged).length > 0
+              ? (merged as React.CSSProperties)
+              : undefined
+          }
           data-testid={dataTestId ?? testID}
           data-theme={dataTheme}
           aria-label={ariaLabel ?? accessibilityLabel}
@@ -843,6 +833,10 @@ export const Box: React.FC<BoxProps> = (props) => {
           role={role}
           tabIndex={tabIndex}
           onClick={onClick}
+          onMouseDown={onMouseDown}
+          onMouseUp={onMouseUp}
+          onMouseEnter={onMouseEnter}
+          onMouseLeave={onMouseLeave}
           onKeyDown={onKeyDown}
           {...rest}
         >
@@ -850,58 +844,55 @@ export const Box: React.FC<BoxProps> = (props) => {
         </div>
       </>
     );
-  } else {
-    // ── React Native rendering ─────────────────────────────────────────────
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    const { View: RNView, Dimensions } = require("react-native") as {
-      View: React.ComponentType<Record<string, unknown>>;
-      Dimensions: { get: (dim: string) => { width: number; height: number } };
-    };
+  }
 
-    const windowWidth = Dimensions.get("window").width;
+  // ── React Native ──────────────────────────────────────────────────────────
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const RN = require("react-native") as {
+    View: React.ComponentType<Record<string, unknown>>;
+    ScrollView: React.ComponentType<Record<string, unknown>>;
+    Dimensions: { get: (dim: string) => { width: number; height: number } };
+  };
 
-    const resolvedStyles = resolveNativeProps(props, runtime, windowWidth);
+  const windowWidth = RN.Dimensions.get("window").width;
+  const resolvedStyles = resolveNativeProps(props, runtime, windowWidth);
 
-    const finalStyles = style
-      ? [...resolvedStyles, style as Record<string, unknown>]
+  // Flatten caller style (handles arrays, numbers, objects)
+  const callerStyle = flattenStyle(style);
+  const finalStyles: Array<number | Record<string, unknown>> =
+    callerStyle && Object.keys(callerStyle).length > 0
+      ? [...resolvedStyles, callerStyle]
       : resolvedStyles;
 
-    const rnProps: Record<string, unknown> = {
-      children,
-    };
-    if (finalStyles.length > 0) {
-      rnProps["style"] = finalStyles;
-    }
-    if (testID !== undefined) {
-      rnProps["testID"] = testID;
-    }
-    if (accessibilityLabel !== undefined) {
-      rnProps["accessibilityLabel"] = accessibilityLabel;
-    }
-    if (accessibilityRole !== undefined) {
-      rnProps["accessibilityRole"] = accessibilityRole;
-    }
-    if (accessibilityState !== undefined) {
-      rnProps["accessibilityState"] = accessibilityState;
-    }
-    if (onPress !== undefined) {
-      rnProps["onPress"] = onPress;
-    }
+  const rnProps: Record<string, unknown> = { children };
+  if (finalStyles.length > 0) rnProps["style"] = finalStyles;
+  if (testID !== undefined) rnProps["testID"] = testID;
+  if (accessibilityLabel !== undefined)
+    rnProps["accessibilityLabel"] = accessibilityLabel;
+  if (accessibilityRole !== undefined)
+    rnProps["accessibilityRole"] = accessibilityRole;
+  if (accessibilityState !== undefined)
+    rnProps["accessibilityState"] = accessibilityState;
+  if (onPress !== undefined) rnProps["onPress"] = onPress;
 
-    return <RNView {...rnProps} />;
+  if (scrollable) {
+    rnProps["horizontal"] = !!horizontal;
+    rnProps["showsVerticalScrollIndicator"] = !horizontal;
+    rnProps["showsHorizontalScrollIndicator"] = !!horizontal;
+    return <RN.ScrollView {...rnProps} />;
   }
+
+  return <RN.View {...rnProps} />;
 };
 
 Box.displayName = "Box";
-
 export default Box;
 
 // ---------------------------------------------------------------------------
-// Aliases
+// Legacy alias — prefer importing View from "./View" for full RN ViewProps
 // ---------------------------------------------------------------------------
 
-/** Alias for Box — use View when semantics match React Native's View. */
+/** @deprecated Import View from "./View" for full RN ViewProps support. */
 export const View = Box;
-
-/** Alias for BoxProps. */
+/** @deprecated Import ViewProps from "./View" for full RN ViewProps support. */
 export type ViewProps = BoxProps;

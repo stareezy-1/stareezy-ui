@@ -1,21 +1,25 @@
 /**
- * Flattens a React Native StyleSheet array (or a plain object) into a single
- * plain object safe to spread onto a DOM element's style prop.
+ * Flattens a style value into a single plain object safe to spread onto a
+ * DOM element's style prop or pass to React Native.
  *
- * When a StyleSheet array like [styles.a, condition && styles.b] is spread
- * directly onto a CSSStyleDeclaration, the browser throws:
- *   "Failed to set an indexed property [0] on 'CSSStyleDeclaration'"
- * because array indices (0, 1, 2…) become property keys.
- *
- * This utility handles:
+ * Handles:
  *   - Plain objects → returned as-is
  *   - Arrays        → merged via Object.assign, falsy entries skipped
- *   - null/undefined → returns {}
+ *   - Numbers       → RN StyleSheet IDs; returned as { _rnStyleId: n } on web,
+ *                     or kept as-is on native (caller handles them separately)
+ *   - null/undefined/false → returns {}
  */
 export function flattenStyle(style: unknown): Record<string, unknown> {
-  if (!style) return {};
-  if (Array.isArray(style)) {
-    return Object.assign({}, ...style.filter(Boolean));
+  if (!style && style !== 0) return {};
+  if (typeof style === "number") {
+    // RN StyleSheet ID — on web we can't resolve it, so skip
+    return {};
   }
-  return style as Record<string, unknown>;
+  if (Array.isArray(style)) {
+    return Object.assign({}, ...style.filter(Boolean).map(flattenStyle));
+  }
+  if (typeof style === "object") {
+    return style as Record<string, unknown>;
+  }
+  return {};
 }
