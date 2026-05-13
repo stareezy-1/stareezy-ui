@@ -6,13 +6,16 @@
  */
 
 import React, { useState } from "react";
+import type { GestureResponderEvent } from "react-native";
 import { Box } from "./Box";
 import type { BoxProps, StyleProp } from "./Box";
 import { flattenStyle } from "../shared/flattenStyle";
 import { isWeb } from "../shared/platform";
 
 export interface TouchableOpacityProps extends Omit<BoxProps, "style"> {
-  onPress?: ((event: unknown) => void) | undefined;
+  onPress?:
+    | React.MouseEventHandler<HTMLDivElement>
+    | ((event: GestureResponderEvent) => void);
   disabled?: boolean | undefined;
   activeOpacity?: number | undefined;
   style?: StyleProp;
@@ -56,7 +59,9 @@ export const TouchableOpacity: React.FC<TouchableOpacityProps> = ({
         onMouseDown={disabled ? undefined : () => setPressed(true)}
         onMouseUp={disabled ? undefined : () => setPressed(false)}
         onMouseLeave={disabled ? undefined : () => setPressed(false)}
-        onClick={onPress}
+        {...(onPress !== undefined
+          ? { onClick: onPress as React.MouseEventHandler<HTMLDivElement> }
+          : {})}
         {...rest}
       >
         {children}

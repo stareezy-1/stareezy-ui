@@ -255,7 +255,9 @@ export interface BoxProps {
   onMouseUp?: React.MouseEventHandler<HTMLDivElement>;
   onMouseEnter?: React.MouseEventHandler<HTMLDivElement>;
   onMouseLeave?: React.MouseEventHandler<HTMLDivElement>;
-  onPress?: ((event: unknown) => void) | undefined;
+  onPress?:
+    | React.MouseEventHandler<HTMLDivElement>
+    | ((event: import("react-native").GestureResponderEvent) => void);
   role?: React.AriaRole;
   tabIndex?: number;
   onKeyDown?: React.KeyboardEventHandler<HTMLDivElement>;
@@ -832,7 +834,10 @@ export const Box: React.FC<BoxProps> = (props) => {
           aria-orientation={ariaOrientation}
           role={role}
           tabIndex={tabIndex}
-          onClick={onClick ?? onPress}
+          onClick={
+            onClick ??
+            (onPress as React.MouseEventHandler<HTMLDivElement> | undefined)
+          }
           onMouseDown={onMouseDown}
           onMouseUp={onMouseUp}
           onMouseEnter={onMouseEnter}
