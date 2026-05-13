@@ -126,6 +126,10 @@ function useButtonColors(
     [EButtonType.AbsoluteBottom]: themed.surfaceDark,
     [EButtonType.AbsoluteBottomWithBorder]: themed.surfaceDark,
     [EButtonType.Transparent]: themed.transparent,
+    [EButtonType.Ghost]: "rgba(255,255,255,0.05)",
+    // Outline: no token match for this semi-transparent blue tint — kept with comment
+    [EButtonType.Outline]: "rgba(59,130,246,0.05)", // no token — nearest: colors.celurenBlue[300] at full opacity
+    [EButtonType.Danger]: colors.danger.main.value,
   };
 
   const disabledBgMap: Partial<Record<EButtonType, string>> = {
@@ -137,6 +141,11 @@ function useButtonColors(
   const borderColorMap: Partial<Record<EButtonType, string>> = {
     [EButtonType.Secondary]: themed.borderDefault,
     [EButtonType.WithBorder]: themed.borderDefault,
+    // Ghost: no token match for this semi-transparent white border — kept with comment
+    [EButtonType.Ghost]: "rgba(255,255,255,0.15)", // no token — nearest: colors.neutral[10] at full opacity
+    // Outline: no token match for this semi-transparent blue border — kept with comment
+    [EButtonType.Outline]: "rgba(59,130,246,0.3)", // no token — nearest: colors.celurenBlue[300] at full opacity
+    [EButtonType.Danger]: "transparent",
   };
 
   const disabledBorderColorMap: Partial<Record<EButtonType, string>> = {
@@ -152,6 +161,9 @@ function useButtonColors(
     [EButtonType.AbsoluteBottom]: "#ffffff",
     [EButtonType.AbsoluteBottomWithBorder]: "#ffffff",
     [EButtonType.Transparent]: themed.textPrimary,
+    [EButtonType.Ghost]: colors.neutral[10].value,
+    [EButtonType.Outline]: colors.celurenBlue[400].value,
+    [EButtonType.Danger]: colors.neutral[10].value,
   };
 
   return {

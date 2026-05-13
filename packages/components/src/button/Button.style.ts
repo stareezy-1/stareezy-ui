@@ -83,6 +83,20 @@ export const webTypeGeometry: Record<EButtonType, WebTypeGeometry> = {
   [EButtonType.Transparent]: {
     borderRadius: 0,
   },
+  [EButtonType.Ghost]: {
+    borderRadius: radius.xl.value,
+    borderWidth: BUTTON_BORDER_WIDTH,
+    borderStyle: "solid",
+  },
+  [EButtonType.Outline]: {
+    borderRadius: radius.xl.value,
+    borderWidth: BUTTON_BORDER_WIDTH,
+    borderStyle: "solid",
+  },
+  [EButtonType.Danger]: {
+    borderRadius: radius.xl.value,
+    borderWidth: 0,
+  },
 };
 
 // ---------------------------------------------------------------------------

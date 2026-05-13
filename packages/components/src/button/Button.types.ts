@@ -14,6 +14,9 @@ export enum EButtonType {
   AbsoluteBottom = "absolute-bottom",
   AbsoluteBottomWithBorder = "absolute-bottom-with-border",
   Transparent = "transparent",
+  Ghost = "ghost",
+  Outline = "outline",
+  Danger = "danger",
 }
 
 export enum EButtonSize {

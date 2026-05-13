@@ -18,12 +18,18 @@
 import React from "react";
 import { Box } from "./Box";
 import type { BoxProps, StyleProp } from "./Box";
+import { EViewType } from "./View.types";
+import { VIEW_PRESETS } from "./View.presets";
+
+export { EViewType } from "./View.types";
 
 // ---------------------------------------------------------------------------
 // RN ViewProps surface — all props that RN's View accepts
 // ---------------------------------------------------------------------------
 
-export interface ViewProps extends Omit<BoxProps, "pointerEvents"> {
+export interface ViewProps extends Omit<BoxProps, "pointerEvents" | "type"> {
+  /** Applies a View-specific preset style combination. Explicit props override preset values. */
+  type?: EViewType;
   // ── RN-specific layout callbacks ─────────────────────────────────────────
   /**
    * Invoked on mount and on layout changes.
@@ -132,6 +138,9 @@ export const View: React.FC<ViewProps> = ({
   accessibilityHint,
   accessibilityValue,
   id,
+  // View-specific type prop (EViewType) — consumed here, not forwarded to Box
+  type,
+  style,
   ...rest
 }) => {
   // Resolve pointerEvents to CSS value for Box
@@ -139,6 +148,18 @@ export const View: React.FC<ViewProps> = ({
 
   // nativeID maps to id on web
   const resolvedId = id ?? nativeID;
+
+  // Resolve preset styles from the type prop (if provided).
+  // Merge order: preset → explicit shorthand props (in rest) → style prop.
+  // We pass the preset as the base of the style array/object so that
+  // explicit shorthand props resolved by Box naturally override it.
+  const presetStyle: Record<string, unknown> = type ? VIEW_PRESETS[type] : {};
+  const resolvedStyle: StyleProp =
+    Object.keys(presetStyle).length > 0
+      ? style !== undefined && style !== null
+        ? [presetStyle as StyleProp, style]
+        : (presetStyle as StyleProp)
+      : style;
 
   // On native, forward all RN-specific props via the Box passthrough
   // (Box renders RN.View and passes unknown props through `rest`)
@@ -185,6 +206,7 @@ export const View: React.FC<ViewProps> = ({
       pointerEvents={resolvedPointerEvents}
       {...nativeExtras}
       {...rest}
+      style={resolvedStyle}
     />
   );
 };

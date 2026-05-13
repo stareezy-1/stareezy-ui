@@ -4,9 +4,11 @@
 // ── Primitives ───────────────────────────────────────────────────────────────
 export { Box } from "./primitives/Box";
 export type { BoxProps, StyleProp } from "./primitives/Box";
+export { EBoxType } from "./primitives/Box.types";
 
 export { View } from "./primitives/View";
 export type { ViewProps } from "./primitives/View";
+export { EViewType } from "./primitives/View.types";
 
 export { Text, ETextType, EFontStyle } from "./primitives/Text";
 export type { TextProps } from "./primitives/Text";
@@ -34,6 +36,7 @@ export {
 
 export { TouchableOpacity } from "./primitives/TouchableOpacity";
 export type { TouchableOpacityProps } from "./primitives/TouchableOpacity";
+export { ETouchableType } from "./primitives/TouchableOpacity.types";
 
 // ── Breakpoints ───────────────────────────────────────────────────────────────
 export { configureBreakpoints, getBreakpoints } from "./primitives/Box";

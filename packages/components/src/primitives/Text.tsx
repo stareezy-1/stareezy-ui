@@ -93,6 +93,21 @@ export enum ETextType {
   XSParagraphSemiBold = "XS-paragraph-semi-bold",
   XSParagraphMedium = "XS-paragraph-medium",
   XSParagraphRegular = "XS-paragraph-regular",
+  // Portfolio text roles
+  Eyebrow = "eyebrow",
+  HeroTitle = "hero-title",
+  HeroSubtitle = "hero-subtitle",
+  StatNumber = "stat-number",
+  StatLabel = "stat-label",
+  BadgeText = "badge-text",
+  CardTitle = "card-title",
+  CardDescription = "card-description",
+  SectionHeading = "section-heading",
+  OrganizationLabel = "organization-label",
+  LocationText = "location-text",
+  HighlightText = "highlight-text",
+  NavLabel = "nav-label",
+  FooterText = "footer-text",
 }
 
 // ---------------------------------------------------------------------------
@@ -122,7 +137,7 @@ interface TextStylePreset {
 const DEFAULT_COLOR = colors.raisinBlack[800].value;
 const LETTER_SPACING = -0.02;
 
-const PRESETS: Record<ETextType, TextStylePreset> = {
+export const PRESETS: Record<ETextType, TextStylePreset> = {
   // button
   [ETextType.button]: {
     fontFamily: typography.fontFamily.montserratRegular.value,
@@ -499,6 +514,104 @@ const PRESETS: Record<ETextType, TextStylePreset> = {
     lineHeight: spacing[16].value,
     letterSpacing: LETTER_SPACING,
     color: DEFAULT_COLOR,
+  },
+  // Portfolio text roles
+  [ETextType.Eyebrow]: {
+    fontFamily: typography.fontFamily.nunitoRegular.value,
+    fontSize: 12,
+    fontWeight: "600",
+    letterSpacing: 2,
+    color: colors.celurenBlue[400].value,
+  },
+  [ETextType.HeroTitle]: {
+    fontFamily: typography.fontFamily.nunitoRegular.value,
+    fontSize: 56,
+    fontWeight: "800",
+    lineHeight: 64,
+    letterSpacing: -1,
+    color: colors.neutral[10].value,
+  },
+  [ETextType.HeroSubtitle]: {
+    fontFamily: typography.fontFamily.nunitoRegular.value,
+    fontSize: 28,
+    fontWeight: "600",
+    lineHeight: 36,
+    color: DEFAULT_COLOR,
+  },
+  [ETextType.StatNumber]: {
+    fontFamily: typography.fontFamily.nunitoRegular.value,
+    fontSize: 32,
+    fontWeight: "800",
+    lineHeight: 40,
+    color: colors.neutral[10].value,
+  },
+  [ETextType.StatLabel]: {
+    fontFamily: typography.fontFamily.nunitoRegular.value,
+    fontSize: 13,
+    lineHeight: 20,
+    color: colors.raisinBlack[200].value,
+  },
+  [ETextType.BadgeText]: {
+    fontFamily: typography.fontFamily.nunitoRegular.value,
+    fontSize: 12,
+    fontWeight: "500",
+    lineHeight: 16,
+    letterSpacing: 0.5,
+    color: DEFAULT_COLOR,
+  },
+  [ETextType.CardTitle]: {
+    fontFamily: typography.fontFamily.nunitoRegular.value,
+    fontSize: 17,
+    fontWeight: "700",
+    lineHeight: 24,
+    color: colors.neutral[10].value,
+  },
+  [ETextType.CardDescription]: {
+    fontFamily: typography.fontFamily.nunitoRegular.value,
+    fontSize: 14,
+    fontWeight: "400",
+    lineHeight: 21,
+    color: colors.raisinBlack[100].value,
+  },
+  [ETextType.SectionHeading]: {
+    fontFamily: typography.fontFamily.nunitoRegular.value,
+    fontSize: 36,
+    fontWeight: "800",
+    lineHeight: 44,
+    letterSpacing: -0.5,
+    color: colors.neutral[10].value,
+  },
+  [ETextType.OrganizationLabel]: {
+    fontFamily: typography.fontFamily.nunitoRegular.value,
+    fontSize: 14,
+    fontWeight: "600",
+    lineHeight: 22,
+    color: colors.celurenBlue[400].value,
+  },
+  [ETextType.LocationText]: {
+    fontFamily: typography.fontFamily.nunitoRegular.value,
+    fontSize: 12,
+    lineHeight: 18,
+    color: colors.raisinBlack[200].value,
+  },
+  [ETextType.HighlightText]: {
+    fontFamily: typography.fontFamily.nunitoRegular.value,
+    fontSize: 13,
+    lineHeight: 20,
+    color: colors.raisinBlack[100].value,
+  },
+  [ETextType.NavLabel]: {
+    fontFamily: typography.fontFamily.nunitoRegular.value,
+    fontSize: 14,
+    fontWeight: "500",
+    lineHeight: 20,
+    color: DEFAULT_COLOR,
+  },
+  [ETextType.FooterText]: {
+    fontFamily: typography.fontFamily.nunitoRegular.value,
+    fontSize: 13,
+    lineHeight: 20,
+    color: colors.raisinBlack[200].value,
   },
 };
 

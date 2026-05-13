@@ -11,8 +11,13 @@ import { Box } from "./Box";
 import type { BoxProps, StyleProp } from "./Box";
 import { flattenStyle } from "../shared/flattenStyle";
 import { isWeb } from "../shared/platform";
+import { ETouchableType } from "./TouchableOpacity.types";
+import { TOUCHABLE_PRESETS } from "./TouchableOpacity.presets";
 
-export interface TouchableOpacityProps extends Omit<BoxProps, "style"> {
+export { ETouchableType } from "./TouchableOpacity.types";
+
+export interface TouchableOpacityProps
+  extends Omit<BoxProps, "style" | "type"> {
   onPress?:
     | React.MouseEventHandler<HTMLDivElement>
     | ((event: import("react-native").GestureResponderEvent) => void)
@@ -21,6 +26,8 @@ export interface TouchableOpacityProps extends Omit<BoxProps, "style"> {
   disabled?: boolean | undefined;
   activeOpacity?: number | undefined;
   style?: StyleProp;
+  /** Applies a preset style combination. Explicit props override preset values. */
+  type?: ETouchableType;
 }
 
 export const TouchableOpacity: React.FC<TouchableOpacityProps> = ({
@@ -31,6 +38,7 @@ export const TouchableOpacity: React.FC<TouchableOpacityProps> = ({
   style,
   opacity,
   cursor,
+  type,
   ...rest
 }) => {
   const [pressed, setPressed] = useState(false);
@@ -40,11 +48,18 @@ export const TouchableOpacity: React.FC<TouchableOpacityProps> = ({
     ? "not-allowed"
     : cursor ?? (onPress ? "pointer" : undefined);
 
+  // Resolve preset styles from the type prop (if provided)
+  const presetStyle: Record<string, unknown> = type
+    ? TOUCHABLE_PRESETS[type]
+    : {};
+
   const flatCaller = flattenStyle(style);
 
   if (isWeb) {
+    // Merge order: preset → explicit shorthand props (via Box) → style prop
     const webStyle: Record<string, unknown> = {
       transition: "opacity 0.1s",
+      ...presetStyle,
       ...flatCaller,
     };
 
@@ -77,12 +92,17 @@ export const TouchableOpacity: React.FC<TouchableOpacityProps> = ({
     TouchableOpacity: React.ComponentType<Record<string, unknown>>;
   };
 
+  // Merge order: preset → caller style prop
+  const rnStyleParts: Array<Record<string, unknown>> = [];
+  if (Object.keys(presetStyle).length > 0) rnStyleParts.push(presetStyle);
+  if (flatCaller && Object.keys(flatCaller).length > 0)
+    rnStyleParts.push(flatCaller);
+
   const rnProps: Record<string, unknown> = {
     onPress: disabled ? undefined : onPress,
     disabled: !!disabled,
     activeOpacity,
-    style:
-      flatCaller && Object.keys(flatCaller).length > 0 ? flatCaller : undefined,
+    style: rnStyleParts.length > 0 ? rnStyleParts : undefined,
     accessibilityState:
       rest.accessibilityState ??
       (disabled !== undefined ? { disabled } : undefined),

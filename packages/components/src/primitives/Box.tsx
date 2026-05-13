@@ -22,6 +22,8 @@ import {
 import type { Responsive } from "./breakpoints";
 import { isWeb } from "../shared/platform";
 import { flattenStyle } from "../shared/flattenStyle";
+import { EBoxType } from "./Box.types";
+import { BOX_PRESETS } from "./Box.presets";
 
 // ---------------------------------------------------------------------------
 // Re-exports
@@ -33,6 +35,8 @@ export type {
   BreakpointConfig,
   Responsive,
 } from "./breakpoints";
+
+export { EBoxType } from "./Box.types";
 
 // ---------------------------------------------------------------------------
 // Style type — accepts CSSProperties, RN StyleSheet IDs, plain objects, arrays
@@ -144,6 +148,10 @@ function isToken(value: unknown): value is Token<unknown> {
 // ---------------------------------------------------------------------------
 
 export interface BoxProps {
+  // ── Preset type ───────────────────────────────────────────────────────────
+  /** Applies a preset style combination. Explicit props override preset values. */
+  type?: EBoxType;
+
   // ── Token / shorthand props ───────────────────────────────────────────────
   bg?: Responsive<TokenOrValue<string>>;
   color?: Responsive<TokenOrValue<string>>;
@@ -386,6 +394,7 @@ const PLAIN_STYLE_PROPS: Array<keyof BoxProps> = [
 const ALL_CONSUMED_PROPS: string[] = [
   ...TOKEN_PROP_NAMES,
   ...PLAIN_STYLE_PROPS.map(String),
+  "type",
   "paddingHorizontal",
   "paddingVertical",
   "marginHorizontal",
@@ -754,15 +763,24 @@ export const Box: React.FC<BoxProps> = (props) => {
     horizontal,
   } = props;
 
+  // Resolve preset styles from the type prop (if provided)
+  const presetStyle: Record<string, unknown> = props.type
+    ? BOX_PRESETS[props.type]
+    : {};
+
   if (isWeb) {
     const scopeClass = `szr-${uid.replace(/:/g, "")}`;
     const { inlineStyle, responsiveCss } = resolveWebProps(props, scopeClass);
 
     const hasResponsive = responsiveCss.length > 0;
 
-    // Merge: token-derived styles → caller style override
+    // Merge: preset styles → token-derived styles → caller style override
     const flatCaller = flattenStyle(style);
-    const merged: Record<string, unknown> = { ...inlineStyle, ...flatCaller };
+    const merged: Record<string, unknown> = {
+      ...presetStyle,
+      ...inlineStyle,
+      ...flatCaller,
+    };
 
     // After merge, re-check display:flex (caller style may have set flexDirection etc.)
     const flexCssProps = [
@@ -866,10 +884,14 @@ export const Box: React.FC<BoxProps> = (props) => {
 
   // Flatten caller style (handles arrays, numbers, objects)
   const callerStyle = flattenStyle(style);
+  const baseStyles: Array<number | Record<string, unknown>> =
+    Object.keys(presetStyle).length > 0
+      ? [presetStyle, ...resolvedStyles]
+      : resolvedStyles;
   const finalStyles: Array<number | Record<string, unknown>> =
     callerStyle && Object.keys(callerStyle).length > 0
-      ? [...resolvedStyles, callerStyle]
-      : resolvedStyles;
+      ? [...baseStyles, callerStyle]
+      : baseStyles;
 
   const rnProps: Record<string, unknown> = { children };
   if (finalStyles.length > 0) rnProps["style"] = finalStyles;
