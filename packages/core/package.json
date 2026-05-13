@@ -25,7 +25,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/stareezy-ui/stareezy-ui.git",
+    "url": "https://github.com/stareezy-1/stareezy-ui.git",
     "directory": "packages/core"
   },
   "scripts": {
