@@ -720,8 +720,12 @@ export const Box: React.FC<BoxProps> = (props) => {
     const uid = useId();
     const scopeClass = `szr-${uid.replace(/:/g, "")}`;
 
-    const { className: tokenClassNames, inlineStyle, responsiveCss, hasResponsive } =
-      resolveWebProps(props, runtime, scopeClass);
+    const {
+      className: tokenClassNames,
+      inlineStyle,
+      responsiveCss,
+      hasResponsive,
+    } = resolveWebProps(props, runtime, scopeClass);
 
     const finalClassName = [
       tokenClassNames,
@@ -732,7 +736,12 @@ export const Box: React.FC<BoxProps> = (props) => {
       .join(" ");
 
     const finalStyle: React.CSSProperties = style
-      ? { ...inlineStyle, ...(style as React.CSSProperties) }
+      ? {
+          ...inlineStyle,
+          ...(Array.isArray(style)
+            ? Object.assign({}, ...style.filter(Boolean))
+            : (style as React.CSSProperties)),
+        }
       : inlineStyle;
 
     return (

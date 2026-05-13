@@ -570,7 +570,7 @@ export const Text: React.FC<TextProps> = (props) => {
   }
 
   // Resolve preset
-  const preset = type ? (PRESETS[type] ?? DEFAULT_PRESET) : DEFAULT_PRESET;
+  const preset = type ? PRESETS[type] ?? DEFAULT_PRESET : DEFAULT_PRESET;
 
   // Font style modifiers
   const activeFontStyle = fontStyle ?? fontStyles;
@@ -596,7 +596,9 @@ export const Text: React.FC<TextProps> = (props) => {
         : {}),
       ...(isItalic ? { fontStyle: "italic" } : {}),
       ...(isUnderline ? { textDecorationLine: "underline" } : {}),
-      ...(style as React.CSSProperties | undefined),
+      ...(Array.isArray(style)
+        ? Object.assign({}, ...style.filter(Boolean))
+        : (style as React.CSSProperties | undefined)),
     };
 
     return (
