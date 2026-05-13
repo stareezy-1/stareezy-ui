@@ -559,6 +559,52 @@ function resolveWebProps(
     }
   }
 
+  // ── Auto-inject display:flex when flex layout props are used ──────────────
+  // On web, flexDirection/alignItems/justifyContent etc. require display:flex.
+  // We inject it only if the caller hasn't already set display explicitly.
+  const flexTriggerProps: Array<keyof BoxProps> = [
+    "flexDirection",
+    "alignItems",
+    "justifyContent",
+    "flexWrap",
+    "alignContent",
+    "alignSelf",
+    "gap",
+    "rowGap",
+    "columnGap",
+  ];
+  const hasFlexProp = flexTriggerProps.some(
+    (p) => props[p] !== undefined && props[p] !== null,
+  );
+  const hasFlexToken =
+    TOKEN_PROP_NAMES.includes("flex" as never) &&
+    props["flex"] !== undefined &&
+    props["flex"] !== null;
+  if (
+    (hasFlexProp || hasFlexToken) &&
+    !(inlineStyle as Record<string, unknown>)["display"]
+  ) {
+    (inlineStyle as Record<string, unknown>)["display"] = "flex";
+  }
+
+  // ── Auto-inject borderStyle:solid when borderWidth is set ─────────────────
+  const borderWidthProps: Array<keyof BoxProps> = [
+    "borderWidth",
+    "borderTopWidth",
+    "borderBottomWidth",
+    "borderLeftWidth",
+    "borderRightWidth",
+  ];
+  const hasBorderWidth = borderWidthProps.some(
+    (p) => props[p] !== undefined && props[p] !== null,
+  );
+  if (
+    hasBorderWidth &&
+    !(inlineStyle as Record<string, unknown>)["borderStyle"]
+  ) {
+    (inlineStyle as Record<string, unknown>)["borderStyle"] = "solid";
+  }
+
   // Expand paddingHorizontal / paddingVertical / marginHorizontal / marginVertical
   const expandPairs: Array<[keyof BoxProps, string, string]> = [
     ["paddingHorizontal", "paddingLeft", "paddingRight"],
@@ -739,6 +785,40 @@ export const Box: React.FC<BoxProps> = (props) => {
     const finalStyle: React.CSSProperties = style
       ? { ...inlineStyle, ...flattenStyle(style) }
       : inlineStyle;
+
+    // Auto-inject display:flex if the merged style has flex layout props but no display
+    const mergedForCheck = finalStyle as Record<string, unknown>;
+    const flexCssProps = [
+      "flexDirection",
+      "alignItems",
+      "justifyContent",
+      "flexWrap",
+      "alignContent",
+      "alignSelf",
+      "gap",
+      "rowGap",
+      "columnGap",
+    ];
+    if (
+      flexCssProps.some((p) => mergedForCheck[p] !== undefined) &&
+      !mergedForCheck["display"]
+    ) {
+      mergedForCheck["display"] = "flex";
+    }
+    // Auto-inject borderStyle:solid if borderWidth is set but no borderStyle
+    const borderCssProps = [
+      "borderWidth",
+      "borderTopWidth",
+      "borderBottomWidth",
+      "borderLeftWidth",
+      "borderRightWidth",
+    ];
+    if (
+      borderCssProps.some((p) => mergedForCheck[p] !== undefined) &&
+      !mergedForCheck["borderStyle"]
+    ) {
+      mergedForCheck["borderStyle"] = "solid";
+    }
 
     return (
       <>
