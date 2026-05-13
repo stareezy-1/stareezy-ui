@@ -19,7 +19,7 @@ import { IInputProps } from "../input/Input";
 import { isWeb } from "../shared/platform";
 import { View } from "../primitives/Box";
 import { TouchableOpacity } from "../primitives/TouchableOpacity";
-import { flattenStyle } from '../shared/flattenStyle';
+import { flattenStyle } from "../shared/flattenStyle";
 
 // ---------------------------------------------------------------------------
 // Enums
@@ -121,11 +121,15 @@ export const BottomSheets: React.FC<IBottomSheetsProps> = ({
             style={{
               flex: 1,
               padding: `${spacing[12].value}px ${spacing[16].value}px`,
-              backgroundColor: negativeDisabled ? themed.bgDisabled : themed.bgSecondary,
+              backgroundColor: negativeDisabled
+                ? themed.bgDisabled
+                : themed.bgSecondary,
               border: `1px solid ${themed.borderDefault}`,
               borderRadius: radius.full.value,
               cursor: negativeDisabled ? "not-allowed" : "pointer",
-              color: negativeDisabled ? themed.textDisabled : themed.textPrimary,
+              color: negativeDisabled
+                ? themed.textDisabled
+                : themed.textPrimary,
               fontSize: spacing[14].value,
               fontWeight: "500",
             }}
@@ -143,11 +147,15 @@ export const BottomSheets: React.FC<IBottomSheetsProps> = ({
             style={{
               flex: 1,
               padding: `${spacing[12].value}px ${spacing[16].value}px`,
-              backgroundColor: positiveDisabled ? themed.bgDisabled : themed.surfaceDark,
+              backgroundColor: positiveDisabled
+                ? themed.bgDisabled
+                : themed.surfaceDark,
               border: "none",
               borderRadius: radius.full.value,
               cursor: positiveDisabled ? "not-allowed" : "pointer",
-              color: positiveDisabled ? themed.textDisabled : themed.textInverse,
+              color: positiveDisabled
+                ? themed.textDisabled
+                : themed.textInverse,
               fontSize: spacing[14].value,
               fontWeight: "500",
             }}
@@ -216,7 +224,13 @@ export const BottomSheets: React.FC<IBottomSheetsProps> = ({
             aria-hidden="true"
           />
           {icon && (
-            <div style={{ display: "flex", justifyContent: "center", marginBottom: spacing[12].value }}>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                marginBottom: spacing[12].value,
+              }}
+            >
               {icon}
             </div>
           )}
@@ -245,9 +259,21 @@ export const BottomSheets: React.FC<IBottomSheetsProps> = ({
             </p>
           )}
           {lists && lists.length > 0 && (
-            <ul style={{ margin: 0, padding: `0 0 0 ${spacing[16].value}px`, color: themed.textPrimary }}>
+            <ul
+              style={{
+                margin: 0,
+                padding: `0 0 0 ${spacing[16].value}px`,
+                color: themed.textPrimary,
+              }}
+            >
               {lists.map((item, i) => (
-                <li key={i} style={{ fontSize: spacing[14].value, marginBottom: spacing[4].value }}>
+                <li
+                  key={i}
+                  style={{
+                    fontSize: spacing[14].value,
+                    marginBottom: spacing[4].value,
+                  }}
+                >
                   {item}
                 </li>
               ))}
@@ -266,9 +292,9 @@ export const BottomSheets: React.FC<IBottomSheetsProps> = ({
   // eslint-disable-next-line @typescript-eslint/no-require-imports
 
   const { Modal, Text, ScrollView } = require("react-native") as {
-
-    Modal: React.ComponentType<Record<string, unknown>>; Text: React.ComponentType<Record<string, unknown>>; ScrollView: React.ComponentType<Record<string, unknown>>;
-
+    Modal: React.ComponentType<Record<string, unknown>>;
+    Text: React.ComponentType<Record<string, unknown>>;
+    ScrollView: React.ComponentType<Record<string, unknown>>;
   };
 
   return (
@@ -280,10 +306,16 @@ export const BottomSheets: React.FC<IBottomSheetsProps> = ({
       testID={testID}
       accessibilityLabel={title ?? "Bottom sheet"}
     >
-      <View style={{ flex: 1, backgroundColor: "rgba(0,0,0,0.5)", justifyContent: "flex-end" }}>
+      <View
+        style={{
+          flex: 1,
+          backgroundColor: "rgba(0,0,0,0.5)",
+          justifyContent: "flex-end",
+        }}
+      >
         <TouchableOpacity
           style={{ flex: 1 }}
-          onPress={onClose ?? undefined}
+          onPress={onClose}
           accessibilityLabel="Close bottom sheet"
           activeOpacity={1}
         />
@@ -309,7 +341,12 @@ export const BottomSheets: React.FC<IBottomSheetsProps> = ({
           />
           <ScrollView showsVerticalScrollIndicator={false}>
             {icon && (
-              <View style={{ alignItems: "center", marginBottom: spacing[12].value }}>
+              <View
+                style={{
+                  alignItems: "center",
+                  marginBottom: spacing[12].value,
+                }}
+              >
                 {icon}
               </View>
             )}
@@ -339,7 +376,8 @@ export const BottomSheets: React.FC<IBottomSheetsProps> = ({
                 {desc}
               </Text>
             )}
-            {lists && lists.length > 0 &&
+            {lists &&
+              lists.length > 0 &&
               lists.map((item, i) => (
                 <Text
                   key={i}
@@ -372,7 +410,9 @@ export const BottomSheets: React.FC<IBottomSheetsProps> = ({
                     style={{
                       flex: 1,
                       padding: spacing[12].value,
-                      backgroundColor: negativeDisabled ? themed.bgDisabled : themed.bgSecondary,
+                      backgroundColor: negativeDisabled
+                        ? themed.bgDisabled
+                        : themed.bgSecondary,
                       borderWidth: 1,
                       borderColor: themed.borderDefault,
                       borderRadius: radius.full.value,
@@ -382,7 +422,9 @@ export const BottomSheets: React.FC<IBottomSheetsProps> = ({
                   >
                     <Text
                       style={{
-                        color: negativeDisabled ? themed.textDisabled : themed.textPrimary,
+                        color: negativeDisabled
+                          ? themed.textDisabled
+                          : themed.textPrimary,
                         fontSize: spacing[14].value,
                         fontWeight: "500",
                       }}
@@ -401,14 +443,18 @@ export const BottomSheets: React.FC<IBottomSheetsProps> = ({
                     style={{
                       flex: 1,
                       padding: spacing[12].value,
-                      backgroundColor: positiveDisabled ? themed.bgDisabled : themed.surfaceDark,
+                      backgroundColor: positiveDisabled
+                        ? themed.bgDisabled
+                        : themed.surfaceDark,
                       borderRadius: radius.full.value,
                       alignItems: "center",
                     }}
                   >
                     <Text
                       style={{
-                        color: positiveDisabled ? themed.textDisabled : themed.textInverse,
+                        color: positiveDisabled
+                          ? themed.textDisabled
+                          : themed.textInverse,
                         fontSize: spacing[14].value,
                         fontWeight: "500",
                       }}

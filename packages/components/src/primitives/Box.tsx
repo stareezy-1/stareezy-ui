@@ -250,18 +250,19 @@ export interface BoxProps {
   horizontal?: boolean;
 
   // ── Interaction / accessibility ───────────────────────────────────────────
-  onClick?: React.MouseEventHandler<HTMLDivElement>;
-  onMouseDown?: React.MouseEventHandler<HTMLDivElement>;
-  onMouseUp?: React.MouseEventHandler<HTMLDivElement>;
-  onMouseEnter?: React.MouseEventHandler<HTMLDivElement>;
-  onMouseLeave?: React.MouseEventHandler<HTMLDivElement>;
+  onClick?: React.MouseEventHandler<HTMLDivElement> | undefined;
+  onMouseDown?: React.MouseEventHandler<HTMLDivElement> | undefined;
+  onMouseUp?: React.MouseEventHandler<HTMLDivElement> | undefined;
+  onMouseEnter?: React.MouseEventHandler<HTMLDivElement> | undefined;
+  onMouseLeave?: React.MouseEventHandler<HTMLDivElement> | undefined;
   onPress?:
     | React.MouseEventHandler<HTMLDivElement>
-    | ((event: import("react-native").GestureResponderEvent) => void);
-  role?: React.AriaRole;
-  tabIndex?: number;
-  onKeyDown?: React.KeyboardEventHandler<HTMLDivElement>;
-  id?: string;
+    | ((event: import("react-native").GestureResponderEvent) => void)
+    | undefined;
+  role?: React.AriaRole | undefined;
+  tabIndex?: number | undefined;
+  onKeyDown?: React.KeyboardEventHandler<HTMLDivElement> | undefined;
+  id?: string | undefined;
   "aria-label"?: string;
   "aria-hidden"?: boolean | "true" | "false";
   "aria-disabled"?: boolean | "true" | "false";
