@@ -36,3 +36,4 @@ pnpm-debug.log*
 .vercel/
 
 .kiro
+.npmrc
