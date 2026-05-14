@@ -46,6 +46,8 @@ import { Box, Text, Button } from "@stareezy-ui/components";
 
 ## Quick Start
 
+### Web (React / Next.js / Vite)
+
 ```bash
 # Tokens only (zero dependencies)
 pnpm add @stareezy-ui/tokens
@@ -53,8 +55,47 @@ pnpm add @stareezy-ui/tokens
 # Full component library
 pnpm add @stareezy-ui/tokens @stareezy-ui/components @stareezy-ui/runtime
 
-# Build-time compiler
+# Build-time compiler (dev dependency)
 pnpm add -D @stareezy-ui/compiler
+```
+
+### React Native (Expo / bare workflow)
+
+```bash
+yarn add @stareezy-ui/tokens @stareezy-ui/components @stareezy-ui/runtime
+yarn add -D @stareezy-ui/compiler
+
+# Optional — only needed if you use the Slider component
+yarn add @react-native-community/slider
+npx pod-install  # bare workflow only
+```
+
+**metro.config.js** — enable package exports resolution:
+
+```js
+const { getDefaultConfig } = require("expo/metro-config");
+
+const config = getDefaultConfig(__dirname);
+config.resolver.unstable_enablePackageExports = true;
+
+module.exports = config;
+```
+
+**babel.config.js** — add the stareezy plugin:
+
+```js
+const { stareezyBabelPlugin } = require("@stareezy-ui/compiler/babel");
+
+module.exports = function (api) {
+  api.cache(true);
+  return {
+    presets: ["babel-preset-expo"],
+    plugins: [
+      stareezyBabelPlugin(),
+      // keep @tamagui/babel-plugin last if you use Tamagui
+    ],
+  };
+};
 ```
 
 Wrap your app:

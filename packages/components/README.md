@@ -4,11 +4,95 @@
 
 [![npm](https://img.shields.io/npm/v/@stareezy-ui/components)](https://www.npmjs.com/package/@stareezy-ui/components)
 
-## Install
+---
+
+## Installation
+
+### Web (React / Next.js / Vite)
 
 ```bash
+npm add @stareezy-ui/tokens @stareezy-ui/components @stareezy-ui/runtime
+# or
 pnpm add @stareezy-ui/tokens @stareezy-ui/components @stareezy-ui/runtime
+# or
+yarn add @stareezy-ui/tokens @stareezy-ui/components @stareezy-ui/runtime
 ```
+
+### React Native (Expo / bare workflow)
+
+```bash
+yarn add @stareezy-ui/tokens @stareezy-ui/components @stareezy-ui/runtime
+```
+
+#### Optional peer dependency — Slider component only
+
+The `Slider` component requires `@react-native-community/slider` on React Native.
+All other components use only React Native core APIs.
+
+```bash
+yarn add @react-native-community/slider
+# bare workflow only — Expo managed workflow handles this automatically
+npx pod-install
+```
+
+If you don't install it, `Slider` renders an empty placeholder and logs a warning in dev mode. All other components work without it.
+
+#### Metro config
+
+Metro must be able to resolve the `exports` field in package.json. Add this to your `metro.config.js`:
+
+```js
+const { getDefaultConfig } = require("expo/metro-config");
+
+const config = getDefaultConfig(__dirname);
+
+// Required: allow Metro to resolve package exports subpaths
+config.resolver.unstable_enablePackageExports = true;
+
+module.exports = config;
+```
+
+> If you use `@tamagui/metro-plugin` or another Metro wrapper, apply the exports flag before wrapping:
+>
+> ```js
+> const { getDefaultConfig } = require("expo/metro-config");
+> const { withTamagui } = require("@tamagui/metro-plugin");
+>
+> let config = getDefaultConfig(__dirname);
+> config.resolver.unstable_enablePackageExports = true;
+>
+> module.exports = withTamagui(config, {
+>   /* ... */
+> });
+> ```
+
+#### Babel config
+
+Add the stareezy babel plugin to your `babel.config.js`. Keep it before any Tamagui plugin:
+
+```js
+const { stareezyBabelPlugin } = require("@stareezy-ui/compiler/babel");
+
+module.exports = function (api) {
+  api.cache(true);
+  return {
+    presets: ["babel-preset-expo"],
+    plugins: [
+      stareezyBabelPlugin(),
+      // ... other plugins
+      // keep @tamagui/babel-plugin last if you use Tamagui
+    ],
+  };
+};
+```
+
+The compiler package also needs to be installed:
+
+```bash
+yarn add -D @stareezy-ui/compiler
+```
+
+---
 
 ## Usage
 
@@ -30,7 +114,7 @@ import { colors, spacing, radius } from '@stareezy-ui/tokens'
 // Text — typography with 50+ variants
 <Text type="M-heading-bold" text="Hello world" />
 <Text type="S-paragraph-regular" text="Body copy" color="#024CCE" />
-<Text text="" emptyState="—" />  // emptyState fallback
+<Text text="" emptyState="—" />
 
 // Layout stacks
 <HStack gap={8}>
@@ -69,6 +153,8 @@ All style props accept breakpoint maps:
 />
 ```
 
+---
+
 ## Full component list
 
 `Box`, `Text`, `HStack`, `VStack`, `Button`, `Input`, `Checkbox`, `CheckboxOption`,
@@ -80,14 +166,17 @@ All style props accept breakpoint maps:
 `Calendar`, `CalendarV2`, `BirthdateCalendar`, `LineChart`, `RadarChart`, `BarChart`,
 `Table`, `TopTabs`, `Pagination`, `SummaryCard`, `Photo`, `UploadPhoto`, and more.
 
+---
+
 ## Peer dependencies
 
-```json
-{
-  "react": ">=18.0.0",
-  "react-native": ">=0.73.0" // optional, for RN usage
-}
-```
+| Dependency                           | Required | Notes                                         |
+| ------------------------------------ | -------- | --------------------------------------------- |
+| `react` ≥ 18                         | ✅       |                                               |
+| `react-native` ≥ 0.73                | optional | Only needed for React Native targets          |
+| `@react-native-community/slider` ≥ 4 | optional | Only needed if you use the `Slider` component |
+
+---
 
 ## License
 
