@@ -216,13 +216,36 @@ export const Slider: React.FC<SliderProps> = ({
     );
   }
 
-  // React Native — requires @react-native-community/slider
+  // React Native — requires @react-native-community/slider as an optional peer dep.
+  // Falls back to a plain View with a warning if the package is not installed.
   // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const rnSliderPkg = "@react-native-community/slider";
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const { Slider: RNSlider } = require(rnSliderPkg) as {
-    Slider: React.ComponentType<Record<string, unknown>>;
-  };
+  let RNSlider: React.ComponentType<Record<string, unknown>> | null = null;
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    const rnSliderPkg = require("@react-native-community/slider") as {
+      Slider: React.ComponentType<Record<string, unknown>>;
+    };
+    RNSlider = rnSliderPkg.Slider;
+  } catch {
+    // package not installed — render nothing and warn once
+    if (__DEV__) {
+      console.warn(
+        "[stareezy-ui] Slider: install @react-native-community/slider to use the Slider component on React Native.",
+      );
+    }
+  }
+
+  if (!RNSlider) {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    const { View } = require("react-native") as {
+      View: React.ComponentType<Record<string, unknown>>;
+    };
+    return (
+      <Box testID={testID} {...boxProps}>
+        <View />
+      </Box>
+    );
+  }
 
   return (
     <Box testID={testID} {...boxProps}>
