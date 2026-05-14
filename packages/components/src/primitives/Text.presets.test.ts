@@ -43,9 +43,9 @@ describe("PRESETS — new portfolio ETextType values", () => {
 
   it("ETextType.Eyebrow preset has correct fontSize, fontWeight, letterSpacing, and color", () => {
     const preset = PRESETS[ETextType.Eyebrow];
-    expect(preset.fontSize).toBe(12);
-    expect(preset.fontWeight).toBe("600");
-    expect(preset.letterSpacing).toBe(2);
+    expect(preset.fontSize).toBe(11);
+    expect(preset.fontWeight).toBe("700");
+    expect(preset.letterSpacing).toBe(0.08);
     expect(preset.color).toBe(colors.celurenBlue[400].value);
   });
 
@@ -53,8 +53,8 @@ describe("PRESETS — new portfolio ETextType values", () => {
     const preset = PRESETS[ETextType.HeroTitle];
     expect(preset.fontSize).toBe(56);
     expect(preset.fontWeight).toBe("800");
-    expect(preset.lineHeight).toBe(64);
-    expect(preset.letterSpacing).toBe(-1);
+    expect(preset.lineHeight).toBe(1.07);
+    expect(preset.letterSpacing).toBe(-0.03);
     expect(preset.color).toBe(colors.neutral[10].value);
   });
 
@@ -62,8 +62,8 @@ describe("PRESETS — new portfolio ETextType values", () => {
     const preset = PRESETS[ETextType.SectionHeading];
     expect(preset.fontSize).toBe(36);
     expect(preset.fontWeight).toBe("800");
-    expect(preset.lineHeight).toBe(44);
-    expect(preset.letterSpacing).toBe(-0.5);
+    expect(preset.lineHeight).toBe(1.22);
+    expect(preset.letterSpacing).toBe(-0.025);
     expect(preset.color).toBe(colors.neutral[10].value);
   });
 
@@ -71,15 +71,15 @@ describe("PRESETS — new portfolio ETextType values", () => {
     const preset = PRESETS[ETextType.StatNumber];
     expect(preset.fontSize).toBe(32);
     expect(preset.fontWeight).toBe("800");
-    expect(preset.lineHeight).toBe(40);
+    expect(preset.lineHeight).toBe(1.25);
     expect(preset.color).toBe(colors.neutral[10].value);
   });
 
   it("ETextType.CardTitle preset has correct fontSize, fontWeight, lineHeight, and color", () => {
     const preset = PRESETS[ETextType.CardTitle];
     expect(preset.fontSize).toBe(17);
-    expect(preset.fontWeight).toBe("700");
-    expect(preset.lineHeight).toBe(24);
+    expect(preset.fontWeight).toBe("600");
+    expect(preset.lineHeight).toBe(1.41);
     expect(preset.color).toBe(colors.neutral[10].value);
   });
 
