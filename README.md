@@ -6,6 +6,8 @@ A fully typed, object-based design token system and component library for cross-
 [![npm](https://img.shields.io/npm/v/@stareezy-ui/tokens)](https://www.npmjs.com/package/@stareezy-ui/tokens)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
+![Stareezy UI — A fully typed, cross-platform design system for React Native and web](./docs/banner.png)
+
 ```tsx
 import { colors, spacing, radius } from "@stareezy-ui/tokens";
 import { Box, Text, Button } from "@stareezy-ui/components";
