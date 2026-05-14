@@ -1,13 +1,14 @@
 /**
  * Avatar — user avatar with image, initials fallback, status indicator.
- * Root wrapper accepts BoxProps for layout/spacing.
+ * Root wrapper accepts BoxProps. Initials rendered via <Text>.
  */
 
 import React from "react";
 import { colors } from "@stareezy-ui/tokens";
 import { isWeb } from "../shared/platform";
 import { Box } from "../primitives/Box";
-import type { BoxProps } from "../primitives/Box";
+import type { BoxProps, StyleProp } from "../primitives/Box";
+import { Text, ETextType } from "../primitives/Text";
 
 export type AvatarSize = "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
 export type AvatarShape = "circle" | "rounded" | "square";
@@ -21,6 +22,10 @@ export interface AvatarProps extends Omit<BoxProps, "children"> {
   shape?: AvatarShape;
   status?: AvatarStatus;
   fallbackIcon?: React.ReactNode;
+  /** ETextType for the initials text */
+  initialsTextType?: ETextType;
+  /** Style override for the initials text */
+  initialsTextStyle?: StyleProp;
 }
 
 const SIZE_PX: Record<AvatarSize, number> = {
@@ -96,6 +101,8 @@ export const Avatar: React.FC<AvatarProps> = ({
   shape = "circle",
   status,
   fallbackIcon,
+  initialsTextType,
+  initialsTextStyle,
   testID,
   ...boxProps
 }) => {
@@ -146,18 +153,18 @@ export const Avatar: React.FC<AvatarProps> = ({
           )}
           {showFallback && fallbackIcon}
           {showFallback && !fallbackIcon && initials && (
-            <span
+            <Text
+              text={initials}
+              type={initialsTextType}
+              color="#ffffff"
               style={{
                 fontSize,
                 fontWeight: "700",
-                color: "#ffffff",
-                fontFamily: "Inter, system-ui, sans-serif",
                 lineHeight: 1,
                 letterSpacing: "0.02em",
+                ...(initialsTextStyle as React.CSSProperties),
               }}
-            >
-              {initials}
-            </span>
+            />
           )}
         </span>
         {status && (
@@ -182,14 +189,9 @@ export const Avatar: React.FC<AvatarProps> = ({
 
   // React Native
   // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const {
-    View,
-    Image,
-    Text: RNText,
-  } = require("react-native") as {
+  const { View, Image } = require("react-native") as {
     View: React.ComponentType<Record<string, unknown>>;
     Image: React.ComponentType<Record<string, unknown>>;
-    Text: React.ComponentType<Record<string, unknown>>;
   };
 
   const rnBorderRadius =
@@ -222,12 +224,16 @@ export const Avatar: React.FC<AvatarProps> = ({
             accessibilityLabel={alt ?? name ?? "avatar"}
           />
         ) : initials ? (
-          <RNText
-            style={{ fontSize, fontWeight: "700", color: "#ffffff" }}
-            allowFontScaling={false}
-          >
-            {initials}
-          </RNText>
+          <Text
+            text={initials}
+            type={initialsTextType}
+            color="#ffffff"
+            style={{
+              fontSize,
+              fontWeight: "700",
+              ...(initialsTextStyle as Record<string, unknown>),
+            }}
+          />
         ) : null}
       </View>
       {status && (

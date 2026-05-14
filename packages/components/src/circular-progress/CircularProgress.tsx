@@ -1,13 +1,14 @@
 /**
  * CircularProgress — SVG-based circular progress indicator.
- * Root wrapper accepts BoxProps.
+ * Root wrapper accepts BoxProps. Value text rendered via <Text>.
  */
 
 import React from "react";
 import { colors } from "@stareezy-ui/tokens";
 import { isWeb } from "../shared/platform";
 import { Box } from "../primitives/Box";
-import type { BoxProps } from "../primitives/Box";
+import type { BoxProps, StyleProp } from "../primitives/Box";
+import { Text, ETextType } from "../primitives/Text";
 
 export type CircularProgressSize = "xs" | "sm" | "md" | "lg" | "xl";
 
@@ -22,6 +23,10 @@ export interface CircularProgressProps extends Omit<BoxProps, "children"> {
   label?: string;
   children?: React.ReactNode;
   animated?: boolean;
+  /** ETextType for the percentage value text */
+  valueTextType?: ETextType;
+  /** Style override for the percentage value text */
+  valueTextStyle?: StyleProp;
 }
 
 const SIZE_PX: Record<CircularProgressSize, number> = {
@@ -57,6 +62,8 @@ export const CircularProgress: React.FC<CircularProgressProps> = ({
   label,
   children,
   animated = true,
+  valueTextType,
+  valueTextStyle,
   testID,
   ...boxProps
 }) => {
@@ -134,17 +141,17 @@ export const CircularProgress: React.FC<CircularProgressProps> = ({
         >
           {children}
           {!children && showValue && (
-            <span
+            <Text
+              type={valueTextType}
+              text={`${Math.round(pct)}%`}
+              color={colors.raisinBlack[800].value}
               style={{
                 fontSize,
                 fontWeight: "700",
-                color: colors.raisinBlack[800].value,
-                fontFamily: "Inter, system-ui, sans-serif",
                 lineHeight: 1,
+                ...(valueTextStyle as React.CSSProperties),
               }}
-            >
-              {Math.round(pct)}%
-            </span>
+            />
           )}
         </div>
       </Box>
@@ -153,9 +160,8 @@ export const CircularProgress: React.FC<CircularProgressProps> = ({
 
   // React Native
   // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const { View, Text: RNText } = require("react-native") as {
+  const { View } = require("react-native") as {
     View: React.ComponentType<Record<string, unknown>>;
-    Text: React.ComponentType<Record<string, unknown>>;
   };
 
   return (
@@ -178,16 +184,16 @@ export const CircularProgress: React.FC<CircularProgressProps> = ({
         }}
       />
       {showValue && (
-        <RNText
+        <Text
+          type={valueTextType}
+          text={`${Math.round(pct)}%`}
+          color={colors.raisinBlack[800].value}
           style={{
             fontSize,
             fontWeight: "700",
-            color: colors.raisinBlack[800].value,
+            ...(valueTextStyle as Record<string, unknown>),
           }}
-          allowFontScaling={false}
-        >
-          {Math.round(pct)}%
-        </RNText>
+        />
       )}
       {children}
     </Box>

@@ -1,13 +1,14 @@
 /**
  * Accordion — collapsible content sections with smooth animation.
- * Root wrapper accepts BoxProps.
+ * Root wrapper accepts BoxProps. Text rendered via <Text> component.
  */
 
 import React, { useState, useRef, useEffect } from "react";
 import { colors } from "@stareezy-ui/tokens";
 import { isWeb } from "../shared/platform";
 import { Box } from "../primitives/Box";
-import type { BoxProps } from "../primitives/Box";
+import type { BoxProps, StyleProp } from "../primitives/Box";
+import { Text, ETextType } from "../primitives/Text";
 
 export interface AccordionItem {
   key: string;
@@ -26,6 +27,14 @@ export interface AccordionProps
   multiple?: boolean;
   variant?: AccordionVariant;
   onChange?: (openKeys: string[]) => void;
+  /** ETextType for item titles */
+  titleTextType?: ETextType;
+  /** Style override for item titles */
+  titleTextStyle?: StyleProp;
+  /** ETextType for item content (when content is a string) */
+  contentTextType?: ETextType;
+  /** Style override for item content text */
+  contentTextStyle?: StyleProp;
 }
 
 const ACCORDION_KF = `
@@ -72,6 +81,10 @@ export const Accordion: React.FC<AccordionProps> = ({
   multiple = false,
   variant = "default",
   onChange,
+  titleTextType = ETextType.SLabel,
+  titleTextStyle,
+  contentTextType = ETextType.SParagraphRegular,
+  contentTextStyle,
   testID,
   ...boxProps
 }) => {
@@ -169,21 +182,23 @@ export const Accordion: React.FC<AccordionProps> = ({
                       {item.icon}
                     </span>
                   )}
-                  <span
-                    style={{
-                      fontSize: 15,
-                      fontWeight: "600",
-                      color: isOpen
-                        ? colors.celurenBlue[500].value
-                        : colors.raisinBlack[800].value,
-                      fontFamily:
-                        "'Plus Jakarta Sans',Inter,system-ui,sans-serif",
-                      lineHeight: 1.4,
-                      transition: "color 0.15s ease",
-                    }}
-                  >
-                    {item.title}
-                  </span>
+                  {typeof item.title === "string" ? (
+                    <Text
+                      type={titleTextType}
+                      text={item.title}
+                      color={
+                        isOpen
+                          ? colors.celurenBlue[500].value
+                          : colors.raisinBlack[800].value
+                      }
+                      style={{
+                        transition: "color 0.15s ease",
+                        ...(titleTextStyle as React.CSSProperties),
+                      }}
+                    />
+                  ) : (
+                    item.title
+                  )}
                 </span>
                 <svg
                   width="16"
@@ -218,16 +233,24 @@ export const Accordion: React.FC<AccordionProps> = ({
                   <div
                     style={{
                       padding: "4px 18px 16px",
-                      fontSize: 14,
-                      color: colors.raisinBlack[600].value,
-                      fontFamily: "Inter,system-ui,sans-serif",
-                      lineHeight: 1.6,
                       animation: isOpen
                         ? "szr-accordion-open 0.2s ease"
                         : undefined,
                     }}
                   >
-                    {item.content}
+                    {typeof item.content === "string" ? (
+                      <Text
+                        type={contentTextType}
+                        text={item.content}
+                        color={colors.raisinBlack[600].value}
+                        style={{
+                          lineHeight: 1.6,
+                          ...(contentTextStyle as React.CSSProperties),
+                        }}
+                      />
+                    ) : (
+                      item.content
+                    )}
                   </div>
                 </AnimatedPanel>
               </div>
@@ -240,14 +263,9 @@ export const Accordion: React.FC<AccordionProps> = ({
 
   // React Native
   // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const {
-    View,
-    TouchableOpacity,
-    Text: RNText,
-  } = require("react-native") as {
+  const { View, TouchableOpacity } = require("react-native") as {
     View: React.ComponentType<Record<string, unknown>>;
     TouchableOpacity: React.ComponentType<Record<string, unknown>>;
-    Text: React.ComponentType<Record<string, unknown>>;
   };
 
   return (
@@ -275,37 +293,37 @@ export const Accordion: React.FC<AccordionProps> = ({
                 opacity: item.disabled ? 0.5 : 1,
               }}
             >
-              <RNText
-                style={{
-                  fontSize: 15,
-                  fontWeight: "600",
-                  color: colors.raisinBlack[800].value,
-                  flex: 1,
-                }}
-                allowFontScaling={false}
-              >
-                {item.title}
-              </RNText>
-              <RNText
-                style={{ fontSize: 12, color: colors.beauBlue[600].value }}
-                allowFontScaling={false}
-              >
-                {isOpen ? "▲" : "▼"}
-              </RNText>
+              {typeof item.title === "string" ? (
+                <Text
+                  type={titleTextType}
+                  text={item.title}
+                  color={colors.raisinBlack[800].value}
+                  style={{
+                    flex: 1,
+                    ...(titleTextStyle as Record<string, unknown>),
+                  }}
+                />
+              ) : (
+                item.title
+              )}
+              <Text
+                type={ETextType.XSParagraphRegular}
+                text={isOpen ? "▲" : "▼"}
+                color={colors.beauBlue[600].value}
+              />
             </TouchableOpacity>
             {isOpen && (
               <View style={{ paddingHorizontal: 16, paddingBottom: 16 }}>
                 {typeof item.content === "string" ? (
-                  <RNText
+                  <Text
+                    type={contentTextType}
+                    text={item.content}
+                    color={colors.raisinBlack[600].value}
                     style={{
-                      fontSize: 14,
-                      color: colors.raisinBlack[600].value,
                       lineHeight: 22,
+                      ...(contentTextStyle as Record<string, unknown>),
                     }}
-                    allowFontScaling={false}
-                  >
-                    {item.content}
-                  </RNText>
+                  />
                 ) : (
                   item.content
                 )}

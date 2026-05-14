@@ -1,13 +1,14 @@
 /**
  * Tabs — tab navigation with animated indicator.
- * Root wrapper accepts BoxProps.
+ * Root wrapper accepts BoxProps. Tab labels rendered via <Text>.
  */
 
 import React, { useState, useRef, useEffect } from "react";
 import { colors } from "@stareezy-ui/tokens";
 import { isWeb } from "../shared/platform";
 import { Box } from "../primitives/Box";
-import type { BoxProps } from "../primitives/Box";
+import type { BoxProps, StyleProp } from "../primitives/Box";
+import { Text, ETextType } from "../primitives/Text";
 
 export type TabsVariant = "underline" | "pills" | "card";
 
@@ -28,6 +29,10 @@ export interface TabsProps extends Omit<BoxProps, "children" | "onChange"> {
   variant?: TabsVariant;
   fullWidth?: boolean;
   tabBarBoxProps?: Omit<BoxProps, "children">;
+  /** ETextType for tab label text (when label is a string) */
+  labelTextType?: ETextType;
+  /** Style override for tab label text */
+  labelTextStyle?: StyleProp;
 }
 
 export const Tabs: React.FC<TabsProps> = ({
@@ -38,6 +43,8 @@ export const Tabs: React.FC<TabsProps> = ({
   variant = "underline",
   fullWidth = false,
   tabBarBoxProps,
+  labelTextType,
+  labelTextStyle,
   testID,
   ...boxProps
 }) => {
@@ -127,14 +134,6 @@ export const Tabs: React.FC<TabsProps> = ({
                   transition: "background 0.15s ease,color 0.15s ease",
                   position: "relative",
                   whiteSpace: "nowrap",
-                  fontFamily: "Inter,system-ui,sans-serif",
-                  fontSize: 14,
-                  fontWeight: isActive ? "600" : "500",
-                  color: isActive
-                    ? isPills
-                      ? "#ffffff"
-                      : colors.celurenBlue[500].value
-                    : colors.beauBlue[700].value,
                   backgroundColor: isActive
                     ? isPills
                       ? colors.celurenBlue[400].value
@@ -149,7 +148,25 @@ export const Tabs: React.FC<TabsProps> = ({
                 {item.icon && (
                   <span style={{ flexShrink: 0 }}>{item.icon}</span>
                 )}
-                {item.label}
+                {typeof item.label === "string" ? (
+                  <Text
+                    type={
+                      labelTextType ??
+                      (isActive ? ETextType.SLabel : ETextType.SParagraphMedium)
+                    }
+                    text={item.label}
+                    color={
+                      isActive
+                        ? isPills
+                          ? "#ffffff"
+                          : colors.celurenBlue[500].value
+                        : colors.beauBlue[700].value
+                    }
+                    style={labelTextStyle as React.CSSProperties}
+                  />
+                ) : (
+                  item.label
+                )}
                 {item.badge && (
                   <span
                     style={{
@@ -203,15 +220,9 @@ export const Tabs: React.FC<TabsProps> = ({
 
   // React Native
   // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const {
-    View,
-    TouchableOpacity,
-    Text: RNText,
-    ScrollView,
-  } = require("react-native") as {
+  const { View, TouchableOpacity, ScrollView } = require("react-native") as {
     View: React.ComponentType<Record<string, unknown>>;
     TouchableOpacity: React.ComponentType<Record<string, unknown>>;
-    Text: React.ComponentType<Record<string, unknown>>;
     ScrollView: React.ComponentType<Record<string, unknown>>;
   };
 
@@ -246,18 +257,23 @@ export const Tabs: React.FC<TabsProps> = ({
                   opacity: item.disabled ? 0.45 : 1,
                 }}
               >
-                <RNText
-                  style={{
-                    fontSize: 14,
-                    fontWeight: isActive ? "600" : "500",
-                    color: isActive
-                      ? colors.celurenBlue[500].value
-                      : colors.beauBlue[700].value,
-                  }}
-                  allowFontScaling={false}
-                >
-                  {item.label}
-                </RNText>
+                {typeof item.label === "string" ? (
+                  <Text
+                    type={
+                      labelTextType ??
+                      (isActive ? ETextType.SLabel : ETextType.SParagraphMedium)
+                    }
+                    text={item.label}
+                    color={
+                      isActive
+                        ? colors.celurenBlue[500].value
+                        : colors.beauBlue[700].value
+                    }
+                    style={labelTextStyle as Record<string, unknown>}
+                  />
+                ) : (
+                  item.label
+                )}
               </TouchableOpacity>
             );
           })}

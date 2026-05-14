@@ -1,13 +1,14 @@
 /**
  * Switch — animated toggle switch.
- * Root wrapper accepts BoxProps.
+ * Root wrapper accepts BoxProps. Label rendered via <Text>.
  */
 
 import React from "react";
 import { colors } from "@stareezy-ui/tokens";
 import { isWeb } from "../shared/platform";
 import { Box } from "../primitives/Box";
-import type { BoxProps } from "../primitives/Box";
+import type { BoxProps, StyleProp } from "../primitives/Box";
+import { Text, ETextType } from "../primitives/Text";
 
 export type SwitchSize = "sm" | "md" | "lg";
 
@@ -20,6 +21,10 @@ export interface SwitchProps extends Omit<BoxProps, "onChange" | "children"> {
   inactiveColor?: string;
   label?: React.ReactNode;
   labelPosition?: "left" | "right";
+  /** ETextType for the label text (when label is a string) */
+  labelTextType?: ETextType;
+  /** Style override for the label text */
+  labelTextStyle?: StyleProp;
 }
 
 const TRACK: Record<SwitchSize, { w: number; h: number }> = {
@@ -28,7 +33,6 @@ const TRACK: Record<SwitchSize, { w: number; h: number }> = {
   lg: { w: 56, h: 30 },
 };
 const THUMB: Record<SwitchSize, number> = { sm: 12, md: 18, lg: 24 };
-const FONT: Record<SwitchSize, number> = { sm: 13, md: 14, lg: 15 };
 
 export const Switch: React.FC<SwitchProps> = ({
   value = false,
@@ -39,13 +43,14 @@ export const Switch: React.FC<SwitchProps> = ({
   inactiveColor = colors.beauBlue[300].value,
   label,
   labelPosition = "right",
+  labelTextType = ETextType.SParagraphRegular,
+  labelTextStyle,
   testID,
   accessibilityLabel,
   ...boxProps
 }) => {
   const track = TRACK[size];
   const thumbSize = THUMB[size];
-  const fontSize = FONT[size];
   const padding = (track.h - thumbSize) / 2;
   const thumbTravel = track.w - thumbSize - padding * 2;
 
@@ -113,20 +118,24 @@ export const Switch: React.FC<SwitchProps> = ({
         {...boxProps}
       >
         {trackEl}
-        {label && (
-          <span
-            style={{
-              fontSize,
-              lineHeight: 1.5,
-              color: disabled
-                ? colors.beauBlue[600].value
-                : colors.raisinBlack[800].value,
-              fontFamily: "Inter, system-ui, sans-serif",
-            }}
-          >
-            {label}
-          </span>
-        )}
+        {label &&
+          (typeof label === "string" ? (
+            <Text
+              type={labelTextType}
+              text={label}
+              color={
+                disabled
+                  ? colors.beauBlue[600].value
+                  : colors.raisinBlack[800].value
+              }
+              style={{
+                lineHeight: 1.5,
+                ...(labelTextStyle as React.CSSProperties),
+              }}
+            />
+          ) : (
+            label
+          ))}
       </Box>
     );
   }

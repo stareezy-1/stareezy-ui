@@ -1,13 +1,14 @@
 /**
  * Divider — horizontal or vertical separator with optional label.
- * Accepts BoxProps for spacing/layout overrides.
+ * Accepts BoxProps. Label rendered via <Text>.
  */
 
 import React from "react";
 import { colors } from "@stareezy-ui/tokens";
 import { isWeb } from "../shared/platform";
 import { Box } from "../primitives/Box";
-import type { BoxProps } from "../primitives/Box";
+import type { BoxProps, StyleProp } from "../primitives/Box";
+import { Text, ETextType } from "../primitives/Text";
 
 export type DividerOrientation = "horizontal" | "vertical";
 export type DividerVariant = "solid" | "dashed" | "dotted";
@@ -20,6 +21,10 @@ export interface DividerProps extends Omit<BoxProps, "children"> {
   label?: React.ReactNode;
   labelPosition?: "left" | "center" | "right";
   spacing?: number;
+  /** ETextType for the label text (when label is a string) */
+  labelTextType?: ETextType;
+  /** Style override for the label text */
+  labelTextStyle?: StyleProp;
 }
 
 export const Divider: React.FC<DividerProps> = ({
@@ -30,6 +35,8 @@ export const Divider: React.FC<DividerProps> = ({
   label,
   labelPosition = "center",
   spacing: spacingProp = 16,
+  labelTextType = ETextType.XSLabel,
+  labelTextStyle,
   testID,
   ...boxProps
 }) => {
@@ -59,18 +66,20 @@ export const Divider: React.FC<DividerProps> = ({
               }}
             />
           )}
-          <span
-            style={{
-              fontSize: 12,
-              fontWeight: "500",
-              color: colors.beauBlue[700].value,
-              whiteSpace: "nowrap",
-              fontFamily: "Inter, system-ui, sans-serif",
-              flexShrink: 0,
-            }}
-          >
-            {label}
-          </span>
+          {typeof label === "string" ? (
+            <Text
+              type={labelTextType}
+              text={label}
+              color={colors.beauBlue[700].value}
+              style={{
+                whiteSpace: "nowrap",
+                flexShrink: 0,
+                ...(labelTextStyle as React.CSSProperties),
+              }}
+            />
+          ) : (
+            label
+          )}
           {labelPosition !== "right" && (
             <div
               style={{

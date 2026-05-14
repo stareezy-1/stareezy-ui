@@ -1,13 +1,14 @@
 /**
  * Checkbox — animated checkbox with indeterminate state.
- * Root wrapper accepts BoxProps.
+ * Root wrapper accepts BoxProps. Label rendered via <Text>.
  */
 
 import React from "react";
 import { colors } from "@stareezy-ui/tokens";
 import { isWeb } from "../shared/platform";
 import { Box } from "../primitives/Box";
-import type { BoxProps } from "../primitives/Box";
+import type { BoxProps, StyleProp } from "../primitives/Box";
+import { Text, ETextType } from "../primitives/Text";
 
 export type CheckboxSize = "sm" | "md" | "lg";
 
@@ -20,10 +21,13 @@ export interface CheckboxProps extends Omit<BoxProps, "onChange" | "children"> {
   disabled?: boolean;
   size?: CheckboxSize;
   color?: string;
+  /** ETextType for the label text (when label is a string) */
+  labelTextType?: ETextType;
+  /** Style override for the label text */
+  labelTextStyle?: StyleProp;
 }
 
 const SIZE_PX: Record<CheckboxSize, number> = { sm: 16, md: 20, lg: 24 };
-const FONT_SIZE: Record<CheckboxSize, number> = { sm: 13, md: 14, lg: 15 };
 
 export const Checkbox: React.FC<CheckboxProps> = ({
   checked = false,
@@ -34,12 +38,13 @@ export const Checkbox: React.FC<CheckboxProps> = ({
   disabled = false,
   size = "md",
   color = colors.celurenBlue[400].value,
+  labelTextType = ETextType.SParagraphRegular,
+  labelTextStyle,
   testID,
   accessibilityLabel,
   ...boxProps
 }) => {
   const px = SIZE_PX[size];
-  const fontSize = FONT_SIZE[size];
   const isChecked = checked || indeterminate;
 
   const handleChange = () => {
@@ -123,34 +128,33 @@ export const Checkbox: React.FC<CheckboxProps> = ({
         {...boxProps}
       >
         {boxEl}
-        {label && (
-          <span
-            style={{
-              fontSize,
-              lineHeight: 1.5,
-              color: disabled
-                ? colors.beauBlue[600].value
-                : colors.raisinBlack[800].value,
-              fontFamily: "Inter, system-ui, sans-serif",
-            }}
-          >
-            {label}
-          </span>
-        )}
+        {label &&
+          (typeof label === "string" ? (
+            <Text
+              type={labelTextType}
+              text={label}
+              color={
+                disabled
+                  ? colors.beauBlue[600].value
+                  : colors.raisinBlack[800].value
+              }
+              style={{
+                lineHeight: 1.5,
+                ...(labelTextStyle as React.CSSProperties),
+              }}
+            />
+          ) : (
+            label
+          ))}
       </Box>
     );
   }
 
   // React Native
   // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const {
-    TouchableOpacity,
-    View,
-    Text: RNText,
-  } = require("react-native") as {
+  const { TouchableOpacity, View } = require("react-native") as {
     TouchableOpacity: React.ComponentType<Record<string, unknown>>;
     View: React.ComponentType<Record<string, unknown>>;
-    Text: React.ComponentType<Record<string, unknown>>;
   };
 
   return (
@@ -184,12 +188,11 @@ export const Checkbox: React.FC<CheckboxProps> = ({
           }}
         >
           {checked && !indeterminate && (
-            <RNText
-              style={{ color: "#fff", fontSize: px * 0.55, fontWeight: "700" }}
-              allowFontScaling={false}
-            >
-              ✓
-            </RNText>
+            <Text
+              text="✓"
+              color="#fff"
+              style={{ fontSize: px * 0.55, fontWeight: "700" }}
+            />
           )}
           {indeterminate && (
             <View
@@ -202,14 +205,17 @@ export const Checkbox: React.FC<CheckboxProps> = ({
             />
           )}
         </View>
-        {label && (
-          <RNText
-            style={{ fontSize, color: colors.raisinBlack[800].value }}
-            allowFontScaling={false}
-          >
-            {label}
-          </RNText>
-        )}
+        {label &&
+          (typeof label === "string" ? (
+            <Text
+              type={labelTextType}
+              text={label}
+              color={colors.raisinBlack[800].value}
+              style={labelTextStyle as Record<string, unknown>}
+            />
+          ) : (
+            label
+          ))}
       </TouchableOpacity>
     </Box>
   );

@@ -1,6 +1,6 @@
 /**
  * Input — beautiful, polished text input component.
- * Improved: floating focus ring, smooth transitions, refined typography.
+ * Label, hint, and error rendered via <Text> component.
  */
 
 import React, { useState } from "react";
@@ -11,6 +11,8 @@ import { isWeb } from "../shared/platform";
 import { View } from "../primitives/Box";
 import { TouchableOpacity } from "../primitives/TouchableOpacity";
 import { flattenStyle } from "../shared/flattenStyle";
+import { Text, ETextType } from "../primitives/Text";
+import type { StyleProp } from "../primitives/Box";
 
 export enum EInputType {
   TextField = "TextField",
@@ -74,6 +76,18 @@ export interface IInputProps {
   autoFocus?: boolean;
   testID?: string;
   accessibilityLabel?: string;
+  /** ETextType for the label text */
+  labelTextType?: ETextType;
+  /** Style override for the label text */
+  labelTextStyle?: StyleProp;
+  /** ETextType for the hint text */
+  hintTextTypeOverride?: ETextType;
+  /** Style override for the hint text */
+  hintTextStyleOverride?: StyleProp;
+  /** ETextType for the error message text */
+  errorTextType?: ETextType;
+  /** Style override for the error message text */
+  errorTextStyle?: StyleProp;
 }
 
 export const Input: React.FC<IInputProps> = ({
@@ -111,6 +125,12 @@ export const Input: React.FC<IInputProps> = ({
   autoFocus,
   testID,
   accessibilityLabel,
+  labelTextType = ETextType.XSLabel,
+  labelTextStyle,
+  hintTextTypeOverride = ETextType.XSParagraphRegular,
+  hintTextStyleOverride,
+  errorTextType = ETextType.XSParagraphMedium,
+  errorTextStyle,
 }) => {
   const themed = useThemedColors();
   const [isFocused, setIsFocused] = useState(false);
@@ -181,42 +201,42 @@ export const Input: React.FC<IInputProps> = ({
           display: "flex",
           flexDirection: "column",
           gap: 5,
-          fontFamily: "Inter, system-ui, sans-serif",
           ...flattenStyle(style),
         }}
         onClick={onPress}
       >
         {topChildren}
         {label && (
-          <label
-            style={{
-              fontSize: 13,
-              fontWeight: "600",
-              color: themed.textPrimary,
-              letterSpacing: "0.01em",
-              display: "flex",
-              alignItems: "center",
-              gap: 3,
-            }}
-          >
-            {label}
+          <label style={{ display: "flex", alignItems: "center", gap: 3 }}>
+            <Text
+              type={labelTextType}
+              text={label}
+              color={themed.textPrimary}
+              style={{
+                letterSpacing: "0.01em",
+                ...(labelTextStyle as React.CSSProperties),
+              }}
+            />
             {isRequired && (
-              <span style={{ color: colors.crimsonRed[500].value }}>*</span>
+              <Text
+                type={ETextType.XSLabel}
+                text="*"
+                color={colors.crimsonRed[500].value}
+              />
             )}
           </label>
         )}
         {(hintText || hintTextIcon) && (
-          <span
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 4,
-              fontSize: 12,
-              color: themed.textSecondary,
-            }}
-          >
+          <span style={{ display: "flex", alignItems: "center", gap: 4 }}>
             {hintTextIcon}
-            {hintText}
+            {hintText && (
+              <Text
+                type={hintTextTypeOverride}
+                text={hintText}
+                color={themed.textSecondary}
+                style={hintTextStyleOverride as React.CSSProperties}
+              />
+            )}
           </span>
         )}
         <div
@@ -261,16 +281,12 @@ export const Input: React.FC<IInputProps> = ({
             </span>
           )}
           {leftPrefix && (
-            <span
-              style={{
-                color: themed.textSecondary,
-                fontSize,
-                flexShrink: 0,
-                fontWeight: "500",
-              }}
-            >
-              {leftPrefix}
-            </span>
+            <Text
+              type={ETextType.SParagraphMedium}
+              text={leftPrefix}
+              color={themed.textSecondary}
+              style={{ flexShrink: 0, fontSize }}
+            />
           )}
           {isTextArea ? (
             <textarea
@@ -320,16 +336,12 @@ export const Input: React.FC<IInputProps> = ({
             />
           )}
           {rightPrefix && (
-            <span
-              style={{
-                color: themed.textSecondary,
-                fontSize,
-                flexShrink: 0,
-                fontWeight: "500",
-              }}
-            >
-              {rightPrefix}
-            </span>
+            <Text
+              type={ETextType.SParagraphMedium}
+              text={rightPrefix}
+              color={themed.textSecondary}
+              style={{ flexShrink: 0, fontSize }}
+            />
           )}
           {rightIcon && (
             <span
@@ -350,18 +362,15 @@ export const Input: React.FC<IInputProps> = ({
           )}
         </div>
         {hasError && (
-          <span
+          <Text
+            type={errorTextType}
+            text={errorMessage!}
+            color={colors.crimsonRed[500].value}
             style={{
-              fontSize: 12,
-              color: colors.crimsonRed[500].value,
-              display: "flex",
-              alignItems: "center",
-              gap: 4,
               fontWeight: "500",
+              ...(errorTextStyle as React.CSSProperties),
             }}
-          >
-            {errorMessage}
-          </span>
+          />
         )}
       </div>
     );
@@ -369,26 +378,29 @@ export const Input: React.FC<IInputProps> = ({
 
   // React Native
   // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const { TextInput, Text: RNText } = require("react-native") as {
+  const { TextInput } = require("react-native") as {
     TextInput: React.ComponentType<Record<string, unknown>>;
-    Text: React.ComponentType<Record<string, unknown>>;
   };
 
   return (
     <View style={{ gap: spacing[4].value, ...flattenStyle(style) }}>
       {topChildren}
       {label && (
-        <RNText
-          style={{ fontSize: 13, fontWeight: "600", color: themed.textPrimary }}
-          allowFontScaling={false}
-        >
-          {label}
+        <View style={{ flexDirection: "row", alignItems: "center", gap: 3 }}>
+          <Text
+            type={labelTextType}
+            text={label}
+            color={themed.textPrimary}
+            style={labelTextStyle as Record<string, unknown>}
+          />
           {isRequired && (
-            <RNText style={{ color: colors.crimsonRed[500].value }}>
-              {" *"}
-            </RNText>
+            <Text
+              type={ETextType.XSLabel}
+              text=" *"
+              color={colors.crimsonRed[500].value}
+            />
           )}
-        </RNText>
+        </View>
       )}
       {hintTextIcon}
       <TouchableOpacity
@@ -412,12 +424,12 @@ export const Input: React.FC<IInputProps> = ({
           <TouchableOpacity onPress={onPressLeft}>{leftIcon}</TouchableOpacity>
         )}
         {leftPrefix && (
-          <RNText
-            style={{ color: themed.textSecondary, fontSize }}
-            allowFontScaling={false}
-          >
-            {leftPrefix}
-          </RNText>
+          <Text
+            type={ETextType.SParagraphMedium}
+            text={leftPrefix}
+            color={themed.textSecondary}
+            style={{ fontSize }}
+          />
         )}
         <TextInput
           style={{
@@ -453,12 +465,12 @@ export const Input: React.FC<IInputProps> = ({
           allowFontScaling={false}
         />
         {rightPrefix && (
-          <RNText
-            style={{ color: themed.textSecondary, fontSize }}
-            allowFontScaling={false}
-          >
-            {rightPrefix}
-          </RNText>
+          <Text
+            type={ETextType.SParagraphMedium}
+            text={rightPrefix}
+            color={themed.textSecondary}
+            style={{ fontSize }}
+          />
         )}
         {rightIcon && (
           <TouchableOpacity onPress={onPressRight}>
@@ -467,16 +479,15 @@ export const Input: React.FC<IInputProps> = ({
         )}
       </TouchableOpacity>
       {hasError && (
-        <RNText
+        <Text
+          type={errorTextType}
+          text={errorMessage!}
+          color={colors.crimsonRed[500].value}
           style={{
-            fontSize: 12,
-            color: colors.crimsonRed[500].value,
             fontWeight: "500",
+            ...(errorTextStyle as Record<string, unknown>),
           }}
-          allowFontScaling={false}
-        >
-          {errorMessage}
-        </RNText>
+        />
       )}
     </View>
   );

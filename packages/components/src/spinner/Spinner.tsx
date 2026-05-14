@@ -1,6 +1,6 @@
 /**
  * Spinner — animated loading indicator.
- * Root container accepts full BoxProps for layout/spacing overrides.
+ * Root container accepts full BoxProps. No text props needed (label is aria-only).
  */
 
 import React from "react";
@@ -56,7 +56,6 @@ export const Spinner: React.FC<SpinnerProps> = ({
   variant = "ring",
   label = "Loading",
   testID,
-  // BoxProps rest
   ...boxProps
 }) => {
   const px = SIZE_MAP[size];

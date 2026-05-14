@@ -1,13 +1,14 @@
 /**
  * Modal — overlay dialog with backdrop blur, smooth animations.
- * Dialog content wrapper accepts BoxProps.
+ * Dialog content wrapper accepts BoxProps. Title rendered via <Text>.
  */
 
 import React, { useEffect } from "react";
 import { colors } from "@stareezy-ui/tokens";
 import { isWeb } from "../shared/platform";
 import { Box } from "../primitives/Box";
-import type { BoxProps } from "../primitives/Box";
+import type { BoxProps, StyleProp } from "../primitives/Box";
+import { Text, ETextType } from "../primitives/Text";
 
 export type ModalSize = "xs" | "sm" | "md" | "lg" | "xl" | "full";
 
@@ -20,9 +21,12 @@ export interface ModalProps {
   children?: React.ReactNode;
   closeOnBackdrop?: boolean;
   showCloseButton?: boolean;
-  /** BoxProps applied to the dialog content box */
   contentBoxProps?: Omit<BoxProps, "children">;
   testID?: string;
+  /** ETextType for the modal title (when title is a string) */
+  titleTextType?: ETextType;
+  /** Style override for the modal title text */
+  titleTextStyle?: StyleProp;
 }
 
 const SIZE_W: Record<ModalSize, string> = {
@@ -65,6 +69,8 @@ export const Modal: React.FC<ModalProps> = ({
   showCloseButton = true,
   contentBoxProps,
   testID,
+  titleTextType = ETextType.XSHeadingBold,
+  titleTextStyle,
 }) => {
   useEffect(() => {
     if (!isWeb || !open) return;
@@ -152,21 +158,22 @@ export const Modal: React.FC<ModalProps> = ({
                 flexShrink: 0,
               }}
             >
-              {title && (
-                <span
-                  id="szr-modal-title"
-                  style={{
-                    fontSize: 18,
-                    fontWeight: "700",
-                    color: colors.raisinBlack[800].value,
-                    fontFamily:
-                      "'Plus Jakarta Sans',Inter,system-ui,sans-serif",
-                    lineHeight: 1.3,
-                  }}
-                >
-                  {title}
-                </span>
-              )}
+              {title &&
+                (typeof title === "string" ? (
+                  <span id="szr-modal-title">
+                    <Text
+                      type={titleTextType}
+                      text={title}
+                      color={colors.raisinBlack[800].value}
+                      style={{
+                        lineHeight: 1.3,
+                        ...(titleTextStyle as React.CSSProperties),
+                      }}
+                    />
+                  </span>
+                ) : (
+                  title
+                ))}
               {showCloseButton && (
                 <button
                   type="button"
@@ -231,13 +238,11 @@ export const Modal: React.FC<ModalProps> = ({
     Modal: RNModal,
     View,
     TouchableOpacity,
-    Text: RNText,
     ScrollView,
   } = require("react-native") as {
     Modal: React.ComponentType<Record<string, unknown>>;
     View: React.ComponentType<Record<string, unknown>>;
     TouchableOpacity: React.ComponentType<Record<string, unknown>>;
-    Text: React.ComponentType<Record<string, unknown>>;
     ScrollView: React.ComponentType<Record<string, unknown>>;
   };
 
@@ -283,27 +288,27 @@ export const Modal: React.FC<ModalProps> = ({
                 borderBottomColor: colors.beauBlue[200].value,
               }}
             >
-              {title && (
-                <RNText
-                  style={{
-                    fontSize: 18,
-                    fontWeight: "700",
-                    color: colors.raisinBlack[800].value,
-                    flex: 1,
-                  }}
-                  allowFontScaling={false}
-                >
-                  {title}
-                </RNText>
-              )}
+              {title &&
+                (typeof title === "string" ? (
+                  <Text
+                    type={titleTextType}
+                    text={title}
+                    color={colors.raisinBlack[800].value}
+                    style={{
+                      flex: 1,
+                      ...(titleTextStyle as Record<string, unknown>),
+                    }}
+                  />
+                ) : (
+                  title
+                ))}
               {showCloseButton && (
                 <TouchableOpacity onPress={onClose} style={{ padding: 4 }}>
-                  <RNText
-                    style={{ fontSize: 18, color: colors.beauBlue[700].value }}
-                    allowFontScaling={false}
-                  >
-                    ✕
-                  </RNText>
+                  <Text
+                    type={ETextType.XSHeadingBold}
+                    text="✕"
+                    color={colors.beauBlue[700].value}
+                  />
                 </TouchableOpacity>
               )}
             </View>

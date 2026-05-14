@@ -1,13 +1,14 @@
 /**
  * Progress — linear progress bar with label and percentage.
- * Root wrapper accepts BoxProps.
+ * Root wrapper accepts BoxProps. Label/percentage rendered via <Text>.
  */
 
 import React from "react";
 import { colors } from "@stareezy-ui/tokens";
 import { isWeb } from "../shared/platform";
 import { Box } from "../primitives/Box";
-import type { BoxProps } from "../primitives/Box";
+import type { BoxProps, StyleProp } from "../primitives/Box";
+import { Text, ETextType } from "../primitives/Text";
 
 export type ProgressSize = "xs" | "sm" | "md" | "lg";
 export type ProgressVariant = "default" | "gradient" | "striped";
@@ -23,6 +24,14 @@ export interface ProgressProps extends Omit<BoxProps, "children"> {
   showPercentage?: boolean;
   label?: string;
   animated?: boolean;
+  /** ETextType for the label text */
+  labelTextType?: ETextType;
+  /** Style override for the label text */
+  labelTextStyle?: StyleProp;
+  /** ETextType for the percentage text */
+  percentageTextType?: ETextType;
+  /** Style override for the percentage text */
+  percentageTextStyle?: StyleProp;
 }
 
 const HEIGHT: Record<ProgressSize, number> = { xs: 4, sm: 6, md: 8, lg: 12 };
@@ -54,6 +63,10 @@ export const Progress: React.FC<ProgressProps> = ({
   showPercentage = false,
   label,
   animated = true,
+  labelTextType = ETextType.XSParagraphMedium,
+  labelTextStyle,
+  percentageTextType = ETextType.XSLabel,
+  percentageTextStyle,
   testID,
   ...boxProps
 }) => {
@@ -87,29 +100,23 @@ export const Progress: React.FC<ProgressProps> = ({
             }}
           >
             {label && (
-              <span
-                style={{
-                  fontSize: 13,
-                  fontWeight: "500",
-                  color: colors.raisinBlack[800].value,
-                  fontFamily: "Inter, system-ui, sans-serif",
-                }}
-              >
-                {label}
-              </span>
+              <Text
+                type={labelTextType}
+                text={label}
+                color={colors.raisinBlack[800].value}
+                style={labelTextStyle as React.CSSProperties}
+              />
             )}
             {showPercentage && (
-              <span
+              <Text
+                type={percentageTextType}
+                text={`${Math.round(pct)}%`}
+                color={color}
                 style={{
-                  fontSize: 12,
-                  fontWeight: "600",
-                  color,
-                  fontFamily: "Inter, system-ui, sans-serif",
                   marginLeft: "auto",
+                  ...(percentageTextStyle as React.CSSProperties),
                 }}
-              >
-                {Math.round(pct)}%
-              </span>
+              />
             )}
           </div>
         )}
@@ -150,9 +157,8 @@ export const Progress: React.FC<ProgressProps> = ({
 
   // React Native
   // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const { View, Text: RNText } = require("react-native") as {
+  const { View } = require("react-native") as {
     View: React.ComponentType<Record<string, unknown>>;
-    Text: React.ComponentType<Record<string, unknown>>;
   };
 
   return (
@@ -166,24 +172,20 @@ export const Progress: React.FC<ProgressProps> = ({
           }}
         >
           {label && (
-            <RNText
-              style={{
-                fontSize: 13,
-                fontWeight: "500",
-                color: colors.raisinBlack[800].value,
-              }}
-              allowFontScaling={false}
-            >
-              {label}
-            </RNText>
+            <Text
+              type={labelTextType}
+              text={label}
+              color={colors.raisinBlack[800].value}
+              style={labelTextStyle as Record<string, unknown>}
+            />
           )}
           {showPercentage && (
-            <RNText
-              style={{ fontSize: 12, fontWeight: "600", color }}
-              allowFontScaling={false}
-            >
-              {Math.round(pct)}%
-            </RNText>
+            <Text
+              type={percentageTextType}
+              text={`${Math.round(pct)}%`}
+              color={color}
+              style={percentageTextStyle as Record<string, unknown>}
+            />
           )}
         </View>
       )}

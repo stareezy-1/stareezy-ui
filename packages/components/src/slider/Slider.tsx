@@ -1,13 +1,14 @@
 /**
  * Slider — range input with beautiful custom styling.
- * Root wrapper accepts BoxProps.
+ * Root wrapper accepts BoxProps. Value/mark labels rendered via <Text>.
  */
 
 import React from "react";
 import { colors } from "@stareezy-ui/tokens";
 import { isWeb } from "../shared/platform";
 import { Box } from "../primitives/Box";
-import type { BoxProps } from "../primitives/Box";
+import type { BoxProps, StyleProp } from "../primitives/Box";
+import { Text, ETextType } from "../primitives/Text";
 
 export type SliderSize = "sm" | "md" | "lg";
 
@@ -30,6 +31,14 @@ export interface SliderProps extends Omit<BoxProps, "onChange" | "children"> {
   marks?: SliderMark[];
   onChange?: (value: number) => void;
   onChangeEnd?: (value: number) => void;
+  /** ETextType for the current value badge */
+  valueTextType?: ETextType;
+  /** Style override for the value badge text */
+  valueTextStyle?: StyleProp;
+  /** ETextType for mark labels */
+  markTextType?: ETextType;
+  /** Style override for mark label text */
+  markTextStyle?: StyleProp;
 }
 
 const TRACK_H: Record<SliderSize, number> = { sm: 4, md: 6, lg: 8 };
@@ -82,6 +91,10 @@ export const Slider: React.FC<SliderProps> = ({
   marks,
   onChange,
   onChangeEnd,
+  valueTextType = ETextType.XSLabel,
+  valueTextStyle,
+  markTextType = ETextType.XSParagraphRegular,
+  markTextStyle,
   testID,
   accessibilityLabel,
   ...boxProps
@@ -111,19 +124,17 @@ export const Slider: React.FC<SliderProps> = ({
       >
         {showValue && (
           <div style={{ display: "flex", justifyContent: "flex-end" }}>
-            <span
+            <Text
+              type={valueTextType}
+              text={String(current)}
+              color={color}
               style={{
-                fontSize: 12,
-                fontWeight: "600",
-                color,
-                fontFamily: "Inter, system-ui, sans-serif",
                 background: `${color}18`,
                 padding: "2px 8px",
                 borderRadius: 20,
+                ...(valueTextStyle as React.CSSProperties),
               }}
-            >
-              {current}
-            </span>
+            />
           </div>
         )}
         <div style={{ position: "relative" }}>
@@ -186,16 +197,15 @@ export const Slider: React.FC<SliderProps> = ({
                     }}
                   />
                   {mark.label && (
-                    <span
+                    <Text
+                      type={markTextType}
+                      text={mark.label}
+                      color={colors.beauBlue[700].value}
                       style={{
-                        fontSize: 10,
-                        color: colors.beauBlue[700].value,
-                        fontFamily: "Inter, system-ui, sans-serif",
                         whiteSpace: "nowrap",
+                        ...(markTextStyle as React.CSSProperties),
                       }}
-                    >
-                      {mark.label}
-                    </span>
+                    />
                   )}
                 </div>
               );

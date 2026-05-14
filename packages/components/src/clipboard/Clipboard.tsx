@@ -1,24 +1,26 @@
 /**
  * Clipboard — copy-to-clipboard with visual feedback.
- * Root wrapper accepts BoxProps.
+ * Root wrapper accepts BoxProps. Value text rendered via <Text>.
  */
 
 import React, { useState } from "react";
 import { colors } from "@stareezy-ui/tokens";
 import { isWeb } from "../shared/platform";
 import { Box } from "../primitives/Box";
-import type { BoxProps } from "../primitives/Box";
+import type { BoxProps, StyleProp } from "../primitives/Box";
+import { Text, ETextType } from "../primitives/Text";
 
 export interface ClipboardProps extends Omit<BoxProps, "children"> {
   value: string;
-  /** Display text (defaults to value) */
   displayValue?: string;
-  /** Show the value inline */
   showValue?: boolean;
-  /** Custom trigger element */
   children?: React.ReactNode;
   onCopy?: (value: string) => void;
   successDuration?: number;
+  /** ETextType for the displayed value text */
+  valueTextType?: ETextType;
+  /** Style override for the displayed value text */
+  valueTextStyle?: StyleProp;
 }
 
 export const Clipboard: React.FC<ClipboardProps> = ({
@@ -28,6 +30,8 @@ export const Clipboard: React.FC<ClipboardProps> = ({
   children,
   onCopy,
   successDuration = 2000,
+  valueTextType = ETextType.XSParagraphRegular,
+  valueTextStyle,
   testID,
   ...boxProps
 }) => {
@@ -38,7 +42,6 @@ export const Clipboard: React.FC<ClipboardProps> = ({
       if (isWeb && navigator?.clipboard) {
         await navigator.clipboard.writeText(value);
       } else if (isWeb) {
-        // Fallback for older browsers
         const el = document.createElement("textarea");
         el.value = value;
         el.style.position = "fixed";
@@ -70,27 +73,26 @@ export const Clipboard: React.FC<ClipboardProps> = ({
           border: `1px solid ${colors.beauBlue[200].value}`,
           borderRadius: 8,
           padding: "6px 10px",
-          fontFamily: "Inter,system-ui,sans-serif",
           maxWidth: "100%",
         }}
         data-testid={testID}
         {...boxProps}
       >
         {showValue && (
-          <span
+          <Text
+            type={valueTextType}
+            text={display}
+            color={colors.raisinBlack[800].value}
             style={{
-              fontSize: 13,
-              color: colors.raisinBlack[800].value,
               fontFamily: "'Fira Code',monospace,Inter,system-ui,sans-serif",
               overflow: "hidden",
               textOverflow: "ellipsis",
               whiteSpace: "nowrap",
               flex: 1,
               minWidth: 0,
+              ...(valueTextStyle as React.CSSProperties),
             }}
-          >
-            {display}
-          </span>
+          />
         )}
         {children ? (
           <span
@@ -132,7 +134,6 @@ export const Clipboard: React.FC<ClipboardProps> = ({
             }}
           >
             {copied ? (
-              // Checkmark
               <svg
                 width="14"
                 height="14"
@@ -149,7 +150,6 @@ export const Clipboard: React.FC<ClipboardProps> = ({
                 />
               </svg>
             ) : (
-              // Copy icon
               <svg
                 width="14"
                 height="14"
@@ -183,15 +183,11 @@ export const Clipboard: React.FC<ClipboardProps> = ({
 
   // React Native
   // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const {
-    TouchableOpacity,
-    Text: RNText,
-    Clipboard: RNClipboard,
-  } = require("react-native") as {
-    TouchableOpacity: React.ComponentType<Record<string, unknown>>;
-    Text: React.ComponentType<Record<string, unknown>>;
-    Clipboard: { setString: (s: string) => void };
-  };
+  const { TouchableOpacity, Clipboard: RNClipboard } =
+    require("react-native") as {
+      TouchableOpacity: React.ComponentType<Record<string, unknown>>;
+      Clipboard: { setString: (s: string) => void };
+    };
 
   const handleNativeCopy = () => {
     RNClipboard.setString(value);
@@ -214,35 +210,26 @@ export const Clipboard: React.FC<ClipboardProps> = ({
       {...boxProps}
     >
       {showValue && (
-        <RNText
-          style={{
-            fontSize: 13,
-            color: colors.raisinBlack[800].value,
-            flex: 1,
-          }}
-          allowFontScaling={false}
+        <Text
+          type={valueTextType}
+          text={display}
+          color={colors.raisinBlack[800].value}
+          style={{ flex: 1, ...(valueTextStyle as Record<string, unknown>) }}
           numberOfLines={1}
-        >
-          {display}
-        </RNText>
+        />
       )}
       <TouchableOpacity
         onPress={handleNativeCopy}
         accessibilityLabel={copied ? "Copied!" : "Copy to clipboard"}
         style={{ padding: 4 }}
       >
-        <RNText
-          style={{
-            fontSize: 12,
-            color: copied
-              ? colors.lawnGreen[600].value
-              : colors.beauBlue[700].value,
-            fontWeight: "600",
-          }}
-          allowFontScaling={false}
-        >
-          {copied ? "✓" : "Copy"}
-        </RNText>
+        <Text
+          type={ETextType.XSLabel}
+          text={copied ? "✓" : "Copy"}
+          color={
+            copied ? colors.lawnGreen[600].value : colors.beauBlue[700].value
+          }
+        />
       </TouchableOpacity>
     </Box>
   );
