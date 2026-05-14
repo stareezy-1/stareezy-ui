@@ -1,6 +1,6 @@
 {
   "name": "@stareezy-ui/compiler",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Stareezy UI compiler — Babel/Vite/Metro plugin for build-time token extraction and atomic CSS generation",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -10,6 +10,11 @@
       "import": "./dist/index.mjs",
       "require": "./dist/index.js",
       "types": "./dist/index.d.ts"
+    },
+    "./babel": {
+      "import": "./dist/babel.mjs",
+      "require": "./dist/babel.js",
+      "types": "./dist/babel.d.ts"
     }
   },
   "files": [
