@@ -1,6 +1,6 @@
 # @stareezy-ui/components
 
-70+ cross-platform UI components for React Native and web, built on the Stareezy UI token system.
+17+ cross-platform UI components for React Native and web, built on the Stareezy UI token system.
 
 [![npm](https://img.shields.io/npm/v/@stareezy-ui/components)](https://www.npmjs.com/package/@stareezy-ui/components)
 

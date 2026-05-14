@@ -44,7 +44,7 @@ const PACKAGES = [
   },
   {
     name: "components",
-    desc: "All 70+ UI components rebuilt from rekosistem-components.",
+    desc: "All 17+ UI components rebuilt from rekosistem-components.",
     color: "#535A5E",
     bg: "#F4F6FB",
     deps: "tokens, core, runtime",
@@ -69,7 +69,7 @@ export default function ArchitecturePage() {
 │   ├── runtime/      # Style registry and platform adapters
 │   ├── stylesheet/   # Atomic CSS sheet management (web)
 │   ├── compiler/     # Babel/Vite build-time transform
-│   └── components/   # 70+ cross-platform components
+│   └── components/   # 17+ cross-platform components
 └── apps/
     ├── docs/         # This documentation site
     ├── storybook/    # Component stories

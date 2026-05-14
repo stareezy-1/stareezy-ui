@@ -30,7 +30,7 @@ import { Box, Text, Button } from "@stareezy-ui/components";
 | Package                                            | Description                                                    | npm                                                                                                                   |
 | -------------------------------------------------- | -------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
 | [`@stareezy-ui/tokens`](./packages/tokens)         | Token factory, all token definitions, theme system, `createUi` | [![npm](https://img.shields.io/npm/v/@stareezy-ui/tokens)](https://www.npmjs.com/package/@stareezy-ui/tokens)         |
-| [`@stareezy-ui/components`](./packages/components) | 70+ cross-platform components                                  | [![npm](https://img.shields.io/npm/v/@stareezy-ui/components)](https://www.npmjs.com/package/@stareezy-ui/components) |
+| [`@stareezy-ui/components`](./packages/components) | 17+ cross-platform components                                  | [![npm](https://img.shields.io/npm/v/@stareezy-ui/components)](https://www.npmjs.com/package/@stareezy-ui/components) |
 | [`@stareezy-ui/runtime`](./packages/runtime)       | O(1) style registry, web and RN adapters                       | [![npm](https://img.shields.io/npm/v/@stareezy-ui/runtime)](https://www.npmjs.com/package/@stareezy-ui/runtime)       |
 | [`@stareezy-ui/compiler`](./packages/compiler)     | Babel/Vite build-time transform                                | [![npm](https://img.shields.io/npm/v/@stareezy-ui/compiler)](https://www.npmjs.com/package/@stareezy-ui/compiler)     |
 | [`@stareezy-ui/core`](./packages/core)             | Utilities, hooks, platform helpers                             | [![npm](https://img.shields.io/npm/v/@stareezy-ui/core)](https://www.npmjs.com/package/@stareezy-ui/core)             |
@@ -178,7 +178,7 @@ packages/runtime     ← O(1) style registry, web + RN adapters
     ↓
 packages/compiler    ← Babel/Vite build-time transform (build-only dep)
     ↓
-packages/components  ← 70+ cross-platform UI components
+packages/components  ← 17+ cross-platform UI components
 ```
 
 ## Contributing
