@@ -1,6 +1,6 @@
 {
   "name": "@stareezy-ui/tokens",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Stareezy UI design token definitions — zero dependencies",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",

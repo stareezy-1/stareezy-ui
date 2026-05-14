@@ -11,7 +11,7 @@ export {
   TokenDeserializationError,
 } from "./serialization";
 
-export { palette, colors } from "./colors";
+export { palette, colors, extendedColors } from "./colors";
 
 export { semanticColors } from "./semantic";
 

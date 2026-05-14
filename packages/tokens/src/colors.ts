@@ -285,3 +285,109 @@ export const colors = {
   transparentDark: token("rgba(0,0,0,0.84)", "transparentDark"),
   surface: token("#FFF1CC", "surface"),
 } as const;
+
+// ---------------------------------------------------------------------------
+// Extended palette — beautiful modern colors for new components
+// ---------------------------------------------------------------------------
+
+export const extendedColors = {
+  // ── Violet / Purple ───────────────────────────────────────────────────────
+  violet: {
+    50: token("#f5f3ff", "violet-50"),
+    100: token("#ede9fe", "violet-100"),
+    200: token("#ddd6fe", "violet-200"),
+    300: token("#c4b5fd", "violet-300"),
+    400: token("#a78bfa", "violet-400"),
+    500: token("#8b5cf6", "violet-500"),
+    600: token("#7c3aed", "violet-600"),
+    700: token("#6d28d9", "violet-700"),
+    800: token("#5b21b6", "violet-800"),
+    900: token("#4c1d95", "violet-900"),
+  },
+
+  // ── Rose / Pink ───────────────────────────────────────────────────────────
+  rose: {
+    50: token("#fff1f2", "rose-50"),
+    100: token("#ffe4e6", "rose-100"),
+    200: token("#fecdd3", "rose-200"),
+    300: token("#fda4af", "rose-300"),
+    400: token("#fb7185", "rose-400"),
+    500: token("#f43f5e", "rose-500"),
+    600: token("#e11d48", "rose-600"),
+    700: token("#be123c", "rose-700"),
+    800: token("#9f1239", "rose-800"),
+    900: token("#881337", "rose-900"),
+  },
+
+  // ── Amber ─────────────────────────────────────────────────────────────────
+  amber: {
+    50: token("#fffbeb", "amber-50"),
+    100: token("#fef3c7", "amber-100"),
+    200: token("#fde68a", "amber-200"),
+    300: token("#fcd34d", "amber-300"),
+    400: token("#fbbf24", "amber-400"),
+    500: token("#f59e0b", "amber-500"),
+    600: token("#d97706", "amber-600"),
+    700: token("#b45309", "amber-700"),
+    800: token("#92400e", "amber-800"),
+    900: token("#78350f", "amber-900"),
+  },
+
+  // ── Emerald ───────────────────────────────────────────────────────────────
+  emerald: {
+    50: token("#ecfdf5", "emerald-50"),
+    100: token("#d1fae5", "emerald-100"),
+    200: token("#a7f3d0", "emerald-200"),
+    300: token("#6ee7b7", "emerald-300"),
+    400: token("#34d399", "emerald-400"),
+    500: token("#10b981", "emerald-500"),
+    600: token("#059669", "emerald-600"),
+    700: token("#047857", "emerald-700"),
+    800: token("#065f46", "emerald-800"),
+    900: token("#064e3b", "emerald-900"),
+  },
+
+  // ── Sky ───────────────────────────────────────────────────────────────────
+  sky: {
+    50: token("#f0f9ff", "sky-50"),
+    100: token("#e0f2fe", "sky-100"),
+    200: token("#bae6fd", "sky-200"),
+    300: token("#7dd3fc", "sky-300"),
+    400: token("#38bdf8", "sky-400"),
+    500: token("#0ea5e9", "sky-500"),
+    600: token("#0284c7", "sky-600"),
+    700: token("#0369a1", "sky-700"),
+    800: token("#075985", "sky-800"),
+    900: token("#0c4a6e", "sky-900"),
+  },
+
+  // ── Slate (neutral with blue tint) ────────────────────────────────────────
+  slate: {
+    50: token("#f8fafc", "slate-50"),
+    100: token("#f1f5f9", "slate-100"),
+    200: token("#e2e8f0", "slate-200"),
+    300: token("#cbd5e1", "slate-300"),
+    400: token("#94a3b8", "slate-400"),
+    500: token("#64748b", "slate-500"),
+    600: token("#475569", "slate-600"),
+    700: token("#334155", "slate-700"),
+    800: token("#1e293b", "slate-800"),
+    900: token("#0f172a", "slate-900"),
+    950: token("#020617", "slate-950"),
+  },
+
+  // ── Zinc (warm neutral) ───────────────────────────────────────────────────
+  zinc: {
+    50: token("#fafafa", "zinc-50"),
+    100: token("#f4f4f5", "zinc-100"),
+    200: token("#e4e4e7", "zinc-200"),
+    300: token("#d4d4d8", "zinc-300"),
+    400: token("#a1a1aa", "zinc-400"),
+    500: token("#71717a", "zinc-500"),
+    600: token("#52525b", "zinc-600"),
+    700: token("#3f3f46", "zinc-700"),
+    800: token("#27272a", "zinc-800"),
+    900: token("#18181b", "zinc-900"),
+    950: token("#09090b", "zinc-950"),
+  },
+} as const;
