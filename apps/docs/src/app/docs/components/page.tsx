@@ -1,443 +1,237 @@
 import type { Metadata } from "next";
 import { DocPage, Callout } from "../../../components/DocPage";
+
 export const metadata: Metadata = {
-  title: "Component API",
+  title: "Component API — Stareezy UI",
   description: "API reference for all Stareezy UI components.",
 };
 
-const COMPONENT_LIST = [
+const PRIMITIVES = [
   "Box",
+  "View",
   "Text",
   "HStack",
   "VStack",
-  "Button",
-  "Input",
-  "Checkbox",
-  "CheckboxOption",
-  "Dropdown",
-  "FilterButton",
-  "PinCode",
-  "Ratings",
-  "Screen",
-  "ViewStack",
-  "Spacer",
-  "Line",
-  "Dot",
-  "CardBox",
-  "Card",
-  "GroupContainer",
-  "Footer",
-  "Header",
-  "Topbar",
-  "BaseModal",
-  "BottomSheets",
-  "Drawer",
-  "ImageModal",
-  "CalendarModal",
-  "DateRangeCalendarModal",
-  "MonthCalendarModal",
-  "Labels",
-  "Badges",
-  "BadgesStatus",
-  "Avatars",
-  "Loading",
-  "LoadingSpinner",
-  "ProgressBar",
-  "Toast",
-  "EmptyState",
-  "Calendar",
-  "LineChart",
-  "RadarChart",
-  "BarChart",
-  "Table",
-  "TopTabs",
-  "Pagination",
-  "SummaryCard",
-  "Photo",
-  "UploadPhoto",
+  "TouchableOpacity",
 ];
 
-const BUTTON_VARIANTS = [
-  "primary",
-  "secondary",
-  "tertiary",
-  "link",
-  "transparent",
+const COMPONENTS = [
+  {
+    name: "Accordion",
+    desc: "Collapsible content sections with smooth animation.",
+    icon: "⊞",
+    color: "#024CCE",
+    bg: "#E6EDFA",
+  },
+  {
+    name: "Avatar",
+    desc: "User avatar with image, initials fallback, and status indicator.",
+    icon: "◉",
+    color: "#0C9182",
+    bg: "#E7FDFA",
+  },
+  {
+    name: "Button",
+    desc: "Cross-platform button with 12 variants, 5 sizes, loading and disabled states.",
+    icon: "⬡",
+    color: "#4D8D01",
+    bg: "#F3FFE3",
+  },
+  {
+    name: "Checkbox",
+    desc: "Animated checkbox with indeterminate state and label support.",
+    icon: "☑",
+    color: "#C98B25",
+    bg: "#FEF4E2",
+  },
+  {
+    name: "CircularProgress",
+    desc: "SVG-based circular progress with animated stroke-dashoffset.",
+    icon: "◎",
+    color: "#8b5cf6",
+    bg: "#f5f3ff",
+  },
+  {
+    name: "Clipboard",
+    desc: "Copy-to-clipboard with visual feedback and monospace display.",
+    icon: "⎘",
+    color: "#0369a1",
+    bg: "#e0f2fe",
+  },
+  {
+    name: "Divider",
+    desc: "Horizontal or vertical separator with optional label.",
+    icon: "─",
+    color: "#64748b",
+    bg: "#f1f5f9",
+  },
+  {
+    name: "Dropdown",
+    desc: "Select with search, option groups, and multi-select.",
+    icon: "▾",
+    color: "#C20219",
+    bg: "#FFE9EC",
+  },
+  {
+    name: "Input",
+    desc: "Text input with focus ring, error state, icons, and prefix slots.",
+    icon: "⌨",
+    color: "#024CCE",
+    bg: "#E6EDFA",
+  },
+  {
+    name: "Modal",
+    desc: "Overlay dialog with backdrop blur, smooth animation, and size variants.",
+    icon: "⬜",
+    color: "#5D2555",
+    bg: "#F9DEDE",
+  },
+  {
+    name: "Progress",
+    desc: "Linear progress bar with label, percentage, gradient, and striped variants.",
+    icon: "▬",
+    color: "#4D8D01",
+    bg: "#F3FFE3",
+  },
+  {
+    name: "Resizer",
+    desc: "Resizable container with drag handle — horizontal, vertical, or both.",
+    icon: "⤡",
+    color: "#C98B25",
+    bg: "#FEF4E2",
+  },
+  {
+    name: "Skeleton",
+    desc: "Shimmer loading placeholder — text, circular, rectangular, rounded.",
+    icon: "▭",
+    color: "#64748b",
+    bg: "#f1f5f9",
+  },
+  {
+    name: "Slider",
+    desc: "Range input with custom styling, marks, and value display.",
+    icon: "⊸",
+    color: "#0C9182",
+    bg: "#E7FDFA",
+  },
+  {
+    name: "Spinner",
+    desc: "Animated loading indicator — ring, dots, and pulse variants.",
+    icon: "↻",
+    color: "#024CCE",
+    bg: "#E6EDFA",
+  },
+  {
+    name: "Switch",
+    desc: "Animated toggle switch with label and size variants.",
+    icon: "⊙",
+    color: "#4D8D01",
+    bg: "#F3FFE3",
+  },
+  {
+    name: "Tabs",
+    desc: "Tab navigation with animated indicator — underline, pills, and card variants.",
+    icon: "⊟",
+    color: "#C20219",
+    bg: "#FFE9EC",
+  },
 ];
-const BUTTON_SIZES = ["sm", "md", "lg", "xl", "xxl"];
+
+const BOX_PROPS = [
+  "bg",
+  "color",
+  "p",
+  "px",
+  "py",
+  "pt",
+  "pb",
+  "m",
+  "mx",
+  "my",
+  "mt",
+  "mb",
+  "rounded",
+  "borderWidth",
+  "borderColor",
+  "width",
+  "height",
+  "flex",
+  "flexDirection",
+  "alignItems",
+  "justifyContent",
+  "gap",
+  "opacity",
+  "position",
+  "zIndex",
+  "overflow",
+];
 
 export default function ComponentsPage() {
   return (
     <DocPage
       title="Component API"
-      description="70+ cross-platform components built on the Stareezy UI token system."
+      description="17 beautiful, cross-platform components built on the Stareezy UI token system. Every component accepts BoxProps for layout and spacing."
       badge="Reference"
       icon="⬡"
       badgeColor="#0C9182"
     >
       <Callout type="info">
         All components are exported from <code>@stareezy-ui/components</code>{" "}
-        and work on both web and React Native with the same API.
+        and work on both web and React Native with the same API. Every component
+        extends <code>BoxProps</code> — pass token shorthand props directly to
+        the root container.
       </Callout>
 
-      <h2>Primitives</h2>
-
-      {/* Box */}
-      <div
+      {/* ── BoxProps ─────────────────────────────────────────────────────── */}
+      <h2>BoxProps — universal style system</h2>
+      <p
         style={{
-          background: "var(--color-surface)",
-          border: "1px solid var(--color-border-2)",
-          borderRadius: 14,
-          padding: "1.5rem",
-          marginBottom: "1.25rem",
+          color: "var(--color-text-2)",
+          fontSize: "0.9rem",
+          marginBottom: "1rem",
         }}
       >
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: 10,
-            marginBottom: "0.85rem",
-          }}
-        >
-          <div
-            style={{
-              width: 32,
-              height: 32,
-              background: "var(--brand-50)",
-              borderRadius: 8,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              fontSize: "1rem",
-            }}
-          >
-            ⬡
-          </div>
-          <h3 style={{ margin: 0, fontSize: "1.1rem", fontWeight: 700 }}>
-            Box
-          </h3>
-          <span
-            style={{
-              fontSize: "0.72rem",
-              fontWeight: 600,
-              color: "var(--brand-500)",
-              background: "var(--brand-50)",
-              padding: "2px 8px",
-              borderRadius: 100,
-            }}
-          >
-            Primitive
-          </span>
-        </div>
-        <p
-          style={{
-            color: "var(--color-text-2)",
-            fontSize: "0.9rem",
-            marginBottom: "1rem",
-          }}
-        >
-          The foundational layout component. Accepts all token-typed style props
-          and renders a <code>div</code> on web or <code>View</code> on React
-          Native.
-        </p>
-        <pre>
-          <code>{`import { Box } from '@stareezy-ui/components'
-import { colors, spacing, radius } from '@stareezy-ui/tokens'
-
-<Box
-  bg={colors.celurenBlue[500]}
-  p={spacing[4]}
-  rounded={radius.md}
-  flexDirection="row"
-  alignItems="center"
-/>`}</code>
-        </pre>
-        <div
-          style={{
-            marginTop: "0.85rem",
-            display: "flex",
-            flexWrap: "wrap",
-            gap: "0.4rem",
-          }}
-        >
-          {[
-            "bg",
-            "color",
-            "p",
-            "px",
-            "py",
-            "m",
-            "mx",
-            "my",
-            "rounded",
-            "borderWidth",
-            "borderColor",
-            "width",
-            "height",
-            "flex",
-            "flexDirection",
-            "alignItems",
-            "justifyContent",
-          ].map((p) => (
-            <code
-              key={p}
-              style={{
-                fontSize: "0.75rem",
-                background: "var(--brand-50)",
-                color: "var(--brand-600)",
-                padding: "2px 8px",
-                borderRadius: 5,
-                border: "1px solid var(--brand-100)",
-              }}
-            >
-              {p}
-            </code>
-          ))}
-        </div>
-      </div>
-
-      {/* Text */}
-      <div
-        style={{
-          background: "var(--color-surface)",
-          border: "1px solid var(--color-border-2)",
-          borderRadius: 14,
-          padding: "1.5rem",
-          marginBottom: "1.25rem",
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: 10,
-            marginBottom: "0.85rem",
-          }}
-        >
-          <div
-            style={{
-              width: 32,
-              height: 32,
-              background: "#F3FFE3",
-              borderRadius: 8,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              fontSize: "1rem",
-            }}
-          >
-            T
-          </div>
-          <h3 style={{ margin: 0, fontSize: "1.1rem", fontWeight: 700 }}>
-            Text
-          </h3>
-          <span
-            style={{
-              fontSize: "0.72rem",
-              fontWeight: 600,
-              color: "#4D8D01",
-              background: "#F3FFE3",
-              padding: "2px 8px",
-              borderRadius: 100,
-            }}
-          >
-            Primitive
-          </span>
-        </div>
-        <p
-          style={{
-            color: "var(--color-text-2)",
-            fontSize: "0.9rem",
-            marginBottom: "1rem",
-          }}
-        >
-          Typography component with 50+ variant presets. Sets{" "}
-          <code>allowFontScaling=false</code> on React Native automatically.
-        </p>
-        <pre>
-          <code>{`import { Text, ETextType } from '@stareezy-ui/components'
-
-<Text type={ETextType.MHeadingBold} text="Hello world" />
-<Text type={ETextType.MParagraphRegular} text="Body copy" color="#024CCE" />
-<Text text="" emptyState="—" />`}</code>
-        </pre>
-      </div>
-
-      {/* HStack / VStack */}
-      <div
-        style={{
-          background: "var(--color-surface)",
-          border: "1px solid var(--color-border-2)",
-          borderRadius: 14,
-          padding: "1.5rem",
-          marginBottom: "1.25rem",
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: 10,
-            marginBottom: "0.85rem",
-          }}
-        >
-          <div
-            style={{
-              width: 32,
-              height: 32,
-              background: "#FEF4E2",
-              borderRadius: 8,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              fontSize: "0.8rem",
-              fontWeight: 700,
-              color: "#C98B25",
-            }}
-          >
-            ⇔
-          </div>
-          <h3 style={{ margin: 0, fontSize: "1.1rem", fontWeight: 700 }}>
-            HStack / VStack
-          </h3>
-        </div>
-        <p
-          style={{
-            color: "var(--color-text-2)",
-            fontSize: "0.9rem",
-            marginBottom: "1rem",
-          }}
-        >
-          Flex layout helpers built on <code>Box</code>. HStack is{" "}
-          <code>flexDirection="row"</code>, VStack is{" "}
-          <code>flexDirection="column"</code>.
-        </p>
-        <pre>
-          <code>{`import { HStack, VStack } from '@stareezy-ui/components'
-
-<HStack gap={8} alignItems="center">
-  <Text text="Left" />
-  <Text text="Right" />
-</HStack>`}</code>
-        </pre>
-      </div>
-
-      <h2>Button</h2>
-      <div
-        style={{
-          background: "var(--color-surface)",
-          border: "1px solid var(--color-border-2)",
-          borderRadius: 14,
-          padding: "1.5rem",
-          marginBottom: "1.25rem",
-        }}
-      >
-        <pre>
-          <code>{`import { Button } from '@stareezy-ui/components'
-
-<Button
-  variant="primary"
-  size="md"
-  text="Submit"
-  onPress={() => {}}
-  accessibilityLabel="Submit form"
-/>
-
-// Loading state
-<Button variant="primary" text="Saving…" loading />
-
-// Disabled state
-<Button variant="secondary" text="Unavailable" disabled />`}</code>
-        </pre>
-
-        <div
-          style={{
-            display: "flex",
-            gap: "1.5rem",
-            marginTop: "1rem",
-            flexWrap: "wrap",
-          }}
-        >
-          <div>
-            <div
-              style={{
-                fontSize: "0.72rem",
-                fontWeight: 700,
-                textTransform: "uppercase",
-                letterSpacing: "0.08em",
-                color: "var(--color-muted)",
-                marginBottom: "0.4rem",
-              }}
-            >
-              Variants
-            </div>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: "0.35rem" }}>
-              {BUTTON_VARIANTS.map((v) => (
-                <code
-                  key={v}
-                  style={{
-                    fontSize: "0.75rem",
-                    background: "var(--brand-50)",
-                    color: "var(--brand-600)",
-                    padding: "2px 8px",
-                    borderRadius: 5,
-                    border: "1px solid var(--brand-100)",
-                  }}
-                >
-                  {v}
-                </code>
-              ))}
-            </div>
-          </div>
-          <div>
-            <div
-              style={{
-                fontSize: "0.72rem",
-                fontWeight: 700,
-                textTransform: "uppercase",
-                letterSpacing: "0.08em",
-                color: "var(--color-muted)",
-                marginBottom: "0.4rem",
-              }}
-            >
-              Sizes
-            </div>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: "0.35rem" }}>
-              {BUTTON_SIZES.map((s) => (
-                <code
-                  key={s}
-                  style={{
-                    fontSize: "0.75rem",
-                    background: "var(--color-surface-2)",
-                    color: "var(--color-text-2)",
-                    padding: "2px 8px",
-                    borderRadius: 5,
-                    border: "1px solid var(--color-border-2)",
-                  }}
-                >
-                  {s}
-                </code>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <h2>Full Component List</h2>
-      <p>
-        All {COMPONENT_LIST.length}+ components are exported from{" "}
-        <code>@stareezy-ui/components</code>:
+        Every component accepts these token-typed shorthand props on its root
+        container. Values can be raw numbers, strings, or{" "}
+        <code>Token&lt;T&gt;</code> objects from{" "}
+        <code>@stareezy-ui/tokens</code>.
       </p>
       <div
         style={{
           display: "flex",
           flexWrap: "wrap",
           gap: "0.4rem",
-          margin: "0.75rem 0",
+          marginBottom: "2rem",
         }}
       >
-        {COMPONENT_LIST.map((c) => (
+        {BOX_PROPS.map((p) => (
+          <code
+            key={p}
+            style={{
+              fontSize: "0.75rem",
+              background: "var(--brand-50)",
+              color: "var(--brand-600)",
+              padding: "2px 8px",
+              borderRadius: 5,
+              border: "1px solid var(--brand-100)",
+            }}
+          >
+            {p}
+          </code>
+        ))}
+      </div>
+
+      {/* ── Primitives ───────────────────────────────────────────────────── */}
+      <h2>Primitives</h2>
+      <div
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+          gap: "0.4rem",
+          marginBottom: "2rem",
+        }}
+      >
+        {PRIMITIVES.map((c) => (
           <code
             key={c}
             style={{
@@ -454,10 +248,95 @@ import { colors, spacing, radius } from '@stareezy-ui/tokens'
         ))}
       </div>
 
+      {/* ── Component grid ───────────────────────────────────────────────── */}
+      <h2>Components</h2>
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
+          gap: "1rem",
+          marginBottom: "2rem",
+        }}
+      >
+        {COMPONENTS.map((c) => (
+          <div
+            key={c.name}
+            style={{
+              background: "var(--color-surface)",
+              border: "1px solid var(--color-border-2)",
+              borderRadius: 14,
+              padding: "1.25rem",
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 10,
+                marginBottom: "0.6rem",
+              }}
+            >
+              <div
+                style={{
+                  width: 32,
+                  height: 32,
+                  background: c.bg,
+                  borderRadius: 8,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  fontSize: "1rem",
+                  color: c.color,
+                  fontWeight: 700,
+                }}
+              >
+                {c.icon}
+              </div>
+              <span
+                style={{
+                  fontWeight: 700,
+                  fontSize: "0.95rem",
+                  color: "var(--color-text)",
+                }}
+              >
+                {c.name}
+              </span>
+            </div>
+            <p
+              style={{
+                margin: 0,
+                fontSize: "0.82rem",
+                color: "var(--color-text-2)",
+                lineHeight: 1.55,
+              }}
+            >
+              {c.desc}
+            </p>
+          </div>
+        ))}
+      </div>
+
+      {/* ── Usage example ────────────────────────────────────────────────── */}
+      <h2>Usage example</h2>
+      <pre>
+        <code>{`import {
+  Box, Text, Button, Input, Accordion,
+  Avatar, Checkbox, CircularProgress, Clipboard,
+  Divider, Dropdown, Modal, Progress, Resizer,
+  Skeleton, Slider, Spinner, Switch, Tabs,
+} from '@stareezy-ui/components'
+import { colors, spacing, radius } from '@stareezy-ui/tokens'
+
+// Every component accepts BoxProps
+<Spinner size="md" p={8} bg={colors.beauBlue[50]} rounded={radius.md} />
+<Progress value={72} showPercentage label="Upload" mx={16} />
+<Avatar name="Bintang R" size="lg" status="online" mr={8} />
+<Checkbox checked label="Accept terms" p={12} />`}</code>
+      </pre>
+
       <Callout type="tip">
-        Every component has a TypeScript prop interface with no <code>any</code>{" "}
-        types. Prop tables are auto-generated in Storybook from these
-        interfaces.
+        Open Storybook to explore all component variants interactively with live
+        controls, dark mode toggle, and auto-generated prop tables.
       </Callout>
     </DocPage>
   );

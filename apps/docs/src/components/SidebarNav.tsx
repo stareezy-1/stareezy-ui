@@ -19,7 +19,6 @@ const NAV_SECTIONS = [
       { href: "/docs/theming", label: "Theming", icon: "◑" },
       { href: "/docs/compiler", label: "Compiler", icon: "⚙" },
       { href: "/docs/create-ui", label: "createUi", icon: "◎" },
-      // { href: "/docs/migration", label: "Migration", icon: "→" },
     ],
   },
   {

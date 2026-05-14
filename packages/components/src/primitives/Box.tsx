@@ -272,17 +272,23 @@ export interface BoxProps {
   tabIndex?: number | undefined;
   onKeyDown?: React.KeyboardEventHandler<HTMLDivElement> | undefined;
   id?: string | undefined;
-  "aria-label"?: string;
-  "aria-hidden"?: boolean | "true" | "false";
-  "aria-disabled"?: boolean | "true" | "false";
-  "aria-expanded"?: boolean | "true" | "false";
-  "aria-checked"?: boolean | "true" | "false" | "mixed";
-  "aria-selected"?: boolean | "true" | "false";
-  "aria-busy"?: boolean | "true" | "false";
-  "aria-invalid"?: boolean | "true" | "false" | "grammar" | "spelling";
-  "aria-orientation"?: "horizontal" | "vertical";
-  "data-testid"?: string;
-  "data-theme"?: string;
+  "aria-label"?: string | undefined;
+  "aria-hidden"?: boolean | "true" | "false" | undefined;
+  "aria-disabled"?: boolean | "true" | "false" | undefined;
+  "aria-expanded"?: boolean | "true" | "false" | undefined;
+  "aria-checked"?: boolean | "true" | "false" | "mixed" | undefined;
+  "aria-selected"?: boolean | "true" | "false" | undefined;
+  "aria-busy"?: boolean | "true" | "false" | undefined;
+  "aria-invalid"?:
+    | boolean
+    | "true"
+    | "false"
+    | "grammar"
+    | "spelling"
+    | undefined;
+  "aria-orientation"?: "horizontal" | "vertical" | undefined;
+  "data-testid"?: string | undefined;
+  "data-theme"?: string | undefined;
   accessibilityRole?: string | undefined;
   accessibilityState?: Record<string, unknown> | undefined;
 
@@ -295,7 +301,7 @@ export interface BoxProps {
   style?: StyleProp;
   testID?: string | undefined;
   accessibilityLabel?: string | undefined;
-  className?: string;
+  className?: string | undefined;
 }
 
 // ---------------------------------------------------------------------------

@@ -12,7 +12,11 @@
 import React, { useState, useCallback } from "react";
 
 // Token data only — no React hooks in these files
-import { palette, colors } from "../../../../../packages/tokens/src/colors";
+import {
+  palette,
+  colors,
+  extendedColors,
+} from "../../../../../packages/tokens/src/colors";
 import { spacing } from "../../../../../packages/tokens/src/spacing";
 import { typography } from "../../../../../packages/tokens/src/typography";
 import { radius, roundness } from "../../../../../packages/tokens/src/radius";
@@ -38,7 +42,9 @@ function shadowToCss(v: {
   shadowOpacity: number;
   shadowRadius: number;
 }): string {
-  return `${v.shadowOffset?.width}px ${v.shadowOffset?.height}px ${v.shadowRadius * 2}px rgba(0,0,0,${v.shadowOpacity})`;
+  return `${v.shadowOffset?.width}px ${v.shadowOffset?.height}px ${
+    v.shadowRadius * 2
+  }px rgba(0,0,0,${v.shadowOpacity})`;
 }
 
 // ── Token Popover ─────────────────────────────────────────────────────────────
@@ -219,7 +225,9 @@ function ColorSwatch({
       style={{
         display: "flex",
         flexDirection: "column",
-        border: `1px solid ${hov ? "var(--brand-200)" : "var(--color-border-2)"}`,
+        border: `1px solid ${
+          hov ? "var(--brand-200)" : "var(--color-border-2)"
+        }`,
         borderRadius: 10,
         overflow: "hidden",
         cursor: "pointer",
@@ -344,7 +352,9 @@ function SpacingRow({
         alignItems: "center",
         gap: "1rem",
         padding: "0.5rem 0.75rem",
-        border: `1px solid ${hov ? "var(--brand-100)" : "var(--color-border-2)"}`,
+        border: `1px solid ${
+          hov ? "var(--brand-100)" : "var(--color-border-2)"
+        }`,
         borderRadius: 8,
         background: hov ? "var(--brand-50)" : "var(--color-surface)",
         cursor: "pointer",
@@ -408,7 +418,9 @@ function TypoSample({
         alignItems: "center",
         gap: "1.25rem",
         padding: "0.85rem 1rem",
-        border: `1px solid ${hov ? "var(--brand-100)" : "var(--color-border-2)"}`,
+        border: `1px solid ${
+          hov ? "var(--brand-100)" : "var(--color-border-2)"
+        }`,
         borderRadius: 10,
         background: hov ? "var(--brand-50)" : "var(--color-surface)",
         cursor: "pointer",
@@ -479,7 +491,9 @@ function RadiusCard({
         alignItems: "center",
         gap: "0.6rem",
         padding: "1.25rem",
-        border: `1px solid ${hov ? "var(--brand-100)" : "var(--color-border-2)"}`,
+        border: `1px solid ${
+          hov ? "var(--brand-100)" : "var(--color-border-2)"
+        }`,
         borderRadius: 10,
         background: hov ? "var(--brand-50)" : "var(--color-surface)",
         cursor: "pointer",
@@ -542,7 +556,9 @@ function ShadowCard({
         alignItems: "center",
         gap: "1rem",
         padding: "1.5rem",
-        border: `1px solid ${hov ? "var(--brand-100)" : "var(--color-border-2)"}`,
+        border: `1px solid ${
+          hov ? "var(--brand-100)" : "var(--color-border-2)"
+        }`,
         borderRadius: 12,
         background: hov ? "var(--brand-50)" : "var(--color-surface)",
         cursor: "pointer",
@@ -607,7 +623,9 @@ function SemanticRow({
         alignItems: "center",
         gap: "0.85rem",
         padding: "0.6rem 0.85rem",
-        border: `1px solid ${hov ? "var(--brand-100)" : "var(--color-border-2)"}`,
+        border: `1px solid ${
+          hov ? "var(--brand-100)" : "var(--color-border-2)"
+        }`,
         borderRadius: 8,
         background: hov ? "var(--brand-50)" : "var(--color-surface)",
         cursor: "pointer",
@@ -759,7 +777,9 @@ export default function TokensPage() {
           borderRadius: 20,
           padding: "2.5rem",
           marginBottom: "2.5rem",
-          border: `1px solid ${isDark ? "rgba(255,255,255,0.06)" : "var(--color-border-2)"}`,
+          border: `1px solid ${
+            isDark ? "rgba(255,255,255,0.06)" : "var(--color-border-2)"
+          }`,
           position: "relative",
           overflow: "hidden",
           animation: "fadeUp 0.4s ease",
@@ -866,7 +886,9 @@ export default function TokensPage() {
               background: isDark
                 ? "rgba(255,255,255,0.06)"
                 : "var(--color-surface)",
-              border: `1px solid ${isDark ? "rgba(255,255,255,0.1)" : "var(--color-border)"}`,
+              border: `1px solid ${
+                isDark ? "rgba(255,255,255,0.1)" : "var(--color-border)"
+              }`,
               borderRadius: 10,
               padding: "0.35rem",
             }}
@@ -893,8 +915,8 @@ export default function TokensPage() {
                     theme === t
                       ? "white"
                       : isDark
-                        ? "rgba(255,255,255,0.5)"
-                        : "var(--color-muted)",
+                      ? "rgba(255,255,255,0.5)"
+                      : "var(--color-muted)",
                   transition: "all 0.2s",
                 }}
               >
@@ -914,9 +936,9 @@ export default function TokensPage() {
           }}
         >
           {[
-            ["200+", "Color tokens"],
+            ["300+", "Color tokens"],
             ["50+", "Spacing tokens"],
-            ["18", "Typography tokens"],
+            ["30+", "Typography tokens"],
             ["23", "Radius tokens"],
           ].map(([v, l]) => (
             <div key={l}>
@@ -1019,6 +1041,56 @@ export default function TokensPage() {
           tokens={colors.danger as unknown as Record<string, Token<string>>}
           onSelect={handleSelect}
         />
+        {/* Extended palette */}
+        <ColorGroup
+          name="Violet"
+          tokens={
+            extendedColors.violet as unknown as Record<string, Token<string>>
+          }
+          onSelect={handleSelect}
+        />
+        <ColorGroup
+          name="Rose"
+          tokens={
+            extendedColors.rose as unknown as Record<string, Token<string>>
+          }
+          onSelect={handleSelect}
+        />
+        <ColorGroup
+          name="Amber"
+          tokens={
+            extendedColors.amber as unknown as Record<string, Token<string>>
+          }
+          onSelect={handleSelect}
+        />
+        <ColorGroup
+          name="Emerald"
+          tokens={
+            extendedColors.emerald as unknown as Record<string, Token<string>>
+          }
+          onSelect={handleSelect}
+        />
+        <ColorGroup
+          name="Sky"
+          tokens={
+            extendedColors.sky as unknown as Record<string, Token<string>>
+          }
+          onSelect={handleSelect}
+        />
+        <ColorGroup
+          name="Slate"
+          tokens={
+            extendedColors.slate as unknown as Record<string, Token<string>>
+          }
+          onSelect={handleSelect}
+        />
+        <ColorGroup
+          name="Zinc"
+          tokens={
+            extendedColors.zinc as unknown as Record<string, Token<string>>
+          }
+          onSelect={handleSelect}
+        />
       </Section>
 
       {/* ── Semantic Tokens ─────────────────────────────────────────────── */}
@@ -1119,6 +1191,42 @@ export default function TokensPage() {
               label={key}
               tok={tok}
               sampleStyle={{ fontFamily: tok.value as string }}
+              onSelect={handleSelect}
+            />
+          ))}
+        </div>
+        <SubLabel text="Line Heights" />
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "0.5rem",
+            marginBottom: "1.5rem",
+          }}
+        >
+          {Object.entries(typography.lineHeight).map(([key, tok]) => (
+            <TypoSample
+              key={tok.id}
+              label={key}
+              tok={tok}
+              sampleStyle={{ lineHeight: tok.value as number, fontSize: 14 }}
+              onSelect={handleSelect}
+            />
+          ))}
+        </div>
+        <SubLabel text="Letter Spacing" />
+        <div
+          style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}
+        >
+          {Object.entries(typography.letterSpacing).map(([key, tok]) => (
+            <TypoSample
+              key={tok.id}
+              label={key}
+              tok={tok}
+              sampleStyle={{
+                letterSpacing: `${(tok.value as number) * 16}px`,
+                fontSize: 14,
+              }}
               onSelect={handleSelect}
             />
           ))}

@@ -33,14 +33,17 @@ export const webBase: React.CSSProperties = {
   outline: "none",
   border: "none",
   cursor: "pointer",
-  transition: "opacity 0.15s ease, background-color 0.15s ease",
+  transition:
+    "opacity 0.18s ease, background-color 0.18s ease, box-shadow 0.18s ease, transform 0.12s ease",
   userSelect: "none",
   gap: spacing[8].value,
   whiteSpace: "nowrap",
   flexShrink: 0,
-  // Prevent button from inheriting height from flex parent
   maxHeight: "none",
   minHeight: 0,
+  fontFamily: "Inter, system-ui, sans-serif",
+  letterSpacing: "0.01em",
+  WebkitFontSmoothing: "antialiased",
 };
 
 // ---------------------------------------------------------------------------
@@ -105,48 +108,61 @@ export const webTypeGeometry: Record<EButtonType, WebTypeGeometry> = {
 
 export const webSizePresets: Record<EButtonSize, React.CSSProperties> = {
   [EButtonSize.SM]: {
-    paddingTop: ss.sM.value,
-    paddingBottom: ss.sM.value,
-    paddingLeft: ss.lG.value,
-    paddingRight: ss.lG.value,
-    fontSize: spacing[14].value,
+    paddingTop: 6,
+    paddingBottom: 6,
+    paddingLeft: 14,
+    paddingRight: 14,
+    fontSize: 13,
+    fontWeight: "600",
+    minHeight: 32,
   },
   [EButtonSize.MD]: {
-    paddingTop: spacing[8].value,
-    paddingBottom: spacing[8].value,
-    paddingLeft: ss.xL.value,
-    paddingRight: ss.xL.value,
-    fontSize: spacing[14].value,
+    paddingTop: 9,
+    paddingBottom: 9,
+    paddingLeft: 18,
+    paddingRight: 18,
+    fontSize: 14,
+    fontWeight: "600",
+    minHeight: 38,
   },
   [EButtonSize.LG]: {
-    paddingTop: spacing[10].value,
-    paddingBottom: spacing[10].value,
-    paddingLeft: ss["2xL"].value,
-    paddingRight: ss["2xL"].value,
-    fontSize: spacing[16].value,
+    paddingTop: 11,
+    paddingBottom: 11,
+    paddingLeft: 22,
+    paddingRight: 22,
+    fontSize: 15,
+    fontWeight: "600",
+    minHeight: 44,
   },
   [EButtonSize.XL]: {
-    paddingTop: ss.lG.value,
-    paddingBottom: ss.lG.value,
-    paddingLeft: ss["3xL"].value,
-    paddingRight: ss["3xL"].value,
-    fontSize: spacing[16].value,
+    paddingTop: 13,
+    paddingBottom: 13,
+    paddingLeft: 28,
+    paddingRight: 28,
+    fontSize: 16,
+    fontWeight: "600",
+    minHeight: 50,
   },
   [EButtonSize.XXL]: {
-    paddingTop: ss.xL.value,
-    paddingBottom: ss.xL.value,
-    paddingLeft: ss["4xL"].value,
-    paddingRight: ss["4xL"].value,
-    fontSize: spacing[18].value,
+    paddingTop: 16,
+    paddingBottom: 16,
+    paddingLeft: 36,
+    paddingRight: 36,
+    fontSize: 17,
+    fontWeight: "600",
+    minHeight: 58,
   },
 };
 
-/** Default padding when no size is specified — matches MD size */
+/** Default padding when no size is specified — matches LG size */
 export const webDefaultPadding: React.CSSProperties = {
-  paddingTop: spacing[8].value,
-  paddingBottom: spacing[8].value,
-  paddingLeft: ss.xL.value,
-  paddingRight: ss.xL.value,
+  paddingTop: 11,
+  paddingBottom: 11,
+  paddingLeft: 22,
+  paddingRight: 22,
+  fontSize: 15,
+  fontWeight: "600",
+  minHeight: 44,
 };
 
 // ---------------------------------------------------------------------------

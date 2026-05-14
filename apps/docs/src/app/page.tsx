@@ -67,12 +67,12 @@ const QUICK_LINKS = [
   {
     href: "/docs/components",
     label: "Component API",
-    desc: "70+ cross-platform components",
+    desc: "17 beautiful cross-platform components",
   },
   {
     href: "/tokens",
     label: "Token Explorer",
-    desc: "Browse all design tokens visually",
+    desc: "Browse 300+ design tokens visually",
   },
 ];
 
@@ -138,8 +138,8 @@ export default function HomePage() {
           }}
         >
           A cross-platform design token system and component library for React
-          Native and web. Replace string-based styles with statically
-          analyzable, compiler-friendly token objects.
+          Native and web. 17 beautiful components, 300+ typed tokens, Inter +
+          Plus Jakarta Sans typography — all tree-shakeable.
         </p>
 
         {/* CTA buttons */}
