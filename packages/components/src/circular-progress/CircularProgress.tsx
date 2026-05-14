@@ -142,7 +142,7 @@ export const CircularProgress: React.FC<CircularProgressProps> = ({
           {children}
           {!children && showValue && (
             <Text
-              type={valueTextType}
+              {...(valueTextType !== undefined ? { type: valueTextType } : {})}
               text={`${Math.round(pct)}%`}
               color={colors.raisinBlack[800].value}
               style={{
@@ -185,7 +185,7 @@ export const CircularProgress: React.FC<CircularProgressProps> = ({
       />
       {showValue && (
         <Text
-          type={valueTextType}
+          {...(valueTextType !== undefined ? { type: valueTextType } : {})}
           text={`${Math.round(pct)}%`}
           color={colors.raisinBlack[800].value}
           style={{

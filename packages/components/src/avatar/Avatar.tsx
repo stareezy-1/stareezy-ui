@@ -154,8 +154,10 @@ export const Avatar: React.FC<AvatarProps> = ({
           {showFallback && fallbackIcon}
           {showFallback && !fallbackIcon && initials && (
             <Text
+              {...(initialsTextType !== undefined
+                ? { type: initialsTextType }
+                : {})}
               text={initials}
-              type={initialsTextType}
               color="#ffffff"
               style={{
                 fontSize,
@@ -225,8 +227,10 @@ export const Avatar: React.FC<AvatarProps> = ({
           />
         ) : initials ? (
           <Text
+            {...(initialsTextType !== undefined
+              ? { type: initialsTextType }
+              : {})}
             text={initials}
-            type={initialsTextType}
             color="#ffffff"
             style={{
               fontSize,

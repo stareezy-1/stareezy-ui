@@ -657,7 +657,7 @@ const DEFAULT_PRESET: TextStylePreset = {
 export interface TextProps {
   text?: string;
   emptyState?: string;
-  type?: ETextType;
+  type?: ETextType | undefined;
   fontStyle?: EFontStyle;
   /** @deprecated use fontStyle */
   fontStyles?: EFontStyle;
