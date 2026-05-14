@@ -1,5 +1,8 @@
 # Stareezy UI
 
+<img width="1536" height="1024" alt="image" src="https://github.com/user-attachments/assets/5fb5ee25-cef6-451a-af4a-2f92de479655" />
+
+
 A fully typed, object-based design token system and component library for cross-platform React Native and web applications.
 
 [![CI](https://github.com/stareezy-1/stareezy-ui/actions/workflows/ci.yml/badge.svg)](https://github.com/stareezy-1/stareezy-ui/actions/workflows/ci.yml)
