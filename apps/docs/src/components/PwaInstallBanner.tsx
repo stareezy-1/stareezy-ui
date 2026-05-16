@@ -20,27 +20,27 @@ export function PwaInstallBanner() {
   const [installing, setInstalling] = useState(false);
   const [installed, setInstalled] = useState(false);
 
-  useEffect(() => {
-    // Already standalone
-    if (window.matchMedia("(display-mode: standalone)").matches) return;
+  // useEffect(() => {
+  //   // Already standalone
+  //   if (window.matchMedia("(display-mode: standalone)").matches) return;
 
-    // User already dismissed — never show again
-    if (localStorage.getItem("pwa-dismissed-docs")) return;
+  //   // User already dismissed — never show again
+  //   if (localStorage.getItem("pwa-dismissed-docs")) return;
 
-    const handler = (e: Event) => {
-      e.preventDefault();
-      setDeferredPrompt(e as BeforeInstallPromptEvent);
-      setTimeout(() => setShow(true), 4000);
-    };
+  //   const handler = (e: Event) => {
+  //     e.preventDefault();
+  //     setDeferredPrompt(e as BeforeInstallPromptEvent);
+  //     setTimeout(() => setShow(true), 4000);
+  //   };
 
-    window.addEventListener("beforeinstallprompt", handler);
-    window.addEventListener("appinstalled", () => {
-      setInstalled(true);
-      setShow(false);
-    });
+  //   window.addEventListener("beforeinstallprompt", handler);
+  //   window.addEventListener("appinstalled", () => {
+  //     setInstalled(true);
+  //     setShow(false);
+  //   });
 
-    return () => window.removeEventListener("beforeinstallprompt", handler);
-  }, []);
+  //   return () => window.removeEventListener("beforeinstallprompt", handler);
+  // }, []);
 
   async function install() {
     if (!deferredPrompt) return;
@@ -169,7 +169,7 @@ export function PwaInstallBanner() {
                   margin: "4px 0 0",
                 }}
               >
-                stareezy-ui.vercel.app
+                ui.stareezy.tech
               </p>
             </div>
           </div>
