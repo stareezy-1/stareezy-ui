@@ -10,6 +10,7 @@ import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
 import { AppHeader } from "./AppHeader";
 import { DocsLayout } from "./DocsLayout";
+import { PwaInstallBanner } from "./PwaInstallBanner";
 
 interface RootShellProps {
   children: ReactNode;
@@ -34,6 +35,7 @@ export function RootShell({ children }: RootShellProps) {
       ) : (
         <div className="full-page">{children}</div>
       )}
+      <PwaInstallBanner />
     </>
   );
 }

@@ -1,0 +1,54 @@
+{
+  "name": "Stareezy UI — Typed Design Token System",
+  "short_name": "Stareezy UI",
+  "description": "A fully typed, cross-platform design token system and component library for React Native and web.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0d1117",
+  "theme_color": "#0d1117",
+  "orientation": "any",
+  "categories": ["developer tools", "documentation"],
+  "lang": "en",
+  "icons": [
+    {
+      "src": "/icon-192.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Installation",
+      "url": "/docs/installation",
+      "description": "Get started with Stareezy UI"
+    },
+    {
+      "name": "Components",
+      "url": "/docs/components",
+      "description": "Browse all 17 components"
+    },
+    {
+      "name": "Token Explorer",
+      "url": "/tokens",
+      "description": "Browse 300+ design tokens"
+    },
+    {
+      "name": "Playground",
+      "url": "/playground",
+      "description": "Live code sandbox"
+    }
+  ]
+}

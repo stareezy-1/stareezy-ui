@@ -4,7 +4,7 @@
   "outputDirectory": ".next",
   "framework": "nextjs",
   "env": {
-    "NEXT_PUBLIC_SITE_URL": "https://stareezy-ui.vercel.app",
-    "NEXT_PUBLIC_STORYBOOK_URL": "https://storybook-stareezy-ui.vercel.app"
+    "NEXT_PUBLIC_SITE_URL": "https://ui.stareezy.tech",
+    "NEXT_PUBLIC_STORYBOOK_URL": "https://storybook.stareezy.tech"
   }
 }

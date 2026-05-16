@@ -3,8 +3,27 @@ import { DocPage, Callout } from "../../../components/DocPage";
 import { StorybookCard } from "./StorybookCard";
 
 export const metadata: Metadata = {
-  title: "Component API — Stareezy UI",
-  description: "API reference for all Stareezy UI components.",
+  title: "Component API",
+  description:
+    "API reference for all 17 Stareezy UI components. Cross-platform components for React Native and web with full TypeScript support.",
+  keywords: [
+    "react native components",
+    "UI components",
+    "Button",
+    "Input",
+    "Modal",
+    "Tabs",
+    "Slider",
+    "Progress",
+    "design system components",
+  ],
+  alternates: { canonical: "https://ui.stareezy.tech/docs/components" },
+  openGraph: {
+    title: "Component API — Stareezy UI",
+    description:
+      "17 beautiful cross-platform components for React Native and web.",
+    url: "https://ui.stareezy.tech/docs/components",
+  },
 };
 
 const PRIMITIVES = [

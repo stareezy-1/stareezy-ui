@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0d1117"/>
+      <stop offset="100%" stop-color="#161b22"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#024CCE"/>
+      <stop offset="100%" stop-color="#14F1D8"/>
+    </linearGradient>
+    <linearGradient id="title-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0F1010"/>
+      <stop offset="60%" stop-color="#024CCE"/>
+      <stop offset="100%" stop-color="#14F1D8"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <pattern id="grid" width="60" height="60" patternUnits="userSpaceOnUse">
+    <path d="M 60 0 L 0 0 0 60" fill="none" stroke="#21262d" stroke-width="1"/>
+  </pattern>
+  <rect width="1200" height="630" fill="url(#grid)" opacity="0.6"/>
+  <rect x="0" y="0" width="1200" height="4" fill="url(#accent)"/>
+
+  <!-- Hexagon logo -->
+  <polygon points="80,80 120,58 160,80 160,124 120,146 80,124" fill="none" stroke="#024CCE" stroke-width="4"/>
+  <circle cx="120" cy="102" r="14" fill="#14F1D8"/>
+
+  <!-- Title -->
+  <text x="200" y="100" font-size="52" font-weight="900" font-family="system-ui,sans-serif" fill="url(#title-grad)">Stareezy UI</text>
+  <text x="200" y="148" font-size="22" font-family="system-ui,sans-serif" fill="#8b949e">Typed Design Token System &amp; Component Library</text>
+
+  <!-- Divider -->
+  <rect x="80" y="180" width="1040" height="1" fill="#21262d"/>
+
+  <!-- Feature pills -->
+  <g transform="translate(80, 210)">
+    <rect x="0"   y="0" width="180" height="40" rx="8" fill="#161b22" stroke="#30363d" stroke-width="1"/>
+    <text x="90"  y="26" font-size="14" text-anchor="middle" font-family="system-ui,sans-serif" fill="#8b949e">300+ Typed Tokens</text>
+    <rect x="192" y="0" width="180" height="40" rx="8" fill="#161b22" stroke="#30363d" stroke-width="1"/>
+    <text x="282" y="26" font-size="14" text-anchor="middle" font-family="system-ui,sans-serif" fill="#8b949e">17 Components</text>
+    <rect x="384" y="0" width="180" height="40" rx="8" fill="#161b22" stroke="#30363d" stroke-width="1"/>
+    <text x="474" y="26" font-size="14" text-anchor="middle" font-family="system-ui,sans-serif" fill="#8b949e">O(1) Runtime</text>
+    <rect x="576" y="0" width="180" height="40" rx="8" fill="#161b22" stroke="#30363d" stroke-width="1"/>
+    <text x="666" y="26" font-size="14" text-anchor="middle" font-family="system-ui,sans-serif" fill="#8b949e">Cross-Platform</text>
+    <rect x="768" y="0" width="180" height="40" rx="8" fill="#161b22" stroke="#30363d" stroke-width="1"/>
+    <text x="858" y="26" font-size="14" text-anchor="middle" font-family="system-ui,sans-serif" fill="#8b949e">Tree-Shakeable</text>
+  </g>
+
+  <!-- Code preview -->
+  <rect x="80" y="280" width="680" height="260" rx="12" fill="#161b22" stroke="#30363d" stroke-width="1"/>
+  <rect x="80" y="280" width="680" height="36" rx="12" fill="#21262d"/>
+  <rect x="80" y="304" width="680" height="12" fill="#21262d"/>
+  <circle cx="108" cy="298" r="6" fill="#ff5f57"/>
+  <circle cx="128" cy="298" r="6" fill="#febc2e"/>
+  <circle cx="148" cy="298" r="6" fill="#28c840"/>
+  <text x="104" y="340" font-size="13" font-family="monospace" fill="#8b949e">import</text>
+  <text x="152" y="340" font-size="13" font-family="monospace" fill="#e2e8f0">{ colors, spacing }</text>
+  <text x="310" y="340" font-size="13" font-family="monospace" fill="#8b949e">from</text>
+  <text x="348" y="340" font-size="13" font-family="monospace" fill="#a5d6ff">'@stareezy-ui/tokens'</text>
+  <text x="104" y="368" font-size="13" font-family="monospace" fill="#8b949e">import</text>
+  <text x="152" y="368" font-size="13" font-family="monospace" fill="#e2e8f0">{ Box, Button }</text>
+  <text x="290" y="368" font-size="13" font-family="monospace" fill="#8b949e">from</text>
+  <text x="328" y="368" font-size="13" font-family="monospace" fill="#a5d6ff">'@stareezy-ui/components'</text>
+  <text x="104" y="410" font-size="13" font-family="monospace" fill="#e2e8f0">&lt;</text>
+  <text x="116" y="410" font-size="13" font-family="monospace" fill="#7ee787">Box</text>
+  <text x="148" y="410" font-size="13" font-family="monospace" fill="#79c0ff">bg</text>
+  <text x="168" y="410" font-size="13" font-family="monospace" fill="#e2e8f0">={colors.celurenBlue[500]}</text>
+  <text x="104" y="438" font-size="13" font-family="monospace" fill="#e2e8f0">  &lt;</text>
+  <text x="124" y="438" font-size="13" font-family="monospace" fill="#7ee787">Button</text>
+  <text x="172" y="438" font-size="13" font-family="monospace" fill="#79c0ff">variant</text>
+  <text x="228" y="438" font-size="13" font-family="monospace" fill="#e2e8f0">=</text>
+  <text x="238" y="438" font-size="13" font-family="monospace" fill="#a5d6ff">"primary"</text>
+  <text x="104" y="466" font-size="13" font-family="monospace" fill="#e2e8f0">&lt;/</text>
+  <text x="124" y="466" font-size="13" font-family="monospace" fill="#7ee787">Box</text>
+  <text x="152" y="466" font-size="13" font-family="monospace" fill="#e2e8f0">&gt;</text>
+
+  <!-- Stats right side -->
+  <g transform="translate(800, 290)">
+    <text x="0" y="30" font-size="14" font-family="system-ui,sans-serif" fill="#8b949e" font-weight="600" text-transform="uppercase" letter-spacing="0.08em">PACKAGES</text>
+    <text x="0" y="80" font-size="48" font-weight="800" font-family="system-ui,sans-serif" fill="#024CCE">6</text>
+    <text x="0" y="104" font-size="13" font-family="system-ui,sans-serif" fill="#8b949e">tokens · core · runtime</text>
+    <text x="0" y="120" font-size="13" font-family="system-ui,sans-serif" fill="#8b949e">stylesheet · compiler · components</text>
+    <rect x="0" y="140" width="340" height="1" fill="#21262d"/>
+    <text x="0" y="180" font-size="48" font-weight="800" font-family="system-ui,sans-serif" fill="#14F1D8">300+</text>
+    <text x="0" y="204" font-size="13" font-family="system-ui,sans-serif" fill="#8b949e">Design tokens</text>
+    <rect x="0" y="220" width="340" height="1" fill="#21262d"/>
+    <text x="0" y="260" font-size="48" font-weight="800" font-family="system-ui,sans-serif" fill="#024CCE">17</text>
+    <text x="0" y="284" font-size="13" font-family="system-ui,sans-serif" fill="#8b949e">Cross-platform components</text>
+  </g>
+
+  <!-- URL -->
+  <text x="80" y="590" font-size="18" font-family="system-ui,sans-serif" fill="#484f58">stareezy-ui.vercel.app</text>
+</svg>

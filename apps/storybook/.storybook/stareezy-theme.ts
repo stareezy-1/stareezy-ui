@@ -9,7 +9,7 @@ export const stareezyTheme = create({
 
   // Brand
   brandTitle: "Stareezy UI",
-  brandUrl: "https://stareezy-ui.vercel.app",
+  brandUrl: "https://ui.stareezy.tech",
   brandTarget: "_blank",
 
   // Colors — mapped from Stareezy UI token values
@@ -49,7 +49,7 @@ export const stareezyDarkTheme = create({
   base: "dark",
 
   brandTitle: "Stareezy UI",
-  brandUrl: "https://stareezy-ui.vercel.app",
+  brandUrl: "https://ui.stareezy.tech",
   brandTarget: "_blank",
 
   colorPrimary: "#4E82DD", // celurenBlue-300

@@ -1,13 +1,14 @@
-import type { MetadataRoute } from 'next'
+import type { MetadataRoute } from "next";
 
-const SITE_URL = process.env['NEXT_PUBLIC_SITE_URL'] ?? 'https://stareezy-ui.vercel.app'
+const SITE_URL =
+  process.env["NEXT_PUBLIC_SITE_URL"] ?? "https://ui.stareezy.tech";
 
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: {
-      userAgent: '*',
-      allow: '/',
+      userAgent: "*",
+      allow: "/",
     },
     sitemap: `${SITE_URL}/sitemap.xml`,
-  }
+  };
 }

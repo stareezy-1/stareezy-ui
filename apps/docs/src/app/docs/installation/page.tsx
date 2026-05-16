@@ -3,7 +3,22 @@ import { DocPage, Callout, Step } from "apps/docs/src/components/DocPage";
 
 export const metadata: Metadata = {
   title: "Installation",
-  description: "How to install Stareezy UI in your project.",
+  description:
+    "Install Stareezy UI in your React Native or web project. Get started with the typed design token system and component library in minutes.",
+  keywords: [
+    "install stareezy ui",
+    "npm install",
+    "pnpm install",
+    "react native design system",
+    "design tokens setup",
+  ],
+  alternates: { canonical: "https://ui.stareezy.tech/docs/installation" },
+  openGraph: {
+    title: "Installation — Stareezy UI",
+    description:
+      "Install Stareezy UI in your React Native or web project in minutes.",
+    url: "https://ui.stareezy.tech/docs/installation",
+  },
 };
 
 export default function InstallationPage() {
