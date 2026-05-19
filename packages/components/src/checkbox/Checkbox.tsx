@@ -9,8 +9,9 @@ import { isWeb } from "../shared/platform";
 import { Box } from "../primitives/Box";
 import type { BoxProps, StyleProp } from "../primitives/Box";
 import { Text, ETextType } from "../primitives/Text";
+import type { CheckboxSize } from "./Checkbox.types";
 
-export type CheckboxSize = "sm" | "md" | "lg";
+export type { CheckboxSize };
 
 export interface CheckboxProps extends Omit<BoxProps, "onChange" | "children"> {
   checked?: boolean;

@@ -9,8 +9,9 @@ import { isWeb } from "../shared/platform";
 import { Box } from "../primitives/Box";
 import type { BoxProps, StyleProp } from "../primitives/Box";
 import { Text, ETextType } from "../primitives/Text";
+import type { ModalSize } from "./Modal.types";
 
-export type ModalSize = "xs" | "sm" | "md" | "lg" | "xl" | "full";
+export type { ModalSize };
 
 export interface ModalProps {
   open: boolean;
@@ -23,6 +24,8 @@ export interface ModalProps {
   showCloseButton?: boolean;
   contentBoxProps?: Omit<BoxProps, "children">;
   testID?: string;
+  /** Style override forwarded to the root container element */
+  style?: StyleProp;
   /** ETextType for the modal title (when title is a string) */
   titleTextType?: ETextType;
   /** Style override for the modal title text */
@@ -53,6 +56,7 @@ let modalKfInjected = false;
 function injectModalKf() {
   if (modalKfInjected || typeof document === "undefined") return;
   const el = document.createElement("style");
+  el.setAttribute("data-szr-kf", "modal");
   el.textContent = MODAL_KF;
   document.head.appendChild(el);
   modalKfInjected = true;
@@ -69,6 +73,7 @@ export const Modal: React.FC<ModalProps> = ({
   showCloseButton = true,
   contentBoxProps,
   testID,
+  style,
   titleTextType = ETextType.XSHeadingBold,
   titleTextStyle,
 }) => {
@@ -109,6 +114,7 @@ export const Modal: React.FC<ModalProps> = ({
           justifyContent: "center",
           padding: isFull ? 0 : 16,
           animation: "szr-backdrop-in 0.2s ease",
+          ...(style as React.CSSProperties),
         }}
         onClick={(e) => {
           if (closeOnBackdrop && e.target === e.currentTarget) onClose?.();
@@ -261,6 +267,7 @@ export const Modal: React.FC<ModalProps> = ({
           justifyContent: "center",
           alignItems: "center",
           padding: 16,
+          ...(style as Record<string, unknown>),
         }}
         activeOpacity={1}
         onPress={() => {

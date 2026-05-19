@@ -9,8 +9,9 @@ import { isWeb } from "../shared/platform";
 import { Box } from "../primitives/Box";
 import type { BoxProps, StyleProp } from "../primitives/Box";
 import { Text, ETextType } from "../primitives/Text";
+import type { CircularProgressSize } from "./CircularProgress.types";
 
-export type CircularProgressSize = "xs" | "sm" | "md" | "lg" | "xl";
+export type { CircularProgressSize };
 
 export interface CircularProgressProps extends Omit<BoxProps, "children"> {
   value: number;

@@ -149,3 +149,40 @@ export type { SwitchProps, SwitchSize } from "./switch/Switch";
 // ── Tabs ──────────────────────────────────────────────────────────────────────
 export { Tabs } from "./tabs/Tabs";
 export type { TabsProps, TabItem, TabsVariant } from "./tabs/Tabs";
+
+// ── Badge ─────────────────────────────────────────────────────────────────────
+export { Badge } from "./badge/Badge";
+export type { BadgeProps, BadgeVariant } from "./badge/Badge";
+
+// ── Card ──────────────────────────────────────────────────────────────────────
+export { Card } from "./card/Card";
+export type { CardProps, CardVariant, GlowColor } from "./card/Card";
+
+// ── CommandPalette ────────────────────────────────────────────────────────────
+export { CommandPalette } from "./command-palette/CommandPalette";
+export type {
+  CommandPaletteProps,
+  CommandItem,
+} from "./command-palette/CommandPalette";
+
+// ── NavBar ────────────────────────────────────────────────────────────────────
+export { NavBar } from "./nav-bar/NavBar";
+export type { NavBarProps } from "./nav-bar/NavBar";
+
+// ── FileDropZone ──────────────────────────────────────────────────────────────
+export { FileDropZone } from "./file-drop-zone/FileDropZone";
+export type {
+  FileDropZoneProps,
+  FileDropZoneState,
+} from "./file-drop-zone/FileDropZone";
+
+// ── ProgressPanel ─────────────────────────────────────────────────────────────
+export { ProgressPanel } from "./progress-panel/ProgressPanel";
+export type {
+  ProgressPanelProps,
+  ProgressStep,
+} from "./progress-panel/ProgressPanel";
+
+// ── Toast ─────────────────────────────────────────────────────────────────────
+export { Toast } from "./toast/Toast";
+export type { ToastProps, ToastVariant } from "./toast/Toast";

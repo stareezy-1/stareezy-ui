@@ -9,17 +9,9 @@ import { isWeb } from "../shared/platform";
 import { Box } from "../primitives/Box";
 import type { BoxProps, StyleProp } from "../primitives/Box";
 import { Text, ETextType } from "../primitives/Text";
+import type { TabsVariant, TabItem } from "./Tabs.types";
 
-export type TabsVariant = "underline" | "pills" | "card";
-
-export interface TabItem {
-  key: string;
-  label: React.ReactNode;
-  content?: React.ReactNode;
-  disabled?: boolean;
-  badge?: React.ReactNode;
-  icon?: React.ReactNode;
-}
+export type { TabsVariant, TabItem };
 
 export interface TabsProps extends Omit<BoxProps, "children" | "onChange"> {
   items: TabItem[];

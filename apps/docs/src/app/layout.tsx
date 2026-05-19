@@ -1,7 +1,20 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
+import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { RootShell } from "../components/RootShell";
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  display: "swap",
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-jetbrains-mono",
+  display: "swap",
+});
 
 const SITE_URL =
   process.env["NEXT_PUBLIC_SITE_URL"] ?? "https://ui.stareezy.tech";
@@ -133,8 +146,17 @@ const jsonLd = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html
+      lang="en"
+      data-theme="aurora"
+      className={`${inter.variable} ${jetbrainsMono.variable}`}
+    >
       <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){var t=localStorage.getItem('szr-docs-theme')||'aurora';document.documentElement.setAttribute('data-theme',t);})();`,
+          }}
+        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

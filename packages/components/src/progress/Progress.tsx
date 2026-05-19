@@ -9,9 +9,9 @@ import { isWeb } from "../shared/platform";
 import { Box } from "../primitives/Box";
 import type { BoxProps, StyleProp } from "../primitives/Box";
 import { Text, ETextType } from "../primitives/Text";
+import type { ProgressSize, ProgressVariant } from "./Progress.types";
 
-export type ProgressSize = "xs" | "sm" | "md" | "lg";
-export type ProgressVariant = "default" | "gradient" | "striped";
+export type { ProgressSize, ProgressVariant };
 
 export interface ProgressProps extends Omit<BoxProps, "children"> {
   value: number;
@@ -47,6 +47,7 @@ let progressKfInjected = false;
 function injectProgressKf() {
   if (progressKfInjected || typeof document === "undefined") return;
   const el = document.createElement("style");
+  el.setAttribute("data-szr-kf", "progress");
   el.textContent = PROGRESS_KF;
   document.head.appendChild(el);
   progressKfInjected = true;

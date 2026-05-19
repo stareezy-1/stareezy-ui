@@ -73,6 +73,19 @@ export const typography = {
       "'Plus Jakarta Sans', system-ui, sans-serif",
       "fontFamily-jakartaRegular",
     ),
+    // ── JetBrains Mono — monospace font for code blocks ───────────────────
+    jetbrainsMonoRegular: token(
+      '"JetBrains Mono", monospace',
+      "fontFamily-jetbrainsMonoRegular",
+    ),
+    jetbrainsMonoMedium: token(
+      '"JetBrains Mono Medium", monospace',
+      "fontFamily-jetbrainsMonoMedium",
+    ),
+    jetbrainsMonoBold: token(
+      '"JetBrains Mono Bold", monospace',
+      "fontFamily-jetbrainsMonoBold",
+    ),
   },
   fontSize: {
     "2xs": token(10, "fontSize-2xs"),

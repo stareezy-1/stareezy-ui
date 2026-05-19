@@ -9,13 +9,9 @@ import { isWeb } from "../shared/platform";
 import { Box } from "../primitives/Box";
 import type { BoxProps, StyleProp } from "../primitives/Box";
 import { Text, ETextType } from "../primitives/Text";
+import type { SliderSize, SliderMark } from "./Slider.types";
 
-export type SliderSize = "sm" | "md" | "lg";
-
-export interface SliderMark {
-  value: number;
-  label?: string;
-}
+export type { SliderSize, SliderMark };
 
 export interface SliderProps extends Omit<BoxProps, "onChange" | "children"> {
   value?: number;
@@ -41,9 +37,6 @@ export interface SliderProps extends Omit<BoxProps, "onChange" | "children"> {
   markTextStyle?: StyleProp;
 }
 
-const TRACK_H: Record<SliderSize, number> = { sm: 4, md: 6, lg: 8 };
-const THUMB_SIZE: Record<SliderSize, number> = { sm: 14, md: 18, lg: 22 };
-
 const SLIDER_CSS = `
 .szr-slider {
   -webkit-appearance: none; appearance: none;
@@ -68,10 +61,14 @@ const SLIDER_CSS = `
 .szr-slider:disabled { cursor: not-allowed; opacity: 0.5; }
 `;
 
+const TRACK_H: Record<SliderSize, number> = { sm: 4, md: 6, lg: 8 };
+const THUMB_SIZE: Record<SliderSize, number> = { sm: 14, md: 18, lg: 22 };
+
 let sliderCssInjected = false;
 function injectSliderCss() {
   if (sliderCssInjected || typeof document === "undefined") return;
   const el = document.createElement("style");
+  el.setAttribute("data-szr-kf", "slider");
   el.textContent = SLIDER_CSS;
   document.head.appendChild(el);
   sliderCssInjected = true;

@@ -8,9 +8,9 @@ import { colors } from "@stareezy-ui/tokens";
 import { isWeb } from "../shared/platform";
 import { Box } from "../primitives/Box";
 import type { BoxProps } from "../primitives/Box";
+import type { SpinnerSize, SpinnerVariant } from "./Spinner.types";
 
-export type SpinnerSize = "xs" | "sm" | "md" | "lg" | "xl";
-export type SpinnerVariant = "ring" | "dots" | "pulse";
+export type { SpinnerSize, SpinnerVariant };
 
 export interface SpinnerProps extends Omit<BoxProps, "children"> {
   size?: SpinnerSize;
@@ -44,6 +44,7 @@ let kfInjected = false;
 function injectKf() {
   if (kfInjected || typeof document === "undefined") return;
   const el = document.createElement("style");
+  el.setAttribute("data-szr-kf", "spinner");
   el.textContent = KEYFRAMES;
   document.head.appendChild(el);
   kfInjected = true;

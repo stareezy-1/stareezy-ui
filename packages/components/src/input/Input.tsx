@@ -13,26 +13,9 @@ import { TouchableOpacity } from "../primitives/TouchableOpacity";
 import { flattenStyle } from "../shared/flattenStyle";
 import { Text, ETextType } from "../primitives/Text";
 import type { StyleProp } from "../primitives/Box";
+import { EInputType, EInputSize } from "./Input.types";
 
-export enum EInputType {
-  TextField = "TextField",
-  TextArea = "TextArea",
-  SearchBar = "SearchBar",
-  PhoneNumber = "PhoneNumber",
-  Tonase = "Tonase",
-  MoneyAmount = "MoneyAmount",
-  Ton = "Ton",
-  Percentage = "Percentage",
-  Number = "Number",
-  Participant = "Participant",
-}
-
-export enum EInputSize {
-  Sm = "sm",
-  Md = "Md",
-  Lg = "Lg",
-}
-
+export { EInputType, EInputSize };
 export { ELabelsType, EHintTextType };
 
 export interface IInputProps {

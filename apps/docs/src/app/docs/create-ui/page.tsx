@@ -33,6 +33,73 @@ export default function CreateUiPage() {
         <code>extendTheme</code> from Chakra UI. One call, full control.
       </Callout>
 
+      <h2>New in v0.2.0: Extended Configuration</h2>
+      <p>
+        <code>createUi</code> now accepts six additional fields inspired by
+        Tamagui&apos;s <code>createTamagui</code>:
+      </p>
+      <pre>
+        <code>{`import { createUi, token, motion, themes } from '@stareezy-ui/tokens'
+
+const ui = createUi({
+  // Custom token groups
+  tokens: {
+    brand: { primary: token('#FF6B35', 'brand-primary') },
+  },
+
+  // Named font configs
+  fonts: {
+    inter: {
+      family: 'Inter, system-ui, sans-serif',
+      size: { sm: token(14, 'inter-sm'), md: token(16, 'inter-md') },
+    },
+  },
+
+  // Media query breakpoints (supersedes breakpoints)
+  media: { sm: 640, md: 768, lg: 1024, xl: 1280, '2xl': 1536 },
+
+  // Named animation presets
+  animations: {
+    fadeIn: { duration: motion.duration.enter, easing: motion.easing.easeOut },
+    spring: { duration: motion.duration.normal, easing: motion.easing.spring },
+  },
+
+  // Register named themes (aurora, dark, light, or custom)
+  themes: {
+    aurora: themes.aurora,
+  },
+
+  // Global settings
+  settings: {
+    allowedStyleValues: 'somewhat-strict',
+    defaultFont: 'inter',
+    disableSSR: false,
+  },
+
+  // Prop shorthand mappings (used by Box and all BoxProps components)
+  shorthands: {
+    bg: 'backgroundColor',
+    p: 'padding',
+    m: 'margin',
+    px: 'paddingHorizontal',
+    py: 'paddingVertical',
+  },
+})
+
+// Access via methods
+ui.getTheme('aurora')   // full aurora theme token map
+ui.getFont('inter')     // { family, size, weight, lineHeight }
+ui.getMedia()           // { sm: 640, md: 768, ... }
+ui.getTokens()          // all built-in + custom tokens
+ui.shorthands           // { bg: 'backgroundColor', ... }`}</code>
+      </pre>
+
+      <Callout type="tip">
+        Use <code>useUiConfig()</code> to access the config reactively inside
+        components. See the <a href="/docs/use-ui-config">useUiConfig guide</a>{" "}
+        for details.
+      </Callout>
+
       <h2>Quick Start</h2>
       <pre>
         <code>{`import { createUi, token } from '@stareezy-ui/tokens'
@@ -309,12 +376,42 @@ function getCurrentBreakpoints() {
             <PropRow
               name="breakpoints"
               type="Partial<UiBreakpointConfig>"
-              desc="Override default responsive breakpoints (min-width px, mobile-first)."
+              desc="Override default responsive breakpoints (min-width px, mobile-first). Deprecated — use media instead."
+            />
+            <PropRow
+              name="media"
+              type="Partial<UiBreakpointConfig>"
+              desc="Named media query breakpoints. Supersedes breakpoints when both are provided."
             />
             <PropRow
               name="defaultTheme"
               type='"light" | "dark" | ThemeOverride'
               desc='Default theme applied when no ThemeProvider is present. Defaults to "light".'
+            />
+            <PropRow
+              name="fonts"
+              type="Record<string, FontConfig>"
+              desc="Named font families with size, weight, and lineHeight token scales."
+            />
+            <PropRow
+              name="animations"
+              type="Record<string, AnimationPreset>"
+              desc="Named animation presets referencing motion token values."
+            />
+            <PropRow
+              name="themes"
+              type="Record<string, ThemeTokenMap>"
+              desc="Named theme objects. aurora, dark, light, or custom themes."
+            />
+            <PropRow
+              name="settings"
+              type="UiSettings"
+              desc="Global settings: allowedStyleValues, defaultFont, disableSSR."
+            />
+            <PropRow
+              name="shorthands"
+              type="Record<string, string>"
+              desc="Prop shorthand mappings used by Box and all BoxProps components."
             />
           </tbody>
         </table>
@@ -384,6 +481,31 @@ function getCurrentBreakpoints() {
               name="defaultTheme"
               type='"light" | "dark" | ThemeOverride'
               desc="The resolved default theme."
+            />
+            <PropRow
+              name="shorthands"
+              type="Record<string, string>"
+              desc="Registered prop shorthand mappings."
+            />
+            <PropRow
+              name="getTokens()"
+              type="BuiltinTokens & TTokens"
+              desc="Returns the merged token registry."
+            />
+            <PropRow
+              name="getTheme(name)"
+              type="ThemeTokenMap"
+              desc="Returns the full token map for a named theme. Throws ThemeNotFoundError if not registered."
+            />
+            <PropRow
+              name="getFont(name)"
+              type="FontConfig"
+              desc="Returns the font config for a named font. Throws FontNotFoundError if not registered."
+            />
+            <PropRow
+              name="getMedia()"
+              type="UiBreakpointConfig"
+              desc="Returns the resolved media query breakpoint map."
             />
             <PropRow
               name="registerTokens(newTokens)"

@@ -177,6 +177,22 @@ export function transform(
     JSXAttribute(path) {
       const { node } = path;
 
+      // Check if the parent JSX element is in the boxPropsComponents set.
+      // When the set is non-empty, only process token props on listed components.
+      // When the set is empty or absent, process all JSX elements (backward compat).
+      const boxPropsComponents = config.boxPropsComponents;
+      if (boxPropsComponents && boxPropsComponents.size > 0) {
+        const openingElement = path.parent;
+        if (t.isJSXOpeningElement(openingElement)) {
+          const elementName = t.isJSXIdentifier(openingElement.name)
+            ? openingElement.name.name
+            : null;
+          if (!elementName || !boxPropsComponents.has(elementName)) {
+            return; // Skip — not a BoxProps component.
+          }
+        }
+      }
+
       // The attribute value must be a JSX expression container: prop={...}
       if (!t.isJSXExpressionContainer(node.value)) return;
 

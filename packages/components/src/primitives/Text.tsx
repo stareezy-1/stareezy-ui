@@ -96,6 +96,23 @@ export enum ETextType {
   HighlightText = "highlight-text",
   NavLabel = "nav-label",
   FooterText = "footer-text",
+  // Code / Mono
+  CodeInline = "code-inline",
+  CodeBlock = "code-block",
+  CodeBlockLarge = "code-block-large",
+  // Aurora roles
+  AuroraHeroTitle = "aurora-hero-title",
+  AuroraHeroSubtitle = "aurora-hero-subtitle",
+  AuroraStatNumber = "aurora-stat-number",
+  AuroraStatLabel = "aurora-stat-label",
+  AuroraNavLabel = "aurora-nav-label",
+  AuroraCardTitle = "aurora-card-title",
+  AuroraCardDescription = "aurora-card-description",
+  AuroraBadgeText = "aurora-badge-text",
+  AuroraToastMessage = "aurora-toast-message",
+  AuroraProgressLabel = "aurora-progress-label",
+  AuroraDropZoneLabel = "aurora-drop-zone-label",
+  AuroraDropZoneHint = "aurora-drop-zone-hint",
 }
 
 export enum EFontStyle {
@@ -132,6 +149,8 @@ const BODY_BOLD = typography.fontFamily.interBold.value;
 const DISPLAY = typography.fontFamily.jakartaBold.value;
 const DISPLAY_SEMIBOLD = typography.fontFamily.jakartaSemiBold.value;
 const DISPLAY_BLACK = typography.fontFamily.jakartaBlack.value;
+const MONO = typography.fontFamily.jetbrainsMonoRegular.value;
+const MONO_MEDIUM = typography.fontFamily.jetbrainsMonoMedium.value;
 
 export const PRESETS: Record<ETextType, TextStylePreset> = {
   [ETextType.button]: {
@@ -639,6 +658,118 @@ export const PRESETS: Record<ETextType, TextStylePreset> = {
     fontWeight: "400",
     lineHeight: 1.54,
     color: colors.raisinBlack[200].value,
+  },
+  // Code / Mono
+  [ETextType.CodeInline]: {
+    fontFamily: MONO,
+    fontSize: 14,
+    fontWeight: "400",
+    lineHeight: 1.5,
+    color: DEFAULT_COLOR,
+  },
+  [ETextType.CodeBlock]: {
+    fontFamily: MONO,
+    fontSize: 13,
+    fontWeight: "400",
+    lineHeight: 1.6,
+    color: DEFAULT_COLOR,
+  },
+  [ETextType.CodeBlockLarge]: {
+    fontFamily: MONO_MEDIUM,
+    fontSize: 15,
+    fontWeight: "500",
+    lineHeight: 1.6,
+    color: DEFAULT_COLOR,
+  },
+  // Aurora roles
+  [ETextType.AuroraHeroTitle]: {
+    fontFamily: DISPLAY_BLACK,
+    fontSize: 72,
+    fontWeight: "800",
+    lineHeight: 1.07,
+    letterSpacing: -0.03,
+    color: colors.neutral[10].value,
+  },
+  [ETextType.AuroraHeroSubtitle]: {
+    fontFamily: BODY_MEDIUM,
+    fontSize: 20,
+    fontWeight: "500",
+    lineHeight: 1.5,
+    letterSpacing: -0.01,
+    color: DEFAULT_COLOR,
+  },
+  [ETextType.AuroraStatNumber]: {
+    fontFamily: DISPLAY_BLACK,
+    fontSize: 36,
+    fontWeight: "800",
+    lineHeight: 1.25,
+    letterSpacing: -0.02,
+    color: colors.neutral[10].value,
+  },
+  [ETextType.AuroraStatLabel]: {
+    fontFamily: BODY,
+    fontSize: 13,
+    fontWeight: "400",
+    lineHeight: 1.54,
+    color: DEFAULT_COLOR,
+  },
+  [ETextType.AuroraNavLabel]: {
+    fontFamily: BODY_MEDIUM,
+    fontSize: 14,
+    fontWeight: "500",
+    lineHeight: 1.43,
+    color: DEFAULT_COLOR,
+  },
+  [ETextType.AuroraCardTitle]: {
+    fontFamily: DISPLAY_SEMIBOLD,
+    fontSize: 18,
+    fontWeight: "600",
+    lineHeight: 1.44,
+    letterSpacing: -0.01,
+    color: colors.neutral[10].value,
+  },
+  [ETextType.AuroraCardDescription]: {
+    fontFamily: BODY,
+    fontSize: 14,
+    fontWeight: "400",
+    lineHeight: 1.57,
+    color: DEFAULT_COLOR,
+  },
+  [ETextType.AuroraBadgeText]: {
+    fontFamily: BODY_MEDIUM,
+    fontSize: 11,
+    fontWeight: "500",
+    lineHeight: 1.45,
+    letterSpacing: 0.02,
+    color: DEFAULT_COLOR,
+  },
+  [ETextType.AuroraToastMessage]: {
+    fontFamily: BODY,
+    fontSize: 14,
+    fontWeight: "400",
+    lineHeight: 1.57,
+    color: DEFAULT_COLOR,
+  },
+  [ETextType.AuroraProgressLabel]: {
+    fontFamily: BODY_MEDIUM,
+    fontSize: 13,
+    fontWeight: "500",
+    lineHeight: 1.54,
+    color: DEFAULT_COLOR,
+  },
+  [ETextType.AuroraDropZoneLabel]: {
+    fontFamily: BODY_SEMIBOLD,
+    fontSize: 16,
+    fontWeight: "600",
+    lineHeight: 1.5,
+    color: DEFAULT_COLOR,
+  },
+  [ETextType.AuroraDropZoneHint]: {
+    fontFamily: BODY,
+    fontSize: 13,
+    fontWeight: "400",
+    lineHeight: 1.54,
+    color: DEFAULT_COLOR,
   },
 };
 

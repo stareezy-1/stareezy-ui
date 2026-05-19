@@ -12,7 +12,8 @@
 
 import React, { useId, useEffect, useRef } from "react";
 import type { Token } from "@stareezy-ui/tokens";
-import { createWebRuntime, createNativeRuntime } from "@stareezy-ui/runtime";
+import { getUiConfig } from "@stareezy-ui/tokens";
+import { getRuntime } from "@stareezy-ui/runtime";
 import type { RuntimeAdapter } from "@stareezy-ui/runtime";
 import {
   isResponsive,
@@ -50,18 +51,6 @@ export type StyleProp =
   | undefined
   | false
   | StyleProp[];
-
-// ---------------------------------------------------------------------------
-// Runtime singleton
-// ---------------------------------------------------------------------------
-
-let _runtime: RuntimeAdapter | null = null;
-function getRuntime(): RuntimeAdapter {
-  if (_runtime === null) {
-    _runtime = isWeb ? createWebRuntime() : createNativeRuntime();
-  }
-  return _runtime;
-}
 
 // ---------------------------------------------------------------------------
 // Prop → CSS / RN style mappings
@@ -510,6 +499,14 @@ function resolveWebProps(
   const inlineStyle: Record<string, unknown> = {};
   const cssRules: string[] = [];
 
+  // Merge built-in prop map with config shorthands (config takes precedence)
+  const uiConfig = getUiConfig();
+  const configShorthands = uiConfig?.shorthands ?? {};
+  const effectivePropMap: Record<string, string | string[]> = {
+    ...propToCssProp,
+    ...configShorthands,
+  };
+
   function camel(kebab: string) {
     return kebab.replace(/-([a-z])/g, (_, c: string) => c.toUpperCase());
   }
@@ -538,7 +535,7 @@ function resolveWebProps(
     if (rawVal === undefined || rawVal === null) continue;
 
     if (isResponsive(rawVal)) {
-      const cssPropDef = propToCssProp[propName];
+      const cssPropDef = effectivePropMap[propName];
       // Unwrap token values inside the responsive map
       const unwrappedMap: Partial<Record<string, unknown>> = {};
       for (const [bp, bpVal] of Object.entries(
@@ -561,7 +558,7 @@ function resolveWebProps(
       const resolved = isToken(rawVal)
         ? (rawVal as Token<unknown>).value
         : rawVal;
-      const cssProp = propToCssProp[propName];
+      const cssProp = effectivePropMap[propName];
       if (Array.isArray(cssProp)) {
         for (const cp of cssProp) {
           inlineStyle[camel(cp)] = toCssValue(camel(cp), resolved);

@@ -9,20 +9,9 @@ import { isWeb } from "../shared/platform";
 import { Box } from "../primitives/Box";
 import type { BoxProps, StyleProp } from "../primitives/Box";
 import { Text, ETextType } from "../primitives/Text";
+import type { DropdownSize, DropdownOption } from "./Dropdown.types";
 
-// ---------------------------------------------------------------------------
-// Types
-// ---------------------------------------------------------------------------
-
-export interface DropdownOption {
-  value: string;
-  label: React.ReactNode;
-  disabled?: boolean;
-  group?: string;
-  icon?: React.ReactNode;
-}
-
-export type DropdownSize = "sm" | "md" | "lg";
+export type { DropdownSize, DropdownOption };
 
 export interface DropdownProps extends Omit<BoxProps, "onChange" | "children"> {
   options: DropdownOption[];
@@ -87,6 +76,7 @@ let dropdownKfInjected = false;
 function injectDropdownKf() {
   if (dropdownKfInjected || typeof document === "undefined") return;
   const el = document.createElement("style");
+  el.setAttribute("data-szr-kf", "dropdown");
   el.textContent = DROPDOWN_KF;
   document.head.appendChild(el);
   dropdownKfInjected = true;

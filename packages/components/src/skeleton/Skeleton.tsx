@@ -8,8 +8,9 @@ import { colors } from "@stareezy-ui/tokens";
 import { isWeb } from "../shared/platform";
 import { Box } from "../primitives/Box";
 import type { BoxProps } from "../primitives/Box";
+import type { SkeletonVariant } from "./Skeleton.types";
 
-export type SkeletonVariant = "text" | "circular" | "rectangular" | "rounded";
+export type { SkeletonVariant };
 
 export interface SkeletonProps
   extends Omit<BoxProps, "children" | "width" | "height"> {
@@ -33,6 +34,7 @@ let skeletonKfInjected = false;
 function injectSkeletonKf() {
   if (skeletonKfInjected || typeof document === "undefined") return;
   const el = document.createElement("style");
+  el.setAttribute("data-szr-kf", "skeleton");
   el.textContent = SKELETON_KF;
   document.head.appendChild(el);
   skeletonKfInjected = true;

@@ -189,6 +189,9 @@ importers:
       '@stareezy-ui/runtime':
         specifier: workspace:*
         version: link:../runtime
+      '@stareezy-ui/stylesheet':
+        specifier: workspace:*
+        version: link:../stylesheet
       '@stareezy-ui/tokens':
         specifier: workspace:*
         version: link:../tokens

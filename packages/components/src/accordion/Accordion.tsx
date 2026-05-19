@@ -9,6 +9,7 @@ import { isWeb } from "../shared/platform";
 import { Box } from "../primitives/Box";
 import type { BoxProps, StyleProp } from "../primitives/Box";
 import { Text, ETextType } from "../primitives/Text";
+import type { AccordionVariant } from "./Accordion.types";
 
 export interface AccordionItem {
   key: string;
@@ -18,7 +19,7 @@ export interface AccordionItem {
   icon?: React.ReactNode;
 }
 
-export type AccordionVariant = "default" | "bordered" | "separated";
+export type { AccordionVariant };
 
 export interface AccordionProps
   extends Omit<BoxProps, "children" | "onChange"> {
@@ -26,8 +27,7 @@ export interface AccordionProps
   defaultOpen?: string[];
   multiple?: boolean;
   variant?: AccordionVariant;
-  onChange?: (openKeys: string[]) => void;
-  /** ETextType for item titles */
+  onChange?: (openKeys: string[]) => void /** ETextType for item titles */;
   titleTextType?: ETextType;
   /** Style override for item titles */
   titleTextStyle?: StyleProp;
@@ -48,6 +48,7 @@ let accordionKfInjected = false;
 function injectAccordionKf() {
   if (accordionKfInjected || typeof document === "undefined") return;
   const el = document.createElement("style");
+  el.setAttribute("data-szr-kf", "accordion");
   el.textContent = ACCORDION_KF;
   document.head.appendChild(el);
   accordionKfInjected = true;

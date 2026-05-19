@@ -22,6 +22,9 @@ import { typography } from "../../../../../packages/tokens/src/typography";
 import { radius, roundness } from "../../../../../packages/tokens/src/radius";
 import { shadow } from "../../../../../packages/tokens/src/shadow";
 import { semanticColors } from "../../../../../packages/tokens/src/semantic";
+import { aurora } from "../../../../../packages/tokens/src/aurora";
+import { motion } from "../../../../../packages/tokens/src/motion";
+import { glow } from "../../../../../packages/tokens/src/glow";
 import type { Token } from "../../../../../packages/tokens/src/token";
 
 type ThemeMode = "light" | "dark";
@@ -1111,6 +1114,216 @@ export default function TokensPage() {
               ),
             ),
           )}
+        </div>
+      </Section>
+
+      {/* ── Aurora Colors ───────────────────────────────────────────────── */}
+      <Section title="Aurora Colors">
+        <ColorGroup
+          name="Aurora"
+          tokens={aurora as unknown as Record<string, Token<string>>}
+          onSelect={handleSelect}
+        />
+      </Section>
+
+      {/* ── Motion Tokens ───────────────────────────────────────────────── */}
+      <Section title="Motion Tokens">
+        <SubLabel text="Duration" />
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "0.4rem",
+            marginBottom: "1.5rem",
+          }}
+        >
+          {Object.entries(motion.duration).map(([key, tok]) => (
+            <button
+              key={tok.id}
+              aria-label={`${tok.id}: ${tok.value}ms`}
+              onClick={() => handleSelect(tok)}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "1rem",
+                padding: "0.5rem 0.75rem",
+                border: "1px solid var(--color-border-2)",
+                borderRadius: 8,
+                background: "var(--color-surface)",
+                cursor: "pointer",
+                width: "100%",
+                textAlign: "left",
+              }}
+            >
+              <div
+                style={{
+                  height: 14,
+                  width: Math.min(tok.value / 3, 200),
+                  minWidth: 4,
+                  background:
+                    "linear-gradient(90deg, var(--brand-400), var(--brand-200))",
+                  borderRadius: 3,
+                  flexShrink: 0,
+                  opacity: 0.85,
+                }}
+              />
+              <div
+                style={{ display: "flex", gap: "1.5rem", alignItems: "center" }}
+              >
+                <span
+                  style={{
+                    fontFamily: "var(--font-mono)",
+                    fontSize: "0.78rem",
+                    color: "var(--color-text)",
+                    minWidth: 160,
+                  }}
+                >
+                  {tok.id}
+                </span>
+                <span
+                  style={{ fontSize: "0.78rem", color: "var(--color-muted)" }}
+                >
+                  {tok.value}ms
+                </span>
+                <span
+                  style={{
+                    fontSize: "0.72rem",
+                    color: "var(--color-text-2)",
+                    fontStyle: "italic",
+                  }}
+                >
+                  {key}
+                </span>
+              </div>
+            </button>
+          ))}
+        </div>
+        <SubLabel text="Easing" />
+        <div
+          style={{ display: "flex", flexDirection: "column", gap: "0.4rem" }}
+        >
+          {Object.entries(motion.easing).map(([key, tok]) => (
+            <button
+              key={tok.id}
+              aria-label={`${tok.id}: ${tok.value}`}
+              onClick={() => handleSelect(tok)}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "1rem",
+                padding: "0.5rem 0.75rem",
+                border: "1px solid var(--color-border-2)",
+                borderRadius: 8,
+                background: "var(--color-surface)",
+                cursor: "pointer",
+                width: "100%",
+                textAlign: "left",
+              }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  gap: "1.5rem",
+                  alignItems: "center",
+                  flex: 1,
+                }}
+              >
+                <span
+                  style={{
+                    fontFamily: "var(--font-mono)",
+                    fontSize: "0.78rem",
+                    color: "var(--color-text)",
+                    minWidth: 160,
+                  }}
+                >
+                  {tok.id}
+                </span>
+                <span
+                  style={{
+                    fontSize: "0.72rem",
+                    fontFamily: "var(--font-mono)",
+                    color: "var(--color-muted)",
+                    flex: 1,
+                  }}
+                >
+                  {tok.value}
+                </span>
+                <span
+                  style={{
+                    fontSize: "0.72rem",
+                    color: "var(--color-text-2)",
+                    fontStyle: "italic",
+                  }}
+                >
+                  {key}
+                </span>
+              </div>
+            </button>
+          ))}
+        </div>
+      </Section>
+
+      {/* ── Glow Tokens ─────────────────────────────────────────────────── */}
+      <Section title="Glow Tokens">
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))",
+            gap: "1rem",
+          }}
+        >
+          {Object.entries(glow).map(([name, tok]) => (
+            <button
+              key={tok.id}
+              aria-label={`Glow: ${tok.id}`}
+              onClick={() => handleSelect(tok)}
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                gap: "1rem",
+                padding: "1.5rem",
+                border: "1px solid var(--color-border-2)",
+                borderRadius: 12,
+                background: "var(--color-surface)",
+                cursor: "pointer",
+                transition: "all 0.15s",
+              }}
+            >
+              <div
+                style={{
+                  width: 64,
+                  height: 64,
+                  borderRadius: 12,
+                  background: "#0a0a1a",
+                  border: "1px solid rgba(255,255,255,0.08)",
+                  boxShadow: tok.value,
+                }}
+              />
+              <div style={{ textAlign: "center" }}>
+                <div
+                  style={{
+                    fontSize: "0.8rem",
+                    fontWeight: 600,
+                    color: "var(--color-text)",
+                    marginBottom: 4,
+                  }}
+                >
+                  {name}
+                </div>
+                <div
+                  style={{
+                    fontSize: "0.68rem",
+                    fontFamily: "var(--font-mono)",
+                    color: "var(--color-muted)",
+                    wordBreak: "break-all",
+                  }}
+                >
+                  {tok.id}
+                </div>
+              </div>
+            </button>
+          ))}
         </div>
       </Section>
 

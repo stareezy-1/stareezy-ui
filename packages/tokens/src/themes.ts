@@ -10,6 +10,7 @@
 
 import { colors } from "./colors";
 import { semanticColors } from "./semantic";
+import { aurora } from "./aurora";
 
 // ---------------------------------------------------------------------------
 // ThemeOverride type
@@ -129,6 +130,44 @@ export const themes = {
       danger: colors.crimsonRed[300],
       /** Success alias */
       success: colors.lawnGreen[400],
+    },
+  },
+  /**
+   * Aurora theme — deep-space dark aesthetic inspired by aurora-pdf.
+   * Uses aurora green (#00ff88) as the primary brand color and
+   * nebula purple (#7c3aed) as the accent.
+   */
+  aurora: {
+    border: {
+      tertiary: aurora.borderSubtle,
+      primaryBrand: aurora.auroraGreen,
+      secondary: aurora.borderSubtle,
+      dangerPrimary: aurora.errorRed,
+      successPrimary: aurora.auroraGreen,
+      primaryBlack: aurora.starWhite,
+      default: aurora.borderSubtle,
+      danger: aurora.errorRed,
+      success: aurora.auroraGreen,
+    },
+    backgrounds: {
+      disabled: aurora.cosmicGray,
+      primaryBlack: aurora.deepSpace,
+      primary: aurora.auroraGreen,
+      secondary: aurora.surfaceDark,
+    },
+    text: {
+      placeholder: aurora.textMuted,
+      primary: aurora.starWhite,
+      disable: aurora.textMuted,
+      dangerPrimary: aurora.errorRed,
+      successPrimary: aurora.auroraGreen,
+      warningPrimary: aurora.warningAmber,
+      importantBrand: aurora.auroraGreen,
+      secondary: aurora.textSecondary,
+      tertiary: aurora.textMuted,
+      inverse: aurora.deepSpace,
+      danger: aurora.errorRed,
+      success: aurora.auroraGreen,
     },
   },
 } as const;

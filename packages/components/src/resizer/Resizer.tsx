@@ -8,8 +8,9 @@ import { colors } from "@stareezy-ui/tokens";
 import { isWeb } from "../shared/platform";
 import { Box } from "../primitives/Box";
 import type { BoxProps } from "../primitives/Box";
+import type { ResizerDirection } from "./Resizer.types";
 
-export type ResizerDirection = "horizontal" | "vertical" | "both";
+export type { ResizerDirection };
 
 export interface ResizerProps extends Omit<BoxProps, "children"> {
   children?: React.ReactNode;

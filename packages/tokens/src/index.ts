@@ -37,4 +37,20 @@ export type {
   UiConfig,
   UiBreakpointConfig,
   CustomTokenGroups,
+  FontConfig,
+  AnimationPreset,
+  UiSettings,
 } from "./createUi";
+export { ThemeNotFoundError, FontNotFoundError } from "./createUi";
+
+export { aurora, auroraVariants } from "./aurora";
+export type { AuroraTokens } from "./aurora";
+
+export { motion } from "./motion";
+
+export { glow } from "./glow";
+
+export { getVariant, TokenVariantError } from "./variants";
+export type { TokenVariant } from "./variants";
+
+export { UiConfigProvider, useUiConfig } from "./UiConfigProvider";

@@ -153,3 +153,16 @@ export class AtomicStyleSheet {
     styleEl.textContent = block;
   }
 }
+
+/**
+ * Returns the atomic CSS class name for a given token ID.
+ * Output always starts with "sz-" (CSS class name prefix invariant).
+ *
+ * @example
+ * tokenIdToClassName("primary-500") // "sz-primary-500"
+ *
+ * Requirements: 8.5
+ */
+export function tokenIdToClassName(id: string): string {
+  return `sz-${id}`;
+}

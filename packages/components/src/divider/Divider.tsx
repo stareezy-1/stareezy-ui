@@ -9,9 +9,9 @@ import { isWeb } from "../shared/platform";
 import { Box } from "../primitives/Box";
 import type { BoxProps, StyleProp } from "../primitives/Box";
 import { Text, ETextType } from "../primitives/Text";
+import type { DividerOrientation, DividerVariant } from "./Divider.types";
 
-export type DividerOrientation = "horizontal" | "vertical";
-export type DividerVariant = "solid" | "dashed" | "dotted";
+export type { DividerOrientation, DividerVariant };
 
 export interface DividerProps extends Omit<BoxProps, "children"> {
   orientation?: DividerOrientation;

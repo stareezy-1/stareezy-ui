@@ -12,6 +12,7 @@ const DOC_SLUGS = [
   "migration",
   "architecture",
   "create-ui",
+  "use-ui-config",
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -29,6 +30,24 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: now,
       changeFrequency: "weekly",
       priority: 0.9,
+    },
+    {
+      url: `${SITE_URL}/tokens/aurora`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
+    {
+      url: `${SITE_URL}/tokens/motion`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
+    {
+      url: `${SITE_URL}/tokens/glow`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.8,
     },
     {
       url: `${SITE_URL}/playground`,

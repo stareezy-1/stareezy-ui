@@ -9,10 +9,9 @@ import { isWeb } from "../shared/platform";
 import { Box } from "../primitives/Box";
 import type { BoxProps, StyleProp } from "../primitives/Box";
 import { Text, ETextType } from "../primitives/Text";
+import type { AvatarSize, AvatarShape, AvatarStatus } from "./Avatar.types";
 
-export type AvatarSize = "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
-export type AvatarShape = "circle" | "rounded" | "square";
-export type AvatarStatus = "online" | "offline" | "away" | "busy";
+export type { AvatarSize, AvatarShape, AvatarStatus };
 
 export interface AvatarProps extends Omit<BoxProps, "children"> {
   src?: string;

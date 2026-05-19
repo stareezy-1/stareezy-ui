@@ -8,3 +8,4 @@ export * from "./currency";
 export * from "./isoWeeks";
 export * from "./spacing";
 export * from "./hooks/useDeviceLayout";
+export * from "./hooks/useDocsTheme";

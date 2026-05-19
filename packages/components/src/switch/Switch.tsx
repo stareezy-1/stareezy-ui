@@ -9,8 +9,9 @@ import { isWeb } from "../shared/platform";
 import { Box } from "../primitives/Box";
 import type { BoxProps, StyleProp } from "../primitives/Box";
 import { Text, ETextType } from "../primitives/Text";
+import type { SwitchSize } from "./Switch.types";
 
-export type SwitchSize = "sm" | "md" | "lg";
+export type { SwitchSize };
 
 export interface SwitchProps extends Omit<BoxProps, "onChange" | "children"> {
   value?: boolean;
