@@ -8,8 +8,9 @@
 
 import { describe, it, expect } from "vitest";
 import * as fc from "fast-check";
-import { ETextType, PRESETS } from "./Text";
 import { colors } from "@stareezy-ui/tokens";
+import { ETextType } from "./Text.props";
+import { TEXT_PRESETS as PRESETS } from "./Text.style";
 
 // New portfolio text role enum values added in Task 5
 const NEW_TEXT_TYPES = [
