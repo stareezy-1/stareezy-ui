@@ -87,7 +87,7 @@ export const Text: React.FC<ITextProps> = (props) => {
         ? { fontWeight: preset.fontWeight as React.CSSProperties["fontWeight"] }
         : {}),
       ...(preset.lineHeight !== undefined
-        ? { lineHeight: `${preset.lineHeight}px` }
+        ? { lineHeight: preset.lineHeight }
         : {}),
       ...(preset.letterSpacing !== undefined
         ? { letterSpacing: `${preset.letterSpacing}em` }
@@ -127,7 +127,7 @@ export const Text: React.FC<ITextProps> = (props) => {
       ? { lineHeight: preset.lineHeight }
       : {}),
     ...(preset.letterSpacing !== undefined
-      ? { letterSpacing: preset.letterSpacing * preset.fontSize }
+      ? { letterSpacing: preset.letterSpacing }
       : {}),
     color: resolvedColor,
     ...(isItalic ? { fontStyle: "italic" } : {}),
