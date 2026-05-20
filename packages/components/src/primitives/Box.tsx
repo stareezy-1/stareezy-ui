@@ -194,7 +194,9 @@ export interface BoxProps extends CustomShorthandProps {
   width?: Responsive<TokenOrValue<number> | string>;
   height?: Responsive<TokenOrValue<number> | string>;
   flex?: Responsive<TokenOrValue<number>>;
-  flexDirection?: Responsive<TokenOrValue<string>>;
+  flexDirection?: Responsive<
+    Token<string> | "row" | "column" | "row-reverse" | "column-reverse"
+  >;
   alignItems?: Responsive<TokenOrValue<string>>;
   justifyContent?: Responsive<TokenOrValue<string>>;
 
@@ -652,7 +654,9 @@ function resolveWebProps(
     }
   }
 
-  // Auto display:flex — only when no explicit display is set
+  // Auto display:flex + default flexDirection:column
+  // Triggered when any flex-related prop is set (or flex itself).
+  // flexDirection defaults to "column" to match RN's default and web block behavior.
   const flexTriggers: Array<keyof BoxProps> = [
     "flexDirection",
     "alignItems",
@@ -669,6 +673,10 @@ function resolveWebProps(
   const hasFlexProp = props.flex !== undefined && props.flex !== null;
   if ((hasFlexTrigger || hasFlexProp) && inlineStyle["display"] === undefined) {
     inlineStyle["display"] = "flex";
+    // Default to column unless the caller already set flexDirection
+    if (inlineStyle["flexDirection"] === undefined) {
+      inlineStyle["flexDirection"] = "column";
+    }
   }
 
   // Auto borderStyle:solid
@@ -833,7 +841,7 @@ export const Box: React.FC<BoxProps> = (props) => {
       ...flatCaller,
     };
 
-    // After merge, re-check display:flex (caller style may have set flexDirection etc.)
+    // After merge, re-check display:flex + default flexDirection:column
     const flexCssProps = [
       "flexDirection",
       "alignItems",
@@ -849,6 +857,9 @@ export const Box: React.FC<BoxProps> = (props) => {
       merged["display"] === undefined
     ) {
       merged["display"] = "flex";
+      if (merged["flexDirection"] === undefined) {
+        merged["flexDirection"] = "column";
+      }
     }
 
     // After merge, re-check borderStyle

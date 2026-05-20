@@ -141,7 +141,6 @@ export const View: React.FC<ViewProps> = ({
   // View-specific type prop (EViewType) — consumed here, not forwarded to Box
   type,
   style,
-  flexDirection = "column",
   ...rest
 }) => {
   // Resolve pointerEvents to CSS value for Box
@@ -205,7 +204,6 @@ export const View: React.FC<ViewProps> = ({
     <Box
       id={resolvedId}
       pointerEvents={resolvedPointerEvents}
-      flexDirection={flexDirection}
       {...nativeExtras}
       {...rest}
       style={resolvedStyle}
