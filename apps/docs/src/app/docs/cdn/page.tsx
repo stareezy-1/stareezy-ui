@@ -266,9 +266,9 @@ export default function CdnPage() {
         Always pin to a specific version in production to avoid unexpected
         breaking changes:
         <pre>
-          <code>{`<!-- Pinned to 0.2.1 -->
-<script src="https://cdn.jsdelivr.net/npm/@stareezy-ui/tokens@0.2.1/dist/cdn/stareezy-tokens.global.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@stareezy-ui/components@0.2.1/dist/cdn/stareezy-ui.global.js"></script>`}</code>
+          <code>{`<!-- Pinned to 0.2.3 -->
+<script src="https://cdn.jsdelivr.net/npm/@stareezy-ui/tokens@0.2.3/dist/cdn/stareezy-tokens.global.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@stareezy-ui/components@0.2.3/dist/cdn/stareezy-ui.global.js"></script>`}</code>
         </pre>
       </Step>
 
@@ -437,7 +437,7 @@ https://unpkg.com/@stareezy-ui/tokens@{version}/dist/cdn/stareezy-tokens.global.
         hashes. Use them in production to protect against CDN compromise:
         <pre style={{ marginTop: "0.5rem" }}>
           <code>{`<script
-  src="https://cdn.jsdelivr.net/npm/@stareezy-ui/tokens@0.2.0/dist/cdn/stareezy-tokens.global.js"
+  src="https://cdn.jsdelivr.net/npm/@stareezy-ui/tokens@0.2.3/dist/cdn/stareezy-tokens.global.js"
   integrity="sha256-..."
   crossorigin="anonymous"
 ></script>`}</code>

@@ -1,6 +1,6 @@
 {
   "name": "@stareezy-ui/core",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Stareezy UI shared types, platform utilities, hooks, and ported rekosistem-components utilities",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -32,7 +32,7 @@
     "build": "tsup",
     "build:cdn": "tsup --config tsup.cdn.config.ts",
     "typecheck": "tsc --noEmit",
-    "prepublishOnly": "pnpm run build && pnpm run typecheck",
+    "prepublishOnly": "pnpm run build && pnpm run build:cdn && pnpm run typecheck",
     "test": "vitest run --passWithNoTests",
     "lint": "eslint src --ext .ts,.tsx",
     "clean": "rm -rf dist"

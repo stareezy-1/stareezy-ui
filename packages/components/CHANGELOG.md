@@ -1,5 +1,15 @@
 # @stareezy-ui/components
 
+## 0.2.3
+
+### Patch Changes
+
+- Ensure CDN bundles are included in published packages
+- Updated dependencies
+  - @stareezy-ui/runtime@0.2.3
+  - @stareezy-ui/tokens@0.2.3
+  - @stareezy-ui/core@0.2.3
+
 ## 0.2.2
 
 ### Patch Changes

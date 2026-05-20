@@ -1,5 +1,11 @@
 # @stareezy-ui/stylesheet
 
+## 0.2.3
+
+### Patch Changes
+
+- Ensure CDN bundles are included in published packages
+
 ## 0.2.2
 
 ### Patch Changes

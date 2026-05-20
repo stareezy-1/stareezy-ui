@@ -1,6 +1,6 @@
 {
   "name": "@stareezy-ui/stylesheet",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Stareezy UI stylesheet — atomic CSS sheet management and CSS variable injection",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -32,7 +32,7 @@
     "build": "tsup",
     "build:cdn": "tsup --config tsup.cdn.config.ts",
     "typecheck": "tsc --noEmit",
-    "prepublishOnly": "pnpm run build && pnpm run typecheck",
+    "prepublishOnly": "pnpm run build && pnpm run build:cdn && pnpm run typecheck",
     "test": "vitest run",
     "lint": "eslint src --ext .ts,.tsx",
     "clean": "rm -rf dist"
