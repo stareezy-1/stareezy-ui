@@ -31,6 +31,13 @@ const NAV_SECTIONS = [
       { href: "/tokens", label: "Token Explorer", icon: "◉" },
     ],
   },
+  {
+    title: "Credits",
+    links: [
+      { href: "/docs/about", label: "About", icon: "◎" },
+      { href: "/docs/thanks", label: "Special Thanks", icon: "✦" },
+    ],
+  },
 ];
 
 interface SidebarNavProps {

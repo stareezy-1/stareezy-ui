@@ -1,11 +1,10 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState, useEffect } from "react";
 import { ThemeToggle } from "./ThemeToggle";
 
-// Storybook is deployed separately — update this after deploying to Vercel
 const STORYBOOK_URL =
   process.env["NEXT_PUBLIC_STORYBOOK_URL"] ??
   "https://stareezy-ui-storybook.vercel.app/";
@@ -45,10 +44,23 @@ function useScrolled(threshold = 20): boolean {
   return scrolled;
 }
 
-export function AppHeader() {
+interface AppHeaderProps {
+  /** Called when the hamburger is tapped on docs routes — opens the sidebar drawer */
+  onSidebarToggle?: () => void;
+  /** Reflects the sidebar open state so the hamburger icon can show ✕ */
+  sidebarOpen?: boolean;
+}
+
+export function AppHeader({
+  onSidebarToggle,
+  sidebarOpen = false,
+}: AppHeaderProps) {
   const pathname = usePathname();
+  // Only used on non-docs routes (playground/storybook) where there's no sidebar
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const scrolled = useScrolled();
+
+  const menuOpen = onSidebarToggle ? sidebarOpen : mobileMenuOpen;
 
   return (
     <header
@@ -66,7 +78,7 @@ export function AppHeader() {
         </span>
       </Link>
 
-      {/* Section tabs — desktop */}
+      {/* Section tabs — desktop only, hidden via CSS on mobile */}
       <nav className="app-header-tabs" aria-label="Main navigation">
         {SECTIONS.map((s) => {
           const active = s.match(pathname);
@@ -88,7 +100,6 @@ export function AppHeader() {
 
       {/* Right actions */}
       <div className="app-header-actions">
-        {/* Theme toggle */}
         <ThemeToggle />
 
         <a
@@ -102,21 +113,27 @@ export function AppHeader() {
           <span className="app-header-action-label">GitHub</span>
         </a>
 
-        {/* Mobile hamburger */}
         <button
           className="app-header-mobile-toggle"
-          onClick={() => setMobileMenuOpen((v) => !v)}
-          aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
-          aria-expanded={mobileMenuOpen}
+          onClick={() => {
+            if (onSidebarToggle) {
+              onSidebarToggle();
+            } else {
+              setMobileMenuOpen((v) => !v);
+            }
+          }}
+          aria-label={menuOpen ? "Close menu" : "Open menu"}
+          aria-expanded={menuOpen}
         >
-          {mobileMenuOpen ? "✕" : "☰"}
+          {menuOpen ? "✕" : "☰"}
         </button>
       </div>
 
-      {/* Mobile dropdown menu */}
-      {mobileMenuOpen && (
+      {/* Mobile section dropdown — only on non-docs routes (no sidebar) */}
+      {!onSidebarToggle && mobileMenuOpen && (
         <div
           className="app-header-mobile-menu"
+          style={{ display: "flex" }}
           role="navigation"
           aria-label="Mobile navigation"
         >

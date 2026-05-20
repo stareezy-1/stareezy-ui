@@ -128,6 +128,8 @@
 
 html {
   scroll-behavior: smooth;
+  /* Prevent any child from causing horizontal scroll on the page */
+  overflow-x: hidden;
 }
 
 body {
@@ -137,6 +139,15 @@ body {
   line-height: 1.65;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* Global: all pre blocks scroll horizontally rather than blowing out layout */
+pre {
+  overflow-x: auto;
+  max-width: 100%;
+  white-space: pre;
+  word-break: normal;
 }
 
 /* ── App Header ──────────────────────────────────────────────────────────── */
@@ -155,6 +166,9 @@ body {
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   transition: backdrop-filter 0.2s, border-color 0.2s;
+  /* Prevent header from overflowing viewport */
+  min-width: 0;
+  overflow: visible;
 }
 
 .app-header.scrolled {
@@ -170,6 +184,7 @@ body {
   text-decoration: none;
   margin-right: 1.5rem;
   flex-shrink: 0;
+  min-width: 0;
 }
 
 .app-header-logo-icon {
@@ -210,6 +225,8 @@ body {
   align-items: center;
   gap: 2px;
   flex: 1;
+  min-width: 0;
+  overflow: hidden;
 }
 
 .app-header-tab {
@@ -258,6 +275,7 @@ body {
   align-items: center;
   gap: 0.5rem;
   margin-left: auto;
+  flex-shrink: 0;
 }
 
 .app-header-action-btn {
@@ -299,7 +317,6 @@ body {
 }
 
 .app-header-mobile-menu {
-  display: none;
   position: absolute;
   top: var(--header-height);
   left: 0;
@@ -312,6 +329,8 @@ body {
   box-shadow: var(--shadow-md);
   z-index: 199;
   animation: fadeUp 0.15s ease;
+  /* Hidden by default; shown via JS (display set inline by React) */
+  display: none;
 }
 
 .app-header-mobile-link {
@@ -337,7 +356,8 @@ body {
 /* ── Layout ─────────────────────────────────────────────────────────────── */
 .layout {
   display: flex;
-  min-height: calc(100vh - var(--header-height));
+  height: calc(100vh - var(--header-height));
+  overflow: hidden;
 }
 
 .main-content {
@@ -345,6 +365,8 @@ body {
   padding: 2.5rem 3.5rem;
   max-width: 900px;
   min-width: 0;
+  overflow-y: auto;
+  height: 100%;
 }
 
 /* Full-page routes (playground, storybook) — no sidebar */
@@ -363,13 +385,12 @@ body {
   background: var(--color-surface);
   border-right: 1px solid var(--color-border-2);
   padding: 1.75rem 1.25rem;
-  position: sticky;
-  top: var(--header-height);
-  height: calc(100vh - var(--header-height));
+  height: 100%;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
   gap: 0;
+  flex-shrink: 0;
 }
 
 .sidebar-logo {
@@ -455,7 +476,124 @@ body {
   border-radius: 0 2px 2px 0;
 }
 
-/* ── Prose / MDX ─────────────────────────────────────────────────────────── */
+/* ── DocPage hero header ─────────────────────────────────────────────────── */
+.doc-page-hero {
+  border-radius: 20px;
+  padding: clamp(1.25rem, 4vw, 2rem) clamp(1rem, 4vw, 2.25rem);
+  margin-bottom: 2.5rem;
+  border: 1px solid var(--color-border-2);
+  position: relative;
+  overflow: hidden;
+  animation: fadeUp 0.4s ease;
+  /* Theme-aware background */
+  background: var(--doc-hero-bg);
+}
+
+.doc-page-hero-blob {
+  position: absolute;
+  top: -30px;
+  right: -30px;
+  width: 160px;
+  height: 160px;
+  background: var(--doc-hero-blob);
+  pointer-events: none;
+  border-radius: 50%;
+}
+
+.doc-page-hero-icon {
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  background: var(--doc-hero-icon-bg);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  box-shadow: var(--doc-hero-icon-shadow);
+}
+
+.doc-page-hero-title {
+  font-size: clamp(1.4rem, 4vw, 1.85rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  margin: 0 0 0.5rem;
+  background: var(--doc-hero-title-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Per-theme values */
+[data-theme="light"] {
+  --doc-hero-bg: linear-gradient(135deg, #e6edfa 0%, #ffffff 70%, #e7fdfa 100%);
+  --doc-hero-blob: radial-gradient(
+    circle,
+    rgba(2, 76, 206, 0.1) 0%,
+    transparent 70%
+  );
+  --doc-hero-icon-bg: linear-gradient(135deg, #024cce, #14f1d8);
+  --doc-hero-icon-shadow: 0 4px 14px rgba(2, 76, 206, 0.25);
+  --doc-hero-title-gradient: linear-gradient(135deg, #0f1010 0%, #024cce 100%);
+}
+
+[data-theme="dark"] {
+  --doc-hero-bg: linear-gradient(135deg, #161b22 0%, #1a1f2e 70%, #161b2e 100%);
+  --doc-hero-blob: radial-gradient(
+    circle,
+    rgba(2, 76, 206, 0.12) 0%,
+    transparent 70%
+  );
+  --doc-hero-icon-bg: linear-gradient(135deg, #024cce, #14f1d8);
+  --doc-hero-icon-shadow: 0 4px 14px rgba(2, 76, 206, 0.3);
+  --doc-hero-title-gradient: linear-gradient(135deg, #f0f6fc 0%, #4d8fff 100%);
+}
+
+[data-theme="aurora"] {
+  --doc-hero-bg: linear-gradient(135deg, #0f0f1a 0%, #0a0a1a 60%, #0d0a1f 100%);
+  --doc-hero-blob: radial-gradient(
+    circle,
+    rgba(0, 255, 136, 0.08) 0%,
+    transparent 70%
+  );
+  --doc-hero-icon-bg: linear-gradient(135deg, #00ff88, #7c3aed);
+  --doc-hero-icon-shadow: 0 4px 14px rgba(0, 255, 136, 0.2);
+  --doc-hero-title-gradient: linear-gradient(135deg, #f0f0f8 0%, #00ff88 100%);
+}
+
+/* ── Callout theme overrides ─────────────────────────────────────────────── */
+[data-theme="light"] {
+  --callout-info-bg: #e6edfa;
+  --callout-info-border: #b3c9f0;
+  --callout-tip-bg: #f3ffe3;
+  --callout-tip-border: #cdf79a;
+  --callout-warning-bg: #fef4e2;
+  --callout-warning-border: #fddfab;
+  --callout-danger-bg: #ffe9ec;
+  --callout-danger-border: #fa9aa5;
+}
+[data-theme="dark"] {
+  --callout-info-bg: rgba(2, 76, 206, 0.1);
+  --callout-info-border: rgba(2, 76, 206, 0.25);
+  --callout-tip-bg: rgba(77, 141, 1, 0.1);
+  --callout-tip-border: rgba(77, 141, 1, 0.25);
+  --callout-warning-bg: rgba(201, 139, 37, 0.1);
+  --callout-warning-border: rgba(201, 139, 37, 0.25);
+  --callout-danger-bg: rgba(194, 2, 25, 0.1);
+  --callout-danger-border: rgba(194, 2, 25, 0.25);
+}
+[data-theme="aurora"] {
+  --callout-info-bg: rgba(0, 255, 136, 0.06);
+  --callout-info-border: rgba(0, 255, 136, 0.15);
+  --callout-tip-bg: rgba(0, 255, 136, 0.06);
+  --callout-tip-border: rgba(0, 255, 136, 0.15);
+  --callout-warning-bg: rgba(201, 139, 37, 0.1);
+  --callout-warning-border: rgba(201, 139, 37, 0.2);
+  --callout-danger-bg: rgba(194, 2, 25, 0.1);
+  --callout-danger-border: rgba(194, 2, 25, 0.2);
+}
+
 .prose h1 {
   font-size: 2.25rem;
   font-weight: 800;
@@ -713,10 +851,8 @@ body {
   .app-header-mobile-toggle {
     display: flex;
   }
-  .app-header-mobile-menu {
-    display: flex;
-  }
-  .app-header-tab-label {
+  /* Hide desktop tabs entirely on mobile — hamburger menu takes over */
+  .app-header-tabs {
     display: none;
   }
   .app-header-action-label {
@@ -753,12 +889,16 @@ body {
 
   .layout {
     flex-direction: column;
+    height: auto;
+    overflow: visible;
   }
 
   .main-content {
     padding: 1.25rem 1rem;
     max-width: 100%;
     width: 100%;
+    height: auto;
+    overflow-y: visible;
   }
 
   /* Prose responsive */
@@ -772,9 +912,16 @@ body {
     padding: 1rem;
     font-size: 0.8rem;
     border-radius: var(--radius-md);
+    /* Ensure code blocks scroll horizontally instead of breaking layout */
+    overflow-x: auto;
+    max-width: 100%;
+    word-break: normal;
+    white-space: pre;
   }
   .prose table {
     font-size: 0.8rem;
+    display: block;
+    overflow-x: auto;
   }
   .prose th,
   .prose td {
@@ -791,9 +938,14 @@ body {
   }
   .prose pre {
     padding: 0.75rem;
+    font-size: 0.75rem;
   }
   .app-header {
     padding: 0 0.75rem;
+  }
+  /* Tighten logo on very small screens */
+  .app-header-logo-text {
+    font-size: 0.85rem;
   }
 }
 

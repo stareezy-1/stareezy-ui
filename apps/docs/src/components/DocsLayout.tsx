@@ -1,27 +1,22 @@
 "use client";
 
-/**
- * DocsLayout — wraps docs pages with the sidebar.
- * Manages the mobile sidebar open/close state driven by AppHeader's hamburger.
- * This is a client component so it can hold state.
- */
-
-import { useState, useCallback } from "react";
 import type { ReactNode } from "react";
 import { SidebarNav } from "./SidebarNav";
 
 interface DocsLayoutProps {
   children: ReactNode;
+  sidebarOpen: boolean;
+  onSidebarClose: () => void;
 }
 
-export function DocsLayout({ children }: DocsLayoutProps) {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-
-  const handleClose = useCallback(() => setSidebarOpen(false), []);
-
+export function DocsLayout({
+  children,
+  sidebarOpen,
+  onSidebarClose,
+}: DocsLayoutProps) {
   return (
     <div className="layout">
-      <SidebarNav open={sidebarOpen} onClose={handleClose} />
+      <SidebarNav open={sidebarOpen} onClose={onSidebarClose} />
       <main className="main-content" id="main-content">
         {children}
       </main>

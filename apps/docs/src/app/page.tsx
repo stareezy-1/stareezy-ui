@@ -4,7 +4,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "Stareezy UI — Typed Design Token System",
   description:
-    "A fully typed, cross-platform design token system and component library for React Native and web. 70+ components, 300+ typed tokens, aurora aesthetic.",
+    "A fully typed, cross-platform design token system and component library for React Native and web. 17+ components, 300+ typed tokens, aurora aesthetic.",
 };
 
 const PACKAGES = [
@@ -26,8 +26,8 @@ const PACKAGES = [
     name: "@stareezy-ui/components",
     icon: "⬡",
     color: "#00cc6a",
-    desc: "70+ cross-platform components. Box, Text, Button, Input, Modal, Badge, Card, Toast and more.",
-    badge: "70+ components",
+    desc: "17+ cross-platform components. Box, Text, Button, Input, Modal, Badge, Card, Toast and more.",
+    badge: "17+ components",
   },
   {
     name: "@stareezy-ui/compiler",
@@ -87,7 +87,7 @@ const QUICK_LINKS = [
     href: "/docs/components",
     label: "Components",
     icon: "⬡",
-    desc: "70+ cross-platform",
+    desc: "17+ cross-platform",
   },
   {
     href: "/docs/compiler",
@@ -318,7 +318,7 @@ export default function HomePage() {
             borderRadius: "var(--radius-lg)",
             border: "1px solid var(--color-border)",
             boxShadow: "var(--shadow-lg)",
-            overflow: "hidden",
+            overflow: "clip",
           }}
         >
           {/* macOS chrome */}

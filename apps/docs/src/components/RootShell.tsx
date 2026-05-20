@@ -1,11 +1,6 @@
 "use client";
 
-/**
- * RootShell — client component that decides which layout to render.
- * - Docs routes (/  /docs/*  /tokens): AppHeader + sidebar + main
- * - Full-page routes (/playground  /storybook): AppHeader only, no sidebar
- */
-
+import { useState, useCallback } from "react";
 import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
 import { AppHeader } from "./AppHeader";
@@ -23,15 +18,29 @@ function isDocsRoute(pathname: string): boolean {
     pathname.startsWith("/tokens")
   );
 }
+
 export function RootShell({ children }: RootShellProps) {
   const pathname = usePathname();
   const docs = isDocsRoute(pathname);
 
+  // Sidebar state lives here so AppHeader's hamburger and DocsLayout share it
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const handleSidebarToggle = useCallback(() => setSidebarOpen((v) => !v), []);
+  const handleSidebarClose = useCallback(() => setSidebarOpen(false), []);
+
   return (
     <>
-      <AppHeader />
+      <AppHeader
+        onSidebarToggle={docs ? handleSidebarToggle : undefined}
+        sidebarOpen={docs ? sidebarOpen : false}
+      />
       {docs ? (
-        <DocsLayout>{children}</DocsLayout>
+        <DocsLayout
+          sidebarOpen={sidebarOpen}
+          onSidebarClose={handleSidebarClose}
+        >
+          {children}
+        </DocsLayout>
       ) : (
         <div className="full-page">{children}</div>
       )}

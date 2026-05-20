@@ -1,7 +1,7 @@
 /**
- * DocPage — beautiful wrapper for all MDX documentation pages.
- * Provides a consistent header, breadcrumb, and styled prose container.
- * All pages are "use client" so they can use our token CSS variables safely.
+ * DocPage — wrapper for all documentation pages.
+ * Hero header styling is driven by CSS classes + theme variables (globals.css)
+ * so it adapts correctly to aurora / dark / light themes.
  */
 "use client";
 
@@ -20,39 +20,16 @@ export function DocPage({
   title,
   description,
   badge,
-  badgeColor = "#024CCE",
+  badgeColor = "var(--brand-primary)",
   icon = "◈",
   children,
 }: DocPageProps) {
   return (
     <div style={{ paddingBottom: "4rem" }}>
-      {/* Hero header */}
-      <div
-        style={{
-          background:
-            "linear-gradient(135deg, #E6EDFA 0%, #ffffff 70%, #E7FDFA 100%)",
-          borderRadius: 20,
-          padding: "clamp(1.25rem, 4vw, 2rem) clamp(1rem, 4vw, 2.25rem)",
-          marginBottom: "2.5rem",
-          border: "1px solid var(--color-border-2)",
-          position: "relative",
-          overflow: "hidden",
-          animation: "fadeUp 0.4s ease",
-        }}
-      >
+      {/* Hero header — background/colors come from .doc-page-hero CSS class */}
+      <div className="doc-page-hero">
         {/* Decorative blob */}
-        <div
-          style={{
-            position: "absolute",
-            top: -30,
-            right: -30,
-            width: 160,
-            height: 160,
-            background:
-              "radial-gradient(circle, rgba(2,76,206,0.1) 0%, transparent 70%)",
-            pointerEvents: "none",
-          }}
-        />
+        <div className="doc-page-hero-blob" />
 
         {badge && (
           <div
@@ -60,8 +37,8 @@ export function DocPage({
               display: "inline-flex",
               alignItems: "center",
               gap: 6,
-              background: `${badgeColor}18`,
-              border: `1px solid ${badgeColor}30`,
+              background: `color-mix(in srgb, ${badgeColor} 12%, transparent)`,
+              border: `1px solid color-mix(in srgb, ${badgeColor} 28%, transparent)`,
               borderRadius: 100,
               padding: "0.25rem 0.75rem",
               fontSize: "0.72rem",
@@ -77,38 +54,9 @@ export function DocPage({
         )}
 
         <div style={{ display: "flex", alignItems: "flex-start", gap: 14 }}>
-          <div
-            style={{
-              width: 44,
-              height: 44,
-              flexShrink: 0,
-              background: "linear-gradient(135deg, #024CCE, #14F1D8)",
-              borderRadius: 12,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              fontSize: "1.2rem",
-              boxShadow: "0 4px 14px rgba(2,76,206,0.25)",
-            }}
-          >
-            {icon}
-          </div>
-          <div>
-            <h1
-              style={{
-                fontSize: "clamp(1.4rem, 4vw, 1.85rem)",
-                fontWeight: 800,
-                letterSpacing: "-0.03em",
-                lineHeight: 1.15,
-                margin: "0 0 0.5rem",
-                background: "linear-gradient(135deg, #0F1010 0%, #024CCE 100%)",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                backgroundClip: "text",
-              }}
-            >
-              {title}
-            </h1>
+          <div className="doc-page-hero-icon">{icon}</div>
+          <div style={{ minWidth: 0 }}>
+            <h1 className="doc-page-hero-title">{title}</h1>
             {description && (
               <p
                 style={{
@@ -131,7 +79,7 @@ export function DocPage({
   );
 }
 
-/** Inline callout / tip box */
+/** Inline callout / tip box — colors adapt to current theme via CSS variables */
 export function Callout({
   type = "info",
   children,
@@ -139,19 +87,21 @@ export function Callout({
   type?: "info" | "warning" | "tip" | "danger";
   children: ReactNode;
 }) {
-  const styles = {
-    info: { bg: "#E6EDFA", border: "#B3C9F0", icon: "ℹ", color: "#024CCE" },
-    tip: { bg: "#F3FFE3", border: "#CDF79A", icon: "✦", color: "#4D8D01" },
-    warning: { bg: "#FEF4E2", border: "#FDDFAB", icon: "⚠", color: "#C98B25" },
-    danger: { bg: "#FFE9EC", border: "#FA9AA5", icon: "✕", color: "#C20219" },
+  const accent = {
+    info: "#024CCE",
+    tip: "#4D8D01",
+    warning: "#C98B25",
+    danger: "#C20219",
   }[type];
+
+  const icon = { info: "ℹ", tip: "✦", warning: "⚠", danger: "✕" }[type];
 
   return (
     <div
       style={{
-        background: styles.bg,
-        border: `1px solid ${styles.border}`,
-        borderLeft: `4px solid ${styles.color}`,
+        background: `var(--callout-${type}-bg)`,
+        border: `1px solid var(--callout-${type}-border)`,
+        borderLeft: `4px solid ${accent}`,
         borderRadius: "0 10px 10px 0",
         padding: "0.85rem 1.1rem",
         margin: "1.25rem 0",
@@ -162,14 +112,14 @@ export function Callout({
     >
       <span
         style={{
-          color: styles.color,
+          color: accent,
           fontWeight: 700,
           fontSize: "0.9rem",
           flexShrink: 0,
           marginTop: 1,
         }}
       >
-        {styles.icon}
+        {icon}
       </span>
       <div
         style={{
@@ -202,14 +152,14 @@ export function Step({
           height: 32,
           flexShrink: 0,
           background: "var(--brand-500)",
-          color: "white",
+          color: "var(--color-bg)",
           borderRadius: "50%",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
           fontWeight: 800,
           fontSize: "0.85rem",
-          boxShadow: "0 2px 8px rgba(2,76,206,0.3)",
+          boxShadow: "0 2px 8px rgba(0,0,0,0.25)",
           marginTop: 2,
         }}
       >

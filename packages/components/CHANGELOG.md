@@ -31,7 +31,7 @@
   - `@stareezy-ui/runtime`: O(1) style registry with web and React Native adapters
   - `@stareezy-ui/stylesheet`: Atomic CSS sheet management and CSS variable injection
   - `@stareezy-ui/compiler`: Babel/Vite build-time transform plugin for token extraction
-  - `@stareezy-ui/components`: 70+ cross-platform components built on the token system
+  - `@stareezy-ui/components`: 17+ cross-platform components built on the token system
 
 ### Patch Changes
 
