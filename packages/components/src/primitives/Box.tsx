@@ -843,6 +843,7 @@ export const Box: React.FC<BoxProps> = (props) => {
 
     // After merge, re-check display:flex + default flexDirection:column
     const flexCssProps = [
+      "flex",
       "flexDirection",
       "alignItems",
       "justifyContent",
