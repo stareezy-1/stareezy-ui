@@ -247,7 +247,17 @@ function WebThemeProvider({
 
   return (
     <ThemeContext.Provider value={resolved}>
-      <div data-theme={dataTheme}>{children}</div>
+      <div
+        data-theme={dataTheme}
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          flex: 1,
+          minHeight: 0,
+        }}
+      >
+        {children}
+      </div>
     </ThemeContext.Provider>
   );
 }
