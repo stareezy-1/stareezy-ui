@@ -1,6 +1,6 @@
 {
   "name": "@stareezy-ui/runtime",
-  "version": "1",
+  "version": "0.2.1",
   "description": "Stareezy UI runtime — O(1) token-to-style lookup and platform adapters",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
