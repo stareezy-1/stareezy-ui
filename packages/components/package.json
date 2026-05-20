@@ -1,6 +1,6 @@
 {
   "name": "@stareezy-ui/components",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Stareezy UI component library — 17+ cross-platform React Native and web components",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -31,6 +31,7 @@
   },
   "scripts": {
     "build": "tsup",
+    "build:cdn": "tsup --config tsup.cdn.config.ts",
     "typecheck": "tsc --noEmit",
     "prepublishOnly": "pnpm run build && pnpm run typecheck",
     "test": "vitest run --passWithNoTests",

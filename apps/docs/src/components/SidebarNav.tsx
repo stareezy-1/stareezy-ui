@@ -11,6 +11,7 @@ const NAV_SECTIONS = [
       { href: "/", label: "Home", icon: "⌂" },
       { href: "/docs/installation", label: "Installation", icon: "↓" },
       { href: "/docs/usage", label: "Usage", icon: "◈" },
+      { href: "/docs/cdn", label: "CDN Usage", icon: "↗" },
     ],
   },
   {

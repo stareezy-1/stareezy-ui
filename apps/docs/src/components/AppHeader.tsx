@@ -61,7 +61,9 @@ export function AppHeader() {
           S
         </div>
         <span className="app-header-logo-text">Stareezy UI</span>
-        <span className="app-header-version">v0.2.0</span>
+        <span className="app-header-version" suppressHydrationWarning>
+          v0.2.0
+        </span>
       </Link>
 
       {/* Section tabs — desktop */}

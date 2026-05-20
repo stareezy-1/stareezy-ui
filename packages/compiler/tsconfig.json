@@ -9,6 +9,7 @@
     "declaration": true,
     "declarationMap": true,
     "sourceMap": true,
+    "composite": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "skipLibCheck": true,

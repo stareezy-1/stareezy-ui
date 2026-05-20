@@ -1,6 +1,6 @@
 {
   "name": "@stareezy-ui/runtime",
-  "version": "0.2.0",
+  "version": "1",
   "description": "Stareezy UI runtime — O(1) token-to-style lookup and platform adapters",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -29,6 +29,7 @@
   },
   "scripts": {
     "build": "tsup",
+    "build:cdn": "tsup --config tsup.cdn.config.ts",
     "typecheck": "tsc --noEmit",
     "prepublishOnly": "pnpm run build && pnpm run typecheck",
     "test": "vitest run --passWithNoTests",
