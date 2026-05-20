@@ -31,7 +31,7 @@ export function RootShell({ children }: RootShellProps) {
   return (
     <>
       <AppHeader
-        onSidebarToggle={docs ? handleSidebarToggle : undefined}
+        onSidebarToggle={docs ? handleSidebarToggle : () => {}}
         sidebarOpen={docs ? sidebarOpen : false}
       />
       {docs ? (
