@@ -240,7 +240,7 @@ export default function HomePage() {
           >
             {[
               { value: "300+", label: "Tokens" },
-              { value: "70+", label: "Components" },
+              { value: "17+ ", label: "Components" },
               { value: "7", label: "Packages" },
               { value: "O(1)", label: "Runtime" },
             ].map((s) => (
