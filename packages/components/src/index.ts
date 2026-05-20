@@ -11,7 +11,7 @@ export type { ViewProps } from "./primitives/View";
 export { EViewType } from "./primitives/View.types";
 
 export { Text, ETextType, EFontStyle } from "./primitives/Text";
-export type { TextProps } from "./primitives/Text";
+export type { ITextProps } from "./primitives/Text";
 
 export {
   HStack,
