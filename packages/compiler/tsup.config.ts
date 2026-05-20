@@ -1,7 +1,7 @@
 import { defineConfig } from "tsup";
 
 export default defineConfig({
-  entry: ["src/index.ts", "src/babel.ts"],
+  entry: ["src/index.ts", "src/babel.ts", "src/metro.ts", "src/loadConfig.ts"],
   format: ["cjs", "esm"],
   dts: true,
   clean: true,
@@ -13,6 +13,10 @@ export default defineConfig({
     "@babel/generator",
     "@babel/types",
     "vite",
+    "path",
+    "fs",
+    "node:path",
+    "node:fs",
   ],
   tsconfig: "tsconfig.json",
 });

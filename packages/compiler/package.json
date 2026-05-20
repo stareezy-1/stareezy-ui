@@ -1,20 +1,25 @@
 {
   "name": "@stareezy-ui/compiler",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "Stareezy UI compiler — Babel/Vite/Metro plugin for build-time token extraction and atomic CSS generation",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
+      "types": "./dist/index.d.ts",
       "import": "./dist/index.mjs",
-      "require": "./dist/index.js",
-      "types": "./dist/index.d.ts"
+      "require": "./dist/index.js"
     },
     "./babel": {
+      "types": "./dist/babel.d.ts",
       "import": "./dist/babel.mjs",
-      "require": "./dist/babel.js",
-      "types": "./dist/babel.d.ts"
+      "require": "./dist/babel.js"
+    },
+    "./metro": {
+      "types": "./dist/metro.d.ts",
+      "import": "./dist/metro.mjs",
+      "require": "./dist/metro.js"
     },
     "./dist/*": "./dist/*"
   },
@@ -61,6 +66,7 @@
     "@babel/types": "^7.24.0",
     "@types/babel__generator": "^7.6.8",
     "@types/babel__traverse": "^7.20.6",
+    "@types/node": "^20.0.0",
     "fast-check": "^3.19.0",
     "tsup": "^8.0.0",
     "typescript": "^5.4.0",

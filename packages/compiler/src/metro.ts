@@ -78,7 +78,12 @@ export function stareezyMetroTransformer(config?: Partial<CompilerConfig>) {
 }
 
 /**
- * Default export — Metro transformer instance using stareezy.config.ts settings.
+ * Default export — Metro transformer factory.
  * Used when metro.config.js points babelTransformerPath to this file directly.
+ *
+ * metro.config.js:
+ * ```js
+ * config.transformer.babelTransformerPath = require.resolve('@stareezy-ui/compiler/metro')
+ * ```
  */
-export default stareezyMetroTransformer();
+export { stareezyMetroTransformer as default };
