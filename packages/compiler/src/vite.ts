@@ -12,6 +12,7 @@
 import type { Plugin } from "vite";
 import { transform } from "./transform";
 import { type CompilerConfig } from "./config";
+import { loadSzrConfig } from "./loadConfig";
 
 // ---------------------------------------------------------------------------
 // Virtual module helpers
@@ -48,6 +49,19 @@ export function stareezyVitePlugin(config?: Partial<CompilerConfig>): Plugin {
   /** Accumulated CSS rules across all transformed files. */
   const cssChunks: string[] = [];
 
+  // Merge shorthands from stareezy.config.ts if present
+  const szrConfig = loadSzrConfig();
+  const mergedConfig: Partial<CompilerConfig> = {
+    ...config,
+    propMappings: {
+      ...(szrConfig?.shorthands ?? {}),
+      ...(config?.propMappings ?? {}),
+    },
+    ...(szrConfig?.boxPropsComponents
+      ? { boxPropsComponents: szrConfig.boxPropsComponents }
+      : {}),
+  };
+
   return {
     name: "stareezy-ui",
 
@@ -75,11 +89,13 @@ export function stareezyVitePlugin(config?: Partial<CompilerConfig>): Plugin {
 
       let result;
       try {
-        result = transform(code, config);
+        result = transform(code, mergedConfig);
       } catch (err) {
         // Re-throw so Vite surfaces the build error with file context.
         throw new Error(
-          `[stareezy-ui] Failed to transform ${id}: ${(err as Error)?.message ?? String(err)}`,
+          `[stareezy-ui] Failed to transform ${id}: ${
+            (err as Error)?.message ?? String(err)
+          }`,
         );
       }
 

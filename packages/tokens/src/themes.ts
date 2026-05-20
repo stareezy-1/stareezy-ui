@@ -11,6 +11,7 @@
 import { colors } from "./colors";
 import { semanticColors } from "./semantic";
 import { aurora } from "./aurora";
+import { steinsGate } from "./steins-gate";
 
 // ---------------------------------------------------------------------------
 // ThemeOverride type
@@ -168,6 +169,45 @@ export const themes = {
       inverse: aurora.deepSpace,
       danger: aurora.errorRed,
       success: aurora.auroraGreen,
+    },
+  },
+  /**
+   * Steins;Gate theme — midnight navy / electric blue aesthetic.
+   * Electric blue (#4a9eff) as primary, divergence red (#e63030) as danger,
+   * deep midnight navy backgrounds, warm ivory text.
+   * "El Psy Kongroo."
+   */
+  "steins-gate": {
+    border: {
+      tertiary: steinsGate.borderNavy,
+      primaryBrand: steinsGate.ibmBlue,
+      secondary: steinsGate.borderNavy,
+      dangerPrimary: steinsGate.divergenceRed,
+      successPrimary: steinsGate.labTeal,
+      primaryBlack: steinsGate.ivoryText,
+      default: steinsGate.borderNavy,
+      danger: steinsGate.divergenceRed,
+      success: steinsGate.labTeal,
+    },
+    backgrounds: {
+      disabled: steinsGate.surfaceNavy,
+      primaryBlack: steinsGate.labNight,
+      primary: steinsGate.ibmBlue,
+      secondary: steinsGate.midnightNavy,
+    },
+    text: {
+      placeholder: steinsGate.textMuted,
+      primary: steinsGate.ivoryText,
+      disable: steinsGate.textMuted,
+      dangerPrimary: steinsGate.divergenceRed,
+      successPrimary: steinsGate.labTeal,
+      warningPrimary: steinsGate.ibmBlueDim,
+      importantBrand: steinsGate.ibmBlue,
+      secondary: steinsGate.ivoryDim,
+      tertiary: steinsGate.textMuted,
+      inverse: steinsGate.labNight,
+      danger: steinsGate.divergenceRed,
+      success: steinsGate.labTeal,
     },
   },
 } as const;

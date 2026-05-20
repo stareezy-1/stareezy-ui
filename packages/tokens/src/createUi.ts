@@ -48,6 +48,8 @@ import { shadow } from "./shadow";
 import { semanticColors } from "./semantic";
 import { themes } from "./themes";
 import type { ThemeOverride } from "./themes";
+import { t } from "./themeTokens";
+import type { ThemeToken } from "./themeTokens";
 
 // ---------------------------------------------------------------------------
 // Breakpoint config (mirrors packages/components/src/primitives/breakpoints.ts)
@@ -258,6 +260,18 @@ export type UiConfig<TTokens extends CustomTokenGroups> = {
   /** Registered prop shorthands (config-level, takes precedence over Box built-ins). */
   shorthands: Record<string, string>;
   /**
+   * Theme-reactive token references.
+   * Pass these directly as `bg`, `color`, `borderColor` props on Box and
+   * other components — they resolve to the current theme's value at render time.
+   *
+   * @example
+   * ```tsx
+   * const ui = createUi({ ... })
+   * <Box bg={ui.t.backgrounds.primary} color={ui.t.text.primary} />
+   * ```
+   */
+  t: typeof t;
+  /**
    * Returns the merged token registry (built-in + custom groups).
    * Requirements: 10.7
    */
@@ -418,6 +432,7 @@ export function createUi<
     breakpoints: resolvedBreakpoints,
     defaultTheme,
     shorthands: customShorthands,
+    t,
     getTokens,
     getTheme,
     getFont,

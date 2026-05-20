@@ -12,7 +12,10 @@
 
 import React, { useId, useEffect, useRef } from "react";
 import type { Token } from "@stareezy-ui/tokens";
-import { getUiConfig } from "@stareezy-ui/tokens";
+import { getUiConfig, useTheme } from "@stareezy-ui/tokens";
+import type { ThemeToken } from "@stareezy-ui/tokens";
+import { isThemeToken, resolveThemeTokenFromTheme } from "@stareezy-ui/tokens";
+import type { ResolvedTheme, SzrShorthands } from "@stareezy-ui/tokens";
 import { getRuntime } from "@stareezy-ui/runtime";
 import type { RuntimeAdapter } from "@stareezy-ui/runtime";
 import {
@@ -122,7 +125,7 @@ const propToRnStyle: Record<string, string> = {
 // Type helpers
 // ---------------------------------------------------------------------------
 
-type TokenOrValue<T> = Token<T> | T;
+type TokenOrValue<T> = Token<T> | ThemeToken | T;
 
 function isToken(value: unknown): value is Token<unknown> {
   return (
@@ -132,11 +135,38 @@ function isToken(value: unknown): value is Token<unknown> {
   );
 }
 
+/**
+ * Resolves a prop value that may be a Token<T>, ThemeToken, or plain value.
+ * ThemeTokens require the current resolved theme to look up the live value.
+ */
+function resolveTokenOrValue(value: unknown, theme: ResolvedTheme): unknown {
+  if (isThemeToken(value)) return resolveThemeTokenFromTheme(value, theme);
+  if (isToken(value)) return (value as Token<unknown>).value;
+  return value;
+}
+
+// ---------------------------------------------------------------------------
+// Custom shorthand props — picked up from SzrCustomConfig module augmentation
+// ---------------------------------------------------------------------------
+
+/**
+ * Extracts only the known shorthand keys from SzrShorthands as optional props.
+ * Uses `string extends keyof S` to avoid creating an index signature when
+ * SzrShorthands falls back to Record<string, string>.
+ */
+type CustomShorthandProps = string extends keyof SzrShorthands
+  ? // No augmentation — don't add any extra props (avoids index signature)
+    // eslint-disable-next-line @typescript-eslint/ban-types
+    {}
+  : {
+      [K in keyof SzrShorthands]?: TokenOrValue<string | number>;
+    };
+
 // ---------------------------------------------------------------------------
 // BoxProps
 // ---------------------------------------------------------------------------
 
-export interface BoxProps {
+export interface BoxProps extends CustomShorthandProps {
   // ── Preset type ───────────────────────────────────────────────────────────
   /** Applies a preset style combination. Explicit props override preset values. */
   type?: EBoxType;
@@ -492,6 +522,7 @@ function toCssValue(cssProp: string, value: unknown): unknown {
 function resolveWebProps(
   props: BoxProps,
   scopeClass: string,
+  theme: ResolvedTheme,
 ): {
   inlineStyle: Record<string, unknown>;
   responsiveCss: string;
@@ -529,21 +560,16 @@ function resolveWebProps(
     }
   }
 
-  // Resolve token props — extract .value from tokens, apply px units
-  for (const propName of TOKEN_PROP_NAMES) {
-    const rawVal = props[propName];
-    if (rawVal === undefined || rawVal === null) continue;
-
+  // Helper: resolve one prop name against effectivePropMap
+  function resolveOneProp(propName: string, rawVal: unknown) {
+    if (rawVal === undefined || rawVal === null) return;
     if (isResponsive(rawVal)) {
       const cssPropDef = effectivePropMap[propName];
-      // Unwrap token values inside the responsive map
       const unwrappedMap: Partial<Record<string, unknown>> = {};
       for (const [bp, bpVal] of Object.entries(
         rawVal as Record<string, unknown>,
       )) {
-        unwrappedMap[bp] = isToken(bpVal)
-          ? (bpVal as Token<unknown>).value
-          : bpVal;
+        unwrappedMap[bp] = resolveTokenOrValue(bpVal, theme);
       }
       const entries = buildMediaQueryEntries(
         unwrappedMap as Partial<Record<string, unknown>>,
@@ -554,19 +580,30 @@ function resolveWebProps(
         addResponsiveRule(cssPropDef, entries);
       }
     } else {
-      // Resolve token to its value, or use plain value directly
-      const resolved = isToken(rawVal)
-        ? (rawVal as Token<unknown>).value
-        : rawVal;
+      const resolved = resolveTokenOrValue(rawVal, theme);
       const cssProp = effectivePropMap[propName];
       if (Array.isArray(cssProp)) {
-        for (const cp of cssProp) {
+        for (const cp of cssProp)
           inlineStyle[camel(cp)] = toCssValue(camel(cp), resolved);
-        }
       } else if (cssProp) {
         inlineStyle[camel(cssProp)] = toCssValue(camel(cssProp), resolved);
       }
     }
+  }
+
+  // Resolve built-in token props
+  for (const propName of TOKEN_PROP_NAMES) {
+    resolveOneProp(propName, props[propName]);
+  }
+
+  // Resolve custom shorthand props from createUi({ shorthands }) config
+  // These are any keys in effectivePropMap not already in TOKEN_PROP_NAMES
+  const builtinSet = new Set<string>(TOKEN_PROP_NAMES);
+  for (const propName of Object.keys(effectivePropMap)) {
+    if (builtinSet.has(propName)) continue;
+    const rawVal = (props as Record<string, unknown>)[propName];
+    if (rawVal !== undefined && rawVal !== null)
+      resolveOneProp(propName, rawVal);
   }
 
   // Plain style props
@@ -665,6 +702,7 @@ function resolveNativeProps(
   props: BoxProps,
   runtime: RuntimeAdapter,
   windowWidth: number,
+  theme: ResolvedTheme,
 ): Array<number | Record<string, unknown>> {
   const styles: Array<number | Record<string, unknown>> = [];
   const plainStyle: Record<string, unknown> = {};
@@ -675,7 +713,7 @@ function resolveNativeProps(
     return val as T;
   }
 
-  // Register tokens
+  // Register tokens (only static Token<T>, not ThemeTokens)
   const tokensToRegister: Token<unknown>[] = [];
   for (const propName of TOKEN_PROP_NAMES) {
     const val = unwrap(props[propName]);
@@ -683,11 +721,16 @@ function resolveNativeProps(
   }
   if (tokensToRegister.length > 0) runtime.register(tokensToRegister);
 
-  // Resolve token props
+  // Resolve token props — ThemeTokens resolve to string values directly
   for (const propName of TOKEN_PROP_NAMES) {
     const val = unwrap(props[propName]);
     if (val === undefined || val === null) continue;
-    if (isToken(val)) {
+    if (isThemeToken(val)) {
+      // ThemeToken → resolve to string value, apply as plain style
+      const resolved = resolveThemeTokenFromTheme(val, theme);
+      const rnProp = propToRnStyle[propName];
+      if (rnProp) plainStyle[rnProp] = resolved;
+    } else if (isToken(val)) {
       const styleId = runtime.resolve(val as Token<unknown>) as number;
       if (styleId !== undefined) styles.push(styleId);
     } else {
@@ -723,6 +766,7 @@ function resolveNativeProps(
 
 export const Box: React.FC<BoxProps> = (props) => {
   const runtime = getRuntime();
+  const theme = useTheme(); // always call — needed for ThemeToken resolution
 
   // useId must be called unconditionally (React hook rules)
   const uid = useId(); // Strip consumed props from rest to avoid DOM warnings
@@ -773,7 +817,11 @@ export const Box: React.FC<BoxProps> = (props) => {
 
   if (isWeb) {
     const scopeClass = `szr-${uid.replace(/:/g, "")}`;
-    const { inlineStyle, responsiveCss } = resolveWebProps(props, scopeClass);
+    const { inlineStyle, responsiveCss } = resolveWebProps(
+      props,
+      scopeClass,
+      theme,
+    );
 
     const hasResponsive = responsiveCss.length > 0;
 
@@ -883,7 +931,7 @@ export const Box: React.FC<BoxProps> = (props) => {
   };
 
   const windowWidth = RN.Dimensions.get("window").width;
-  const resolvedStyles = resolveNativeProps(props, runtime, windowWidth);
+  const resolvedStyles = resolveNativeProps(props, runtime, windowWidth, theme);
 
   // Flatten caller style (handles arrays, numbers, objects)
   const callerStyle = flattenStyle(style);

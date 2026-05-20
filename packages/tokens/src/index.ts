@@ -46,6 +46,9 @@ export { ThemeNotFoundError, FontNotFoundError } from "./createUi";
 export { aurora, auroraVariants } from "./aurora";
 export type { AuroraTokens } from "./aurora";
 
+export { steinsGate, steinsGateVariants } from "./steins-gate";
+export type { SteinsGateTokens } from "./steins-gate";
+
 export { motion } from "./motion";
 
 export { glow } from "./glow";
@@ -54,3 +57,65 @@ export { getVariant, TokenVariantError } from "./variants";
 export type { TokenVariant } from "./variants";
 
 export { UiConfigProvider, useUiConfig } from "./UiConfigProvider";
+
+export {
+  t,
+  isThemeToken,
+  useResolveThemeToken,
+  resolveThemeTokenFromTheme,
+  THEME_TOKEN_BRAND,
+} from "./themeTokens";
+export type { ThemeToken } from "./themeTokens";
+
+// ---------------------------------------------------------------------------
+// Module augmentation — users extend SzrCustomConfig in their ui.config.ts
+// to make custom shorthands flow into BoxProps automatically.
+//
+// Usage in your ui.config.ts:
+//
+//   import { createUi } from '@stareezy-ui/tokens'
+//   export const ui = createUi({ shorthands: { bg: 'backgroundColor' } as const })
+//   type AppConfig = typeof ui
+//   declare module '@stareezy-ui/tokens' {
+//     interface SzrCustomConfig extends AppConfig {}
+//   }
+// ---------------------------------------------------------------------------
+
+/**
+ * Extend this interface in your app's ui.config.ts to register your
+ * createUi() config with the type system.
+ *
+ * @example
+ * ```ts
+ * // ui.config.ts
+ * import { createUi } from '@stareezy-ui/tokens'
+ *
+ * export const ui = createUi({
+ *   shorthands: {
+ *     bg:  'backgroundColor',
+ *     p:   'padding',
+ *     m:   'margin',
+ *     f:   'flex',
+ *     br:  'borderRadius',
+ *   } as const,
+ * })
+ *
+ * type AppConfig = typeof ui
+ * declare module '@stareezy-ui/tokens' {
+ *   interface SzrCustomConfig extends AppConfig {}
+ * }
+ * ```
+ *
+ * Once declared, `<Box bg={...} />` will be a valid typed prop even if `bg`
+ * is not in the built-in BoxProps — TypeScript reads it from your config.
+ */
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface SzrCustomConfig {}
+
+/**
+ * Extracts the shorthands record from SzrCustomConfig if the user has
+ * augmented it, otherwise falls back to the built-in shorthand map.
+ */
+export type SzrShorthands = SzrCustomConfig extends { shorthands: infer S }
+  ? S
+  : Record<string, string>;

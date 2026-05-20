@@ -1,5 +1,12 @@
 # @stareezy-ui/runtime
 
+## 0.2.4
+
+### Patch Changes
+
+- Updated dependencies
+  - @stareezy-ui/tokens@0.2.4
+
 ## 0.2.3
 
 ### Patch Changes

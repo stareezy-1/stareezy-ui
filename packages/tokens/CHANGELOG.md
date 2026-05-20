@@ -1,5 +1,11 @@
 # @stareezy-ui/tokens
 
+## 0.2.4
+
+### Patch Changes
+
+- add steins:gate theme & update docs
+
 ## 0.2.3
 
 ### Patch Changes

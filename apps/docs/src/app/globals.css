@@ -126,6 +126,48 @@
   --radius-xl: 24px;
 }
 
+/* ── Steins;Gate theme — midnight navy / electric blue ───────────────────── */
+[data-theme="steins-gate"] {
+  --header-height: 56px;
+  --sidebar-width: 272px;
+  --font-sans: var(--font-inter), "Inter", system-ui, -apple-system, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), "JetBrains Mono", monospace;
+
+  /* Midnight navy backgrounds */
+  --color-bg: #080c18;
+  --color-surface: #0d1224;
+  --color-surface-2: #131929;
+  --color-text: #e8dcc8;
+  --color-text-2: #a89880;
+  --color-muted: #5a6a85;
+  --color-border: #1e2a42;
+  --color-border-2: #18223a;
+  --color-code-bg: #060a14;
+
+  /* Electric blue brand */
+  --brand-primary: #4a9eff;
+  --brand-accent: #e63030;
+  --brand-50: rgba(74, 158, 255, 0.08);
+  --brand-100: rgba(74, 158, 255, 0.15);
+  --brand-200: rgba(74, 158, 255, 0.25);
+  --brand-400: #2d7dd2;
+  --brand-500: #4a9eff;
+  --brand-600: #2d7dd2;
+  --brand-700: #1a5fb4;
+
+  /* Shadows — deep navy tint */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.65),
+    0 0 0 1px rgba(74, 158, 255, 0.04);
+  --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.75),
+    0 0 60px rgba(74, 158, 255, 0.06);
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+}
+
 html {
   scroll-behavior: smooth;
   /* Prevent any child from causing horizontal scroll on the page */
@@ -562,6 +604,18 @@ pre {
   --doc-hero-title-gradient: linear-gradient(135deg, #f0f0f8 0%, #00ff88 100%);
 }
 
+[data-theme="steins-gate"] {
+  --doc-hero-bg: linear-gradient(135deg, #080c18 0%, #0d1224 60%, #0f1530 100%);
+  --doc-hero-blob: radial-gradient(
+    circle,
+    rgba(74, 158, 255, 0.1) 0%,
+    transparent 70%
+  );
+  --doc-hero-icon-bg: linear-gradient(135deg, #4a9eff, #e63030);
+  --doc-hero-icon-shadow: 0 4px 14px rgba(74, 158, 255, 0.25);
+  --doc-hero-title-gradient: linear-gradient(135deg, #e8dcc8 0%, #4a9eff 100%);
+}
+
 /* ── Callout theme overrides ─────────────────────────────────────────────── */
 [data-theme="light"] {
   --callout-info-bg: #e6edfa;
@@ -592,6 +646,18 @@ pre {
   --callout-warning-border: rgba(201, 139, 37, 0.2);
   --callout-danger-bg: rgba(194, 2, 25, 0.1);
   --callout-danger-border: rgba(194, 2, 25, 0.2);
+}
+
+/* Steins;Gate: electric blue / navy tinted callouts */
+[data-theme="steins-gate"] {
+  --callout-info-bg: rgba(74, 158, 255, 0.08);
+  --callout-info-border: rgba(74, 158, 255, 0.2);
+  --callout-tip-bg: rgba(42, 157, 143, 0.08);
+  --callout-tip-border: rgba(42, 157, 143, 0.2);
+  --callout-warning-bg: rgba(45, 109, 181, 0.1);
+  --callout-warning-border: rgba(45, 109, 181, 0.22);
+  --callout-danger-bg: rgba(230, 48, 48, 0.1);
+  --callout-danger-border: rgba(230, 48, 48, 0.25);
 }
 
 .prose h1 {

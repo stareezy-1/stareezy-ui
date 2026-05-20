@@ -1,0 +1,84 @@
+/**
+ * Metro transformer for @stareezy-ui/compiler.
+ *
+ * Wraps the Stareezy UI JSX token transform as a Metro (React Native bundler)
+ * custom transformer. Reads shorthands from stareezy.config.ts automatically.
+ *
+ * Usage in metro.config.js:
+ * ```js
+ * const { stareezyMetroTransformer } = require('@stareezy-ui/compiler')
+ *
+ * module.exports = {
+ *   transformer: {
+ *     babelTransformerPath: require.resolve('@stareezy-ui/compiler/metro'),
+ *   },
+ * }
+ * ```
+ *
+ * Or with a custom transformer path:
+ * ```js
+ * // metro.transformer.js
+ * const { stareezyMetroTransformer } = require('@stareezy-ui/compiler')
+ * module.exports = stareezyMetroTransformer()
+ * ```
+ */
+
+import { transform as szrTransform } from "./transform";
+import { type CompilerConfig } from "./config";
+import { loadSzrConfig } from "./loadConfig";
+
+export interface MetroTransformOptions {
+  filename: string;
+  src: string;
+  options?: Record<string, unknown>;
+}
+
+export interface MetroTransformResult {
+  code: string;
+  map?: unknown;
+}
+
+/**
+ * Creates a Metro-compatible transformer that applies the Stareezy UI
+ * token transform before delegating to the default Babel transformer.
+ *
+ * @param config - Optional partial CompilerConfig to override defaults.
+ */
+export function stareezyMetroTransformer(config?: Partial<CompilerConfig>) {
+  // Merge shorthands from stareezy.config.ts
+  const szrConfig = loadSzrConfig();
+  const mergedConfig: Partial<CompilerConfig> = {
+    ...config,
+    propMappings: {
+      ...(szrConfig?.shorthands ?? {}),
+      ...(config?.propMappings ?? {}),
+    },
+    ...(szrConfig?.boxPropsComponents
+      ? { boxPropsComponents: szrConfig.boxPropsComponents }
+      : {}),
+  };
+
+  return {
+    transform({ filename, src }: MetroTransformOptions): MetroTransformResult {
+      // Only transform JSX/TSX files
+      if (!filename.endsWith(".jsx") && !filename.endsWith(".tsx")) {
+        return { code: src };
+      }
+
+      try {
+        const { transformedSource } = szrTransform(src, mergedConfig);
+        return { code: transformedSource };
+      } catch {
+        // On transform error, return original source so Metro can surface
+        // the error with proper file context
+        return { code: src };
+      }
+    },
+  };
+}
+
+/**
+ * Default export — Metro transformer instance using stareezy.config.ts settings.
+ * Used when metro.config.js points babelTransformerPath to this file directly.
+ */
+export default stareezyMetroTransformer();

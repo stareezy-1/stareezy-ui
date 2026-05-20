@@ -1,53 +1,49 @@
 import type { Metadata } from "next";
-import { DocPage, Callout } from "apps/docs/src/components/DocPage";
+import { DocPage, Callout } from "../../../components/DocPage";
 
 export const metadata: Metadata = {
   title: "Architecture",
-  description: "Stareezy UI monorepo architecture overview.",
+  description:
+    "Stareezy UI monorepo architecture — packages, token flow, and design decisions.",
+  alternates: { canonical: "https://ui.stareezy.tech/docs/architecture" },
 };
 
 const PACKAGES = [
   {
     name: "tokens",
-    desc: "Token factory, all token definitions, theme system, serialization. Zero dependencies.",
     color: "#024CCE",
-    bg: "#E6EDFA",
     deps: "none",
+    desc: "Token factory, all token definitions, theme system (ThemeProvider, useTheme, useThemeSwitch), t accessor, ThemeToken, createUi, module augmentation. Zero dependencies.",
   },
   {
     name: "core",
-    desc: "Shared utilities, platform detection, hooks from rekosistem-components.",
     color: "#4D8D01",
-    bg: "#F3FFE3",
     deps: "tokens",
-  },
-  {
-    name: "runtime",
-    desc: "Style registry, O(1) token-to-style lookup, web and RN platform adapters.",
-    color: "#C98B25",
-    bg: "#FEF4E2",
-    deps: "tokens, stylesheet",
+    desc: "Shared utilities, platform detection, hooks (useDeviceLayout, useDocsTheme), string/date/currency utils.",
   },
   {
     name: "stylesheet",
-    desc: "Atomic CSS sheet management, CSS variable injection into document.head.",
     color: "#0C9182",
-    bg: "#E7FDFA",
-    deps: "runtime",
+    deps: "none",
+    desc: "Atomic CSS sheet management — injects :root variables, deduplicates rules, handles theme switching via data-theme.",
+  },
+  {
+    name: "runtime",
+    color: "#C98B25",
+    deps: "tokens, stylesheet",
+    desc: "O(1) style registry. resolve(token) is a single Map.get(). Web adapter returns CSS class names; RN adapter returns StyleSheet IDs.",
   },
   {
     name: "compiler",
-    desc: "Babel/Vite/Metro plugin: extracts token refs at build time, emits atomic CSS.",
     color: "#5D2555",
-    bg: "#F9DEDE",
     deps: "tokens (build-time only)",
+    desc: "Babel/Vite/Metro plugin. Reads stareezy.config.ts, extracts Token props at build time, emits atomic CSS. ThemeToken props are not extracted — they resolve at runtime.",
   },
   {
     name: "components",
-    desc: "All 17+ UI components rebuilt from rekosistem-components.",
     color: "#535A5E",
-    bg: "#F4F6FB",
     deps: "tokens, core, runtime",
+    desc: "17+ cross-platform components. Box accepts Token<T>, ThemeToken, and plain values. Custom shorthands from SzrCustomConfig are typed via module augmentation.",
   },
 ];
 
@@ -60,23 +56,32 @@ export default function ArchitecturePage() {
       icon="⬢"
       badgeColor="#535A5E"
     >
-      <h2>Package Structure</h2>
+      <h2>Package structure</h2>
       <pre>
         <code>{`stareezy-ui/
 ├── packages/
-│   ├── tokens/       # Token definitions, theme system, serialization
+│   ├── tokens/       # Token definitions, theme system, t accessor, createUi
 │   ├── core/         # Utilities, hooks, platform helpers
-│   ├── runtime/      # Style registry and platform adapters
+│   ├── runtime/      # O(1) style registry and platform adapters
 │   ├── stylesheet/   # Atomic CSS sheet management (web)
-│   ├── compiler/     # Babel/Vite build-time transform
+│   ├── compiler/     # Babel/Vite/Metro build-time transform
 │   └── components/   # 17+ cross-platform components
 └── apps/
-    ├── docs/         # This documentation site
-    ├── storybook/    # Component stories
+    ├── docs/         # This documentation site (Next.js)
+    ├── storybook/    # Component stories (Storybook 8)
     └── playground/   # Live code editor`}</code>
       </pre>
 
-      <h2>Package Responsibilities</h2>
+      <h2>Build order</h2>
+      <p>
+        Packages must be built in dependency order. The{" "}
+        <code>pnpm run build</code> script handles this automatically:
+      </p>
+      <pre>
+        <code>{`tokens → core / stylesheet → runtime → compiler → components`}</code>
+      </pre>
+
+      <h2>Package responsibilities</h2>
       <div
         style={{
           display: "flex",
@@ -98,72 +103,42 @@ export default function ArchitecturePage() {
               alignItems: "flex-start",
             }}
           >
-            <div
-              style={{
-                width: 40,
-                height: 40,
-                background: pkg.bg,
-                borderRadius: 10,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                flexShrink: 0,
-              }}
-            >
+            <div style={{ flexShrink: 0, paddingTop: 2 }}>
               <code
                 style={{
-                  fontSize: "0.65rem",
-                  fontWeight: 800,
+                  fontSize: "0.82rem",
+                  fontWeight: 700,
                   color: pkg.color,
                 }}
               >
-                pkg
+                @stareezy-ui/{pkg.name}
               </code>
-            </div>
-            <div style={{ flex: 1 }}>
               <div
                 style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 8,
-                  marginBottom: 4,
+                  fontSize: "0.68rem",
+                  color: "var(--color-muted)",
+                  fontFamily: "var(--font-mono)",
+                  marginTop: 2,
                 }}
               >
-                <code
-                  style={{
-                    fontWeight: 700,
-                    color: pkg.color,
-                    fontSize: "0.9rem",
-                  }}
-                >
-                  @stareezy-ui/{pkg.name}
-                </code>
-                <span
-                  style={{
-                    fontSize: "0.68rem",
-                    color: "var(--color-muted)",
-                    fontFamily: "var(--font-mono)",
-                  }}
-                >
-                  deps: {pkg.deps}
-                </span>
+                deps: {pkg.deps}
               </div>
-              <p
-                style={{
-                  margin: 0,
-                  fontSize: "0.85rem",
-                  color: "var(--color-text-2)",
-                  lineHeight: 1.55,
-                }}
-              >
-                {pkg.desc}
-              </p>
             </div>
+            <p
+              style={{
+                margin: 0,
+                fontSize: "0.85rem",
+                color: "var(--color-text-2)",
+                lineHeight: 1.6,
+              }}
+            >
+              {pkg.desc}
+            </p>
           </div>
         ))}
       </div>
 
-      <h2>Token Flow</h2>
+      <h2>Token flow</h2>
       <div
         style={{
           display: "flex",
@@ -176,22 +151,27 @@ export default function ArchitecturePage() {
           {
             n: 1,
             title: "Definition",
-            desc: "Tokens are defined in packages/tokens as frozen objects with { __token: true, id, value }",
+            desc: "Tokens are frozen objects: { __token: true, id: string, value: T }. Created with token(value, id).",
           },
           {
             n: 2,
-            title: "Compilation",
-            desc: "The compiler detects token props at build time and replaces them with atomic CSS class names",
+            title: "ThemeTokens",
+            desc: "t.text.primary is a ThemeToken: { __themeToken: true, path: 'text.primary' }. Resolved at render time via useTheme().",
           },
           {
             n: 3,
-            title: "Runtime",
-            desc: "The runtime maintains a StyleRegistry (Map) populated once at init; resolve(token) is O(1)",
+            title: "Compilation",
+            desc: "The compiler detects Token props (not ThemeTokens) at build time and replaces them with atomic CSS class names.",
           },
           {
             n: 4,
+            title: "Runtime",
+            desc: "The StyleRegistry (Map) is populated once at init. resolve(token) is O(1) — a single Map.get().",
+          },
+          {
+            n: 5,
             title: "Rendering",
-            desc: "Components receive class names (web) or StyleSheet IDs (RN) — no string parsing, no object merging",
+            desc: "Box receives class names (web) or StyleSheet IDs (RN) for static tokens. ThemeTokens are resolved inline via useTheme().",
           },
         ].map((step) => (
           <div
@@ -203,7 +183,7 @@ export default function ArchitecturePage() {
                 width: 28,
                 height: 28,
                 background: "var(--brand-500)",
-                color: "white",
+                color: "var(--color-bg)",
                 borderRadius: "50%",
                 display: "flex",
                 alignItems: "center",
@@ -211,7 +191,6 @@ export default function ArchitecturePage() {
                 fontWeight: 800,
                 fontSize: "0.8rem",
                 flexShrink: 0,
-                boxShadow: "0 2px 8px rgba(2,76,206,0.3)",
               }}
             >
               {step.n}
@@ -236,80 +215,69 @@ export default function ArchitecturePage() {
         ))}
       </div>
 
-      <h2>Atomic CSS Strategy</h2>
+      <h2>Two token types</h2>
       <p>
-        Each token maps to exactly one CSS class. Theme switching requires zero
-        JavaScript re-renders:
+        There are two distinct token types in Stareezy UI — understanding the
+        difference is key:
       </p>
       <pre>
-        <code>{`.sz-bg-celurenBlue-500 {
-  background-color: var(--celurenBlue-500);
-}
+        <code>{`// Token<T> — static, always the same value
+import { colors } from '@stareezy-ui/tokens'
+colors.celurenBlue[500]
+// { __token: true, id: "celurenBlue-500", value: "#024CCE" }
+// → Extracted by compiler, resolved to CSS class at build time
 
-/* Theme override — only a data-theme attribute change needed */
-[data-theme="dark"] {
-  --celurenBlue-500: #4E82DD;
-}`}</code>
+// ThemeToken — dynamic, resolves to current theme's value at render time
+import { t } from '@stareezy-ui/tokens'
+t.text.primary
+// { __themeToken: true, path: "text.primary" }
+// → NOT extracted by compiler, resolved via useTheme() at render time
+// → aurora: "#f0f0f8", dark: "#f0f6fc", steins-gate: "#e8dcc8"`}</code>
       </pre>
 
-      <h2>Tree Shaking</h2>
+      <h2>Module augmentation</h2>
       <p>
-        Every token category lives in its own file. Importing{" "}
-        <code>colors</code> does not pull in <code>spacing</code>,{" "}
-        <code>radius</code>, or <code>typography</code>. The compiler's
-        dead-code elimination removes any tokens not referenced in your
-        component tree.
+        Custom shorthands from <code>createUi()</code> flow into{" "}
+        <code>BoxProps</code> via TypeScript module augmentation:
       </p>
+      <pre>
+        <code>{`// stareezy.config.ts
+declare module '@stareezy-ui/tokens' {
+  interface SzrCustomConfig extends typeof ui {}
+}
+
+// Now BoxProps includes your shorthands:
+<Box br={12} f={1} />  // ✅ typed — br → borderRadius, f → flex`}</code>
+      </pre>
+
+      <h2>Atomic CSS strategy</h2>
+      <p>
+        Each token maps to exactly one CSS class. Theme switching requires zero
+        JavaScript re-renders on web:
+      </p>
+      <pre>
+        <code>{`.sz-celurenBlue-500 { background-color: var(--celurenBlue-500); }
+
+/* Theme override — only a data-theme attribute change needed */
+[data-theme="aurora"]      { --celurenBlue-500: #00ff88; }
+[data-theme="steins-gate"] { --celurenBlue-500: #4a9eff; }
+[data-theme="light"]       { --celurenBlue-500: #024cce; }`}</code>
+      </pre>
 
       <Callout type="tip">
         The <code>packages/tokens</code> package has zero runtime dependencies —
         no React, no React Native, no UI framework. It can be used in any
-        JavaScript environment.
+        JavaScript environment including Node.js scripts and CDN bundles.
       </Callout>
 
-      <h2>Property-Based Testing</h2>
+      <h2>Tree shaking</h2>
       <p>
-        Correctness properties are validated with <code>fast-check</code>{" "}
-        (minimum 100 iterations per property):
+        Every token category lives in its own file. Importing{" "}
+        <code>colors</code> does not pull in <code>spacing</code>,{" "}
+        <code>radius</code>, or <code>typography</code>. The compiler&apos;s
+        dead-code elimination removes any tokens not referenced in your
+        component tree.
       </p>
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
-          gap: "0.5rem",
-          margin: "0.75rem 0",
-        }}
-      >
-        {[
-          "Token factory shape",
-          "Token structural equality",
-          "Spacing token types",
-          "Semantic token equality",
-          "Theme provider re-renders",
-          "Compiler prop replacement",
-          "CSS deduplication",
-          "Runtime resolve stability",
-          "Serialization round-trip",
-        ].map((p) => (
-          <div
-            key={p}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 8,
-              background: "var(--color-surface)",
-              border: "1px solid var(--color-border-2)",
-              borderRadius: 8,
-              padding: "0.5rem 0.75rem",
-            }}
-          >
-            <span style={{ color: "#4D8D01", fontWeight: 700 }}>✓</span>
-            <span style={{ fontSize: "0.82rem", color: "var(--color-text-2)" }}>
-              {p}
-            </span>
-          </div>
-        ))}
-      </div>
     </DocPage>
   );
 }

@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
-import { DocPage, Callout } from "apps/docs/src/components/DocPage";
+import { DocPage, Callout } from "../../../components/DocPage";
 
 export const metadata: Metadata = {
   title: "Compiler",
-  description: "How the Stareezy UI build-time compiler works.",
+  description:
+    "Build-time Babel/Vite/Metro plugin that extracts token props and emits atomic CSS. Reads stareezy.config.ts automatically.",
+  alternates: { canonical: "https://ui.stareezy.tech/docs/compiler" },
 };
 
 const PROP_MAPPINGS = [
@@ -14,6 +16,7 @@ const PROP_MAPPINGS = [
   ["py", "padding-top, padding-bottom"],
   ["m", "margin"],
   ["rounded", "border-radius"],
+  ["borderColor", "border-color"],
   ["fontSize", "font-size"],
   ["fontWeight", "font-weight"],
 ];
@@ -22,18 +25,19 @@ export default function CompilerPage() {
   return (
     <DocPage
       title="Compiler"
-      description="Build-time Babel/Vite plugin that extracts token props and emits atomic CSS."
+      description="Build-time Babel/Vite/Metro plugin — extracts token props, emits atomic CSS, reads stareezy.config.ts automatically."
       badge="Advanced"
       icon="⚙"
       badgeColor="#C98B25"
     >
-      <h2>How It Works</h2>
+      <h2>How it works</h2>
       <p>
-        The compiler traverses your JSX AST at build time, detects token props,
-        and replaces them with atomic CSS class names — zero runtime overhead.
+        The compiler traverses your JSX AST at build time, detects props whose
+        values are <code>Token</code> objects (<code>__token: true</code>), and
+        replaces them with atomic CSS class names. Zero runtime overhead — the
+        style is already in the CSS bundle before the browser loads the page.
       </p>
 
-      {/* Flow diagram */}
       <div
         style={{
           display: "flex",
@@ -73,16 +77,13 @@ export default function CompilerPage() {
               {step}
             </div>
             {i < arr.length - 1 && (
-              <span style={{ color: "var(--color-muted)", fontSize: "0.9rem" }}>
-                →
-              </span>
+              <span style={{ color: "var(--color-muted)" }}>→</span>
             )}
           </div>
         ))}
       </div>
 
-      <h2>Before & After</h2>
-
+      <h2>Before & after</h2>
       <div
         style={{
           display: "grid",
@@ -126,8 +127,8 @@ export default function CompilerPage() {
           </div>
           <pre style={{ margin: 0 }}>
             <code>{`<Box
-  className="sz-bg-celurenBlue-500
-             sz-p-spacing-4"
+  className="sz-celurenBlue-500
+             sz-spacing-4"
 />`}</code>
           </pre>
         </div>
@@ -137,45 +138,128 @@ export default function CompilerPage() {
       <pre>
         <code>{`:root {
   --celurenBlue-500: #024CCE;
-  --spacing-4: 4px;
+  --spacing-4: 16px;
 }
 
-.sz-bg-celurenBlue-500 {
-  background-color: var(--celurenBlue-500);
-}
-.sz-p-spacing-4 {
-  padding: var(--spacing-4);
-}`}</code>
+.sz-celurenBlue-500 { background-color: var(--celurenBlue-500); }
+.sz-spacing-4       { padding: var(--spacing-4); }`}</code>
       </pre>
 
-      <h2>Vite Plugin</h2>
+      <Callout type="info">
+        <code>ThemeToken</code> props (from the <code>t</code> accessor) are
+        resolved at render time via <code>useTheme()</code> — they are{" "}
+        <em>not</em> extracted by the compiler. The compiler only handles static{" "}
+        <code>Token&lt;T&gt;</code> objects.
+      </Callout>
+
+      {/* ── stareezy.config.ts auto-read ──────────────────────────────────── */}
+      <h2>stareezy.config.ts — automatic shorthand pickup</h2>
+      <p>
+        The compiler reads your <code>stareezy.config.ts</code> at build time
+        and merges your custom shorthands into its prop mappings. You{" "}
+        <strong>do not</strong> need to pass the config path to the plugin — it
+        finds the file automatically by searching <code>process.cwd()</code>{" "}
+        (your project root).
+      </p>
+      <p>
+        What you <em>do</em> need to do: add the plugin to your build tool
+        config. That&apos;s it.
+      </p>
+      <pre>
+        <code>{`// stareezy.config.ts — define shorthands here
+export const ui = createUi({
+  shorthands: {
+    bg:  'backgroundColor',
+    br:  'borderRadius',
+    f:   'flex',
+  } as const,
+})
+
+// babel.config.js — just add the plugin, no config path needed
+const { stareezyBabelPlugin } = require('@stareezy-ui/compiler')
+module.exports = {
+  plugins: [stareezyBabelPlugin()],  // ← reads stareezy.config.ts automatically
+}
+
+// Now the compiler expands your shorthands at build time:
+<Box bg={colors.celurenBlue[500]} br={8} />
+// → <Box className="sz-celurenBlue-500 sz-8" />`}</code>
+      </pre>
+
+      {/* ── Vite ──────────────────────────────────────────────────────────── */}
+      <h2>Vite plugin</h2>
+      <p>
+        Add the plugin to <code>vite.config.ts</code>. It reads{" "}
+        <code>stareezy.config.ts</code> from your project root automatically —
+        no path needed.
+      </p>
       <pre>
         <code>{`// vite.config.ts
 import { stareezyVitePlugin } from '@stareezy-ui/compiler'
 
 export default {
   plugins: [
-    stareezyVitePlugin({
-      cssVariablePrefix: 'sz',
-      outputDir: 'dist/styles',
-    }),
+    stareezyVitePlugin(),  // reads stareezy.config.ts automatically
   ],
-}`}</code>
+}
+
+// Add this import once in your entry file to include the generated CSS:
+import 'virtual:stareezy-ui/styles'`}</code>
       </pre>
 
-      <h2>Babel Plugin</h2>
+      {/* ── Babel ─────────────────────────────────────────────────────────── */}
+      <h2>Babel plugin</h2>
+      <p>
+        Add the plugin to <code>babel.config.js</code>. Same deal — reads{" "}
+        <code>stareezy.config.ts</code> automatically.
+      </p>
       <pre>
         <code>{`// babel.config.js
+const { stareezyBabelPlugin } = require('@stareezy-ui/compiler')
+
 module.exports = {
+  presets: ['babel-preset-expo'],  // or your preset
   plugins: [
-    ['@stareezy-ui/compiler/babel', {
-      cssVariablePrefix: 'sz',
-    }],
+    stareezyBabelPlugin(),  // reads stareezy.config.ts automatically
   ],
 }`}</code>
       </pre>
 
-      <h2>Prop Mappings</h2>
+      {/* ── Metro ─────────────────────────────────────────────────────────── */}
+      <h2>Metro transformer (React Native)</h2>
+      <p>
+        For React Native projects using Metro, point{" "}
+        <code>babelTransformerPath</code> at the Metro transformer. It reads{" "}
+        <code>stareezy.config.ts</code> automatically — same as the other
+        plugins.
+      </p>
+      <pre>
+        <code>{`// metro.config.js
+const { getDefaultConfig } = require('expo/metro-config')
+
+const config = getDefaultConfig(__dirname)
+
+config.transformer = {
+  ...config.transformer,
+  // reads stareezy.config.ts automatically
+  babelTransformerPath: require.resolve('@stareezy-ui/compiler/metro'),
+}
+
+module.exports = config`}</code>
+      </pre>
+
+      <Callout type="tip">
+        The Metro transformer reads <code>stareezy.config.ts</code>{" "}
+        automatically — same as the Vite and Babel plugins. Your custom
+        shorthands are expanded at build time on all three platforms.
+      </Callout>
+
+      {/* ── Built-in prop mappings ────────────────────────────────────────── */}
+      <h2>Built-in prop mappings</h2>
+      <p>
+        These are the default mappings. Custom shorthands from{" "}
+        <code>stareezy.config.ts</code> are merged on top.
+      </p>
       <table>
         <thead>
           <tr>
@@ -197,13 +281,13 @@ module.exports = {
         </tbody>
       </table>
 
-      <h2>Non-Token Props</h2>
-      <p>
-        Props with plain string or number values are left completely unchanged:
-      </p>
+      <h2>Non-token props pass through</h2>
       <pre>
         <code>{`// Token prop → replaced with class name ✓
 <Box bg={colors.celurenBlue[500]} />
+
+// ThemeToken → resolved at render time, not by compiler ✓
+<Box bg={t.backgrounds.primary} />
 
 // Plain value → passed through unchanged ✓
 <Box bg="#024CCE" />`}</code>
@@ -213,13 +297,6 @@ module.exports = {
         The compiler deduplicates CSS rules — even if the same token is used in
         100 components, only one CSS rule is generated per build.
       </Callout>
-
-      <h2>CSS Deduplication</h2>
-      <p>
-        The compiler generates each CSS rule at most once per build, regardless
-        of how many components reference the same token. This keeps your CSS
-        bundle minimal even at scale.
-      </p>
     </DocPage>
   );
 }

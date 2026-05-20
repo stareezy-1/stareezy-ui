@@ -4,7 +4,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "Stareezy UI — Typed Design Token System",
   description:
-    "A fully typed, cross-platform design token system and component library for React Native and web. 17+ components, 300+ typed tokens, aurora aesthetic.",
+    "A fully typed, cross-platform design token system and component library for React Native and web. 17+ components, 300+ typed tokens, four themes.",
 };
 
 const PACKAGES = [
@@ -12,7 +12,7 @@ const PACKAGES = [
     name: "@stareezy-ui/tokens",
     icon: "◉",
     color: "#00ff88",
-    desc: "Zero-dependency token definitions. Colors, spacing, radius, typography, motion, glow — all typed.",
+    desc: "Zero-dependency token definitions. Colors, spacing, radius, typography, motion, glow — all typed. Includes ThemeProvider and the t accessor.",
     badge: "Build first",
   },
   {
@@ -63,13 +63,13 @@ const QUICK_LINKS = [
     href: "/docs/usage",
     label: "Token API",
     icon: "◈",
-    desc: "Learn the token system",
+    desc: "Tokens, t accessor, createUi",
   },
   {
     href: "/docs/theming",
     label: "Theming",
     icon: "◑",
-    desc: "Aurora, dark, and light",
+    desc: "4 themes, auto-switching",
   },
   {
     href: "/docs/create-ui",
@@ -103,42 +103,79 @@ const QUICK_LINKS = [
   },
 ];
 
-const AURORA_PALETTE = [
-  { name: "deepSpace", value: "#050505" },
-  { name: "auroraGreen", value: "#00ff88" },
-  { name: "nebulaPurple", value: "#7c3aed" },
-  { name: "cosmicGray", value: "#1a1a2e" },
-  { name: "surfaceDark", value: "#0a0a1a" },
-  { name: "starWhite", value: "#ffffff" },
+const THEMES = [
+  {
+    name: "aurora",
+    bg: "#050505",
+    accent: "#00ff88",
+    text: "#f0f0f8",
+    desc: "Deep space dark",
+  },
+  {
+    name: "dark",
+    bg: "#0d1117",
+    accent: "#024cce",
+    text: "#f0f6fc",
+    desc: "GitHub-style dark",
+  },
+  {
+    name: "light",
+    bg: "#fafbff",
+    accent: "#024cce",
+    text: "#0f1010",
+    desc: "Clean light",
+  },
+  {
+    name: "steins-gate",
+    bg: "#080c18",
+    accent: "#4a9eff",
+    text: "#e8dcc8",
+    desc: "Midnight navy",
+  },
 ];
 
-const CODE_PREVIEW = `import { createUi, motion, themes } from '@stareezy-ui/tokens'
-import { Card, Badge, Toast } from '@stareezy-ui/components'
+const CODE_PREVIEW = `import { createUi, t, themes } from '@stareezy-ui/tokens'
+import { Box, Text, Button } from '@stareezy-ui/components'
 
+// 1. Configure once at app startup
 const ui = createUi({
-  themes: { aurora: themes.aurora },
-  animations: {
-    enter: {
-      duration: motion.duration.enter,
-      easing: motion.easing.spring,
-    },
+  themes: {
+    aurora:        themes.aurora,
+    dark:          themes.dark,
+    light:         themes.light,
+    'steins-gate': themes['steins-gate'],
   },
-  shorthands: { bg: 'backgroundColor', p: 'padding' },
 })
 
-function AuroraCard() {
+// 2. Wrap your app
+<ThemeProvider theme="aurora">
+  <App />
+</ThemeProvider>
+
+// 3. Use t.* for theme-reactive props — auto-switches with theme
+function Card() {
   return (
-    <Card variant="glow" glowColor="green" title="Aurora UI">
-      <Badge variant="green" label="v0.2.0" />
-      <Toast variant="success" message="Tokens loaded!" />
-    </Card>
+    <Box
+      bg={t.backgrounds.primary}
+      borderColor={t.border.primaryBrand}
+      rounded={8}
+      p={16}
+    >
+      <Text color={t.text.primary.value} type="M-heading-bold">
+        Switches with theme automatically
+      </Text>
+      <Button
+        bg={t.backgrounds.primary}
+        text="Click me"
+      />
+    </Box>
   )
 }`;
 
 export default function HomePage() {
   return (
     <div style={{ paddingBottom: "5rem" }}>
-      {/* Hero */}
+      {/* ── Hero ─────────────────────────────────────────────────────────── */}
       <div
         className="animate-fade-up"
         style={{
@@ -173,7 +210,6 @@ export default function HomePage() {
           }}
         />
 
-        {/* Text block */}
         <div style={{ maxWidth: 640, marginBottom: "2.5rem" }}>
           <div
             style={{
@@ -192,8 +228,7 @@ export default function HomePage() {
               textTransform: "uppercase",
             }}
           >
-            <span>◉</span>
-            v0.2.0 — Aurora Release
+            <span>◉</span> v0.2.0 — Aurora Release
           </div>
 
           <h1
@@ -224,12 +259,24 @@ export default function HomePage() {
               maxWidth: 520,
             }}
           >
-            A cross-platform design token system and component library for React
-            Native and web. Aurora aesthetic, O(1) runtime, build-time compiler
-            — all tree-shakeable.
+            Cross-platform token system and component library for React Native
+            and web. Four themes, O(1) runtime, build-time compiler — all
+            tree-shakeable. Theme-reactive props via the{" "}
+            <code
+              style={{
+                fontSize: "0.9em",
+                background: "var(--brand-50)",
+                color: "var(--brand-primary)",
+                padding: "1px 6px",
+                borderRadius: 4,
+                border: "1px solid var(--brand-100)",
+              }}
+            >
+              t
+            </code>{" "}
+            accessor.
           </p>
 
-          {/* Stats row */}
           <div
             style={{
               display: "flex",
@@ -240,8 +287,8 @@ export default function HomePage() {
           >
             {[
               { value: "300+", label: "Tokens" },
-              { value: "17+ ", label: "Components" },
-              { value: "7", label: "Packages" },
+              { value: "17+", label: "Components" },
+              { value: "4", label: "Themes" },
               { value: "O(1)", label: "Runtime" },
             ].map((s) => (
               <div key={s.label}>
@@ -270,7 +317,6 @@ export default function HomePage() {
             ))}
           </div>
 
-          {/* CTAs */}
           <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
             <Link
               href="/docs/installation"
@@ -311,7 +357,7 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* Code card — full width below the text */}
+        {/* Code card */}
         <div
           style={{
             background: "var(--color-code-bg)",
@@ -321,7 +367,6 @@ export default function HomePage() {
             overflow: "clip",
           }}
         >
-          {/* macOS chrome */}
           <div
             style={{
               display: "flex",
@@ -351,10 +396,9 @@ export default function HomePage() {
                 fontFamily: "var(--font-mono)",
               }}
             >
-              aurora-card.tsx
+              app.tsx
             </span>
           </div>
-          {/* Scrollable code — two columns on wide screens */}
           <div style={{ overflowX: "auto" }}>
             <pre
               style={{
@@ -374,7 +418,7 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* Aurora palette strip */}
+      {/* ── Four themes strip ─────────────────────────────────────────────── */}
       <div style={{ marginBottom: "3.5rem" }}>
         <div
           style={{
@@ -394,10 +438,10 @@ export default function HomePage() {
               margin: 0,
             }}
           >
-            Aurora Token Palette
+            Four built-in themes
           </p>
           <Link
-            href="/tokens/aurora"
+            href="/docs/theming"
             style={{
               fontSize: "0.78rem",
               color: "var(--brand-primary)",
@@ -405,47 +449,190 @@ export default function HomePage() {
               fontWeight: 600,
             }}
           >
-            View all →
+            Theming guide →
           </Link>
         </div>
-        <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
-          {AURORA_PALETTE.map((t) => (
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fill, minmax(160px, 1fr))",
+            gap: "0.65rem",
+          }}
+        >
+          {THEMES.map((theme) => (
             <div
-              key={t.name}
+              key={theme.name}
               style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                gap: 6,
-                flex: "1 1 80px",
-                minWidth: 80,
+                borderRadius: "var(--radius-md)",
+                overflow: "hidden",
+                border: "1px solid var(--color-border)",
               }}
             >
               <div
                 style={{
-                  width: "100%",
-                  height: 48,
-                  borderRadius: "var(--radius-md)",
-                  background: t.value,
-                  border: "1px solid rgba(255,255,255,0.08)",
-                }}
-              />
-              <div
-                style={{
-                  fontSize: "0.62rem",
-                  color: "var(--color-muted)",
-                  fontFamily: "var(--font-mono)",
-                  textAlign: "center",
+                  height: 56,
+                  background: theme.bg,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: 6,
                 }}
               >
-                {t.name}
+                <div
+                  style={{
+                    width: 10,
+                    height: 10,
+                    borderRadius: "50%",
+                    background: theme.accent,
+                  }}
+                />
+                <div
+                  style={{
+                    width: 10,
+                    height: 10,
+                    borderRadius: "50%",
+                    background: theme.text,
+                    opacity: 0.5,
+                  }}
+                />
+              </div>
+              <div
+                style={{
+                  padding: "0.6rem 0.75rem",
+                  background: "var(--color-surface)",
+                }}
+              >
+                <div
+                  style={{
+                    fontSize: "0.78rem",
+                    fontWeight: 700,
+                    color: "var(--color-text)",
+                    fontFamily: "var(--font-mono)",
+                  }}
+                >
+                  {theme.name}
+                </div>
+                <div
+                  style={{
+                    fontSize: "0.68rem",
+                    color: "var(--color-muted)",
+                    marginTop: 2,
+                  }}
+                >
+                  {theme.desc}
+                </div>
               </div>
             </div>
           ))}
         </div>
       </div>
 
-      {/* Packages bento */}
+      {/* ── t accessor highlight ──────────────────────────────────────────── */}
+      <div
+        style={{
+          marginBottom: "3.5rem",
+          background: "var(--color-surface)",
+          border: "1px solid var(--color-border)",
+          borderRadius: "var(--radius-lg)",
+          padding: "1.75rem 2rem",
+          position: "relative",
+          overflow: "hidden",
+        }}
+      >
+        <div
+          style={{
+            position: "absolute",
+            top: -30,
+            right: -30,
+            width: 200,
+            height: 200,
+            background:
+              "radial-gradient(circle, rgba(0,255,136,0.06) 0%, transparent 70%)",
+            pointerEvents: "none",
+          }}
+        />
+        <div
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 6,
+            background: "var(--brand-50)",
+            border: "1px solid var(--brand-100)",
+            borderRadius: 100,
+            padding: "0.2rem 0.7rem",
+            fontSize: "0.68rem",
+            fontWeight: 700,
+            color: "var(--brand-primary)",
+            letterSpacing: "0.06em",
+            textTransform: "uppercase",
+            marginBottom: "0.85rem",
+          }}
+        >
+          New in v0.2
+        </div>
+        <h2
+          style={{
+            fontSize: "1.25rem",
+            fontWeight: 800,
+            letterSpacing: "-0.02em",
+            color: "var(--color-text)",
+            margin: "0 0 0.5rem",
+          }}
+        >
+          Theme-reactive props with{" "}
+          <code
+            style={{
+              fontFamily: "var(--font-mono)",
+              fontSize: "0.9em",
+              color: "var(--brand-primary)",
+            }}
+          >
+            t
+          </code>
+        </h2>
+        <p
+          style={{
+            fontSize: "0.9rem",
+            color: "var(--color-text-2)",
+            lineHeight: 1.7,
+            margin: "0 0 1.25rem",
+            maxWidth: 560,
+          }}
+        >
+          The <code>t</code> accessor returns <strong>ThemeToken</strong>{" "}
+          references — pass them directly as component props and they resolve to
+          the current theme&apos;s value at render time. Switch themes, every
+          component updates automatically.
+        </p>
+        <div style={{ overflowX: "auto" }}>
+          <pre
+            style={{
+              background: "var(--color-code-bg)",
+              borderRadius: "var(--radius-md)",
+              padding: "1rem 1.25rem",
+              margin: 0,
+              border: "1px solid var(--color-border)",
+              fontFamily: "var(--font-mono)",
+              fontSize: "0.82rem",
+              lineHeight: 1.7,
+              color: "#e2e8f0",
+              whiteSpace: "pre",
+            }}
+          >
+            <code>{`import { t } from '@stareezy-ui/tokens'
+
+// These resolve to the CURRENT theme's value at render time
+<Box bg={t.backgrounds.primary} color={t.text.primary} />
+<Box borderColor={t.border.primaryBrand} />
+
+// Switch theme → all components update, no re-wiring needed
+const { setTheme } = useThemeSwitch()
+setTheme('steins-gate') // → ibmBlue, ivoryText, labNight`}</code>
+          </pre>
+        </div>
+      </div>
+
+      {/* ── Packages bento ───────────────────────────────────────────────── */}
       <div style={{ marginBottom: "3.5rem" }}>
         <h2
           style={{
@@ -564,7 +751,7 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* Quick links */}
+      {/* ── Quick links ───────────────────────────────────────────────────── */}
       <div style={{ marginBottom: "3.5rem" }}>
         <h2
           style={{
@@ -642,7 +829,7 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* Install strip */}
+      {/* ── Install strip ─────────────────────────────────────────────────── */}
       <div
         style={{
           background: "var(--color-surface)",

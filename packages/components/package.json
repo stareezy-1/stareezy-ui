@@ -1,6 +1,6 @@
 {
   "name": "@stareezy-ui/components",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "Stareezy UI component library — 17+ cross-platform React Native and web components",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",

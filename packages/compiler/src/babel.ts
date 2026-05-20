@@ -11,6 +11,7 @@
 import * as t from "@babel/types";
 import { resolveConfig, type CompilerConfig } from "./config";
 import { TokenCompilerError } from "./transform";
+import { loadSzrConfig } from "./loadConfig";
 
 // ---------------------------------------------------------------------------
 // Helpers (duplicated from transform.ts to operate on Babel's live AST nodes
@@ -70,7 +71,19 @@ export function stareezyBabelPlugin(config?: Partial<CompilerConfig>): {
     JSXAttribute(path: { node: t.JSXAttribute }): void;
   };
 } {
-  const resolvedConfig = resolveConfig(config);
+  // Merge shorthands from stareezy.config.ts if present
+  const szrConfig = loadSzrConfig();
+  const mergedPartial: Partial<CompilerConfig> = {
+    ...config,
+    propMappings: {
+      ...(szrConfig?.shorthands ?? {}),
+      ...(config?.propMappings ?? {}),
+    },
+    ...(szrConfig?.boxPropsComponents
+      ? { boxPropsComponents: szrConfig.boxPropsComponents }
+      : {}),
+  };
+  const resolvedConfig = resolveConfig(mergedPartial);
 
   return {
     visitor: {

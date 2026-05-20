@@ -2,7 +2,7 @@
  * useThemedColors — returns the current theme's resolved semantic color values.
  *
  * Components call this at render time so they automatically re-render with the
- * correct colors whenever the theme switches (light ↔ dark).
+ * correct colors whenever the theme switches (light ↔ dark ↔ aurora ↔ steins-gate).
  *
  * On web the ThemeProvider also injects CSS variables, but components that
  * apply colors via inline styles or RN StyleSheet must read from this hook.
@@ -13,9 +13,9 @@ import { colors } from "@stareezy-ui/tokens";
 
 /**
  * Returns a flat object of the most-used color values, resolved from the
- * active theme's semantic tokens.  All values are plain strings (hex / rgba).
+ * active theme's semantic tokens. All values are plain strings (hex / rgba).
  *
- * Extend this as more components need themed colors.
+ * Automatically re-renders when the theme switches.
  */
 export function useThemedColors() {
   const theme = useTheme();
@@ -54,9 +54,25 @@ export function useThemedColors() {
 
     // ── surface / neutral (not in semantic but commonly needed) ──────────────
     // These don't change with theme — they're absolute palette values.
-    // Kept here for convenience so components don't need two imports.
     surface: colors.neutral[10].value, // white
     surfaceDark: colors.raisinBlack[900].value, // near-black
     transparent: colors.transparent.value,
+
+    // ── raw theme object — for components that need direct token access ──────
+    /** The full resolved theme — use `.value` on any slot for the raw string */
+    theme,
   } as const;
 }
+
+/**
+ * Returns the raw resolved theme object.
+ * Prefer `useThemedColors()` for flat access; use this when you need the
+ * full semantic structure.
+ *
+ * @example
+ * ```tsx
+ * const theme = useThemeTokens()
+ * const color = theme.text.importantBrand.value // "#4a9eff" in steins-gate
+ * ```
+ */
+export { useTheme as useThemeTokens } from "@stareezy-ui/tokens";

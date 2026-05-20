@@ -23,6 +23,7 @@ import { radius, roundness } from "../../../../../packages/tokens/src/radius";
 import { shadow } from "../../../../../packages/tokens/src/shadow";
 import { semanticColors } from "../../../../../packages/tokens/src/semantic";
 import { aurora } from "../../../../../packages/tokens/src/aurora";
+import { steinsGate } from "../../../../../packages/tokens/src/steins-gate";
 import { motion } from "../../../../../packages/tokens/src/motion";
 import { glow } from "../../../../../packages/tokens/src/glow";
 import type { Token } from "../../../../../packages/tokens/src/token";
@@ -1122,6 +1123,28 @@ export default function TokensPage() {
         <ColorGroup
           name="Aurora"
           tokens={aurora as unknown as Record<string, Token<string>>}
+          onSelect={handleSelect}
+        />
+      </Section>
+
+      {/* ── Steins;Gate Colors ──────────────────────────────────────────── */}
+      <Section title="Steins;Gate Colors">
+        <p
+          style={{
+            fontSize: "0.85rem",
+            color: "var(--color-text-2)",
+            marginBottom: "1rem",
+            lineHeight: 1.6,
+          }}
+        >
+          Midnight navy / electric blue palette — drawn from the Steins;Gate
+          visual novel. Electric blue (<code>ibmBlue</code>) is the primary
+          brand color; divergence red (<code>divergenceRed</code>) is the danger
+          accent.
+        </p>
+        <ColorGroup
+          name="Steins;Gate"
+          tokens={steinsGate as unknown as Record<string, Token<string>>}
           onSelect={handleSelect}
         />
       </Section>

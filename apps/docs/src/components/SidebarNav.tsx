@@ -9,6 +9,7 @@ const NAV_SECTIONS = [
     title: "Getting Started",
     links: [
       { href: "/", label: "Home", icon: "⌂" },
+      { href: "/docs/quick-start", label: "Quick Start", icon: "▶" },
       { href: "/docs/installation", label: "Installation", icon: "↓" },
       { href: "/docs/usage", label: "Usage", icon: "◈" },
       { href: "/docs/cdn", label: "CDN Usage", icon: "↗" },
@@ -29,6 +30,8 @@ const NAV_SECTIONS = [
       { href: "/docs/components", label: "Component API", icon: "⬡" },
       { href: "/docs/architecture", label: "Architecture", icon: "⬢" },
       { href: "/tokens", label: "Token Explorer", icon: "◉" },
+      { href: "/tokens/aurora", label: "Aurora Tokens", icon: "◉" },
+      { href: "/tokens/steins-gate", label: "Steins;Gate Tokens", icon: "⌬" },
     ],
   },
   {
