@@ -1,5 +1,11 @@
 # @stareezy-ui/stylesheet
 
+## 0.2.2
+
+### Patch Changes
+
+- # create a patch changeset (describe: "Add CDN IIFE bundles")
+
 ## 0.1.0
 
 ### Minor Changes

@@ -1,5 +1,14 @@
 # @stareezy-ui/runtime
 
+## 0.2.2
+
+### Patch Changes
+
+- # create a patch changeset (describe: "Add CDN IIFE bundles")
+- Updated dependencies
+  - @stareezy-ui/stylesheet@0.2.2
+  - @stareezy-ui/tokens@0.2.2
+
 ## 0.1.0
 
 ### Minor Changes

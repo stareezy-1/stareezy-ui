@@ -1,5 +1,13 @@
 # @stareezy-ui/compiler
 
+## 0.2.1
+
+### Patch Changes
+
+- # create a patch changeset (describe: "Add CDN IIFE bundles")
+- Updated dependencies
+  - @stareezy-ui/tokens@0.2.2
+
 ## 0.1.0
 
 ### Minor Changes
