@@ -88,10 +88,14 @@ export const metadata: Metadata = {
   },
   manifest: "/manifest.webmanifest",
   icons: {
-    icon: "/favicon.svg",
+    icon: [
+      { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/favicon.png", type: "image/png", sizes: "32x32" },
+    ],
     apple: "/icon-192.svg",
   },
   other: {
+    "google-site-verification": "76720285c6e99e6d",
     "theme-color": "#0d1117",
     "color-scheme": "dark light",
     "mobile-web-app-capable": "yes",
