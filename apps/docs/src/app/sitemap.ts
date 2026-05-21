@@ -5,20 +5,26 @@ const SITE_URL =
 
 const DOC_SLUGS = [
   "installation",
+  "quick-start",
   "usage",
   "components",
   "theming",
   "compiler",
-  "migration",
-  "architecture",
   "create-ui",
   "use-ui-config",
+  "architecture",
+  "migration",
+  "cdn",
+  "about",
+  "thanks",
 ];
+
+const TOKEN_SLUGS = ["aurora", "motion", "glow"];
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
 
-  const staticRoutes: MetadataRoute.Sitemap = [
+  const top: MetadataRoute.Sitemap = [
     {
       url: SITE_URL,
       lastModified: now,
@@ -32,28 +38,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.9,
     },
     {
-      url: `${SITE_URL}/tokens/aurora`,
-      lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.8,
-    },
-    {
-      url: `${SITE_URL}/tokens/motion`,
-      lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.8,
-    },
-    {
-      url: `${SITE_URL}/tokens/glow`,
-      lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.8,
-    },
-    {
       url: `${SITE_URL}/playground`,
       lastModified: now,
       changeFrequency: "monthly",
       priority: 0.8,
+    },
+    {
+      url: `${SITE_URL}/storybook`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.7,
     },
   ];
 
@@ -61,8 +55,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
     url: `${SITE_URL}/docs/${slug}`,
     lastModified: now,
     changeFrequency: "weekly" as const,
-    priority: 0.9,
+    priority: 0.85,
   }));
 
-  return [...staticRoutes, ...docRoutes];
+  const tokenRoutes: MetadataRoute.Sitemap = TOKEN_SLUGS.map((slug) => ({
+    url: `${SITE_URL}/tokens/${slug}`,
+    lastModified: now,
+    changeFrequency: "monthly" as const,
+    priority: 0.8,
+  }));
+
+  return [...top, ...docRoutes, ...tokenRoutes];
 }
