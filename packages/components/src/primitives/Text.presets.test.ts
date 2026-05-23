@@ -54,7 +54,7 @@ describe("PRESETS — new portfolio ETextType values", () => {
     const preset = PRESETS[ETextType.HeroTitle];
     expect(preset.fontSize).toBe(56);
     expect(preset.fontWeight).toBe("800");
-    expect(preset.lineHeight).toBe(1.07);
+    expect(preset.lineHeight).toBe(60);
     expect(preset.letterSpacing).toBe(-0.03);
     expect(preset.color).toBe(colors.neutral[10].value);
   });
@@ -63,7 +63,7 @@ describe("PRESETS — new portfolio ETextType values", () => {
     const preset = PRESETS[ETextType.SectionHeading];
     expect(preset.fontSize).toBe(36);
     expect(preset.fontWeight).toBe("800");
-    expect(preset.lineHeight).toBe(1.22);
+    expect(preset.lineHeight).toBe(44);
     expect(preset.letterSpacing).toBe(-0.025);
     expect(preset.color).toBe(colors.neutral[10].value);
   });
@@ -72,7 +72,7 @@ describe("PRESETS — new portfolio ETextType values", () => {
     const preset = PRESETS[ETextType.StatNumber];
     expect(preset.fontSize).toBe(32);
     expect(preset.fontWeight).toBe("800");
-    expect(preset.lineHeight).toBe(1.25);
+    expect(preset.lineHeight).toBe(40);
     expect(preset.color).toBe(colors.neutral[10].value);
   });
 
@@ -80,7 +80,7 @@ describe("PRESETS — new portfolio ETextType values", () => {
     const preset = PRESETS[ETextType.CardTitle];
     expect(preset.fontSize).toBe(17);
     expect(preset.fontWeight).toBe("600");
-    expect(preset.lineHeight).toBe(1.41);
+    expect(preset.lineHeight).toBe(24);
     expect(preset.color).toBe(colors.neutral[10].value);
   });
 
