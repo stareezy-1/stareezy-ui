@@ -4,10 +4,11 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ThemeToggle } from "./ThemeToggle";
+import { trackEvent } from "../lib/analytics";
 
 const STORYBOOK_URL =
   process.env["NEXT_PUBLIC_STORYBOOK_URL"] ??
-  "https://stareezy-ui-storybook.vercel.app/";
+  "https://storybook.stareezy.tech/";
 
 const SECTIONS = [
   {
@@ -88,6 +89,14 @@ export function AppHeader({
               href={s.href}
               className={`app-header-tab${active ? " active" : ""}`}
               aria-current={active ? "page" : undefined}
+              onClick={() =>
+                trackEvent({
+                  name: "nav_link_click",
+                  label: s.label,
+                  href: s.href,
+                  location: "header",
+                })
+              }
             >
               <span className="app-header-tab-icon" aria-hidden="true">
                 {s.icon}

@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { trackEvent } from "../lib/analytics";
 
 const NAV_SECTIONS = [
   {
@@ -99,7 +100,15 @@ export function SidebarNav({ open = false, onClose }: SidebarNavProps) {
                     <Link
                       href={link.href}
                       className={`sidebar-link${isActive ? " active" : ""}`}
-                      onClick={close}
+                      onClick={() => {
+                        trackEvent({
+                          name: "nav_link_click",
+                          label: link.label,
+                          href: link.href,
+                          location: "sidebar",
+                        });
+                        close();
+                      }}
                     >
                       <span
                         style={{

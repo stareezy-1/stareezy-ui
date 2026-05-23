@@ -2,6 +2,7 @@
 import React from "react";
 import { useDocsTheme } from "../hooks/useDocsTheme";
 import type { DocsTheme } from "../hooks/useDocsTheme";
+import { trackEvent } from "../lib/analytics";
 
 const THEMES: Array<{ key: DocsTheme; icon: string; label: string }> = [
   { key: "aurora", icon: "◉", label: "Aurora" },
@@ -12,6 +13,11 @@ const THEMES: Array<{ key: DocsTheme; icon: string; label: string }> = [
 
 export function ThemeToggle() {
   const { theme, setTheme } = useDocsTheme();
+
+  function handleThemeChange(key: DocsTheme) {
+    setTheme(key);
+    trackEvent({ name: "theme_changed", theme: key });
+  }
 
   return (
     <div
@@ -30,7 +36,7 @@ export function ThemeToggle() {
       {THEMES.map((t) => (
         <button
           key={t.key}
-          onClick={() => setTheme(t.key)}
+          onClick={() => handleThemeChange(t.key)}
           aria-label={`${t.label} theme`}
           aria-pressed={theme === t.key}
           title={t.label}

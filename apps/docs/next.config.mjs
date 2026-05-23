@@ -20,11 +20,13 @@ const withMDX = createMDX({
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   pageExtensions: ["ts", "tsx", "md", "mdx"],
+  // Required for instrumentation.ts (Sentry server/edge init)
+  experimental: {
+    instrumentationHook: true,
+    mdxRs: false,
+  },
   images: {
     formats: ["image/avif", "image/webp"],
-  },
-  experimental: {
-    mdxRs: false,
   },
   webpack(config) {
     config.resolve.alias = {

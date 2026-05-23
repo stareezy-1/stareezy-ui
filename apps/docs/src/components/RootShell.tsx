@@ -6,6 +6,7 @@ import type { ReactNode } from "react";
 import { AppHeader } from "./AppHeader";
 import { DocsLayout } from "./DocsLayout";
 import { PwaInstallBanner } from "./PwaInstallBanner";
+import { SentryPageTracker } from "./SentryPageTracker";
 
 interface RootShellProps {
   children: ReactNode;
@@ -30,6 +31,7 @@ export function RootShell({ children }: RootShellProps) {
 
   return (
     <>
+      <SentryPageTracker />
       <AppHeader
         onSidebarToggle={docs ? handleSidebarToggle : () => {}}
         sidebarOpen={docs ? sidebarOpen : false}

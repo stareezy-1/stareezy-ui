@@ -864,6 +864,17 @@ pre {
   background: var(--color-muted);
 }
 
+/* Hide scrollbars on the main content and sidebar — they scroll but show no bar */
+.main-content::-webkit-scrollbar,
+.sidebar-nav::-webkit-scrollbar {
+  display: none;
+}
+.main-content,
+.sidebar-nav {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+}
+
 /* ── Mobile hamburger button ─────────────────────────────────────────────── */
 .mobile-menu-btn {
   display: none;

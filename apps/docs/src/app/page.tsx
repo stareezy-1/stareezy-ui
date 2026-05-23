@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { TrackedLink } from "../components/TrackedLink";
 
 export const metadata: Metadata = {
-  title: "Stareezy UI — Typed Design Token System",
+  title:
+    "Stareezy UI — Typed Design Token System UI Library For React & React Native",
   description:
     "A fully typed, cross-platform design token system and component library for React Native and web. 17+ components, 300+ typed tokens, four themes.",
 };
@@ -318,8 +320,9 @@ export default function HomePage() {
           </div>
 
           <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
-            <Link
+            <TrackedLink
               href="/docs/installation"
+              trackLabel="Get Started"
               style={{
                 display: "inline-flex",
                 alignItems: "center",
@@ -335,9 +338,10 @@ export default function HomePage() {
               }}
             >
               Get Started →
-            </Link>
-            <Link
+            </TrackedLink>
+            <TrackedLink
               href="/tokens"
+              trackLabel="Token Explorer"
               style={{
                 display: "inline-flex",
                 alignItems: "center",
@@ -353,7 +357,7 @@ export default function HomePage() {
               }}
             >
               ◉ Token Explorer
-            </Link>
+            </TrackedLink>
           </div>
         </div>
 
@@ -875,8 +879,9 @@ setTheme('steins-gate') // → ibmBlue, ivoryText, labNight`}</code>
           <span style={{ color: "var(--brand-primary)" }}>$</span>
           <span>pnpm add @stareezy-ui/tokens @stareezy-ui/components</span>
         </div>
-        <Link
+        <TrackedLink
           href="/docs/installation"
+          trackLabel="Installation guide"
           style={{
             display: "inline-flex",
             alignItems: "center",
@@ -892,7 +897,7 @@ setTheme('steins-gate') // → ibmBlue, ivoryText, labNight`}</code>
           }}
         >
           Installation guide →
-        </Link>
+        </TrackedLink>
       </div>
     </div>
   );
