@@ -1,6 +1,6 @@
 {
   "name": "@stareezy-ui/stylesheet",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "Stareezy UI stylesheet — atomic CSS sheet management and CSS variable injection",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",

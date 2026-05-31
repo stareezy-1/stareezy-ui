@@ -1,6 +1,5 @@
 /**
  * Radius and roundness tokens for Stareezy UI.
- * Ported from rekosistem-components/src/styles/radius.ts.
  *
  * All values are raw pixel numbers (no convertSpacing).
  * Objects are declared `as const` so TypeScript infers literal numeric types.

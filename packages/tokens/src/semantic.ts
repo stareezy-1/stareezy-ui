@@ -1,6 +1,5 @@
 /**
  * Semantic color tokens for Stareezy UI.
- * Ported from rekosistem-components/src/styles/color.ts (newColor semantic groups).
  *
  * Semantic tokens REFERENCE primitive token objects directly — they do not
  * create new Token instances.  This means `semanticColors.text.primary` is

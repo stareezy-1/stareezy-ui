@@ -1,5 +1,5 @@
 /**
- * String utilities ported from rekosistem-components/src/utils/index.ts
+ * String utilities.
  * Requirements: 12.8
  */
 
@@ -7,7 +7,6 @@
  * Extracts the first letter of each word in `text`, joins them,
  * uppercases the result, and returns at most the first 2 characters.
  *
- * Matches the original rekosistem-components behaviour:
  *   textToUppercaseSubstring("John Doe") → "JD"
  *   textToUppercaseSubstring("Alice")    → "A"
  *   textToUppercaseSubstring(null)       → ""

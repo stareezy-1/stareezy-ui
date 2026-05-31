@@ -1,5 +1,5 @@
 /**
- * Guard utilities ported from rekosistem-components/src/utils/index.ts
+ * Guard utilities.
  * Requirements: 12.8
  */
 

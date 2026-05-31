@@ -28,7 +28,7 @@ export default meta;
 type Story = StoryObj<typeof Avatar>;
 
 export const WithInitials: Story = {
-  args: { name: "Bintang Rekosistem", size: "md" },
+  args: { name: "Bintang", size: "md" },
 };
 
 export const WithImage: Story = {

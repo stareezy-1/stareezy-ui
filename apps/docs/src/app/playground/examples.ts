@@ -322,7 +322,7 @@ export const EXAMPLES: Record<string, PlaygroundExample> = {
       <VStack gap={16} style={{ maxWidth: 320 }}>
         <HStack gap={12} alignItems="center">
           <Avatar name="Bintang R" size="lg" status="online" />
-          <VStack gap={4}><Text style={{ fontSize: 15, fontWeight: 700 }}>Bintang Rekosistem</Text><Text style={{ fontSize: 13, color: '#7D868E' }}>Senior Engineer</Text></VStack>
+          <VStack gap={4}><Text style={{ fontSize: 15, fontWeight: 700 }}>Bintang</Text><Text style={{ fontSize: 13, color: '#7D868E' }}>Senior Engineer</Text></VStack>
         </HStack>
         <Box bg="#f8faff" p={14} rounded={10} style={{ border: '1px solid #E3ECF4' }}>
           <Text style={{ fontSize: 14, color: '#515253', lineHeight: 1.6 }}>Building beautiful cross-platform UIs with typed design tokens.</Text>

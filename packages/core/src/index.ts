@@ -1,5 +1,5 @@
 // @stareezy-ui/core
-// Shared types, platform utilities, hooks, and ported rekosistem-components utilities.
+// Shared types, platform utilities, hooks.
 
 export * from "./guards";
 export * from "./string";

@@ -1,5 +1,4 @@
 /**
- * Currency utilities ported from rekosistem-components/src/utils/index.ts
  * Requirements: 12.8
  */
 

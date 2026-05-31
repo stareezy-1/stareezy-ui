@@ -5,7 +5,6 @@
  * On React Native: applies ms() scaling from react-native-size-matters
  * for responsive sizing relative to a 375px base screen width.
  *
- * Ported from rekosistem-components/src/utils/index.ts
  */
 
 /**

@@ -1,5 +1,4 @@
 /**
- * ISO week utilities ported from rekosistem-components/src/utils/isoWeeks.ts
  * Uses native Date API only — no external date libraries.
  * Requirements: 12.8
  */

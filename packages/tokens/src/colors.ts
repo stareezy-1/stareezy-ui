@@ -1,6 +1,5 @@
 /**
  * Color tokens for Stareezy UI.
- * Ported from rekosistem-components/src/styles/palette.ts and color.ts.
  *
  * All values are wrapped with the `token()` factory so every color carries
  * a stable `id` and a typed `value`.  The objects are declared `as const`
@@ -11,7 +10,7 @@ import { token } from "./token";
 import type { Token } from "./token";
 
 // ---------------------------------------------------------------------------
-// Palette — from rekosistem-components/src/styles/palette.ts
+// Palette
 // ---------------------------------------------------------------------------
 
 export const palette = {
@@ -29,7 +28,7 @@ export const palette = {
 } as const;
 
 // ---------------------------------------------------------------------------
-// Colors — from rekosistem-components/src/styles/color.ts
+// Colors
 // ---------------------------------------------------------------------------
 
 export const colors = {

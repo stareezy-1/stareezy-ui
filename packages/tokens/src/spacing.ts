@@ -1,6 +1,5 @@
 /**
  * Spacing tokens for Stareezy UI.
- * Ported from rekosistem-components/src/styles/spacing.ts.
  *
  * All values are raw pixel numbers (no convertSpacing — that is a React Native
  * utility in packages/core; the token store holds the raw values).
