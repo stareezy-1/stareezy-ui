@@ -75,7 +75,7 @@ export function AppHeader({
         </div>
         <span className="app-header-logo-text">Stareezy UI</span>
         <span className="app-header-version" suppressHydrationWarning>
-          v0.3.0
+          v1.0.0
         </span>
       </Link>
 
