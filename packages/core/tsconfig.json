@@ -15,8 +15,7 @@
     "outDir": "dist",
     "paths": {
       "@stareezy-ui/tokens": ["../tokens/src/index.ts"]
-    },
-    "composite": true
+    }
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist", "**/*.test.ts"]

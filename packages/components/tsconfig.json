@@ -17,8 +17,7 @@
       "@stareezy-ui/tokens": ["../tokens/src/index.ts"],
       "@stareezy-ui/core": ["../core/src/index.ts"],
       "@stareezy-ui/runtime": ["../runtime/src/index.ts"]
-    },
-    "composite": true
+    }
   },
   "include": ["src/**/*"],
   "exclude": [

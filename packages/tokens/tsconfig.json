@@ -13,8 +13,7 @@
     "allowSyntheticDefaultImports": true,
     "skipLibCheck": true,
     "rootDir": "src",
-    "outDir": "dist",
-    "composite": true
+    "outDir": "dist"
   },
 
   "include": ["src/**/*"],
