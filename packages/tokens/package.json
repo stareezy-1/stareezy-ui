@@ -1,6 +1,6 @@
 {
   "name": "@stareezy-ui/tokens",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Stareezy UI design token definitions — zero dependencies",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -38,9 +38,18 @@
     "lint": "eslint src --ext .ts,.tsx",
     "clean": "rm -rf dist"
   },
+  "peerDependencies": {
+    "react": "^18 || ^19"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    }
+  },
   "devDependencies": {
     "@types/react": "^18.3.0",
     "fast-check": "^3.23.2",
+    "react": "^18.3.0",
     "tsup": "^8.0.0",
     "typescript": "^5.9.3",
     "vitest": "^1.6.1"

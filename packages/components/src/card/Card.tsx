@@ -1,17 +1,21 @@
 import React from "react";
 import { isWeb } from "../shared/platform";
+import { useThemedColors } from "../shared/useThemedColors";
 import { Text, ETextType } from "../primitives/Text";
+import { Box } from "../primitives/Box";
 import {
   cardBaseStyle,
-  cardVariantStyles,
-  cardGlowColorStyles,
+  makeCardVariantStyles,
+  makeCardGlowColorStyles,
 } from "./Card.style";
 import type { CardVariant, GlowColor } from "./Card.types";
 import type { BoxProps } from "../primitives/Box";
+import type { BoxLayoutProps } from "../shared/boxLayoutProps";
+import { extractBoxLayoutProps } from "../shared/boxLayoutProps";
 
 export type { CardVariant, GlowColor } from "./Card.types";
 
-export interface CardProps extends Pick<BoxProps, "style"> {
+export interface CardProps extends Pick<BoxProps, "style">, BoxLayoutProps {
   variant?: CardVariant;
   glowColor?: GlowColor;
   title?: string;
@@ -19,22 +23,30 @@ export interface CardProps extends Pick<BoxProps, "style"> {
   children?: React.ReactNode;
 }
 
-export const Card: React.FC<CardProps> = ({
-  variant = "border",
-  glowColor = "green",
-  title,
-  description,
-  children,
-  style,
-}) => {
-  const variantStyle = cardVariantStyles[variant] ?? cardVariantStyles.border;
+export const Card: React.FC<CardProps> = (props) => {
+  const { layout, rest } = extractBoxLayoutProps(props);
+  const hasLayoutProps = Object.keys(layout).length > 0;
+  const {
+    variant = "border",
+    glowColor = "green",
+    title,
+    description,
+    children,
+    style,
+  } = rest as CardProps;
+
+  const themed = useThemedColors();
+  const variantStyles = makeCardVariantStyles(themed);
+  const glowColorStyles = makeCardGlowColorStyles(themed);
+
+  const variantStyle = variantStyles[variant] ?? variantStyles.border;
   const resolvedBoxShadow =
     variant === "glow"
-      ? (cardGlowColorStyles[glowColor] ?? cardGlowColorStyles.green).boxShadow
+      ? (glowColorStyles[glowColor] ?? glowColorStyles.green).boxShadow
       : variantStyle.boxShadow;
 
   if (isWeb) {
-    return (
+    const webContent = (
       <div
         style={{
           ...cardBaseStyle,
@@ -50,6 +62,8 @@ export const Card: React.FC<CardProps> = ({
         {children}
       </div>
     );
+    if (hasLayoutProps) return <Box {...layout}>{webContent}</Box>;
+    return webContent;
   }
 
   // React Native
@@ -57,7 +71,7 @@ export const Card: React.FC<CardProps> = ({
   const { View } = require("react-native") as {
     View: React.ComponentType<Record<string, unknown>>;
   };
-  return (
+  const nativeContent = (
     <View
       style={{
         borderRadius: cardBaseStyle.borderRadius,
@@ -73,6 +87,8 @@ export const Card: React.FC<CardProps> = ({
       {children}
     </View>
   );
+  if (hasLayoutProps) return <Box {...layout}>{nativeContent}</Box>;
+  return nativeContent;
 };
 
 Card.displayName = "Card";

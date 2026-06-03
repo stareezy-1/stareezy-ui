@@ -68,10 +68,25 @@ export function stareezyMetroTransformer(config?: Partial<CompilerConfig>) {
       try {
         const { transformedSource } = szrTransform(src, mergedConfig);
         return { code: transformedSource };
-      } catch {
-        // On transform error, return original source so Metro can surface
-        // the error with proper file context
-        return { code: src };
+      } catch (err) {
+        // Re-throw with the transform stage and source location so Metro
+        // surfaces a precise build error rather than silently returning the
+        // original source. (Req 8.6)
+        const stage = "transform";
+        const inner = err as Error & {
+          loc?: { line?: number; column?: number };
+        };
+        const loc =
+          inner?.loc?.line !== undefined
+            ? `:${inner.loc.line}${
+                inner.loc.column !== undefined ? `:${inner.loc.column}` : ""
+              }`
+            : "";
+        throw new Error(
+          `[stareezy-ui] ${stage} stage failed at ${filename}${loc}: ${
+            inner?.message ?? String(err)
+          }`,
+        );
       }
     },
   };

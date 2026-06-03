@@ -1,6 +1,6 @@
 {
   "name": "@stareezy-ui/core",
-  "version": "0.2.6",
+  "version": "0.3.0",
   "description": "Stareezy UI shared types, platform utilities, hooks",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -41,10 +41,14 @@
     "@stareezy-ui/tokens": "workspace:*"
   },
   "peerDependencies": {
-    "react": ">=18.0.0"
+    "react": "^18 || ^19",
+    "react-dom": "^18 || ^19"
   },
   "peerDependenciesMeta": {
     "react": {
+      "optional": true
+    },
+    "react-dom": {
       "optional": true
     }
   },

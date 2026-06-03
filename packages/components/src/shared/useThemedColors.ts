@@ -9,7 +9,7 @@
  */
 
 import { useTheme } from "@stareezy-ui/tokens";
-import { colors } from "@stareezy-ui/tokens";
+import { colors, glow } from "@stareezy-ui/tokens";
 
 /**
  * Returns a flat object of the most-used color values, resolved from the
@@ -57,6 +57,48 @@ export function useThemedColors() {
     surface: colors.neutral[10].value, // white
     surfaceDark: colors.raisinBlack[900].value, // near-black
     transparent: colors.transparent.value,
+
+    // ── interactive / focus states ───────────────────────────────────────────
+    /** Active/interactive bg — primary brand bg (adapts per theme) */
+    bgInteractive: theme.backgrounds.primary.value,
+    /** Hover state bg — secondary bg (adapts per theme) */
+    bgHover: theme.backgrounds.secondary.value,
+    /** Selected option bg — subtle brand tint */
+    bgSelected: colors.celurenBlue[25].value,
+    /** Text color on selected state */
+    bgSelectedText: colors.celurenBlue[600].value,
+    /** Focus ring box-shadow — brand blue ring */
+    focusRing: `0 0 0 3px ${colors.celurenBlue[25].value}`,
+    /** Focus ring box-shadow for error state */
+    focusRingError: `0 0 0 3px ${colors.crimsonRed[50].value}`,
+
+    // ── status color families (for badge/toast/alert variants) ──────────────
+    /** Success color — resolves from theme success text slot */
+    colorSuccess: theme.text.successPrimary.value,
+    /** Danger/error color — resolves from theme danger text slot */
+    colorDanger: theme.text.dangerPrimary.value,
+    /** Warning color — resolves from theme warning text slot */
+    colorWarning: theme.text.warningPrimary.value,
+    /** Info/brand color — resolves from theme importantBrand slot */
+    colorInfo: theme.text.importantBrand.value,
+
+    // ── glow effects (theme-independent decorative — aurora token values) ─────
+    // These are CSS box-shadow strings from the glow token group.
+    // They are theme-independent: glow effects look the same across themes.
+    glowGreen: glow.green.value,
+    glowPurple: glow.purple.value,
+
+    // ── semantic-specific convenience slots ──────────────────────────────────
+    /** Card/modal/panel surface bg — maps to theme secondary bg */
+    bgSurface: theme.backgrounds.secondary.value,
+    /** Overlay/backdrop text — maps to theme primary text */
+    textOnSurface: theme.text.primary.value,
+    /** Muted/hint text — maps to theme tertiary text */
+    textMuted: theme.text.tertiary.value,
+    /** Close/chevron button text — secondary text */
+    textControl: theme.text.secondary.value,
+    /** Control hover bg — light secondary */
+    bgControlHover: theme.backgrounds.secondary.value,
 
     // ── raw theme object — for components that need direct token access ──────
     /** The full resolved theme — use `.value` on any slot for the raw string */

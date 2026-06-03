@@ -4,11 +4,12 @@
  */
 
 import React from "react";
-import { colors } from "@stareezy-ui/tokens";
 import { isWeb } from "../shared/platform";
+import { useThemedColors } from "../shared/useThemedColors";
 import { Box } from "../primitives/Box";
 import type { BoxProps, StyleProp } from "../primitives/Box";
 import { Text, ETextType } from "../primitives/Text";
+import { TRACK, THUMB } from "./Switch.style";
 import type { SwitchSize } from "./Switch.types";
 
 export type { SwitchSize };
@@ -22,26 +23,17 @@ export interface SwitchProps extends Omit<BoxProps, "onChange" | "children"> {
   inactiveColor?: string;
   label?: React.ReactNode;
   labelPosition?: "left" | "right";
-  /** ETextType for the label text (when label is a string) */
   labelTextType?: ETextType;
-  /** Style override for the label text */
   labelTextStyle?: StyleProp;
 }
-
-const TRACK: Record<SwitchSize, { w: number; h: number }> = {
-  sm: { w: 32, h: 18 },
-  md: { w: 44, h: 24 },
-  lg: { w: 56, h: 30 },
-};
-const THUMB: Record<SwitchSize, number> = { sm: 12, md: 18, lg: 24 };
 
 export const Switch: React.FC<SwitchProps> = ({
   value = false,
   onChange,
   disabled = false,
   size = "md",
-  activeColor = colors.celurenBlue[400].value,
-  inactiveColor = colors.beauBlue[300].value,
+  activeColor,
+  inactiveColor,
   label,
   labelPosition = "right",
   labelTextType = ETextType.SParagraphRegular,
@@ -50,6 +42,11 @@ export const Switch: React.FC<SwitchProps> = ({
   accessibilityLabel,
   ...boxProps
 }) => {
+  const themed = useThemedColors();
+  // Resolve colors at render time — callers can still override via props
+  const resolvedActiveColor = activeColor ?? themed.borderPrimaryBrand;
+  const resolvedInactiveColor = inactiveColor ?? themed.borderDefault;
+
   const track = TRACK[size];
   const thumbSize = THUMB[size];
   const padding = (track.h - thumbSize) / 2;
@@ -79,7 +76,7 @@ export const Switch: React.FC<SwitchProps> = ({
           width: track.w,
           height: track.h,
           borderRadius: track.h / 2,
-          backgroundColor: value ? activeColor : inactiveColor,
+          backgroundColor: value ? resolvedActiveColor : resolvedInactiveColor,
           cursor: disabled ? "not-allowed" : "pointer",
           transition: "background-color 0.2s ease",
           flexShrink: 0,
@@ -96,7 +93,7 @@ export const Switch: React.FC<SwitchProps> = ({
             width: thumbSize,
             height: thumbSize,
             borderRadius: "50%",
-            backgroundColor: "#ffffff",
+            backgroundColor: themed.surface,
             boxShadow: "0 1px 4px rgba(0,0,0,0.25)",
             transition: "left 0.2s cubic-bezier(0.4,0,0.2,1)",
           }}
@@ -124,11 +121,7 @@ export const Switch: React.FC<SwitchProps> = ({
             <Text
               type={labelTextType}
               text={label}
-              color={
-                disabled
-                  ? colors.beauBlue[600].value
-                  : colors.raisinBlack[800].value
-              }
+              color={disabled ? themed.textDisabled : themed.textPrimary}
               style={{
                 lineHeight: 1.5,
                 ...(labelTextStyle as React.CSSProperties),
@@ -153,8 +146,11 @@ export const Switch: React.FC<SwitchProps> = ({
         value={value}
         onValueChange={onChange}
         disabled={disabled}
-        trackColor={{ false: inactiveColor, true: activeColor }}
-        thumbColor="#ffffff"
+        trackColor={{
+          false: resolvedInactiveColor,
+          true: resolvedActiveColor,
+        }}
+        thumbColor={themed.surface}
         accessibilityRole="switch"
         accessibilityState={{ checked: value, disabled }}
         accessibilityLabel={accessibilityLabel}

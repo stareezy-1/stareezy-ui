@@ -31,12 +31,14 @@ export type { ThemeOverride } from "./themes";
 export { ThemeProvider, useTheme, useThemeSwitch } from "./ThemeProvider";
 export type { ThemeProviderProps, ResolvedTheme } from "./ThemeProvider";
 
-export { createUi, getUiConfig } from "./createUi";
+export { createUi, getUiConfig, applyRuntimeBreakpoints } from "./createUi";
 export type {
   CreateUiConfig,
   UiConfig,
   UiBreakpointConfig,
   CustomTokenGroups,
+  MediaConfig,
+  ShorthandConfig,
   FontConfig,
   AnimationPreset,
   UiSettings,
@@ -72,15 +74,17 @@ export type { ThemeToken } from "./themeTokens";
 
 // ---------------------------------------------------------------------------
 // Module augmentation — users extend SzrCustomConfig in their ui.config.ts
-// to make custom shorthands flow into BoxProps automatically.
+// to make custom shorthands and media breakpoints flow into the type system.
 //
 // Usage in your ui.config.ts:
 //
 //   import { createUi } from '@stareezy-ui/tokens'
-//   export const ui = createUi({ shorthands: { bg: 'backgroundColor' } as const })
-//   type AppConfig = typeof ui
+//   export const ui = createUi({
+//     media: { sm: 640, md: 768, lg: 1024 } as const,
+//     shorthands: { bg: 'backgroundColor' } as const,
+//   })
 //   declare module '@stareezy-ui/tokens' {
-//     interface SzrCustomConfig extends AppConfig {}
+//     interface SzrCustomConfig extends typeof ui {}
 //   }
 // ---------------------------------------------------------------------------
 
@@ -88,12 +92,23 @@ export type { ThemeToken } from "./themeTokens";
  * Extend this interface in your app's ui.config.ts to register your
  * createUi() config with the type system.
  *
+ * When augmented with a `media` shape, `ConfigBreakpointKey` derives
+ * `"base"` plus the exact declared media keys. When augmented with a
+ * `shorthands` shape, those keys surface as custom props on Box.
+ *
  * @example
  * ```ts
  * // ui.config.ts
  * import { createUi } from '@stareezy-ui/tokens'
  *
  * export const ui = createUi({
+ *   media: {
+ *     sm: 640,
+ *     md: 768,
+ *     lg: 1024,
+ *     xl: 1280,
+ *     '2xl': 1536,
+ *   } as const,
  *   shorthands: {
  *     bg:  'backgroundColor',
  *     p:   'padding',
@@ -103,17 +118,45 @@ export type { ThemeToken } from "./themeTokens";
  *   } as const,
  * })
  *
- * type AppConfig = typeof ui
  * declare module '@stareezy-ui/tokens' {
- *   interface SzrCustomConfig extends AppConfig {}
+ *   interface SzrCustomConfig extends typeof ui {}
  * }
  * ```
  *
- * Once declared, `<Box bg={...} />` will be a valid typed prop even if `bg`
- * is not in the built-in BoxProps — TypeScript reads it from your config.
+ * Once declared, `ConfigBreakpointKey` reflects the exact media keys you
+ * configured, and `<Box bg={...} />` will be a valid typed prop.
  */
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface SzrCustomConfig {}
+export interface SzrCustomConfig {
+  /** The media query breakpoints declared in the consuming app's createUi config. */
+  media?: Record<string, number>;
+  /** The prop shorthands declared in the consuming app's createUi config. */
+  shorthands?: Record<string, string>;
+}
+
+/**
+ * The default breakpoint union used when no media augmentation is present.
+ * Matches the built-in DEFAULT_BREAKPOINTS in createUi.
+ */
+export type DefaultBreakpointKey = "base" | "sm" | "md" | "lg" | "xl" | "2xl";
+
+/**
+ * Derives the BreakpointKey union from the augmented SzrCustomConfig's `media` shape.
+ *
+ * - No augmentation (media key is a wide `string` index) → `DefaultBreakpointKey`
+ * - Augmented with specific keys → `"base"` plus the exact declared media keys
+ *
+ * @example
+ * // With `media: { sm: 640, md: 768 }` declared in SzrCustomConfig:
+ * // ConfigBreakpointKey = "base" | "sm" | "md"
+ *
+ * // With no augmentation:
+ * // ConfigBreakpointKey = "base" | "sm" | "md" | "lg" | "xl" | "2xl"
+ */
+export type ConfigBreakpointKey = string extends keyof NonNullable<
+  SzrCustomConfig["media"]
+>
+  ? DefaultBreakpointKey
+  : "base" | Extract<keyof NonNullable<SzrCustomConfig["media"]>, string>;
 
 /**
  * Extracts the shorthands record from SzrCustomConfig if the user has

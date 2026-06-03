@@ -4,10 +4,11 @@
  */
 
 import React, { useRef, useState, useCallback } from "react";
-import { colors } from "@stareezy-ui/tokens";
 import { isWeb } from "../shared/platform";
+import { useThemedColors } from "../shared/useThemedColors";
 import { Box } from "../primitives/Box";
 import type { BoxProps } from "../primitives/Box";
+import { resizerGeometry } from "./Resizer.style";
 import type { ResizerDirection } from "./Resizer.types";
 
 export type { ResizerDirection };
@@ -34,11 +35,13 @@ export const Resizer: React.FC<ResizerProps> = ({
   maxWidth: maxW = 1200,
   minHeight: minH = 80,
   maxHeight: maxH = 800,
-  handleColor = colors.beauBlue[300].value,
+  handleColor,
   onResize,
   testID,
   ...boxProps
 }) => {
+  const themed = useThemedColors();
+  const resolvedHandleColor = handleColor ?? themed.borderDefault;
   const [size, setSize] = useState({
     width: defaultWidth,
     height: defaultHeight,
@@ -133,7 +136,8 @@ export const Resizer: React.FC<ResizerProps> = ({
             justifyContent: "center",
           }}
           onMouseEnter={(e) => {
-            (e.currentTarget as HTMLDivElement).style.background = handleColor;
+            (e.currentTarget as HTMLDivElement).style.background =
+              resolvedHandleColor;
           }}
           onMouseLeave={(e) => {
             (e.currentTarget as HTMLDivElement).style.background =
@@ -145,7 +149,7 @@ export const Resizer: React.FC<ResizerProps> = ({
               width: 2,
               height: 32,
               borderRadius: 1,
-              backgroundColor: handleColor,
+              backgroundColor: resolvedHandleColor,
               opacity: 0.6,
             }}
           />
@@ -171,7 +175,8 @@ export const Resizer: React.FC<ResizerProps> = ({
             justifyContent: "center",
           }}
           onMouseEnter={(e) => {
-            (e.currentTarget as HTMLDivElement).style.background = handleColor;
+            (e.currentTarget as HTMLDivElement).style.background =
+              resolvedHandleColor;
           }}
           onMouseLeave={(e) => {
             (e.currentTarget as HTMLDivElement).style.background =
@@ -183,7 +188,7 @@ export const Resizer: React.FC<ResizerProps> = ({
               height: 2,
               width: 32,
               borderRadius: 1,
-              backgroundColor: handleColor,
+              backgroundColor: resolvedHandleColor,
               opacity: 0.6,
             }}
           />
@@ -217,7 +222,7 @@ export const Resizer: React.FC<ResizerProps> = ({
           >
             <path
               d="M9 1L1 9M9 5L5 9M9 9"
-              stroke={handleColor}
+              stroke={resolvedHandleColor}
               strokeWidth="1.5"
               strokeLinecap="round"
             />

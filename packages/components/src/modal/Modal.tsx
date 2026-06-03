@@ -1,19 +1,30 @@
 /**
  * Modal — overlay dialog with backdrop blur, smooth animations.
  * Dialog content wrapper accepts BoxProps. Title rendered via <Text>.
+ *
+ * Accessibility (Req 14.1–14.4):
+ * - role="dialog" + aria-modal="true" on the panel
+ * - aria-labelledby wired to the title span
+ * - Close button: aria-label="Close dialog" + data-szr-close (focus ring via CSS)
+ * - Focus trap: Tab cycles within the dialog; focus returns on close
+ * - Escape key dismisses
  */
 
 import React, { useEffect } from "react";
-import { colors } from "@stareezy-ui/tokens";
 import { isWeb } from "../shared/platform";
+import { useThemedColors } from "../shared/useThemedColors";
 import { Box } from "../primitives/Box";
 import type { BoxProps, StyleProp } from "../primitives/Box";
 import { Text, ETextType } from "../primitives/Text";
+import { MODAL_KF, SIZE_W } from "./Modal.style";
 import type { ModalSize } from "./Modal.types";
+import type { BoxLayoutProps } from "../shared/boxLayoutProps";
+import { extractBoxLayoutProps } from "../shared/boxLayoutProps";
+import { injectFocusStyles } from "../shared/injectFocusStyles";
 
 export type { ModalSize };
 
-export interface ModalProps {
+export interface ModalProps extends BoxLayoutProps {
   open: boolean;
   onClose?: () => void;
   size?: ModalSize;
@@ -24,33 +35,14 @@ export interface ModalProps {
   showCloseButton?: boolean;
   contentBoxProps?: Omit<BoxProps, "children">;
   testID?: string;
-  /** Style override forwarded to the root container element */
   style?: StyleProp;
-  /** ETextType for the modal title (when title is a string) */
   titleTextType?: ETextType;
-  /** Style override for the modal title text */
   titleTextStyle?: StyleProp;
 }
 
-const SIZE_W: Record<ModalSize, string> = {
-  xs: "320px",
-  sm: "440px",
-  md: "560px",
-  lg: "720px",
-  xl: "900px",
-  full: "100vw",
-};
-
-const MODAL_KF = `
-@keyframes szr-modal-in {
-  from { opacity: 0; transform: scale(0.95) translateY(8px); }
-  to { opacity: 1; transform: scale(1) translateY(0); }
-}
-@keyframes szr-backdrop-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-`;
+// ---------------------------------------------------------------------------
+// Keyframe injection
+// ---------------------------------------------------------------------------
 
 let modalKfInjected = false;
 function injectModalKf() {
@@ -62,21 +54,93 @@ function injectModalKf() {
   modalKfInjected = true;
 }
 
-export const Modal: React.FC<ModalProps> = ({
-  open,
-  onClose,
-  size = "md",
-  title,
-  footer,
-  children,
-  closeOnBackdrop = true,
-  showCloseButton = true,
-  contentBoxProps,
-  testID,
-  style,
-  titleTextType = ETextType.XSHeadingBold,
-  titleTextStyle,
-}) => {
+// ---------------------------------------------------------------------------
+// Focus trap (web) — keeps keyboard focus within the dialog while open
+// ---------------------------------------------------------------------------
+
+const FOCUSABLE_SELECTOR = [
+  "a[href]",
+  "button:not([disabled])",
+  "input:not([disabled])",
+  "select:not([disabled])",
+  "textarea:not([disabled])",
+  '[tabindex]:not([tabindex="-1"])',
+].join(", ");
+
+function useModalFocusTrap(
+  ref: React.RefObject<HTMLDivElement | null>,
+  active: boolean,
+) {
+  React.useEffect(() => {
+    if (!active || !ref.current) return;
+    const panel = ref.current;
+    const previousFocus = document.activeElement as HTMLElement | null;
+
+    // Move focus into the dialog on open
+    const first = panel.querySelector<HTMLElement>(FOCUSABLE_SELECTOR);
+    first?.focus();
+
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key !== "Tab") return;
+      const focusables = Array.from(
+        panel.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR),
+      ).filter((node) => !node.closest("[hidden]"));
+      if (!focusables.length) {
+        e.preventDefault();
+        return;
+      }
+      const firstEl = focusables[0]!;
+      const lastEl = focusables[focusables.length - 1]!;
+      if (e.shiftKey) {
+        if (document.activeElement === firstEl) {
+          e.preventDefault();
+          lastEl.focus();
+        }
+      } else {
+        if (document.activeElement === lastEl) {
+          e.preventDefault();
+          firstEl.focus();
+        }
+      }
+    }
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      previousFocus?.focus();
+    };
+  }, [active, ref]);
+}
+
+// ---------------------------------------------------------------------------
+// Modal component
+// ---------------------------------------------------------------------------
+
+export const Modal: React.FC<ModalProps> = (props) => {
+  const { layout, rest: modalRest } = extractBoxLayoutProps(props);
+  const {
+    open,
+    onClose,
+    size = "md",
+    title,
+    footer,
+    children,
+    closeOnBackdrop = true,
+    showCloseButton = true,
+    contentBoxProps,
+    testID,
+    style,
+    titleTextType = ETextType.XSHeadingBold,
+    titleTextStyle,
+  } = modalRest as ModalProps;
+
+  const themed = useThemedColors();
+
+  // Focus trap: ref attached to the dialog wrapper div (web only)
+  const dialogRef = React.useRef<HTMLDivElement>(null);
+  useModalFocusTrap(dialogRef, isWeb && open);
+
+  // Lock body scroll while open
   useEffect(() => {
     if (!isWeb || !open) return;
     const prev = document.body.style.overflow;
@@ -86,6 +150,7 @@ export const Modal: React.FC<ModalProps> = ({
     };
   }, [open]);
 
+  // Escape key dismissal
   useEffect(() => {
     if (!isWeb || !open) return;
     const handler = (e: KeyboardEvent) => {
@@ -97,8 +162,10 @@ export const Modal: React.FC<ModalProps> = ({
 
   if (!open) return null;
 
+  // ── Web ────────────────────────────────────────────────────────────────────
   if (isWeb) {
     injectModalKf();
+    injectFocusStyles();
     const isFull = size === "full";
 
     return (
@@ -120,6 +187,7 @@ export const Modal: React.FC<ModalProps> = ({
           if (closeOnBackdrop && e.target === e.currentTarget) onClose?.();
         }}
       >
+        {/* Backdrop */}
         <div
           aria-hidden="true"
           style={{
@@ -133,16 +201,22 @@ export const Modal: React.FC<ModalProps> = ({
             if (closeOnBackdrop) onClose?.();
           }}
         />
-        <Box
+
+        {/*
+          Focus trap wrapper: plain div so we can attach a ref without
+          requiring Box to support forwardRef.
+        */}
+        <div
+          ref={dialogRef}
           role="dialog"
           aria-modal="true"
           aria-labelledby={title ? "szr-modal-title" : undefined}
-          position="relative"
-          display="flex"
-          flexDirection="column"
-          overflow="hidden"
-          bg="#ffffff"
           style={{
+            position: "relative",
+            display: "flex",
+            flexDirection: "column",
+            overflow: "hidden",
+            backgroundColor: themed.surface,
             width: SIZE_W[size],
             maxWidth: "100%",
             maxHeight: isFull ? "100vh" : "90vh",
@@ -151,94 +225,108 @@ export const Modal: React.FC<ModalProps> = ({
               "0 24px 64px rgba(0,0,0,0.18),0 8px 24px rgba(0,0,0,0.12)",
             animation: "szr-modal-in 0.22s cubic-bezier(0.34,1.56,0.64,1)",
           }}
-          {...contentBoxProps}
         >
-          {(title || showCloseButton) && (
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                padding: "20px 24px 16px",
-                borderBottom: `1px solid ${colors.beauBlue[200].value}`,
-                flexShrink: 0,
-              }}
-            >
-              {title &&
-                (typeof title === "string" ? (
-                  <span id="szr-modal-title">
-                    <Text
-                      type={titleTextType}
-                      text={title}
-                      color={colors.raisinBlack[800].value}
-                      style={{
-                        lineHeight: 1.3,
-                        ...(titleTextStyle as React.CSSProperties),
-                      }}
-                    />
-                  </span>
-                ) : (
-                  title
-                ))}
-              {showCloseButton && (
-                <button
-                  type="button"
-                  aria-label="Close dialog"
-                  onClick={onClose}
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    width: 32,
-                    height: 32,
-                    borderRadius: 8,
-                    border: "none",
-                    background: "transparent",
-                    cursor: "pointer",
-                    color: colors.beauBlue[700].value,
-                    fontSize: 18,
-                    transition: "background 0.15s ease,color 0.15s ease",
-                    flexShrink: 0,
-                    marginLeft: "auto",
-                  }}
-                  onMouseEnter={(e) => {
-                    (e.currentTarget as HTMLButtonElement).style.background =
-                      colors.beauBlue[100].value;
-                    (e.currentTarget as HTMLButtonElement).style.color =
-                      colors.raisinBlack[800].value;
-                  }}
-                  onMouseLeave={(e) => {
-                    (e.currentTarget as HTMLButtonElement).style.background =
-                      "transparent";
-                    (e.currentTarget as HTMLButtonElement).style.color =
-                      colors.beauBlue[700].value;
-                  }}
-                >
-                  ✕
-                </button>
-              )}
+          {/* Forward BoxLayoutProps and contentBoxProps via an inner Box */}
+          <Box
+            display="flex"
+            flexDirection="column"
+            style={{ flex: 1, overflow: "hidden" } as React.CSSProperties}
+            {...layout}
+            {...contentBoxProps}
+          >
+            {/* Header */}
+            {(title || showCloseButton) && (
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  padding: "20px 24px 16px",
+                  borderBottom: `1px solid ${themed.borderDefault}`,
+                  flexShrink: 0,
+                }}
+              >
+                {title &&
+                  (typeof title === "string" ? (
+                    <span id="szr-modal-title">
+                      <Text
+                        type={titleTextType}
+                        text={title}
+                        color={themed.textPrimary}
+                        style={{
+                          lineHeight: 1.3,
+                          ...(titleTextStyle as React.CSSProperties),
+                        }}
+                      />
+                    </span>
+                  ) : (
+                    title
+                  ))}
+                {showCloseButton && (
+                  <button
+                    type="button"
+                    aria-label="Close dialog"
+                    data-szr-close=""
+                    onClick={onClose}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      width: 32,
+                      height: 32,
+                      borderRadius: 8,
+                      border: "none",
+                      background: "transparent",
+                      cursor: "pointer",
+                      color: themed.textSecondary,
+                      fontSize: 18,
+                      transition: "background 0.15s ease,color 0.15s ease",
+                      flexShrink: 0,
+                      marginLeft: "auto",
+                    }}
+                    onMouseEnter={(e) => {
+                      (e.currentTarget as HTMLButtonElement).style.background =
+                        themed.bgHover;
+                      (e.currentTarget as HTMLButtonElement).style.color =
+                        themed.textPrimary;
+                    }}
+                    onMouseLeave={(e) => {
+                      (e.currentTarget as HTMLButtonElement).style.background =
+                        "transparent";
+                      (e.currentTarget as HTMLButtonElement).style.color =
+                        themed.textSecondary;
+                    }}
+                  >
+                    ✕
+                  </button>
+                )}
+              </div>
+            )}
+
+            {/* Body */}
+            <div style={{ flex: 1, overflowY: "auto", padding: "20px 24px" }}>
+              {children}
             </div>
-          )}
-          <div style={{ flex: 1, overflowY: "auto", padding: "20px 24px" }}>
-            {children}
-          </div>
-          {footer && (
-            <div
-              style={{
-                padding: "16px 24px 20px",
-                borderTop: `1px solid ${colors.beauBlue[200].value}`,
-                flexShrink: 0,
-              }}
-            >
-              {footer}
-            </div>
-          )}
-        </Box>
+
+            {/* Footer */}
+            {footer && (
+              <div
+                style={{
+                  padding: "16px 24px 20px",
+                  borderTop: `1px solid ${themed.borderDefault}`,
+                  flexShrink: 0,
+                }}
+              >
+                {footer}
+              </div>
+            )}
+          </Box>
+        </div>
       </div>
     );
   }
 
-  // React Native
+  // ── React Native ──────────────────────────────────────────────────────────
   // eslint-disable-next-line @typescript-eslint/no-require-imports
   const {
     Modal: RNModal,
@@ -276,7 +364,7 @@ export const Modal: React.FC<ModalProps> = ({
       >
         <View
           style={{
-            backgroundColor: "#ffffff",
+            backgroundColor: themed.surface,
             borderRadius: 16,
             width: "100%",
             maxHeight: "85%",
@@ -292,7 +380,7 @@ export const Modal: React.FC<ModalProps> = ({
                 justifyContent: "space-between",
                 padding: 20,
                 borderBottomWidth: 1,
-                borderBottomColor: colors.beauBlue[200].value,
+                borderBottomColor: themed.borderDefault,
               }}
             >
               {title &&
@@ -300,7 +388,7 @@ export const Modal: React.FC<ModalProps> = ({
                   <Text
                     type={titleTextType}
                     text={title}
-                    color={colors.raisinBlack[800].value}
+                    color={themed.textPrimary}
                     style={{
                       flex: 1,
                       ...(titleTextStyle as Record<string, unknown>),
@@ -314,7 +402,7 @@ export const Modal: React.FC<ModalProps> = ({
                   <Text
                     type={ETextType.XSHeadingBold}
                     text="✕"
-                    color={colors.beauBlue[700].value}
+                    color={themed.textSecondary}
                   />
                 </TouchableOpacity>
               )}
@@ -326,7 +414,7 @@ export const Modal: React.FC<ModalProps> = ({
               style={{
                 padding: 20,
                 borderTopWidth: 1,
-                borderTopColor: colors.beauBlue[200].value,
+                borderTopColor: themed.borderDefault,
               }}
             >
               {footer}

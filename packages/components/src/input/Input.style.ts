@@ -1,41 +1,35 @@
 /**
- * Input.style.ts — style constants for the Input component.
- *
- * All token values accessed via .value — no hardcoded colors.
+ * Input.style.ts — geometry-only style constants for the Input component.
+ * All colors are resolved at render time via useThemedColors() in Input.tsx.
  */
 
-import { colors, radius } from "@stareezy-ui/tokens";
+import { RADIUS, TYPE_SCALE, GAP, INTERACTION } from "../shared/visualSpec";
 import { EInputSize } from "./Input.types";
 
-export const inputStyles = {
-  borderColorError: colors.crimsonRed[500].value,
-  borderColorFocus: colors.celurenBlue[400].value,
-  focusRingDefault: `0 0 0 3px ${colors.celurenBlue[25].value}`,
-  focusRingError: `0 0 0 3px ${colors.crimsonRed[50].value}`,
-  requiredColor: colors.crimsonRed[500].value,
-  errorColor: colors.crimsonRed[500].value,
-} as const;
-
 export const SIZE_PADDING_V: Record<EInputSize, number> = {
-  [EInputSize.Sm]: 7,
-  [EInputSize.Md]: 10,
-  [EInputSize.Lg]: 13,
+  [EInputSize.Sm]: GAP.sm - 1, // 7
+  [EInputSize.Md]: GAP.sm + 2, // 10
+  [EInputSize.Lg]: GAP.md + 1, // 13
 };
 
 export const SIZE_PADDING_H: Record<EInputSize, number> = {
-  [EInputSize.Sm]: 10,
-  [EInputSize.Md]: 12,
-  [EInputSize.Lg]: 16,
+  [EInputSize.Sm]: GAP.sm + 2, // 10
+  [EInputSize.Md]: GAP.md, // 12
+  [EInputSize.Lg]: GAP.lg, // 16
 };
 
 export const SIZE_FONT: Record<EInputSize, number> = {
-  [EInputSize.Sm]: 13,
-  [EInputSize.Md]: 14,
-  [EInputSize.Lg]: 16,
+  [EInputSize.Sm]: TYPE_SCALE.label_sm + 1, // 13
+  [EInputSize.Md]: TYPE_SCALE.label_md, // 14
+  [EInputSize.Lg]: TYPE_SCALE.label_lg, // 16
 };
 
 export const SIZE_BORDER_RADIUS: Record<EInputSize, number> = {
-  [EInputSize.Sm]: radius.md.value,
-  [EInputSize.Md]: radius.lg.value,
-  [EInputSize.Lg]: radius.lg.value,
+  [EInputSize.Sm]: RADIUS.md, // 8
+  [EInputSize.Md]: RADIUS.lg, // 10
+  [EInputSize.Lg]: RADIUS.lg, // 10
 };
+
+export const inputStateOpacity = {
+  disabled: INTERACTION.disabledOpacity,
+} as const;

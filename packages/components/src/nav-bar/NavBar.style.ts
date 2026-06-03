@@ -1,28 +1,14 @@
-import { aurora } from "@stareezy-ui/tokens";
+/**
+ * NavBar.style.ts — geometry-only style constants for the NavBar component.
+ * All colors are resolved at render time via useThemedColors() in NavBar.tsx.
+ */
 
-export const navBarBaseStyle = {
-  position: "sticky" as const,
-  top: 0,
-  zIndex: 200,
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "space-between",
-  padding: "0 24px",
+import { GAP, ELEVATION } from "../shared/visualSpec";
+
+export const navBarGeometry = {
   height: 60,
-  backgroundColor: `${aurora.deepSpace.value}cc`,
-  borderBottom: `1px solid ${aurora.borderSubtle.value}`,
-  transition: "backdrop-filter 0.3s ease, border-color 0.3s ease",
-} as const;
-
-export const navBarScrolledStyle = {
-  backdropFilter: "blur(20px)",
-  WebkitBackdropFilter: "blur(20px)",
-  borderBottomColor: `${aurora.borderSubtle.value}`,
-} as const;
-
-export const navBarDefaultStyle = {
-  backdropFilter: "blur(8px)",
-  WebkitBackdropFilter: "blur(8px)",
+  paddingH: GAP.xl, // 24
+  zIndex: 200,
 } as const;
 
 export const navBarLogoStyle = {
@@ -34,14 +20,16 @@ export const navBarLogoStyle = {
 export const navBarLinksStyle = {
   display: "flex",
   alignItems: "center",
-  gap: 4,
+  gap: GAP.xs, // 4
   flex: 1,
-  paddingLeft: 24,
+  paddingLeft: GAP.xl, // 24
 } as const;
 
 export const navBarActionsStyle = {
   display: "flex",
   alignItems: "center",
-  gap: 8,
+  gap: GAP.sm, // 8
   marginLeft: "auto",
 } as const;
+
+export const navBarElevation = ELEVATION.sm;

@@ -1,10 +1,8 @@
 /**
- * CircularProgress.style.ts — style constants for the CircularProgress component.
- *
- * All token values accessed via .value — no hardcoded colors.
+ * CircularProgress.style.ts — geometry-only style constants.
+ * All colors are resolved at render time via useThemedColors() in CircularProgress.tsx.
  */
 
-import { colors } from "@stareezy-ui/tokens";
 import type { CircularProgressSize } from "./CircularProgress.types";
 
 export const SIZE_PX: Record<CircularProgressSize, number> = {
@@ -30,9 +28,3 @@ export const FONT_SIZE: Record<CircularProgressSize, number> = {
   lg: 22,
   xl: 28,
 };
-
-export const circularProgressStyles = {
-  defaultColor: colors.celurenBlue[400].value,
-  defaultTrackColor: colors.beauBlue[200].value,
-  valueTextColor: colors.raisinBlack[800].value,
-} as const;

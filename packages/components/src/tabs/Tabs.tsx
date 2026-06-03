@@ -4,11 +4,12 @@
  */
 
 import React, { useState, useRef, useEffect } from "react";
-import { colors } from "@stareezy-ui/tokens";
 import { isWeb } from "../shared/platform";
+import { useThemedColors } from "../shared/useThemedColors";
 import { Box } from "../primitives/Box";
 import type { BoxProps, StyleProp } from "../primitives/Box";
 import { Text, ETextType } from "../primitives/Text";
+import { tabsGeometry } from "./Tabs.style";
 import type { TabsVariant, TabItem } from "./Tabs.types";
 
 export type { TabsVariant, TabItem };
@@ -21,9 +22,7 @@ export interface TabsProps extends Omit<BoxProps, "children" | "onChange"> {
   variant?: TabsVariant;
   fullWidth?: boolean;
   tabBarBoxProps?: Omit<BoxProps, "children">;
-  /** ETextType for tab label text (when label is a string) */
   labelTextType?: ETextType;
-  /** Style override for tab label text */
   labelTextStyle?: StyleProp;
 }
 
@@ -46,6 +45,7 @@ export const Tabs: React.FC<TabsProps> = ({
   const activeKey = controlledKey ?? internalKey;
   const indicatorRef = useRef<HTMLDivElement>(null);
   const tabRefs = useRef<Record<string, HTMLButtonElement | null>>({});
+  const themed = useThemedColors();
 
   const handleChange = (key: string) => {
     setInternalKey(key);
@@ -82,15 +82,19 @@ export const Tabs: React.FC<TabsProps> = ({
           gap={isPills ? 4 : 0}
           style={{
             borderBottom: isUnderline
-              ? `2px solid ${colors.beauBlue[200].value}`
+              ? `2px solid ${themed.borderSecondary}`
               : undefined,
             backgroundColor: isPills
-              ? colors.beauBlue[100].value
+              ? themed.bgHover
               : isCard
-              ? colors.beauBlue[50].value
+              ? themed.bgSecondary
               : undefined,
-            borderRadius: isPills ? 10 : isCard ? "10px 10px 0 0" : undefined,
-            padding: isPills ? 4 : undefined,
+            borderRadius: isPills
+              ? tabsGeometry.pillsBorderRadius
+              : isCard
+              ? "10px 10px 0 0"
+              : undefined,
+            padding: isPills ? tabsGeometry.pillsPadding : undefined,
           }}
           {...tabBarBoxProps}
         >
@@ -113,12 +117,16 @@ export const Tabs: React.FC<TabsProps> = ({
                   alignItems: "center",
                   gap: 6,
                   padding: isPills
-                    ? "7px 16px"
+                    ? `${tabsGeometry.pillsItemPaddingV}px ${tabsGeometry.pillsItemPaddingH}px`
                     : isCard
-                    ? "10px 20px"
-                    : "10px 16px",
+                    ? `${tabsGeometry.cardItemPaddingV}px ${tabsGeometry.cardItemPaddingH}px`
+                    : `${tabsGeometry.underlineItemPaddingV}px ${tabsGeometry.underlineItemPaddingH}px`,
                   border: "none",
-                  borderRadius: isPills ? 7 : isCard ? "8px 8px 0 0" : 0,
+                  borderRadius: isPills
+                    ? tabsGeometry.pillsItemBorderRadius
+                    : isCard
+                    ? tabsGeometry.cardItemBorderRadius
+                    : 0,
                   cursor: item.disabled ? "not-allowed" : "pointer",
                   opacity: item.disabled ? 0.45 : 1,
                   flex: fullWidth ? 1 : undefined,
@@ -128,13 +136,15 @@ export const Tabs: React.FC<TabsProps> = ({
                   whiteSpace: "nowrap",
                   backgroundColor: isActive
                     ? isPills
-                      ? colors.celurenBlue[400].value
+                      ? themed.bgInteractive
                       : isCard
-                      ? "#ffffff"
+                      ? themed.surface
                       : "transparent"
                     : "transparent",
                   boxShadow:
-                    isActive && isCard ? "0 -1px 0 0 #fff inset" : undefined,
+                    isActive && isCard
+                      ? `0 -1px 0 0 ${themed.surface} inset`
+                      : undefined,
                 }}
               >
                 {item.icon && (
@@ -150,9 +160,9 @@ export const Tabs: React.FC<TabsProps> = ({
                     color={
                       isActive
                         ? isPills
-                          ? "#ffffff"
-                          : colors.celurenBlue[500].value
-                        : colors.beauBlue[700].value
+                          ? themed.surface
+                          : themed.textImportantBrand
+                        : themed.textSecondary
                     }
                     style={labelTextStyle as React.CSSProperties}
                   />
@@ -165,18 +175,16 @@ export const Tabs: React.FC<TabsProps> = ({
                       display: "inline-flex",
                       alignItems: "center",
                       justifyContent: "center",
-                      minWidth: 18,
-                      height: 18,
-                      borderRadius: 9,
+                      minWidth: tabsGeometry.badgeMinWidth,
+                      height: tabsGeometry.badgeHeight,
+                      borderRadius: tabsGeometry.badgeBorderRadius,
                       backgroundColor: isActive
-                        ? colors.celurenBlue[100].value
-                        : colors.beauBlue[200].value,
-                      color: isActive
-                        ? colors.celurenBlue[600].value
-                        : colors.beauBlue[700].value,
-                      fontSize: 10,
+                        ? themed.bgInteractive
+                        : themed.borderSecondary,
+                      color: isActive ? themed.surface : themed.textSecondary,
+                      fontSize: tabsGeometry.badgeFontSize,
                       fontWeight: "700",
-                      padding: "0 5px",
+                      padding: `0 ${tabsGeometry.badgePaddingH}px`,
                     }}
                   >
                     {item.badge}
@@ -192,9 +200,9 @@ export const Tabs: React.FC<TabsProps> = ({
               style={{
                 position: "absolute",
                 bottom: -2,
-                height: 2,
-                borderRadius: 2,
-                backgroundColor: colors.celurenBlue[400].value,
+                height: tabsGeometry.indicatorHeight,
+                borderRadius: tabsGeometry.indicatorBorderRadius,
+                backgroundColor: themed.borderPrimaryBrand,
                 transition:
                   "left 0.22s cubic-bezier(0.4,0,0.2,1),width 0.22s cubic-bezier(0.4,0,0.2,1)",
               }}
@@ -225,7 +233,7 @@ export const Tabs: React.FC<TabsProps> = ({
         showsHorizontalScrollIndicator={false}
         style={{
           borderBottomWidth: 2,
-          borderBottomColor: colors.beauBlue[200].value,
+          borderBottomColor: themed.borderSecondary,
         }}
       >
         <View style={{ flexDirection: "row" }}>
@@ -245,7 +253,7 @@ export const Tabs: React.FC<TabsProps> = ({
                   paddingHorizontal: 16,
                   paddingVertical: 10,
                   borderBottomWidth: isActive ? 2 : 0,
-                  borderBottomColor: colors.celurenBlue[400].value,
+                  borderBottomColor: themed.borderPrimaryBrand,
                   opacity: item.disabled ? 0.45 : 1,
                 }}
               >
@@ -258,8 +266,8 @@ export const Tabs: React.FC<TabsProps> = ({
                     text={item.label}
                     color={
                       isActive
-                        ? colors.celurenBlue[500].value
-                        : colors.beauBlue[700].value
+                        ? themed.textImportantBrand
+                        : themed.textSecondary
                     }
                     style={labelTextStyle as Record<string, unknown>}
                   />

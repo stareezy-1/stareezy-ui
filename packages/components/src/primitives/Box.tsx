@@ -22,8 +22,9 @@ import {
   isResponsive,
   resolveResponsiveValue,
   buildMediaQueryEntries,
+  getBreakpoints,
 } from "./breakpoints";
-import type { Responsive } from "./breakpoints";
+import type { BreakpointKey, Responsive } from "./breakpoints";
 import { isWeb } from "../shared/platform";
 import { flattenStyle } from "../shared/flattenStyle";
 import { EBoxType } from "./Box.types";
@@ -150,23 +151,55 @@ function resolveTokenOrValue(value: unknown, theme: ResolvedTheme): unknown {
 // ---------------------------------------------------------------------------
 
 /**
- * Extracts only the known shorthand keys from SzrShorthands as optional props.
+ * Extracts only the known shorthand keys from SzrShorthands as optional props,
+ * each wrapped in Responsive<T> so callers can pass per-breakpoint values.
+ *
  * Uses `string extends keyof S` to avoid creating an index signature when
- * SzrShorthands falls back to Record<string, string>.
+ * SzrShorthands falls back to Record<string, string> (no augmentation).
+ *
+ * - No augmentation → `{}` (no extra props, no index signature) — Req 2.4
+ * - Augmented → each key accepts a plain value OR a responsive object — Reqs 2.1–2.3
  */
 type CustomShorthandProps = string extends keyof SzrShorthands
   ? // No augmentation — don't add any extra props (avoids index signature)
     // eslint-disable-next-line @typescript-eslint/ban-types
     {}
   : {
-      [K in keyof SzrShorthands]?: TokenOrValue<string | number>;
+      [K in keyof SzrShorthands]?: Responsive<TokenOrValue<string | number>>;
     };
+
+// ---------------------------------------------------------------------------
+// Breakpoint-as-prop grouped syntax (Req 4)
+// ---------------------------------------------------------------------------
+
+/**
+ * Keys of the form `$sm`, `$md`, `$lg`, etc. — one per non-base BreakpointKey.
+ * Derived from config so custom media keys produce the right `$`-prefixed props.
+ */
+type BreakpointPropKey = `$${Exclude<BreakpointKey, "base">}`;
+
+/**
+ * A partial set of Box style + shorthand props with no nested responsive/$-keys.
+ * Used as the value type for each `$`-prefixed breakpoint prop.
+ * Omitting BreakpointPropKey avoids recursive nesting.
+ */
+type BoxStylePropsPartial = Partial<
+  Omit<BoxProps, BreakpointPropKey | "children" | "style" | "type">
+>;
+
+/**
+ * One optional `$`-prefixed prop per non-base breakpoint.
+ * e.g. `$md={{ p: 16, color: "red" }}` applies those styles at the md breakpoint.
+ */
+type BreakpointProps = {
+  [K in BreakpointPropKey]?: BoxStylePropsPartial;
+};
 
 // ---------------------------------------------------------------------------
 // BoxProps
 // ---------------------------------------------------------------------------
 
-export interface BoxProps extends CustomShorthandProps {
+export interface BoxProps extends CustomShorthandProps, BreakpointProps {
   // ── Preset type ───────────────────────────────────────────────────────────
   /** Applies a preset style combination. Explicit props override preset values. */
   type?: EBoxType;
@@ -654,6 +687,48 @@ function resolveWebProps(
     }
   }
 
+  // ── $-group pass (Req 4.4 / 4.5) ─────────────────────────────────────────
+  // Runs AFTER the responsive-object pass so that on a same-property/same-breakpoint
+  // collision the $-group value wins (it's emitted later → higher CSS source order).
+  // Iterates breakpoints in ascending minWidth order for consistent output.
+  const breakpointsForDollar = Object.entries(getBreakpoints()).sort(
+    ([, a], [, b]) => a - b,
+  );
+  for (const [bpName, threshold] of breakpointsForDollar) {
+    const dollarKey = `$${bpName}` as BreakpointPropKey;
+    const groupVal = (props as Record<string, unknown>)[dollarKey];
+    if (groupVal == null || typeof groupVal !== "object") continue;
+    const group = groupVal as Record<string, unknown>;
+    for (const [innerProp, innerVal] of Object.entries(group)) {
+      if (innerVal === undefined || innerVal === null) continue;
+      // Resolve token / value
+      const resolved = resolveTokenOrValue(innerVal, theme);
+      // Look up the CSS property — check effectivePropMap first, then camelCase passthrough
+      const cssPropDef = effectivePropMap[innerProp];
+      if (cssPropDef) {
+        const targets = Array.isArray(cssPropDef) ? cssPropDef : [cssPropDef];
+        for (const cp of targets) {
+          cssRules.push(
+            `@media(min-width:${threshold}px){.${scopeClass}{${cp}:${String(
+              toCssValue(camel(cp), resolved),
+            )}}}`,
+          );
+        }
+      } else {
+        // Plain style prop — camelCase → kebab-case for the media rule
+        const kebab = innerProp.replace(
+          /([A-Z])/g,
+          (c) => `-${c.toLowerCase()}`,
+        );
+        cssRules.push(
+          `@media(min-width:${threshold}px){.${scopeClass}{${kebab}:${String(
+            toCssValue(innerProp, resolved),
+          )}}}`,
+        );
+      }
+    }
+  }
+
   // Auto display:flex + default flexDirection:column
   // Triggered when any flex-related prop is set (or flex itself).
   // flexDirection defaults to "column" to match RN's default and web block behavior.
@@ -764,6 +839,28 @@ function resolveNativeProps(
     if (val !== undefined) plainStyle[propName] = val;
   }
 
+  // ── $-group pass (Req 4.4 / 4.5, native) ─────────────────────────────────
+  // Mobile-first cascade: iterate breakpoints in ascending order.
+  // Merge the group's props into plainStyle when windowWidth >= threshold,
+  // so larger breakpoints overwrite smaller ones (same win condition as web).
+  const breakpointsForDollar = Object.entries(getBreakpoints()).sort(
+    ([, a], [, b]) => a - b,
+  );
+  for (const [bpName, threshold] of breakpointsForDollar) {
+    if (windowWidth < threshold) continue;
+    const dollarKey = `$${bpName}`;
+    const groupVal = (props as Record<string, unknown>)[dollarKey];
+    if (groupVal == null || typeof groupVal !== "object") continue;
+    const group = groupVal as Record<string, unknown>;
+    for (const [innerProp, innerVal] of Object.entries(group)) {
+      if (innerVal === undefined || innerVal === null) continue;
+      const resolved = resolveTokenOrValue(innerVal, theme);
+      // Map shorthand → RN style key, falling back to the prop name directly
+      const rnKey = propToRnStyle[innerProp] ?? innerProp;
+      plainStyle[rnKey] = resolved;
+    }
+  }
+
   if (Object.keys(plainStyle).length > 0) styles.push(plainStyle);
   return styles;
 }
@@ -781,8 +878,10 @@ export const Box: React.FC<BoxProps> = (props) => {
   const consumedSet = new Set<string>(ALL_CONSUMED_PROPS);
   const rest: Record<string, unknown> = {};
   for (const key of Object.keys(props)) {
-    if (!consumedSet.has(key))
-      rest[key] = (props as Record<string, unknown>)[key];
+    // Skip all Box-consumed props, config shorthand keys, and any $-prefixed
+    // breakpoint-as-prop keys (e.g. $md, $lg) — none of these should reach the DOM.
+    if (consumedSet.has(key) || key.startsWith("$")) continue;
+    rest[key] = (props as Record<string, unknown>)[key];
   }
 
   const {

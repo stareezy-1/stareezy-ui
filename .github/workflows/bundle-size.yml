@@ -1,0 +1,36 @@
+name: Bundle Size
+
+on:
+  pull_request:
+    branches: [main]
+
+defaults:
+  run:
+    working-directory: stareezy-ui
+
+jobs:
+  bundle-size:
+    name: Bundle Size Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 9
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build packages
+        run: pnpm run build
+
+      - name: Check bundle sizes
+        # size-limit exits non-zero when any bundle exceeds its configured limit,
+        # which fails the CI step and prints the measured size vs. the budget.
+        run: pnpm size

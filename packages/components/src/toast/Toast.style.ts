@@ -1,38 +1,60 @@
-import { aurora } from "@stareezy-ui/tokens";
+import { RADIUS, GAP, ELEVATION, INTERACTION } from "../shared/visualSpec";
+import type { useThemedColors } from "../shared/useThemedColors";
 
-export const toastBaseStyle = {
+// ── Base geometry (theme-independent) ────────────────────────────────────────
+
+export const toastBaseGeometry = {
   display: "flex",
   alignItems: "center",
-  gap: 12,
-  padding: "12px 16px",
-  borderRadius: 10,
-  border: `1px solid ${aurora.borderSubtle.value}`,
-  backgroundColor: aurora.surfaceDark.value,
-  boxShadow: "0 8px 32px rgba(0,0,0,0.4)",
+  gap: GAP.md, // 12
+  paddingTop: GAP.md, // 12
+  paddingBottom: GAP.md, // 12
+  paddingLeft: GAP.lg, // 16
+  paddingRight: GAP.lg, // 16
+  borderRadius: RADIUS.lg, // 10
   minWidth: 280,
   maxWidth: 480,
   position: "relative" as const,
 } as const;
 
-export const toastVariantStyles = {
-  success: {
-    borderColor: aurora.auroraGreen.value,
-    iconColor: aurora.auroraGreen.value,
-    icon: "✓",
-  },
-  error: {
-    borderColor: aurora.errorRed.value,
-    iconColor: aurora.errorRed.value,
-    icon: "✕",
-  },
-  warning: {
-    borderColor: aurora.warningAmber.value,
-    iconColor: aurora.warningAmber.value,
-    icon: "⚠",
-  },
-  info: {
-    borderColor: aurora.nebulaPurple.value,
-    iconColor: aurora.nebulaPurple.value,
-    icon: "ℹ",
-  },
+// ── Themed style factories ────────────────────────────────────────────────────
+
+export function makeToastBaseStyle(themed: ReturnType<typeof useThemedColors>) {
+  return {
+    ...toastBaseGeometry,
+    border: `1px solid ${themed.borderDefault}`,
+    backgroundColor: themed.bgSecondary,
+    boxShadow: ELEVATION.lg,
+  } as const;
+}
+
+export function makeToastVariantStyles(
+  themed: ReturnType<typeof useThemedColors>,
+) {
+  return {
+    success: {
+      borderColor: themed.borderSuccess,
+      iconColor: themed.colorSuccess,
+      icon: "✓",
+    },
+    error: {
+      borderColor: themed.borderDanger,
+      iconColor: themed.colorDanger,
+      icon: "✕",
+    },
+    warning: {
+      borderColor: themed.colorWarning,
+      iconColor: themed.colorWarning,
+      icon: "⚠",
+    },
+    info: {
+      borderColor: themed.borderPrimaryBrand,
+      iconColor: themed.colorInfo,
+      icon: "ℹ",
+    },
+  } as const;
+}
+
+export const toastStateOpacity = {
+  dismissHover: INTERACTION.hoverOpacity,
 } as const;

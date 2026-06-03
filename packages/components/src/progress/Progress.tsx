@@ -4,11 +4,12 @@
  */
 
 import React from "react";
-import { colors } from "@stareezy-ui/tokens";
 import { isWeb } from "../shared/platform";
+import { useThemedColors } from "../shared/useThemedColors";
 import { Box } from "../primitives/Box";
 import type { BoxProps, StyleProp } from "../primitives/Box";
 import { Text, ETextType } from "../primitives/Text";
+import { PROGRESS_KF, HEIGHT } from "./Progress.style";
 import type { ProgressSize, ProgressVariant } from "./Progress.types";
 
 export type { ProgressSize, ProgressVariant };
@@ -24,24 +25,11 @@ export interface ProgressProps extends Omit<BoxProps, "children"> {
   showPercentage?: boolean;
   label?: string;
   animated?: boolean;
-  /** ETextType for the label text */
   labelTextType?: ETextType;
-  /** Style override for the label text */
   labelTextStyle?: StyleProp;
-  /** ETextType for the percentage text */
   percentageTextType?: ETextType;
-  /** Style override for the percentage text */
   percentageTextStyle?: StyleProp;
 }
-
-const HEIGHT: Record<ProgressSize, number> = { xs: 4, sm: 6, md: 8, lg: 12 };
-
-const PROGRESS_KF = `
-@keyframes szr-progress-stripe {
-  from { background-position: 40px 0; }
-  to { background-position: 0 0; }
-}
-`;
 
 let progressKfInjected = false;
 function injectProgressKf() {
@@ -58,8 +46,8 @@ export const Progress: React.FC<ProgressProps> = ({
   max = 100,
   size = "md",
   variant = "default",
-  color = colors.celurenBlue[400].value,
-  trackColor = colors.beauBlue[200].value,
+  color,
+  trackColor,
   showLabel = false,
   showPercentage = false,
   label,
@@ -71,17 +59,26 @@ export const Progress: React.FC<ProgressProps> = ({
   testID,
   ...boxProps
 }) => {
+  const themed = useThemedColors();
+  const resolvedColor = color ?? themed.borderPrimaryBrand;
+  const resolvedTrackColor = trackColor ?? themed.borderSecondary;
+
   const pct = Math.min(100, Math.max(0, (value / max) * 100));
   const height = HEIGHT[size];
 
   if (isWeb) {
     injectProgressKf();
 
-    let fillBg = color;
+    // gradient / striped use the brand color family — token-based approximation
+    const gradientFrom = themed.borderPrimaryBrand;
+    const gradientTo = themed.textImportantBrand;
+    const stripeSecondary = themed.borderPrimaryBrand;
+
+    let fillBg = resolvedColor;
     if (variant === "gradient") {
-      fillBg = `linear-gradient(90deg,${colors.celurenBlue[300].value},${colors.celurenBlue[500].value})`;
+      fillBg = `linear-gradient(90deg,${gradientFrom},${gradientTo})`;
     } else if (variant === "striped") {
-      fillBg = `repeating-linear-gradient(45deg,${color},${color} 10px,${colors.celurenBlue[300].value} 10px,${colors.celurenBlue[300].value} 20px)`;
+      fillBg = `repeating-linear-gradient(45deg,${resolvedColor},${resolvedColor} 10px,${stripeSecondary} 10px,${stripeSecondary} 20px)`;
     }
 
     return (
@@ -104,7 +101,7 @@ export const Progress: React.FC<ProgressProps> = ({
               <Text
                 type={labelTextType}
                 text={label}
-                color={colors.raisinBlack[800].value}
+                color={themed.textPrimary}
                 style={labelTextStyle as React.CSSProperties}
               />
             )}
@@ -112,7 +109,7 @@ export const Progress: React.FC<ProgressProps> = ({
               <Text
                 type={percentageTextType}
                 text={`${Math.round(pct)}%`}
-                color={color}
+                color={resolvedColor}
                 style={{
                   marginLeft: "auto",
                   ...(percentageTextStyle as React.CSSProperties),
@@ -131,7 +128,7 @@ export const Progress: React.FC<ProgressProps> = ({
             width: "100%",
             height,
             borderRadius: height / 2,
-            backgroundColor: trackColor,
+            backgroundColor: resolvedTrackColor,
             overflow: "hidden",
           }}
         >
@@ -176,7 +173,7 @@ export const Progress: React.FC<ProgressProps> = ({
             <Text
               type={labelTextType}
               text={label}
-              color={colors.raisinBlack[800].value}
+              color={themed.textPrimary}
               style={labelTextStyle as Record<string, unknown>}
             />
           )}
@@ -184,7 +181,7 @@ export const Progress: React.FC<ProgressProps> = ({
             <Text
               type={percentageTextType}
               text={`${Math.round(pct)}%`}
-              color={color}
+              color={resolvedColor}
               style={percentageTextStyle as Record<string, unknown>}
             />
           )}
@@ -197,7 +194,7 @@ export const Progress: React.FC<ProgressProps> = ({
           width: "100%",
           height,
           borderRadius: height / 2,
-          backgroundColor: trackColor,
+          backgroundColor: resolvedTrackColor,
           overflow: "hidden",
         }}
       >
@@ -206,7 +203,7 @@ export const Progress: React.FC<ProgressProps> = ({
             height: "100%",
             width: `${pct}%`,
             borderRadius: height / 2,
-            backgroundColor: color,
+            backgroundColor: resolvedColor,
           }}
         />
       </View>

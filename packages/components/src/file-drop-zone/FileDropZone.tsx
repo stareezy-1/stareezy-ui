@@ -1,17 +1,20 @@
 "use client";
 import React, { useRef, useState } from "react";
 import { isWeb } from "../shared/platform";
+import { useThemedColors } from "../shared/useThemedColors";
 import { Text, ETextType } from "../primitives/Text";
-import { aurora } from "@stareezy-ui/tokens";
+import { Box } from "../primitives/Box";
 import {
-  fileDropZoneBaseStyle,
-  fileDropZoneStateStyles,
+  makeFileDropZoneBaseStyle,
+  makeFileDropZoneStateStyles,
 } from "./FileDropZone.style";
 import type { FileDropZoneState } from "./FileDropZone.types";
+import type { BoxLayoutProps } from "../shared/boxLayoutProps";
+import { extractBoxLayoutProps } from "../shared/boxLayoutProps";
 
 export type { FileDropZoneState } from "./FileDropZone.types";
 
-export interface FileDropZoneProps {
+export interface FileDropZoneProps extends BoxLayoutProps {
   onFiles: (files: File[]) => void;
   accept?: string;
   multiple?: boolean;
@@ -20,16 +23,20 @@ export interface FileDropZoneProps {
   style?: React.CSSProperties;
 }
 
-export const FileDropZone: React.FC<FileDropZoneProps> = ({
-  onFiles,
-  accept,
-  multiple = false,
-  label = "Drop files here or click to browse",
-  hint,
-  style,
-}) => {
+export const FileDropZone: React.FC<FileDropZoneProps> = (props) => {
+  const { layout, rest } = extractBoxLayoutProps(props);
+  const hasLayoutProps = Object.keys(layout).length > 0;
+  const {
+    onFiles,
+    accept,
+    multiple = false,
+    label = "Drop files here or click to browse",
+    hint,
+    style,
+  } = rest as FileDropZoneProps;
   const [state, setState] = useState<FileDropZoneState>("idle");
   const inputRef = useRef<HTMLInputElement>(null);
+  const themed = useThemedColors();
 
   if (!isWeb) return null;
 
@@ -44,12 +51,14 @@ export const FileDropZone: React.FC<FileDropZoneProps> = ({
     }
   };
 
-  const stateStyle = fileDropZoneStateStyles[state];
+  const baseStyle = makeFileDropZoneBaseStyle(themed);
+  const stateStyles = makeFileDropZoneStateStyles(themed);
+  const stateStyle = stateStyles[state];
 
-  return (
+  const dropZoneEl = (
     <div
       style={{
-        ...fileDropZoneBaseStyle,
+        ...baseStyle,
         ...stateStyle,
         ...style,
       }}
@@ -83,10 +92,7 @@ export const FileDropZone: React.FC<FileDropZoneProps> = ({
       <span
         style={{
           fontSize: 32,
-          color:
-            state === "drag-over"
-              ? aurora.auroraGreen.value
-              : aurora.textMuted.value,
+          color: state === "drag-over" ? themed.colorSuccess : themed.textMuted,
         }}
       >
         {state === "accepted" ? "✓" : state === "drag-over" ? "↓" : "⬆"}
@@ -94,21 +100,20 @@ export const FileDropZone: React.FC<FileDropZoneProps> = ({
       <Text
         type={ETextType.AuroraDropZoneLabel}
         text={state === "accepted" ? "Files accepted!" : label}
-        color={
-          state === "drag-over"
-            ? aurora.auroraGreen.value
-            : aurora.starWhite.value
-        }
+        color={state === "drag-over" ? themed.colorSuccess : themed.textPrimary}
       />
       {hint && state === "idle" && (
         <Text
           type={ETextType.AuroraDropZoneHint}
           text={hint}
-          color={aurora.textMuted.value}
+          color={themed.textMuted}
         />
       )}
     </div>
   );
+
+  if (hasLayoutProps) return <Box {...layout}>{dropZoneEl}</Box>;
+  return dropZoneEl;
 };
 
 FileDropZone.displayName = "FileDropZone";

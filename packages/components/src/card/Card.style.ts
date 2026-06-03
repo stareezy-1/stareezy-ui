@@ -1,32 +1,46 @@
-import { aurora, glow } from "@stareezy-ui/tokens";
+import { radius, spacing } from "@stareezy-ui/tokens";
+import { ELEVATION, RADIUS, GAP } from "../shared/visualSpec";
+import type { useThemedColors } from "../shared/useThemedColors";
 
-export const cardVariantStyles = {
-  border: {
-    backgroundColor: aurora.surfaceDark.value,
-    border: `1px solid ${aurora.borderSubtle.value}`,
-    boxShadow: "none",
-  },
-  shadow: {
-    backgroundColor: aurora.surfaceDark.value,
-    border: `1px solid ${aurora.borderSubtle.value}`,
-    boxShadow: "0 4px 24px rgba(0,0,0,0.4)",
-  },
-  glow: {
-    backgroundColor: aurora.surfaceDark.value,
-    border: `1px solid ${aurora.borderSubtle.value}`,
-    boxShadow: glow.green.value,
-  },
-} as const;
-
-export const cardGlowColorStyles = {
-  green: { boxShadow: glow.green.value },
-  purple: { boxShadow: glow.purple.value },
-} as const;
+// ── Base geometry (theme-independent) ────────────────────────────────────────
 
 export const cardBaseStyle = {
-  borderRadius: 16,
-  padding: 24,
+  borderRadius: RADIUS.xl, // 12 — spec xl
+  padding: GAP.md, // 12
   display: "flex",
   flexDirection: "column" as const,
-  gap: 12,
+  gap: GAP.md, // 12
 } as const;
+
+// ── Themed style factories ────────────────────────────────────────────────────
+
+export function makeCardVariantStyles(
+  themed: ReturnType<typeof useThemedColors>,
+) {
+  return {
+    border: {
+      backgroundColor: themed.bgSecondary,
+      border: `1px solid ${themed.borderDefault}`,
+      boxShadow: ELEVATION.none,
+    },
+    shadow: {
+      backgroundColor: themed.bgSecondary,
+      border: `1px solid ${themed.borderDefault}`,
+      boxShadow: ELEVATION.lg,
+    },
+    glow: {
+      backgroundColor: themed.bgSecondary,
+      border: `1px solid ${themed.borderDefault}`,
+      boxShadow: themed.glowGreen,
+    },
+  } as const;
+}
+
+export function makeCardGlowColorStyles(
+  themed: ReturnType<typeof useThemedColors>,
+) {
+  return {
+    green: { boxShadow: themed.glowGreen },
+    purple: { boxShadow: themed.glowPurple },
+  } as const;
+}

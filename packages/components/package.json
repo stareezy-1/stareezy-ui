@@ -1,15 +1,20 @@
 {
   "name": "@stareezy-ui/components",
-  "version": "0.2.12",
+  "version": "0.3.0",
   "description": "Stareezy UI component library — 17+ cross-platform React Native and web components",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
+      "types": "./dist/index.d.ts",
       "import": "./dist/index.mjs",
-      "require": "./dist/index.js",
-      "types": "./dist/index.d.ts"
+      "require": "./dist/index.js"
+    },
+    "./server": {
+      "types": "./dist/server.d.ts",
+      "import": "./dist/server.mjs",
+      "require": "./dist/server.js"
     }
   },
   "files": [
@@ -30,7 +35,7 @@
     "directory": "packages/components"
   },
   "scripts": {
-    "build": "tsup",
+    "build": "tsup && node scripts/check-server-purity.mjs && node scripts/check-no-hardcoded-colors.mjs",
     "build:cdn": "tsup --config tsup.cdn.config.ts",
     "typecheck": "tsc --noEmit",
     "prepublishOnly": "pnpm run build && pnpm run build:cdn && pnpm run typecheck",
@@ -44,11 +49,15 @@
     "@stareezy-ui/runtime": "workspace:*"
   },
   "peerDependencies": {
-    "react": ">=18.0.0",
-    "react-native": ">=0.73.0",
+    "react": "^18 || ^19",
+    "react-dom": "^18 || ^19",
+    "react-native": ">=0.81 <0.87",
     "@react-native-community/slider": ">=4.0.0"
   },
   "peerDependenciesMeta": {
+    "react-dom": {
+      "optional": true
+    },
     "react-native": {
       "optional": true
     },

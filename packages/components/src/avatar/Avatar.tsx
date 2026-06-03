@@ -4,11 +4,13 @@
  */
 
 import React from "react";
-import { colors } from "@stareezy-ui/tokens";
 import { isWeb } from "../shared/platform";
+import { useThemedColors } from "../shared/useThemedColors";
 import { Box } from "../primitives/Box";
 import type { BoxProps, StyleProp } from "../primitives/Box";
 import { Text, ETextType } from "../primitives/Text";
+import { SIZE_PX, FONT_SIZE, STATUS_SIZE, SHAPE_RADIUS } from "./Avatar.style";
+import { AVATAR_GRADIENTS, getAvatarGradient } from "./Avatar.gradients";
 import type { AvatarSize, AvatarShape, AvatarStatus } from "./Avatar.types";
 
 export type { AvatarSize, AvatarShape, AvatarStatus };
@@ -21,54 +23,9 @@ export interface AvatarProps extends Omit<BoxProps, "children"> {
   shape?: AvatarShape;
   status?: AvatarStatus;
   fallbackIcon?: React.ReactNode;
-  /** ETextType for the initials text */
   initialsTextType?: ETextType;
-  /** Style override for the initials text */
   initialsTextStyle?: StyleProp;
 }
-
-const SIZE_PX: Record<AvatarSize, number> = {
-  xs: 24,
-  sm: 32,
-  md: 40,
-  lg: 48,
-  xl: 64,
-  "2xl": 80,
-};
-const FONT_SIZE: Record<AvatarSize, number> = {
-  xs: 9,
-  sm: 12,
-  md: 15,
-  lg: 18,
-  xl: 24,
-  "2xl": 30,
-};
-const STATUS_SIZE: Record<AvatarSize, number> = {
-  xs: 6,
-  sm: 8,
-  md: 10,
-  lg: 12,
-  xl: 14,
-  "2xl": 16,
-};
-
-const STATUS_COLORS: Record<AvatarStatus, string> = {
-  online: colors.lawnGreen[500].value,
-  offline: colors.beauBlue[600].value,
-  away: colors.brightYellowCrayola[500].value,
-  busy: colors.crimsonRed[500].value,
-};
-
-const GRADIENTS = [
-  "linear-gradient(135deg,#667eea 0%,#764ba2 100%)",
-  "linear-gradient(135deg,#f093fb 0%,#f5576c 100%)",
-  "linear-gradient(135deg,#4facfe 0%,#00f2fe 100%)",
-  "linear-gradient(135deg,#43e97b 0%,#38f9d7 100%)",
-  "linear-gradient(135deg,#fa709a 0%,#fee140 100%)",
-  "linear-gradient(135deg,#a18cd1 0%,#fbc2eb 100%)",
-  "linear-gradient(135deg,#ffecd2 0%,#fcb69f 100%)",
-  "linear-gradient(135deg,#a1c4fd 0%,#c2e9fb 100%)",
-];
 
 function getInitials(name: string): string {
   const parts = name.trim().split(/\s+/);
@@ -78,19 +35,6 @@ function getInitials(name: string): string {
     ((parts[parts.length - 1] ?? "")[0] ?? "").toUpperCase()
   );
 }
-
-function getGradient(name: string): string {
-  let hash = 0;
-  for (let i = 0; i < name.length; i++)
-    hash = name.charCodeAt(i) + ((hash << 5) - hash);
-  return GRADIENTS[Math.abs(hash) % GRADIENTS.length] ?? GRADIENTS[0] ?? "";
-}
-
-const SHAPE_RADIUS: Record<AvatarShape, string | number> = {
-  circle: "50%",
-  rounded: "25%",
-  square: 0,
-};
 
 export const Avatar: React.FC<AvatarProps> = ({
   src,
@@ -106,14 +50,25 @@ export const Avatar: React.FC<AvatarProps> = ({
   ...boxProps
 }) => {
   const [imgError, setImgError] = React.useState(false);
+  const themed = useThemedColors();
+
+  // Status colors resolved from the theme at render time
+  const statusColors: Record<AvatarStatus, string> = {
+    online: themed.colorSuccess,
+    offline: themed.textDisabled,
+    away: themed.colorWarning,
+    busy: themed.colorDanger,
+  };
+
   const px = SIZE_PX[size];
   const fontSize = FONT_SIZE[size];
   const borderRadius = SHAPE_RADIUS[shape];
   const showFallback = !src || imgError;
   const initials = name ? getInitials(name) : null;
+  // Decorative gradient — theme-independent (Req 10.6)
   const gradient = name
-    ? getGradient(name)
-    : GRADIENTS[0] ?? "linear-gradient(135deg,#667eea 0%,#764ba2 100%)";
+    ? getAvatarGradient(name)
+    : AVATAR_GRADIENTS[0] ?? "linear-gradient(135deg,#667eea 0%,#764ba2 100%)";
 
   if (isWeb) {
     const statusDotSize = status ? STATUS_SIZE[size] : 0;
@@ -157,7 +112,7 @@ export const Avatar: React.FC<AvatarProps> = ({
                 ? { type: initialsTextType }
                 : {})}
               text={initials}
-              color="#ffffff"
+              color={themed.surface}
               style={{
                 fontSize,
                 fontWeight: "700",
@@ -178,8 +133,8 @@ export const Avatar: React.FC<AvatarProps> = ({
               width: statusDotSize,
               height: statusDotSize,
               borderRadius: "50%",
-              backgroundColor: STATUS_COLORS[status],
-              border: "2px solid #ffffff",
+              backgroundColor: statusColors[status],
+              border: `2px solid ${themed.surface}`,
               boxSizing: "border-box",
             }}
           />
@@ -198,6 +153,9 @@ export const Avatar: React.FC<AvatarProps> = ({
   const rnBorderRadius =
     shape === "circle" ? px / 2 : shape === "rounded" ? px * 0.25 : 0;
 
+  // RN fallback bg: use the brand color from theme (Req 10.8)
+  const rnFallbackBgColor = themed.bgInteractive;
+
   return (
     <Box
       position="relative"
@@ -214,7 +172,7 @@ export const Avatar: React.FC<AvatarProps> = ({
           overflow: "hidden",
           alignItems: "center",
           justifyContent: "center",
-          backgroundColor: colors.celurenBlue[400].value,
+          backgroundColor: rnFallbackBgColor,
         }}
       >
         {!showFallback ? (
@@ -230,7 +188,7 @@ export const Avatar: React.FC<AvatarProps> = ({
               ? { type: initialsTextType }
               : {})}
             text={initials}
-            color="#ffffff"
+            color={themed.surface}
             style={{
               fontSize,
               fontWeight: "700",
@@ -248,9 +206,9 @@ export const Avatar: React.FC<AvatarProps> = ({
             width: STATUS_SIZE[size],
             height: STATUS_SIZE[size],
             borderRadius: STATUS_SIZE[size] / 2,
-            backgroundColor: STATUS_COLORS[status],
+            backgroundColor: statusColors[status],
             borderWidth: 2,
-            borderColor: "#ffffff",
+            borderColor: themed.surface,
           }}
         />
       )}

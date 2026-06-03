@@ -1,32 +1,39 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { isWeb } from "../shared/platform";
+import { useThemedColors } from "../shared/useThemedColors";
 import { Text, ETextType } from "../primitives/Text";
+import { Box } from "../primitives/Box";
 import {
-  commandPaletteOverlayStyle,
-  commandPaletteContainerStyle,
-  commandPaletteInputStyle,
-  commandPaletteListStyle,
-  commandPaletteItemStyle,
+  makeCommandPaletteOverlayStyle,
+  makeCommandPaletteContainerStyle,
+  makeCommandPaletteInputStyle,
+  commandPaletteListGeometry,
+  commandPaletteItemGeometry,
 } from "./CommandPalette.style";
 import type { CommandItem } from "./CommandPalette.types";
-import { aurora } from "@stareezy-ui/tokens";
+import type { BoxLayoutProps } from "../shared/boxLayoutProps";
+import { extractBoxLayoutProps } from "../shared/boxLayoutProps";
 
 export type { CommandItem } from "./CommandPalette.types";
 
-export interface CommandPaletteProps {
+export interface CommandPaletteProps extends BoxLayoutProps {
   items: CommandItem[];
   onClose: () => void;
   placeholder?: string;
 }
 
-export const CommandPalette: React.FC<CommandPaletteProps> = ({
-  items,
-  onClose,
-  placeholder = "Search commands...",
-}) => {
+export const CommandPalette: React.FC<CommandPaletteProps> = (props) => {
+  const { layout, rest } = extractBoxLayoutProps(props);
+  const hasLayoutProps = Object.keys(layout).length > 0;
+  const {
+    items,
+    onClose,
+    placeholder = "Search commands...",
+  } = rest as CommandPaletteProps;
   const [query, setQuery] = useState("");
   const [hoveredId, setHoveredId] = useState<string | null>(null);
+  const themed = useThemedColors();
 
   const filtered = query.trim()
     ? items.filter((item) =>
@@ -45,34 +52,36 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
 
   if (!isWeb) return null;
 
-  return (
+  const overlayStyle = makeCommandPaletteOverlayStyle(themed);
+  const containerStyle = makeCommandPaletteContainerStyle(themed);
+  const inputStyle = makeCommandPaletteInputStyle(themed);
+
+  const paletteEl = (
     <div
-      style={commandPaletteOverlayStyle}
+      style={overlayStyle}
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose();
       }}
     >
-      <div style={commandPaletteContainerStyle}>
+      <div style={containerStyle}>
         <input
           autoFocus
-          style={commandPaletteInputStyle}
+          style={inputStyle}
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder={placeholder}
           aria-label="Search commands"
         />
-        <div style={commandPaletteListStyle} role="listbox">
+        <div style={commandPaletteListGeometry} role="listbox">
           {filtered.map((item) => (
             <div
               key={item.id}
               role="option"
               aria-selected={false}
               style={{
-                ...commandPaletteItemStyle,
+                ...commandPaletteItemGeometry,
                 backgroundColor:
-                  hoveredId === item.id
-                    ? aurora.borderSubtle.value
-                    : "transparent",
+                  hoveredId === item.id ? themed.bgHover : "transparent",
               }}
               onClick={() => {
                 item.onSelect();
@@ -82,14 +91,14 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
               onMouseLeave={() => setHoveredId(null)}
             >
               {item.icon && (
-                <span style={{ flexShrink: 0, color: aurora.textMuted.value }}>
+                <span style={{ flexShrink: 0, color: themed.textMuted }}>
                   {item.icon}
                 </span>
               )}
               <Text
                 type={ETextType.AuroraNavLabel}
                 text={item.label}
-                color={aurora.starWhite.value}
+                color={themed.textPrimary}
               />
             </div>
           ))}
@@ -98,7 +107,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
               <Text
                 type={ETextType.SParagraphRegular}
                 text="No results found"
-                color={aurora.textMuted.value}
+                color={themed.textMuted}
               />
             </div>
           )}
@@ -106,6 +115,9 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
       </div>
     </div>
   );
+
+  if (hasLayoutProps) return <Box {...layout}>{paletteEl}</Box>;
+  return paletteEl;
 };
 
 CommandPalette.displayName = "CommandPalette";

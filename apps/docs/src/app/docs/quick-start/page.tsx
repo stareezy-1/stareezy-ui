@@ -4,7 +4,7 @@ import { DocPage, Callout, Step } from "../../../components/DocPage";
 export const metadata: Metadata = {
   title: "Quick Start",
   description:
-    "Complete guide to Stareezy UI — from installation to theme-reactive components, createUi config, and build-time optimization.",
+    "Complete guide to Stareezy UI — CLI scaffolding, manual setup, theme-reactive components, responsive props, and build-time optimization.",
   alternates: { canonical: "https://ui.stareezy.tech/docs/quick-start" },
 };
 
@@ -12,278 +12,277 @@ export default function QuickStartPage() {
   return (
     <DocPage
       title="Quick Start"
-      description="Everything from zero to a fully themed, type-safe component tree — in one page."
+      description="From zero to a fully themed, type-safe, responsive component tree — in one page."
       badge="Guide"
       icon="▶"
       badgeColor="#00cc6a"
     >
       <Callout type="tip">
-        This page covers the complete setup path. If you already know the
-        basics, jump to the section you need using the headings below.
+        Fastest path: <code>npx stareezy create my-app --template next</code>.
+        This scaffolds a pre-wired Next.js 15 project with everything set up.
+        Skip to step 4 if you use the CLI.
       </Callout>
 
-      {/* ── 1. Install ────────────────────────────────────────────────────── */}
-      <h2>1. Install</h2>
+      {/* ── 1. Scaffold with the CLI ──────────────────────────────────────── */}
+      <h2>1. Scaffold with the CLI</h2>
       <p>
-        Install the packages you need. Start with <code>tokens</code> and{" "}
-        <code>components</code> — everything else is optional.
+        The <code>@stareezy-ui/cli</code> creates a fully pre-wired project with
+        one command. Choose your template:
       </p>
 
-      <Step n={1} title="Install packages">
+      <Step n={1} title="Create a new project">
+        <pre>
+          <code>{`# Next.js 15 App Router (React 19)
+npx stareezy create my-app --template next
+
+# Vite + React 19
+npx stareezy create my-app --template vite
+
+# Expo SDK 56 (React Native 0.85)
+npx stareezy create my-app --template expo`}</code>
+        </pre>
+        <p style={{ marginTop: "0.75rem" }}>
+          Omit <code>--template</code> to get an interactive prompt. Each
+          template ships with <code>stareezy.config.ts</code>, the compiler
+          plugin, <code>ThemeProvider</code>, and a demo screen.
+        </p>
+      </Step>
+
+      <Callout type="info">
+        If you already have a project, use <code>npx stareezy init</code> to add
+        the config and wiring, or{" "}
+        <code>npx stareezy add button input card</code> to install specific
+        components.
+      </Callout>
+
+      {/* ── 2. Manual install ─────────────────────────────────────────────── */}
+      <h2>2. Manual install (skip if you used the CLI)</h2>
+
+      <Step n={2} title="Install packages">
         <pre>
           <code>{`# pnpm (recommended)
 pnpm add @stareezy-ui/tokens @stareezy-ui/components
+pnpm add -D @stareezy-ui/compiler
 
 # yarn
 yarn add @stareezy-ui/tokens @stareezy-ui/components
+yarn add -D @stareezy-ui/compiler
 
 # npm
-npm install @stareezy-ui/tokens @stareezy-ui/components`}</code>
-        </pre>
-        <p style={{ marginTop: "0.75rem" }}>
-          Optional packages — install only what you need:
-        </p>
-        <pre>
-          <code>{`# Build-time compiler (Babel/Vite/Metro) — zero runtime cost
-pnpm add -D @stareezy-ui/compiler
-
-# Atomic CSS sheet management
-pnpm add @stareezy-ui/stylesheet
-
-# Utilities and platform helpers
-pnpm add @stareezy-ui/core`}</code>
+npm install @stareezy-ui/tokens @stareezy-ui/components
+npm install -D @stareezy-ui/compiler`}</code>
         </pre>
       </Step>
 
-      {/* ── 2. Create config ──────────────────────────────────────────────── */}
-      <h2>2. Create your config</h2>
+      {/* ── 3. Create config ──────────────────────────────────────────────── */}
+      <h2>3. Create your config</h2>
       <p>
-        Create a <code>stareezy.config.ts</code> (or <code>ui.config.ts</code>)
-        at the root of your project. This is the single source of truth for your
-        design system — themes, custom tokens, breakpoints, and shorthands.
+        Create <code>stareezy.config.ts</code> at the root of your project. The
+        module augmentation makes your config flow into the type system — so
+        autocomplete and type errors reflect your exact setup.
       </p>
 
-      <Step n={2} title="stareezy.config.ts">
+      <Step n={3} title="stareezy.config.ts">
         <pre>
           <code>{`// stareezy.config.ts
-import { createUi, token, themes } from '@stareezy-ui/tokens'
+import { createUi, themes } from '@stareezy-ui/tokens'
 
 export const ui = createUi({
-  // Register all four built-in themes
+  // Five built-in themes
   themes: {
     aurora:        themes.aurora,
     dark:          themes.dark,
     light:         themes.light,
     'steins-gate': themes['steins-gate'],
-  },
-
-  // Your custom token groups — fully typed on ui.tokens
-  tokens: {
-    brand: {
-      primary:   token('#FF6B35', 'brand-primary'),
-      secondary: token('#004E89', 'brand-secondary'),
-    },
+    quasar:        themes.quasar,
   },
 
   // Responsive breakpoints (mobile-first, min-width in px)
+  // These become the valid keys for responsive objects and $-prefixed props
   media: {
-    sm: 480,
-    md: 768,
-    lg: 1024,
-    xl: 1280,
-    '2xl': 1536,
+    sm: 480, md: 768, lg: 1024, xl: 1280, '2xl': 1536,
   },
 
-  // Prop shorthands — these become valid BoxProps automatically
+  // Prop shorthands — become valid props on Box and every component
   shorthands: {
-    bg:  'backgroundColor',
-    p:   'padding',
-    px:  'paddingHorizontal',
-    py:  'paddingVertical',
-    m:   'margin',
-    mx:  'marginHorizontal',
-    my:  'marginVertical',
-    br:  'borderRadius',
-    f:   'flex',
-    w:   'width',
-    h:   'height',
-  } as const,
+    p:  'padding',   px: 'paddingHorizontal', py: 'paddingVertical',
+    m:  'margin',    mx: 'marginHorizontal',  my: 'marginVertical',
+    br: 'borderRadius', w: 'width', h: 'height', f: 'flex',
+  } as const,  // ← as const is required
 })
 
-// ── Module augmentation ──────────────────────────────────────────────────
-// This makes your shorthands flow into BoxProps as typed props.
-// Without this, TypeScript won't know about your custom shorthands.
-type AppConfig = typeof ui
+// Module augmentation — makes BreakpointKey + shorthands flow into BoxProps
 declare module '@stareezy-ui/tokens' {
-  interface SzrCustomConfig extends AppConfig {}
+  interface SzrCustomConfig extends typeof ui {}
 }
 
 export default ui`}</code>
         </pre>
       </Step>
 
-      <Callout type="info">
-        The <code>as const</code> on <code>shorthands</code> is required — it
-        tells TypeScript to infer the literal types of the keys so the module
-        augmentation works correctly.
-      </Callout>
+      {/* ── 4. Wrap your app ──────────────────────────────────────────────── */}
+      <h2>4. Wrap your app with ThemeProvider</h2>
 
-      {/* ── 3. Wrap your app ──────────────────────────────────────────────── */}
-      <h2>3. Wrap your app</h2>
-      <p>
-        Add <code>ThemeProvider</code> at the root of your app. Pass your
-        default theme name.
-      </p>
-
-      <Step n={3} title="Root layout / App.tsx">
+      <Step n={4} title="App root / layout">
         <pre>
-          <code>{`// app/_layout.tsx (Expo Router) or App.tsx (React Native)
+          <code>{`// Next.js: app/providers.tsx  (note: "use client" required)
+'use client'
 import { ThemeProvider } from '@stareezy-ui/tokens'
 
-export default function RootLayout({ children }) {
-  return (
-    <ThemeProvider theme="aurora">
-      {children}
-    </ThemeProvider>
-  )
+export function Providers({ children }: { children: React.ReactNode }) {
+  return <ThemeProvider defaultTheme="aurora">{children}</ThemeProvider>
 }
 
-// Next.js — app/layout.tsx
-import { ThemeProvider } from '@stareezy-ui/tokens'
-
+// Next.js: app/layout.tsx
+import { Providers } from './providers'
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body>
-        <ThemeProvider theme="aurora">
-          {children}
-        </ThemeProvider>
-      </body>
+      <body><Providers>{children}</Providers></body>
     </html>
   )
+}
+
+// Vite / Expo: wrap App directly
+import { ThemeProvider } from '@stareezy-ui/tokens'
+function App() {
+  return <ThemeProvider defaultTheme="aurora"><AppContent /></ThemeProvider>
 }`}</code>
         </pre>
       </Step>
 
-      {/* ── 4. Use theme-reactive props ───────────────────────────────────── */}
-      <h2>4. Use theme-reactive props</h2>
+      {/* ── 5. Theme-reactive props ───────────────────────────────────────── */}
+      <h2>5. Use theme-reactive props</h2>
       <p>
         The <code>t</code> accessor returns <strong>ThemeToken</strong>{" "}
-        references. Pass them as props — they resolve to the current
-        theme&apos;s value at render time and update automatically when the
-        theme switches.
+        references. They resolve to the current theme&apos;s value at render
+        time and update automatically when the theme switches.
       </p>
 
-      <Step n={4} title="Theme-reactive component">
+      <Step n={5} title="Theme-reactive component">
         <pre>
           <code>{`import { t } from '@stareezy-ui/tokens'
-import { Box, Text } from '@stareezy-ui/components'
+import { Box, Text, Button } from '@stareezy-ui/components'
 
 function Card() {
   return (
-    // t.* props resolve to the CURRENT theme's value at render time
     <Box
       bg={t.backgrounds.secondary}
       borderColor={t.border.primaryBrand}
-      borderWidth={1}
-      rounded={12}
       p={16}
+      rounded={12}
     >
       <Text
         type="M-heading-bold"
         style={{ color: t.text.primary }}
-        text="Hello, Stareezy UI"
+        text="Theme-reactive"
       />
       <Text
         type="M-paragraph-regular"
         style={{ color: t.text.secondary }}
-        text="This text color switches with the theme."
+        text="This switches with the theme automatically."
       />
+      <Button type="Primary" text="Click me" mt={12} />
     </Box>
   )
 }
-
-// aurora      → bg: beauBlue[50], border: #00ff88, text: #f0f0f8
-// dark        → bg: raisinBlack[600], border: #024cce, text: #f0f6fc
-// steins-gate → bg: midnightNavy, border: #4a9eff, text: #e8dcc8`}</code>
+// aurora → bg: dark surface, border: #00ff88
+// quasar → bg: deep violet, border: #a855f7
+// light  → bg: white,       border: #024cce`}</code>
         </pre>
       </Step>
 
-      {/* ── 5. Use static tokens ──────────────────────────────────────────── */}
-      <h2>5. Use static tokens</h2>
+      {/* ── 6. Responsive props ───────────────────────────────────────────── */}
+      <h2>6. Use responsive props</h2>
       <p>
-        For values that should be the same across all themes, use static tokens
-        directly. These always resolve to their fixed <code>.value</code>.
+        All components accept responsive objects and <code>$</code>-prefixed
+        breakpoint groups — derived from your{" "}
+        <code>createUi({"{ media }"})</code> config.
       </p>
 
-      <Step n={5} title="Static token props">
+      <Step n={6} title="Responsive layout props on any component">
+        <pre>
+          <code>{`// Responsive object syntax — mobile-first cascade
+<Box p={{ base: 8, md: 16, lg: 24 }} flexDirection={{ base: 'column', lg: 'row' }} />
+
+// $-prefixed group syntax — equivalent, but groups multiple props per breakpoint
+<Box $md={{ p: 16, br: 8 }} $lg={{ p: 24, br: 12, flexDirection: 'row' }} />
+
+// Works on EVERY component — not just Box
+<Button  p={{ base: 8, md: 12 }} w={{ base: '100%', md: 'auto' }} />
+<Input   w={{ base: '100%', md: 360 }} mb={8} />
+<Card    p={{ base: 12, md: 20 }} $lg={{ flexDirection: 'row' }} />
+<Drawer  open={open} onClose={close} $md={{ p: 24 }} />
+
+// Custom shorthands are also responsive:
+<Box br={{ base: 4, md: 8, lg: 12 }} />    // borderRadius
+<Box w={{ base: '100%', md: 320 }} />      // width`}</code>
+        </pre>
+      </Step>
+
+      {/* ── 7. Static tokens ──────────────────────────────────────────────── */}
+      <h2>7. Use static tokens</h2>
+
+      <Step n={7} title="Static token props">
         <pre>
           <code>{`import { colors, spacing, radius } from '@stareezy-ui/tokens'
-import { Box } from '@stareezy-ui/components'
 
-// Static tokens — always the same value regardless of theme
-<Box
-  bg={colors.celurenBlue[500]}   // always #024CCE
-  p={spacing[4]}                 // always 16px
-  rounded={radius.md}            // always 10px
-/>
+// Static tokens — same value regardless of theme
+<Box bg={colors.celurenBlue[500]} p={spacing[4]} rounded={radius.md} />
 
-// Access raw values for non-Box contexts
+// Raw .value for non-Box contexts (canvas, SVG, StyleSheet, etc.)
 const style = {
   backgroundColor: colors.celurenBlue[500].value,  // "#024CCE"
   padding: spacing[4].value,                        // 16
-  borderRadius: radius.md.value,                    // 10
+  borderRadius: radius.md.value,                    // 8
 }`}</code>
         </pre>
       </Step>
 
-      {/* ── 6. Use your custom tokens ─────────────────────────────────────── */}
-      <h2>6. Use your custom tokens</h2>
+      {/* ── 8. RSC server entry ───────────────────────────────────────────── */}
+      <h2>8. React Server Components</h2>
       <p>
-        Custom tokens registered in <code>createUi()</code> are available on{" "}
-        <code>ui.tokens</code> with full type safety.
+        Import layout primitives from the <code>&quot;./server&quot;</code>{" "}
+        entry — hook-free, safe in Next.js App Router Server Components.
       </p>
 
-      <Step n={6} title="Custom token access">
+      <Step n={8} title="Server Component">
         <pre>
-          <code>{`import { ui } from './stareezy.config'
+          <code>{`// app/page.tsx — Server Component (default in Next.js App Router)
+import { Box, Stack, Text } from '@stareezy-ui/components/server'
+import { HeroActions } from './HeroActions'  // 'use client'
 
-// Fully typed — TypeScript knows about your custom tokens
-ui.tokens.brand.primary.value   // "#FF6B35"
-ui.tokens.brand.secondary.value // "#004E89"
-
-// Use in components
-<Box bg={ui.tokens.brand.primary} />
-
-// ui.t is the same as the standalone t accessor
-<Box bg={ui.t.backgrounds.primary} />`}</code>
+export default async function Page() {
+  const data = await fetchData()  // server-side, no useEffect needed
+  return (
+    <Box p={{ base: 16, md: 32 }}>
+      <Stack gap={16}>
+        <Text style={{ fontSize: 32, fontWeight: 800 }}>{data.title}</Text>
+        <HeroActions />  {/* Only this needs "use client" */}
+      </Stack>
+    </Box>
+  )
+}`}</code>
         </pre>
       </Step>
 
-      {/* ── 7. Switch themes ──────────────────────────────────────────────── */}
-      <h2>7. Switch themes</h2>
-      <p>
-        Use <code>useThemeSwitch</code> to switch themes from anywhere in the
-        tree. All components using <code>t.*</code> props update automatically.
-      </p>
+      {/* ── 9. Theme switching ────────────────────────────────────────────── */}
+      <h2>9. Switch themes</h2>
 
-      <Step n={7} title="Theme switcher component">
+      <Step n={9} title="useThemeSwitch">
         <pre>
           <code>{`import { useThemeSwitch } from '@stareezy-ui/tokens'
 
 function ThemeSwitcher() {
-  const { theme, setTheme } = useThemeSwitch()
+  const { theme, setTheme, toggleTheme } = useThemeSwitch()
 
   return (
     <div style={{ display: 'flex', gap: 8 }}>
-      {['aurora', 'dark', 'light', 'steins-gate'].map((name) => (
+      {['aurora', 'dark', 'light', 'steins-gate', 'quasar'].map((name) => (
         <button
           key={name}
           onClick={() => setTheme(name)}
-          style={{
-            fontWeight: theme === name ? 700 : 400,
-            opacity: theme === name ? 1 : 0.6,
-          }}
+          style={{ fontWeight: theme === name ? 700 : 400 }}
         >
           {name}
         </button>
@@ -294,96 +293,53 @@ function ThemeSwitcher() {
         </pre>
       </Step>
 
-      {/* ── 8. Build-time compiler ────────────────────────────────────────── */}
-      <h2>8. Add the build-time compiler (optional)</h2>
-      <p>
-        Add the plugin to your build tool config. It reads{" "}
-        <code>stareezy.config.ts</code> from your project root automatically —
-        you don&apos;t pass the config path, just like Tamagui&apos;s{" "}
-        <code>@tamagui/babel-plugin</code>.
-      </p>
+      {/* ── 10. Build-time compiler ───────────────────────────────────────── */}
+      <h2>10. Add the compiler (optional but recommended)</h2>
 
-      <Step n={8} title="Vite (Next.js, Vite apps)">
+      <Step n={10} title="Vite / Next.js">
         <pre>
           <code>{`// vite.config.ts
 import { stareezyVitePlugin } from '@stareezy-ui/compiler'
+export default { plugins: [stareezyVitePlugin()] }
 
+// next.config.ts
+import { stareezyVitePlugin } from '@stareezy-ui/compiler'
 export default {
-  plugins: [stareezyVitePlugin()],
-  // ↑ reads stareezy.config.ts automatically — no path needed
+  webpack(config) {
+    config.plugins.push(stareezyVitePlugin())
+    return config
+  }
 }`}</code>
         </pre>
       </Step>
 
-      <Step n={9} title="Babel + Metro (React Native / Expo)">
+      <Step n={11} title="Expo / Metro">
         <pre>
-          <code>{`// babel.config.js
-const { stareezyBabelPlugin } = require('@stareezy-ui/compiler')
-
-module.exports = {
-  presets: ['babel-preset-expo'],
-  plugins: [stareezyBabelPlugin()],
-  // ↑ reads stareezy.config.ts automatically — no path needed
-}
-
-// metro.config.js
+          <code>{`// metro.config.js
 const { getDefaultConfig } = require('expo/metro-config')
 const config = getDefaultConfig(__dirname)
 config.transformer = {
   ...config.transformer,
   babelTransformerPath: require.resolve('@stareezy-ui/compiler/metro'),
-  // ↑ reads stareezy.config.ts automatically — no path needed
 }
 module.exports = config`}</code>
         </pre>
       </Step>
 
       <Callout type="tip">
-        The compiler finds <code>stareezy.config.ts</code> by searching{" "}
-        <code>process.cwd()</code> (your project root). As long as the file is
-        there, the plugin picks up your shorthands automatically.
+        The compiler reads <code>stareezy.config.ts</code> from your project
+        root automatically — no path argument needed.
       </Callout>
 
-      {/* ── 9. Custom shorthands ──────────────────────────────────────────── */}
-      <h2>9. Custom shorthands in action</h2>
+      {/* ── 11. Add components ────────────────────────────────────────────── */}
+      <h2>11. Add components to an existing project</h2>
       <p>
-        Once you&apos;ve declared your shorthands in{" "}
-        <code>stareezy.config.ts</code> and added the module augmentation,
-        TypeScript knows about them everywhere:
+        Use <code>stareezy add</code> to install specific components with
+        automatic transitive dependency resolution:
       </p>
-
       <pre>
-        <code>{`// With the shorthands from step 2:
-// bg → backgroundColor, br → borderRadius, f → flex
-
-// ✅ These are now valid typed props — TypeScript autocompletes them
-<Box bg={t.backgrounds.primary} br={12} f={1} />
-<Box bg={colors.celurenBlue[500]} p={16} m={8} />
-
-// ✅ Works with tokens, ThemeTokens, and plain values
-<Box bg={t.backgrounds.primary} />   // ThemeToken — switches with theme
-<Box bg={colors.celurenBlue[500]} /> // Token<string> — always #024CCE
-<Box bg="#FF6B35" />                 // plain string — always this color`}</code>
-      </pre>
-
-      {/* ── 10. Resolve manually ──────────────────────────────────────────── */}
-      <h2>10. Resolve ThemeTokens manually</h2>
-      <p>
-        When you need the raw string value inside a component (e.g. for a
-        canvas, SVG, or non-Box element), use <code>useResolveThemeToken</code>:
-      </p>
-
-      <pre>
-        <code>{`import { t, useResolveThemeToken } from '@stareezy-ui/tokens'
-
-function MyCanvas() {
-  const brandColor = useResolveThemeToken(t.text.importantBrand)
-  // aurora      → "#00ff88"
-  // steins-gate → "#4a9eff"
-  // dark/light  → "#024cce"
-
-  return <canvas style={{ borderColor: brandColor }} />
-}`}</code>
+        <code>{`npx stareezy add button input card
+npx stareezy add drawer tooltip table pagination breadcrumb`}</code>
       </pre>
 
       {/* ── Summary ───────────────────────────────────────────────────────── */}
@@ -399,43 +355,43 @@ function MyCanvas() {
         {[
           {
             step: "1",
+            title: "CLI",
+            desc: "npx stareezy create my-app --template next|vite|expo",
+          },
+          {
+            step: "2",
             title: "Install",
             desc: "pnpm add @stareezy-ui/tokens @stareezy-ui/components",
           },
           {
-            step: "2",
-            title: "Config",
-            desc: "Create stareezy.config.ts with createUi() + module augmentation",
-          },
-          {
             step: "3",
-            title: "ThemeProvider",
-            desc: 'Wrap your app root with <ThemeProvider theme="aurora">',
+            title: "Config",
+            desc: "stareezy.config.ts — createUi({ themes, media, shorthands })",
           },
           {
             step: "4",
-            title: "t.* props",
-            desc: "Use t.backgrounds.primary, t.text.primary for theme-reactive colors",
+            title: "ThemeProvider",
+            desc: 'Wrap app root with <ThemeProvider defaultTheme="aurora">',
           },
           {
             step: "5",
-            title: "Static tokens",
-            desc: "Use colors.celurenBlue[500], spacing[4] for fixed values",
+            title: "t.* props",
+            desc: "t.backgrounds.primary, t.text.primary — theme-reactive",
           },
           {
             step: "6",
-            title: "Custom tokens",
-            desc: "Access ui.tokens.brand.primary with full type safety",
+            title: "Responsive props",
+            desc: "<Box p={{ base: 8, md: 16 }} $lg={{ flexDirection: 'row' }} />",
           },
           {
             step: "7",
-            title: "Theme switching",
-            desc: "useThemeSwitch().setTheme('steins-gate') — all components update",
+            title: "Static tokens",
+            desc: "colors.celurenBlue[500], spacing[4], radius.md",
           },
           {
             step: "8",
-            title: "Compiler",
-            desc: "stareezyVitePlugin() or stareezyBabelPlugin() for zero runtime cost",
+            title: "Server Components",
+            desc: "import { Box } from '@stareezy-ui/components/server'",
           },
         ].map((item) => (
           <div
@@ -483,6 +439,10 @@ function MyCanvas() {
                   fontSize: "0.75rem",
                   color: "var(--color-text-2)",
                   lineHeight: 1.5,
+                  fontFamily:
+                    item.step === "6" || item.step === "8"
+                      ? "var(--font-mono)"
+                      : undefined,
                 }}
               >
                 {item.desc}
@@ -493,10 +453,11 @@ function MyCanvas() {
       </div>
 
       <Callout type="info">
-        The full API reference is in the <a href="/docs/usage">Token API</a> and{" "}
-        <a href="/docs/theming">Theming</a> guides. The{" "}
-        <a href="/tokens">Token Explorer</a> lets you browse all 300+ tokens
-        visually.
+        Full API reference: <a href="/docs/api">API Reference</a> ·{" "}
+        <a href="/docs/responsive">Responsive System</a> ·{" "}
+        <a href="/docs/theming">Theming</a> ·{" "}
+        <a href="/docs/server">Server Components</a> ·{" "}
+        <a href="/docs/cli">CLI guide</a>
       </Callout>
     </DocPage>
   );

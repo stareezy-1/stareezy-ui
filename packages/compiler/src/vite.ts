@@ -91,10 +91,22 @@ export function stareezyVitePlugin(config?: Partial<CompilerConfig>): Plugin {
       try {
         result = transform(code, mergedConfig);
       } catch (err) {
-        // Re-throw so Vite surfaces the build error with file context.
+        // Re-throw with transform stage and source location so Vite surfaces
+        // a precise error. TokenCompilerError carries loc; fall back to the
+        // raw message for unexpected errors. (Req 8.6)
+        const stage = "transform";
+        const inner = err as Error & {
+          loc?: { line?: number; column?: number };
+        };
+        const loc =
+          inner?.loc?.line !== undefined
+            ? `:${inner.loc.line}${
+                inner.loc.column !== undefined ? `:${inner.loc.column}` : ""
+              }`
+            : "";
         throw new Error(
-          `[stareezy-ui] Failed to transform ${id}: ${
-            (err as Error)?.message ?? String(err)
+          `[stareezy-ui] ${stage} stage failed at ${id}${loc}: ${
+            inner?.message ?? String(err)
           }`,
         );
       }

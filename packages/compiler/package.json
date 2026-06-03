@@ -1,6 +1,6 @@
 {
   "name": "@stareezy-ui/compiler",
-  "version": "0.2.6",
+  "version": "0.3.0",
   "description": "Stareezy UI compiler — Babel/Vite/Metro plugin for build-time token extraction and atomic CSS generation",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -52,7 +52,7 @@
     "@stareezy-ui/tokens": "workspace:*"
   },
   "peerDependencies": {
-    "vite": ">=4.0.0"
+    "vite": ">=4.0.0 <8"
   },
   "peerDependenciesMeta": {
     "vite": {

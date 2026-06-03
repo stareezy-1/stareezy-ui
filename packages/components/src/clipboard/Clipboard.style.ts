@@ -1,20 +1,16 @@
 /**
- * Clipboard.style.ts — style constants for the Clipboard component.
- *
- * All token values accessed via .value — no hardcoded colors.
+ * Clipboard.style.ts — geometry-only style constants for the Clipboard component.
+ * All colors are resolved at render time via useThemedColors() in Clipboard.tsx.
  */
 
-import { colors } from "@stareezy-ui/tokens";
+import { RADIUS, GAP, INTERACTION } from "../shared/visualSpec";
 
-export const clipboardStyles = {
-  containerBg: colors.beauBlue[50].value,
-  containerBorder: `1px solid ${colors.beauBlue[200].value}`,
-  valueTextColor: colors.raisinBlack[800].value,
-  buttonBgCopied: colors.lawnGreen[50].value,
-  buttonColorCopied: colors.lawnGreen[600].value,
-  buttonColorDefault: colors.beauBlue[700].value,
-  buttonHoverBg: colors.beauBlue[100].value,
-  rnBorderColor: colors.beauBlue[200].value,
-  rnCopiedColor: colors.lawnGreen[600].value,
-  rnDefaultColor: colors.beauBlue[700].value,
+export const clipboardGeometry = {
+  containerBorderRadius: RADIUS.md, // 8
+  containerPaddingV: GAP.sm - 2, // 6
+  containerPaddingH: GAP.sm + 2, // 10
+  buttonSize: 28,
+  buttonBorderRadius: RADIUS.sm, // 6
+  hoverOpacity: INTERACTION.hoverOpacity,
+  disabledOpacity: INTERACTION.disabledOpacity,
 } as const;

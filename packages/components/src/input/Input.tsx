@@ -4,21 +4,29 @@
  */
 
 import React, { useState } from "react";
-import { colors, spacing, radius } from "@stareezy-ui/tokens";
+import { spacing } from "@stareezy-ui/tokens";
 import { useThemedColors } from "../shared/useThemedColors";
 import { ELabelsType, EHintTextType } from "../shared/types";
 import { isWeb } from "../shared/platform";
-import { View } from "../primitives/Box";
+import { View, Box } from "../primitives/Box";
 import { TouchableOpacity } from "../primitives/TouchableOpacity";
 import { flattenStyle } from "../shared/flattenStyle";
 import { Text, ETextType } from "../primitives/Text";
 import type { StyleProp } from "../primitives/Box";
 import { EInputType, EInputSize } from "./Input.types";
+import {
+  SIZE_PADDING_V,
+  SIZE_PADDING_H,
+  SIZE_FONT,
+  SIZE_BORDER_RADIUS,
+} from "./Input.style";
+import type { BoxLayoutProps } from "../shared/boxLayoutProps";
+import { extractBoxLayoutProps } from "../shared/boxLayoutProps";
 
 export { EInputType, EInputSize };
 export { ELabelsType, EHintTextType };
 
-export interface IInputProps {
+export interface IInputProps extends BoxLayoutProps {
   label?: string;
   style?: React.CSSProperties | Record<string, unknown>;
   inputStyle?: React.CSSProperties | Record<string, unknown>;
@@ -73,60 +81,64 @@ export interface IInputProps {
   errorTextStyle?: StyleProp;
 }
 
-export const Input: React.FC<IInputProps> = ({
-  label,
-  style,
-  inputStyle,
-  type = EInputType.TextField,
-  size = EInputSize.Md,
-  leftIcon,
-  rightIcon,
-  leftPrefix,
-  rightPrefix,
-  isDisabled,
-  isRequired,
-  onPress,
-  onPressLeft,
-  onPressRight,
-  onChangeMoneyAmount,
-  errorMessage,
-  topChildren,
-  hintText,
-  hintTextIcon,
-  value,
-  defaultValue,
-  placeholder,
-  onChangeText,
-  onChange,
-  onFocus,
-  onBlur,
-  multiline,
-  numberOfLines,
-  maxLength,
-  secureTextEntry,
-  editable,
-  autoFocus,
-  testID,
-  accessibilityLabel,
-  labelTextType = ETextType.XSLabel,
-  labelTextStyle,
-  hintTextTypeOverride = ETextType.XSParagraphRegular,
-  hintTextStyleOverride,
-  errorTextType = ETextType.XSParagraphMedium,
-  errorTextStyle,
-}) => {
+export const Input: React.FC<IInputProps> = (props) => {
+  const { layout, rest: inputRest } = extractBoxLayoutProps(props);
+  const hasLayoutProps = Object.keys(layout).length > 0;
+
+  // Cast rest back to the component-specific props — extractBoxLayoutProps strips
+  // layout keys at runtime; this cast is sound.
+  const {
+    label,
+    style,
+    inputStyle,
+    type = EInputType.TextField,
+    size = EInputSize.Md,
+    leftIcon,
+    rightIcon,
+    leftPrefix,
+    rightPrefix,
+    isDisabled,
+    isRequired,
+    onPress,
+    onPressLeft,
+    onPressRight,
+    onChangeMoneyAmount,
+    errorMessage,
+    topChildren,
+    hintText,
+    hintTextIcon,
+    value,
+    defaultValue,
+    placeholder,
+    onChangeText,
+    onChange,
+    onFocus,
+    onBlur,
+    multiline,
+    numberOfLines,
+    maxLength,
+    secureTextEntry,
+    editable,
+    autoFocus,
+    testID,
+    accessibilityLabel,
+    labelTextType = ETextType.XSLabel,
+    labelTextStyle,
+    hintTextTypeOverride = ETextType.XSParagraphRegular,
+    hintTextStyleOverride,
+    errorTextType = ETextType.XSParagraphMedium,
+    errorTextStyle,
+  } = inputRest as IInputProps;
   const themed = useThemedColors();
   const [isFocused, setIsFocused] = useState(false);
 
   const isTextArea = type === EInputType.TextArea || multiline;
-  const isSmall = size === EInputSize.Sm;
-  const isLarge = size === EInputSize.Lg;
   const hasError = !!errorMessage;
 
   const borderColor = hasError
-    ? colors.crimsonRed[500].value
+    ? themed.colorDanger
     : isFocused
-    ? colors.celurenBlue[400].value
+    ? themed.borderPrimaryBrand
     : isDisabled
     ? themed.borderSecondary
     : themed.borderDefault;
@@ -134,10 +146,10 @@ export const Input: React.FC<IInputProps> = ({
   const bgColor = isDisabled ? themed.bgDisabled : themed.surface;
   const textColor = isDisabled ? themed.textDisabled : themed.textPrimary;
 
-  const paddingV = isSmall ? 7 : isLarge ? 13 : 10;
-  const paddingH = isSmall ? 10 : isLarge ? 16 : 12;
-  const fontSize = isSmall ? 13 : isLarge ? 16 : 14;
-  const borderRadiusVal = isSmall ? radius.md.value : radius.lg.value;
+  const paddingV = SIZE_PADDING_V[size];
+  const paddingH = SIZE_PADDING_H[size];
+  const fontSize = SIZE_FONT[size];
+  const borderRadiusVal = SIZE_BORDER_RADIUS[size];
 
   if (isWeb) {
     const handleChange = (
@@ -160,9 +172,9 @@ export const Input: React.FC<IInputProps> = ({
 
     const focusRing =
       isFocused && !hasError
-        ? `0 0 0 3px ${colors.celurenBlue[25].value}`
+        ? themed.focusRing
         : hasError && isFocused
-        ? `0 0 0 3px ${colors.crimsonRed[50].value}`
+        ? themed.focusRingError
         : "none";
 
     const sharedInputStyle: React.CSSProperties = {
@@ -178,7 +190,7 @@ export const Input: React.FC<IInputProps> = ({
       ...(inputStyle as React.CSSProperties),
     };
 
-    return (
+    const webContent = (
       <div
         style={{
           display: "flex",
@@ -204,7 +216,7 @@ export const Input: React.FC<IInputProps> = ({
               <Text
                 type={ETextType.XSLabel}
                 text="*"
-                color={colors.crimsonRed[500].value}
+                color={themed.colorDanger}
               />
             )}
           </label>
@@ -348,7 +360,7 @@ export const Input: React.FC<IInputProps> = ({
           <Text
             type={errorTextType}
             text={errorMessage!}
-            color={colors.crimsonRed[500].value}
+            color={themed.colorDanger}
             style={{
               fontWeight: "500",
               ...(errorTextStyle as React.CSSProperties),
@@ -357,6 +369,8 @@ export const Input: React.FC<IInputProps> = ({
         )}
       </div>
     );
+    if (hasLayoutProps) return <Box {...layout}>{webContent}</Box>;
+    return webContent;
   }
 
   // React Native
@@ -365,7 +379,7 @@ export const Input: React.FC<IInputProps> = ({
     TextInput: React.ComponentType<Record<string, unknown>>;
   };
 
-  return (
+  const nativeContent = (
     <View style={{ gap: spacing[4].value, ...flattenStyle(style) }}>
       {topChildren}
       {label && (
@@ -380,7 +394,7 @@ export const Input: React.FC<IInputProps> = ({
             <Text
               type={ETextType.XSLabel}
               text=" *"
-              color={colors.crimsonRed[500].value}
+              color={themed.colorDanger}
             />
           )}
         </View>
@@ -465,7 +479,7 @@ export const Input: React.FC<IInputProps> = ({
         <Text
           type={errorTextType}
           text={errorMessage!}
-          color={colors.crimsonRed[500].value}
+          color={themed.colorDanger}
           style={{
             fontWeight: "500",
             ...(errorTextStyle as Record<string, unknown>),
@@ -474,6 +488,8 @@ export const Input: React.FC<IInputProps> = ({
       )}
     </View>
   );
+  if (hasLayoutProps) return <Box {...layout}>{nativeContent}</Box>;
+  return nativeContent;
 };
 
 Input.displayName = "Input";

@@ -4,11 +4,16 @@
  */
 
 import React from "react";
-import { colors } from "@stareezy-ui/tokens";
 import { isWeb } from "../shared/platform";
+import { useThemedColors } from "../shared/useThemedColors";
 import { Box } from "../primitives/Box";
 import type { BoxProps, StyleProp } from "../primitives/Box";
 import { Text, ETextType } from "../primitives/Text";
+import {
+  SIZE_PX,
+  THICKNESS_DEFAULT,
+  FONT_SIZE,
+} from "./CircularProgress.style";
 import type { CircularProgressSize } from "./CircularProgress.types";
 
 export type { CircularProgressSize };
@@ -30,35 +35,13 @@ export interface CircularProgressProps extends Omit<BoxProps, "children"> {
   valueTextStyle?: StyleProp;
 }
 
-const SIZE_PX: Record<CircularProgressSize, number> = {
-  xs: 32,
-  sm: 48,
-  md: 64,
-  lg: 96,
-  xl: 128,
-};
-const THICKNESS_DEFAULT: Record<CircularProgressSize, number> = {
-  xs: 3,
-  sm: 4,
-  md: 5,
-  lg: 6,
-  xl: 8,
-};
-const FONT_SIZE: Record<CircularProgressSize, number> = {
-  xs: 9,
-  sm: 12,
-  md: 16,
-  lg: 22,
-  xl: 28,
-};
-
 export const CircularProgress: React.FC<CircularProgressProps> = ({
   value,
   max = 100,
   size = "md",
   thickness,
-  color = colors.celurenBlue[400].value,
-  trackColor = colors.beauBlue[200].value,
+  color,
+  trackColor,
   showValue = false,
   label,
   children,
@@ -68,6 +51,9 @@ export const CircularProgress: React.FC<CircularProgressProps> = ({
   testID,
   ...boxProps
 }) => {
+  const themed = useThemedColors();
+  const resolvedColor = color ?? themed.borderPrimaryBrand;
+  const resolvedTrackColor = trackColor ?? themed.borderSecondary;
   const px = SIZE_PX[size];
   const stroke = thickness ?? THICKNESS_DEFAULT[size];
   const pct = Math.min(100, Math.max(0, (value / max) * 100));
@@ -111,7 +97,7 @@ export const CircularProgress: React.FC<CircularProgressProps> = ({
             cy={px / 2}
             r={radius}
             fill="none"
-            stroke={trackColor}
+            stroke={resolvedTrackColor}
             strokeWidth={stroke}
           />
           <circle
@@ -119,7 +105,7 @@ export const CircularProgress: React.FC<CircularProgressProps> = ({
             cy={px / 2}
             r={radius}
             fill="none"
-            stroke={color}
+            stroke={resolvedColor}
             strokeWidth={stroke}
             strokeLinecap="round"
             strokeDasharray={circumference}
@@ -145,7 +131,7 @@ export const CircularProgress: React.FC<CircularProgressProps> = ({
             <Text
               {...(valueTextType !== undefined ? { type: valueTextType } : {})}
               text={`${Math.round(pct)}%`}
-              color={colors.raisinBlack[800].value}
+              color={themed.textPrimary}
               style={{
                 fontSize,
                 fontWeight: "700",
@@ -180,7 +166,7 @@ export const CircularProgress: React.FC<CircularProgressProps> = ({
           height: px,
           borderRadius: px / 2,
           borderWidth: stroke,
-          borderColor: trackColor,
+          borderColor: resolvedTrackColor,
           position: "absolute",
         }}
       />
@@ -188,7 +174,7 @@ export const CircularProgress: React.FC<CircularProgressProps> = ({
         <Text
           {...(valueTextType !== undefined ? { type: valueTextType } : {})}
           text={`${Math.round(pct)}%`}
-          color={colors.raisinBlack[800].value}
+          color={themed.textPrimary}
           style={{
             fontSize,
             fontWeight: "700",
