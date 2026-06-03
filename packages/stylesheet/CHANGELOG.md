@@ -1,5 +1,11 @@
 # @stareezy-ui/stylesheet
 
+## 0.3.1
+
+### Patch Changes
+
+- fix custom shorthands&media not working & update cli templates
+
 ## 0.3.0
 
 ### Minor Changes

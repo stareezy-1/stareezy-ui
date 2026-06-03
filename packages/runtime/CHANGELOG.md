@@ -1,5 +1,14 @@
 # @stareezy-ui/runtime
 
+## 0.3.1
+
+### Patch Changes
+
+- fix custom shorthands&media not working & update cli templates
+- Updated dependencies
+  - @stareezy-ui/stylesheet@0.3.1
+  - @stareezy-ui/tokens@0.4.1
+
 ## 0.3.0
 
 ### Minor Changes

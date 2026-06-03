@@ -1,5 +1,11 @@
 # @stareezy-ui/tokens
 
+## 0.4.1
+
+### Patch Changes
+
+- fix custom shorthands&media not working & update cli templates
+
 ## 0.4.0
 
 ### Minor Changes
