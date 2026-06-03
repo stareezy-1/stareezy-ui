@@ -1,5 +1,14 @@
 # @stareezy-ui/components
 
+## 0.3.2
+
+### Patch Changes
+
+- Updated dependencies
+  - @stareezy-ui/tokens@0.4.2
+  - @stareezy-ui/core@0.3.2
+  - @stareezy-ui/runtime@0.3.2
+
 ## 0.3.1
 
 ### Patch Changes

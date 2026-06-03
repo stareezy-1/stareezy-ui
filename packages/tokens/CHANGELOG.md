@@ -1,5 +1,11 @@
 # @stareezy-ui/tokens
 
+## 0.4.2
+
+### Patch Changes
+
+- fix szrcustomconfig
+
 ## 0.4.1
 
 ### Patch Changes
