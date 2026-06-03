@@ -33,6 +33,7 @@ const NAV_SECTIONS = [
       { href: "/tokens", label: "Token Explorer", icon: "◉" },
       { href: "/tokens/aurora", label: "Aurora Tokens", icon: "◉" },
       { href: "/tokens/steins-gate", label: "Steins;Gate Tokens", icon: "⌬" },
+      { href: "/tokens/quasar", label: "Quasar Tokens", icon: "⊛" },
     ],
   },
   {

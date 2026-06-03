@@ -230,7 +230,7 @@ export default function HomePage() {
               textTransform: "uppercase",
             }}
           >
-            <span>◉</span> v0.2.0 — Aurora Release
+            <span>◉</span> v0.3.0 — Quasar Release
           </div>
 
           <h1

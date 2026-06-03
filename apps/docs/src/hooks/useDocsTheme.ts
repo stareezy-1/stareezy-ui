@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 
-export type DocsTheme = "aurora" | "dark" | "light" | "steins-gate";
+export type DocsTheme = "aurora" | "dark" | "light" | "steins-gate" | "quasar";
 const STORAGE_KEY = "szr-docs-theme";
 
 export function useDocsTheme() {

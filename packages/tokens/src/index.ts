@@ -49,6 +49,9 @@ export type { AuroraTokens } from "./aurora";
 export { steinsGate, steinsGateVariants } from "./steins-gate";
 export type { SteinsGateTokens } from "./steins-gate";
 
+export { quasar, quasarVariants } from "./quasar";
+export type { QuasarTokens } from "./quasar";
+
 export { motion } from "./motion";
 
 export { glow } from "./glow";

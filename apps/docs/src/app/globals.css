@@ -168,6 +168,48 @@
   --radius-xl: 24px;
 }
 
+/* ── Quasar theme — blazing plasma jet / deep space ─────────────────────── */
+[data-theme="quasar"] {
+  --header-height: 56px;
+  --sidebar-width: 272px;
+  --font-sans: var(--font-inter), "Inter", system-ui, -apple-system, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), "JetBrains Mono", monospace;
+
+  /* Deep space backgrounds */
+  --color-bg: #020205;
+  --color-surface: #0d0508;
+  --color-surface-2: #160a0e;
+  --color-text: #f8f0e8;
+  --color-text-2: #b09080;
+  --color-muted: #6a5048;
+  --color-border: #2a100a;
+  --color-border-2: #200808;
+  --color-code-bg: #010103;
+
+  /* Plasma orange brand */
+  --brand-primary: #ff6a1a;
+  --brand-accent: #dc143c;
+  --brand-50: rgba(255, 106, 26, 0.08);
+  --brand-100: rgba(255, 106, 26, 0.15);
+  --brand-200: rgba(255, 106, 26, 0.25);
+  --brand-400: #e05010;
+  --brand-500: #ff6a1a;
+  --brand-600: #c94a00;
+  --brand-700: #a03a00;
+
+  /* Shadows — void black tint */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.6);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.75),
+    0 0 0 1px rgba(255, 106, 26, 0.05);
+  --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.85),
+    0 0 60px rgba(255, 106, 26, 0.08);
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+}
+
 html {
   scroll-behavior: smooth;
   /* Prevent any child from causing horizontal scroll on the page */
@@ -616,6 +658,18 @@ pre {
   --doc-hero-title-gradient: linear-gradient(135deg, #e8dcc8 0%, #4a9eff 100%);
 }
 
+[data-theme="quasar"] {
+  --doc-hero-bg: linear-gradient(135deg, #020205 0%, #0d0508 60%, #160a0e 100%);
+  --doc-hero-blob: radial-gradient(
+    circle,
+    rgba(255, 106, 26, 0.12) 0%,
+    transparent 70%
+  );
+  --doc-hero-icon-bg: linear-gradient(135deg, #ff6a1a, #dc143c);
+  --doc-hero-icon-shadow: 0 4px 14px rgba(255, 106, 26, 0.3);
+  --doc-hero-title-gradient: linear-gradient(135deg, #f8f0e8 0%, #ff6a1a 100%);
+}
+
 /* ── Callout theme overrides ─────────────────────────────────────────────── */
 [data-theme="light"] {
   --callout-info-bg: #e6edfa;
@@ -658,6 +712,18 @@ pre {
   --callout-warning-border: rgba(45, 109, 181, 0.22);
   --callout-danger-bg: rgba(230, 48, 48, 0.1);
   --callout-danger-border: rgba(230, 48, 48, 0.25);
+}
+
+/* Quasar: plasma orange / crimson tinted callouts */
+[data-theme="quasar"] {
+  --callout-info-bg: rgba(255, 106, 26, 0.07);
+  --callout-info-border: rgba(255, 106, 26, 0.2);
+  --callout-tip-bg: rgba(34, 197, 94, 0.07);
+  --callout-tip-border: rgba(34, 197, 94, 0.2);
+  --callout-warning-bg: rgba(245, 166, 35, 0.08);
+  --callout-warning-border: rgba(245, 166, 35, 0.22);
+  --callout-danger-bg: rgba(220, 20, 60, 0.1);
+  --callout-danger-border: rgba(220, 20, 60, 0.25);
 }
 
 .prose h1 {

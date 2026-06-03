@@ -1,5 +1,11 @@
 # @stareezy-ui/tokens
 
+## 0.3.0
+
+### Minor Changes
+
+- quasar release
+
 ## 0.2.6
 
 ### Patch Changes

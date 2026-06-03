@@ -1,6 +1,6 @@
 {
   "name": "@stareezy-ui/docs",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Stareezy UI documentation website — Next.js + MDX",
   "private": true,
   "scripts": {

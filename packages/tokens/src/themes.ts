@@ -12,6 +12,7 @@ import { colors } from "./colors";
 import { semanticColors } from "./semantic";
 import { aurora } from "./aurora";
 import { steinsGate } from "./steins-gate";
+import { quasar } from "./quasar";
 
 // ---------------------------------------------------------------------------
 // ThemeOverride type
@@ -208,6 +209,45 @@ export const themes = {
       inverse: steinsGate.labNight,
       danger: steinsGate.divergenceRed,
       success: steinsGate.labTeal,
+    },
+  },
+  /**
+   * Quasar theme — blazing plasma jet aesthetic inspired by the quasar app.
+   * Plasma orange (#ff6a1a) as the primary brand, accretion crimson (#dc143c)
+   * as the accent/danger, deep void-black space backgrounds, warm star-white text.
+   * Modelled after quasar/src/app/globals.css data-palette="quasar".
+   */
+  quasar: {
+    border: {
+      tertiary: quasar.nebulaBorder,
+      primaryBrand: quasar.plasmaOrange,
+      secondary: quasar.nebulaBorder,
+      dangerPrimary: quasar.accretionCrimson,
+      successPrimary: quasar.stellarTeal,
+      primaryBlack: quasar.starWhite,
+      default: quasar.nebulaBorder,
+      danger: quasar.accretionCrimson,
+      success: quasar.stellarTeal,
+    },
+    backgrounds: {
+      disabled: quasar.accretionSurface,
+      primaryBlack: quasar.voidBlack,
+      primary: quasar.plasmaOrange,
+      secondary: quasar.nebulaDark,
+    },
+    text: {
+      placeholder: quasar.voidMuted,
+      primary: quasar.starWhite,
+      disable: quasar.voidMuted,
+      dangerPrimary: quasar.accretionCrimson,
+      successPrimary: quasar.stellarTeal,
+      warningPrimary: quasar.warningAmber,
+      importantBrand: quasar.plasmaOrange,
+      secondary: quasar.starDim,
+      tertiary: quasar.voidMuted,
+      inverse: quasar.voidBlack,
+      danger: quasar.flareRed,
+      success: quasar.stellarTeal,
     },
   },
 } as const;

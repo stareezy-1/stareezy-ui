@@ -9,6 +9,7 @@ const THEMES: Array<{ key: DocsTheme; icon: string; label: string }> = [
   { key: "dark", icon: "◑", label: "Dark" },
   { key: "light", icon: "○", label: "Light" },
   { key: "steins-gate", icon: "⌬", label: "Steins;Gate" },
+  { key: "quasar", icon: "⊛", label: "Quasar" },
 ];
 
 export function ThemeToggle() {
