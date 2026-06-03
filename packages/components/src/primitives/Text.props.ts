@@ -1,9 +1,10 @@
 import type { StyleProp } from "./Box";
+import type { BoxLayoutProps } from "../shared/boxLayoutProps";
 
 // ---------------------------------------------------------------------------
 // TextProps
 // ---------------------------------------------------------------------------
-export interface ITextProps {
+export interface ITextProps extends BoxLayoutProps {
   text?: string;
   emptyState?: string;
   type?: ETextType | undefined;

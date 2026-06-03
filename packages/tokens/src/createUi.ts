@@ -169,6 +169,7 @@ export type ShorthandConfig = Record<string, string>;
 export interface CreateUiConfig<
   TTokens extends CustomTokenGroups = CustomTokenGroups,
   TMedia extends MediaConfig = MediaConfig,
+  TShorthands extends ShorthandConfig = ShorthandConfig,
 > {
   /**
    * Custom token groups to register alongside the built-in tokens.
@@ -250,7 +251,7 @@ export interface CreateUiConfig<
    * @example
    * shorthands: { bg: 'backgroundColor', p: 'padding', m: 'margin' }
    */
-  shorthands?: Record<string, string>;
+  shorthands?: TShorthands;
 }
 
 // ---------------------------------------------------------------------------
@@ -260,6 +261,7 @@ export interface CreateUiConfig<
 export type UiConfig<
   TTokens extends CustomTokenGroups,
   TMedia extends MediaConfig = MediaConfig,
+  TShorthands extends ShorthandConfig = ShorthandConfig,
 > = {
   /** All built-in tokens merged with your custom token groups. */
   tokens: typeof BUILTIN_TOKENS & TTokens;
@@ -272,8 +274,11 @@ export type UiConfig<
   media: TMedia;
   /** The default theme name or override object. */
   defaultTheme: keyof typeof themes | ThemeOverride;
-  /** Registered prop shorthands (config-level, takes precedence over Box built-ins). */
-  shorthands: Record<string, string>;
+  /**
+   * Registered prop shorthands (config-level, takes precedence over Box built-ins).
+   * Literal keys preserved so module augmentation flows into CustomShorthandProps.
+   */
+  shorthands: TShorthands;
   /**
    * Theme-reactive token references.
    * Pass these directly as `bg`, `color`, `borderColor` props on Box and
@@ -314,7 +319,7 @@ export type UiConfig<
    */
   registerTokens<TNew extends CustomTokenGroups>(
     t: TNew,
-  ): UiConfig<TTokens & TNew, TMedia>;
+  ): UiConfig<TTokens & TNew, TMedia, TShorthands>;
   /**
    * Update breakpoints after initial setup.
    * Useful when breakpoints need to be adjusted at runtime (e.g. based on device).
@@ -379,12 +384,14 @@ export function getUiConfig(): UiConfig<CustomTokenGroups, MediaConfig> | null {
 export function createUi<
   TTokens extends CustomTokenGroups = Record<never, never>,
   TMedia extends MediaConfig = Record<never, never>,
+  TShorthands extends ShorthandConfig = Record<never, never>,
 >(
-  config: CreateUiConfig<TTokens, TMedia> = {} as CreateUiConfig<
+  config: CreateUiConfig<TTokens, TMedia, TShorthands> = {} as CreateUiConfig<
     TTokens,
-    TMedia
+    TMedia,
+    TShorthands
   >,
-): UiConfig<TTokens, TMedia> {
+): UiConfig<TTokens, TMedia, TShorthands> {
   const {
     tokens: customTokens,
     breakpoints: bpOverrides,
@@ -394,7 +401,7 @@ export function createUi<
     animations: customAnimations = {},
     themes: customThemes = {},
     settings: customSettings = {},
-    shorthands: customShorthands = {},
+    shorthands: customShorthands = {} as TShorthands,
   } = config;
 
   // Merge breakpoints: start with defaults, apply legacy breakpoints, then
@@ -452,8 +459,8 @@ export function createUi<
 
   function registerTokens<TNew extends CustomTokenGroups>(
     newTokens: TNew,
-  ): UiConfig<TTokens & TNew, TMedia> {
-    const cfg: CreateUiConfig<TTokens & TNew, TMedia> = {
+  ): UiConfig<TTokens & TNew, TMedia, TShorthands> {
+    const cfg: CreateUiConfig<TTokens & TNew, TMedia, TShorthands> = {
       tokens: { ...(customTokens ?? {}), ...newTokens } as TTokens & TNew,
       defaultTheme,
     };
@@ -464,7 +471,7 @@ export function createUi<
     if (customThemes !== undefined) cfg.themes = customThemes;
     if (customSettings !== undefined) cfg.settings = customSettings;
     if (customShorthands !== undefined) cfg.shorthands = customShorthands;
-    return createUi<TTokens & TNew, TMedia>(cfg);
+    return createUi<TTokens & TNew, TMedia, TShorthands>(cfg);
   }
 
   function updateBreakpoints(overrides: Partial<UiBreakpointConfig>): void {
@@ -475,7 +482,7 @@ export function createUi<
     >);
   }
 
-  const uiConfig: UiConfig<TTokens, TMedia> = {
+  const uiConfig: UiConfig<TTokens, TMedia, TShorthands> = {
     tokens: mergedTokens,
     breakpoints: resolvedBreakpoints,
     // Preserve the literal-keyed media map for module augmentation:

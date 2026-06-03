@@ -160,8 +160,14 @@ export type ConfigBreakpointKey = string extends keyof NonNullable<
 
 /**
  * Extracts the shorthands record from SzrCustomConfig if the user has
- * augmented it, otherwise falls back to the built-in shorthand map.
+ * augmented it with literal keys, otherwise resolves to an empty record
+ * (no extra props on Box).
+ *
+ * - No augmentation (shorthands key is a wide `string` index) → `{}` (no extra props)
+ * - Augmented with specific keys → those keys become props on Box
  */
-export type SzrShorthands = SzrCustomConfig extends { shorthands: infer S }
-  ? S
-  : Record<string, string>;
+export type SzrShorthands = string extends keyof NonNullable<
+  SzrCustomConfig["shorthands"]
+>
+  ? Record<never, never>
+  : NonNullable<SzrCustomConfig["shorthands"]>;

@@ -7,9 +7,11 @@
 
 import { existsSync, readFileSync, writeFileSync } from "fs";
 import { join } from "path";
+import { execSync } from "child_process";
 import {
   detectConfig,
   detectFramework,
+  detectPackageManager,
   detectThemeProvider,
   detectWiring,
   type Framework,
@@ -47,13 +49,16 @@ const ui = createUi({
     w: "width",
     h: "height",
     br: "borderRadius",
-  },
+    bg: "backgroundColor",
+  } as const,
 });
 
 export default ui;
 
+type CustomUi = typeof ui;
+
 declare module "@stareezy-ui/tokens" {
-  interface SzrCustomConfig extends typeof ui {}
+  interface SzrCustomConfig extends CustomUi {}
 }
 `;
 
@@ -137,7 +142,7 @@ import { ThemeProvider } from "@stareezy-ui/tokens";
 import { type ReactNode } from "react";
 
 export function Providers({ children }: { children: ReactNode }) {
-  return <ThemeProvider defaultTheme="light">{children}</ThemeProvider>;
+  return <ThemeProvider theme="light">{children}</ThemeProvider>;
 }
 `;
 }
@@ -147,7 +152,7 @@ function viteThemeProviderWrapper(): string {
 import { type ReactNode } from "react";
 
 export function Providers({ children }: { children: ReactNode }) {
-  return <ThemeProvider defaultTheme="light">{children}</ThemeProvider>;
+  return <ThemeProvider theme="light">{children}</ThemeProvider>;
 }
 `;
 }
@@ -157,7 +162,7 @@ function expoThemeProviderWrapper(): string {
 import { type ReactNode } from "react";
 
 export function Providers({ children }: { children: ReactNode }) {
-  return <ThemeProvider defaultTheme="light">{children}</ThemeProvider>;
+  return <ThemeProvider theme="light">{children}</ThemeProvider>;
 }
 `;
 }
@@ -183,12 +188,14 @@ export interface InitResult {
 }
 
 /**
- * Idempotent init: create stareezy.config.ts, compiler wiring, and ThemeProvider
- * in the project at `cwd`, skipping each step when already present.
+ * Idempotent init: install @stareezy-ui/* packages, create stareezy.config.ts,
+ * compiler wiring, and ThemeProvider in the project at `cwd`, skipping each
+ * step when already present.
  */
 export async function runInit(options: InitOptions = {}): Promise<InitResult> {
   const cwd = options.cwd ?? process.cwd();
   const framework = detectFramework(cwd);
+  const pm = detectPackageManager(cwd);
 
   const result: InitResult = {
     createdConfig: false,
@@ -198,6 +205,9 @@ export async function runInit(options: InitOptions = {}): Promise<InitResult> {
     skippedWiring: false,
     skippedThemeProvider: false,
   };
+
+  // 0. Install required @stareezy-ui/* packages if missing
+  installPackagesIfMissing(cwd, pm);
 
   // 1. stareezy.config.ts
   if (detectConfig(cwd)) {
@@ -229,6 +239,99 @@ export async function runInit(options: InitOptions = {}): Promise<InitResult> {
 
   return result;
 }
+
+// ---------------------------------------------------------------------------
+// Package installation
+// ---------------------------------------------------------------------------
+
+const REQUIRED_PACKAGES = [
+  "@stareezy-ui/tokens",
+  "@stareezy-ui/components",
+  "@stareezy-ui/runtime",
+];
+const REQUIRED_DEV_PACKAGES = ["@stareezy-ui/compiler"];
+
+function getInstalledPackages(cwd: string): Set<string> {
+  const pkgPath = join(cwd, "package.json");
+  if (!existsSync(pkgPath)) return new Set();
+  try {
+    const pkg = JSON.parse(readFileSync(pkgPath, "utf8")) as Record<
+      string,
+      unknown
+    >;
+    const deps = (pkg["dependencies"] ?? {}) as Record<string, string>;
+    const devDeps = (pkg["devDependencies"] ?? {}) as Record<string, string>;
+    return new Set([...Object.keys(deps), ...Object.keys(devDeps)]);
+  } catch {
+    return new Set();
+  }
+}
+
+function buildInstallCmd(packages: string[], pm: string, dev: boolean): string {
+  const flag = dev ? (pm === "npm" ? "--save-dev" : "-D") : "";
+  const pkgList = packages.join(" ");
+  switch (pm) {
+    case "pnpm":
+      return `pnpm add ${flag} ${pkgList}`.trim();
+    case "yarn":
+      return `yarn add ${flag} ${pkgList}`.trim();
+    case "bun":
+      return `bun add ${flag} ${pkgList}`.trim();
+    default:
+      return `npm install ${flag} ${pkgList}`.trim();
+  }
+}
+
+function installPackagesIfMissing(cwd: string, pm: string): void {
+  const installed = getInstalledPackages(cwd);
+
+  const missingDeps = REQUIRED_PACKAGES.filter((p) => !installed.has(p));
+  const missingDev = REQUIRED_DEV_PACKAGES.filter((p) => !installed.has(p));
+
+  if (missingDeps.length > 0) {
+    console.log(`  Installing: ${missingDeps.join(", ")}`);
+    try {
+      execSync(buildInstallCmd(missingDeps, pm, false), {
+        cwd,
+        stdio: "inherit",
+      });
+    } catch {
+      console.warn(
+        `  ⚠ Failed to install packages automatically. Run manually:\n    ${buildInstallCmd(
+          missingDeps,
+          pm,
+          false,
+        )}`,
+      );
+    }
+  }
+
+  if (missingDev.length > 0) {
+    console.log(`  Installing dev: ${missingDev.join(", ")}`);
+    try {
+      execSync(buildInstallCmd(missingDev, pm, true), {
+        cwd,
+        stdio: "inherit",
+      });
+    } catch {
+      console.warn(
+        `  ⚠ Failed to install dev packages automatically. Run manually:\n    ${buildInstallCmd(
+          missingDev,
+          pm,
+          true,
+        )}`,
+      );
+    }
+  }
+
+  if (missingDeps.length === 0 && missingDev.length === 0) {
+    console.log("  ✓ @stareezy-ui/* packages already present");
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Wiring helpers
+// ---------------------------------------------------------------------------
 
 function writeWiring(cwd: string, framework: Framework): void {
   switch (framework) {

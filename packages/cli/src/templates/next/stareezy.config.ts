@@ -26,11 +26,14 @@ const ui = createUi({
     w: "width",
     h: "height",
     br: "borderRadius",
-  },
+    bg: "backgroundColor",
+  } as const,
 });
 
 export default ui;
 
+type CustomUi = typeof ui;
+
 declare module "@stareezy-ui/tokens" {
-  interface SzrCustomConfig extends typeof ui {}
+  interface SzrCustomConfig extends CustomUi {}
 }
