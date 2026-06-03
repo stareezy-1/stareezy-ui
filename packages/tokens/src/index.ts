@@ -127,10 +127,19 @@ export type { ThemeToken } from "./themeTokens";
  * configured, and `<Box bg={...} />` will be a valid typed prop.
  */
 export interface SzrCustomConfig {
-  /** The media query breakpoints declared in the consuming app's createUi config. */
-  media?: Record<string, number>;
-  /** The prop shorthands declared in the consuming app's createUi config. */
-  shorthands?: Record<string, string>;
+  // This interface is intentionally empty.
+  // Consumers augment it with their exact createUi() config type:
+  //
+  //   type CustomUi = typeof ui;
+  //   declare module "@stareezy-ui/tokens" {
+  //     interface SzrCustomConfig extends CustomUi {}
+  //   }
+  //
+  // Both `media` and `shorthands` are deliberately NOT declared here.
+  // Declaring them as wide types (Record<string,number> / Record<string,string>)
+  // would cause the keyof discriminants in ConfigBreakpointKey and SzrShorthands
+  // to always evaluate to their fallback branches, making the augmentation
+  // appear to have no effect.
 }
 
 /**
@@ -142,32 +151,27 @@ export type DefaultBreakpointKey = "base" | "sm" | "md" | "lg" | "xl" | "2xl";
 /**
  * Derives the BreakpointKey union from the augmented SzrCustomConfig's `media` shape.
  *
- * - No augmentation (media key is a wide `string` index) → `DefaultBreakpointKey`
- * - Augmented with specific keys → `"base"` plus the exact declared media keys
- *
- * @example
- * // With `media: { sm: 640, md: 768 }` declared in SzrCustomConfig:
- * // ConfigBreakpointKey = "base" | "sm" | "md"
- *
- * // With no augmentation:
- * // ConfigBreakpointKey = "base" | "sm" | "md" | "lg" | "xl" | "2xl"
+ * - No augmentation (no `media` key at all) → `DefaultBreakpointKey`
+ * - Augmented with literal keys → `"base"` plus the exact declared media keys
  */
-export type ConfigBreakpointKey = string extends keyof NonNullable<
-  SzrCustomConfig["media"]
->
-  ? DefaultBreakpointKey
-  : "base" | Extract<keyof NonNullable<SzrCustomConfig["media"]>, string>;
+export type ConfigBreakpointKey = SzrCustomConfig extends {
+  media: infer TMedia;
+}
+  ? string extends keyof TMedia
+    ? DefaultBreakpointKey // wide type — use defaults
+    : "base" | Extract<keyof TMedia, string> // literal keys — use them
+  : DefaultBreakpointKey; // no media declared — use defaults
 
 /**
- * Extracts the shorthands record from SzrCustomConfig if the user has
- * augmented it with literal keys, otherwise resolves to an empty record
- * (no extra props on Box).
+ * Extracts the shorthands record from SzrCustomConfig if the consumer has
+ * augmented it with literal shorthand keys.
  *
- * - No augmentation (shorthands key is a wide `string` index) → `{}` (no extra props)
- * - Augmented with specific keys → those keys become props on Box
+ * - No augmentation (no `shorthands` key at all) → `Record<never, never>` (no extra props)
+ * - Augmented with `shorthands: { bg: "backgroundColor", br: "borderRadius" }` →
+ *   those keys become props on Box / BoxLayoutProps
  */
-export type SzrShorthands = string extends keyof NonNullable<
-  SzrCustomConfig["shorthands"]
->
-  ? Record<never, never>
-  : NonNullable<SzrCustomConfig["shorthands"]>;
+export type SzrShorthands = SzrCustomConfig extends { shorthands: infer T }
+  ? string extends keyof T
+    ? Record<never, never> // consumer accidentally used a wide type — no extra props
+    : T // literal keys — expose them as props
+  : Record<never, never>; // no shorthands declared — no extra props
