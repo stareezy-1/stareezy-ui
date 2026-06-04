@@ -10,6 +10,7 @@ import {
 import type { ProgressStep } from "./ProgressPanel.types";
 import type { BoxLayoutProps } from "../shared/boxLayoutProps";
 import { extractBoxLayoutProps } from "../shared/boxLayoutProps";
+import type { SzrFC } from '../shared/types';
 
 export type { ProgressStep } from "./ProgressPanel.types";
 
@@ -19,9 +20,10 @@ export interface ProgressPanelProps extends BoxLayoutProps {
   style?: React.CSSProperties | Record<string, unknown>;
 }
 
-export const ProgressPanel: React.FC<ProgressPanelProps> = (props) => {
-  const { layout, rest } = extractBoxLayoutProps(props);
-  const hasLayoutProps = Object.keys(layout).length > 0;
+export const ProgressPanel: SzrFC<ProgressPanelProps> = (props) => {
+  const { layout, sxProps, rest } = extractBoxLayoutProps(props);
+  const hasLayoutProps =
+    Object.keys(layout).length > 0 || Object.keys(sxProps).length > 0;
   const { steps, currentStep, style } = rest as ProgressPanelProps;
   const themed = useThemedColors();
 
@@ -133,7 +135,12 @@ export const ProgressPanel: React.FC<ProgressPanelProps> = (props) => {
         })}
       </div>
     );
-    if (hasLayoutProps) return <Box {...layout}>{webContent}</Box>;
+    if (hasLayoutProps)
+      return (
+        <Box {...layout} {...sxProps}>
+          {webContent}
+        </Box>
+      );
     return webContent;
   }
 
@@ -174,7 +181,12 @@ export const ProgressPanel: React.FC<ProgressPanelProps> = (props) => {
       })}
     </View>
   );
-  if (hasLayoutProps) return <Box {...layout}>{nativeContent}</Box>;
+  if (hasLayoutProps)
+    return (
+      <Box {...layout} {...sxProps}>
+        {nativeContent}
+      </Box>
+    );
   return nativeContent;
 };
 

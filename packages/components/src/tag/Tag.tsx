@@ -15,6 +15,7 @@ import type { BoxLayoutProps } from "../shared/boxLayoutProps";
 import { extractBoxLayoutProps } from "../shared/boxLayoutProps";
 import { ETagVariant } from "./Tag.types";
 import {
+import type { SzrFC } from '../shared/types';
   webTagBase,
   webVariantBorder,
   webDismissBase,
@@ -77,9 +78,10 @@ function resolveTagColors(
 // Tag
 // ---------------------------------------------------------------------------
 
-export const Tag: React.FC<TagProps> = (props) => {
-  const { layout, rest } = extractBoxLayoutProps(props);
-  const hasLayoutProps = Object.keys(layout).length > 0;
+export const Tag: SzrFC<TagProps> = (props) => {
+  const { layout, sxProps, rest } = extractBoxLayoutProps(props);
+  const hasLayoutProps =
+    Object.keys(layout).length > 0 || Object.keys(sxProps).length > 0;
 
   const {
     label,
@@ -167,7 +169,11 @@ export const Tag: React.FC<TagProps> = (props) => {
   );
 
   if (hasLayoutProps) {
-    return <Box {...layout}>{tagElement}</Box>;
+    return (
+      <Box {...layout} {...sxProps}>
+        {tagElement}
+      </Box>
+    );
   }
   return tagElement;
 };

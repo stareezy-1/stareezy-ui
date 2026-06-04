@@ -4,6 +4,7 @@
  */
 
 import { RADIUS } from "../shared/visualSpec";
+import { registerClasses, registerKeyframes } from "../shared/componentSheet";
 
 export const SKELETON_KF = `
 @keyframes szr-skeleton-wave {
@@ -13,7 +14,27 @@ export const SKELETON_KF = `
 `;
 
 export const skeletonGeometry = {
-  textBorderRadius: RADIUS.sm, // 6 — text lines
-  rectBorderRadius: RADIUS.md, // 8 — rectangular blocks
-  circleBorderRadius: RADIUS.full, // 9999 — avatar circles
+  textBorderRadius: RADIUS.sm,
+  rectBorderRadius: RADIUS.md,
+  circleBorderRadius: RADIUS.full,
 } as const;
+
+// ── Stylesheet registration ───────────────────────────────────────────────────
+
+export const skeletonClasses = registerClasses("skeleton", {
+  base: {
+    display: "block",
+    flexShrink: 0,
+  },
+  animated: {
+    backgroundSize: "200% 100%",
+    animation: "szr-skeleton-wave 1.6s ease-in-out infinite",
+  },
+  multiLine: {
+    display: "flex",
+    flexDirection: "column",
+    gap: 8,
+  },
+});
+
+registerKeyframes("szr-skeleton-kf", SKELETON_KF);

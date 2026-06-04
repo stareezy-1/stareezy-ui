@@ -1,4 +1,5 @@
 import { RADIUS, GAP, ELEVATION, INTERACTION } from "../shared/visualSpec";
+import { registerClasses } from "../shared/componentSheet";
 import type { useThemedColors } from "../shared/useThemedColors";
 
 // ── Base geometry (theme-independent) ────────────────────────────────────────
@@ -6,16 +7,48 @@ import type { useThemedColors } from "../shared/useThemedColors";
 export const toastBaseGeometry = {
   display: "flex",
   alignItems: "center",
-  gap: GAP.md, // 12
-  paddingTop: GAP.md, // 12
-  paddingBottom: GAP.md, // 12
-  paddingLeft: GAP.lg, // 16
-  paddingRight: GAP.lg, // 16
-  borderRadius: RADIUS.lg, // 10
+  gap: GAP.md,
+  paddingTop: GAP.md,
+  paddingBottom: GAP.md,
+  paddingLeft: GAP.lg,
+  paddingRight: GAP.lg,
+  borderRadius: RADIUS.lg,
   minWidth: 280,
   maxWidth: 480,
   position: "relative" as const,
 } as const;
+
+// ── Stylesheet registration ───────────────────────────────────────────────────
+
+export const toastClasses = registerClasses("toast", {
+  base: {
+    display: "flex",
+    alignItems: "center",
+    gap: GAP.md,
+    paddingTop: GAP.md,
+    paddingBottom: GAP.md,
+    paddingLeft: GAP.lg,
+    paddingRight: GAP.lg,
+    borderRadius: RADIUS.lg,
+    minWidth: 280,
+    maxWidth: 480,
+    position: "relative",
+    borderWidth: 1,
+    borderStyle: "solid",
+    boxShadow: ELEVATION.lg,
+    boxSizing: "border-box",
+  },
+  dismissBtn: {
+    background: "transparent",
+    border: "none",
+    cursor: "pointer",
+    fontSize: 14,
+    padding: 4,
+    flexShrink: 0,
+    lineHeight: 1,
+    transition: "opacity 0.15s ease",
+  },
+});
 
 // ── Themed style factories ────────────────────────────────────────────────────
 

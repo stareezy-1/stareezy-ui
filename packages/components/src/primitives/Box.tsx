@@ -29,6 +29,7 @@ import { isWeb } from "../shared/platform";
 import { flattenStyle } from "../shared/flattenStyle";
 import { EBoxType } from "./Box.types";
 import { BOX_PRESETS } from "./Box.presets";
+import type { SxProp } from "../shared/sx";
 
 // ---------------------------------------------------------------------------
 // Re-exports
@@ -347,6 +348,18 @@ export interface BoxProps extends CustomShorthandProps, BreakpointProps {
   accessibilityState?: Record<string, unknown> | undefined;
 
   // ── Standard React / RN ───────────────────────────────────────────────────
+  /**
+   * Style shorthand prop — accepts any Box style prop (spacing, colors, borders,
+   * flex, responsive objects, $-breakpoint groups, token references, ThemeTokens).
+   * Applied on top of other style props; `sx` values win on collision.
+   *
+   * Identical to Tamagui / Chakra's `sx` — lets you write arbitrary one-off
+   * styles without creating a wrapper component.
+   *
+   * @example
+   * <Box sx={{ mt: 16, bg: colors.celurenBlue[500], $md: { mt: 24 } }} />
+   */
+  sx?: SxProp;
   children?: React.ReactNode;
   /**
    * Style override — accepts CSSProperties, RN StyleSheet styles (numbers),
@@ -489,6 +502,7 @@ const ALL_CONSUMED_PROPS: string[] = [
   "data-theme",
   "accessibilityRole",
   "accessibilityState",
+  "sx",
 ];
 
 // ---------------------------------------------------------------------------
@@ -869,19 +883,28 @@ function resolveNativeProps(
 // Box component
 // ---------------------------------------------------------------------------
 
-export const Box: React.FC<BoxProps> = (props) => {
+export function Box(props: BoxProps): React.ReactElement | null {
   const runtime = getRuntime();
   const theme = useTheme(); // always call — needed for ThemeToken resolution
 
   // useId must be called unconditionally (React hook rules)
-  const uid = useId(); // Strip consumed props from rest to avoid DOM warnings
+  const uid = useId();
+
+  // Merge sx into props so Box's resolver pipeline processes sx keys identically
+  // to top-level props. sx values win on key collision (spread last).
+  const resolvedProps: BoxProps =
+    props.sx && Object.keys(props.sx).length > 0
+      ? { ...props, ...props.sx, sx: undefined }
+      : props;
+
+  // Strip consumed props from rest to avoid DOM warnings
   const consumedSet = new Set<string>(ALL_CONSUMED_PROPS);
   const rest: Record<string, unknown> = {};
-  for (const key of Object.keys(props)) {
+  for (const key of Object.keys(resolvedProps)) {
     // Skip all Box-consumed props, config shorthand keys, and any $-prefixed
     // breakpoint-as-prop keys (e.g. $md, $lg) — none of these should reach the DOM.
     if (consumedSet.has(key) || key.startsWith("$")) continue;
-    rest[key] = (props as Record<string, unknown>)[key];
+    rest[key] = (resolvedProps as Record<string, unknown>)[key];
   }
 
   const {
@@ -915,17 +938,17 @@ export const Box: React.FC<BoxProps> = (props) => {
     accessibilityState,
     scrollable,
     horizontal,
-  } = props;
+  } = resolvedProps;
 
   // Resolve preset styles from the type prop (if provided)
-  const presetStyle: Record<string, unknown> = props.type
-    ? BOX_PRESETS[props.type]
+  const presetStyle: Record<string, unknown> = resolvedProps.type
+    ? BOX_PRESETS[resolvedProps.type]
     : {};
 
   if (isWeb) {
     const scopeClass = `szr-${uid.replace(/:/g, "")}`;
     const { inlineStyle, responsiveCss } = resolveWebProps(
-      props,
+      resolvedProps,
       scopeClass,
       theme,
     );
@@ -1042,7 +1065,12 @@ export const Box: React.FC<BoxProps> = (props) => {
   };
 
   const windowWidth = RN.Dimensions.get("window").width;
-  const resolvedStyles = resolveNativeProps(props, runtime, windowWidth, theme);
+  const resolvedStyles = resolveNativeProps(
+    resolvedProps,
+    runtime,
+    windowWidth,
+    theme,
+  );
 
   // Flatten caller style (handles arrays, numbers, objects)
   const callerStyle = flattenStyle(style);
@@ -1074,7 +1102,7 @@ export const Box: React.FC<BoxProps> = (props) => {
   }
 
   return <RN.View {...rnProps} />;
-};
+}
 
 Box.displayName = "Box";
 export default Box;

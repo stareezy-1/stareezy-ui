@@ -10,6 +10,8 @@ import { Box } from "../primitives/Box";
 import type { BoxProps } from "../primitives/Box";
 import { SKELETON_KF } from "./Skeleton.style";
 import type { SkeletonVariant } from "./Skeleton.types";
+import type { SxProp } from "../shared/sx";
+import type { SzrFC } from '../shared/types';
 
 export type { SkeletonVariant };
 
@@ -22,6 +24,7 @@ export interface SkeletonProps
   animated?: boolean;
   baseColor?: string;
   highlightColor?: string;
+  sx?: SxProp;
 }
 
 let skeletonKfInjected = false;
@@ -34,7 +37,7 @@ function injectSkeletonKf() {
   skeletonKfInjected = true;
 }
 
-export const Skeleton: React.FC<SkeletonProps> = ({
+export const Skeleton: SzrFC<SkeletonProps> = ({
   variant = "rectangular",
   width,
   height,
@@ -43,6 +46,7 @@ export const Skeleton: React.FC<SkeletonProps> = ({
   baseColor,
   highlightColor,
   testID,
+  sx,
   ...boxProps
 }) => {
   const themed = useThemedColors();
@@ -78,6 +82,7 @@ export const Skeleton: React.FC<SkeletonProps> = ({
           aria-busy="true"
           aria-label="Loading"
           {...boxProps}
+          {...sx}
         >
           {Array.from({ length: lines }).map((_, i) => (
             <span
@@ -122,6 +127,7 @@ export const Skeleton: React.FC<SkeletonProps> = ({
           flexShrink: 0,
         }}
         {...boxProps}
+        {...sx}
       />
     );
   }
@@ -137,6 +143,7 @@ export const Skeleton: React.FC<SkeletonProps> = ({
         backgroundColor: resolvedBaseColor,
       }}
       {...boxProps}
+      {...sx}
     />
   );
 };

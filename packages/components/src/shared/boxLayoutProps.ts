@@ -12,12 +12,19 @@ import { getUiConfig } from "@stareezy-ui/tokens";
 import type { SzrShorthands } from "@stareezy-ui/tokens";
 import type { BoxProps } from "../primitives/Box";
 import type { BreakpointKey, Responsive } from "../primitives/breakpoints";
+import type { SxProp } from "./sx";
 
 // ---------------------------------------------------------------------------
 // Re-export helper from boxProps
 // ---------------------------------------------------------------------------
 
 export { stripUndefined } from "./boxProps";
+
+// ---------------------------------------------------------------------------
+// Re-export SxProp
+// ---------------------------------------------------------------------------
+
+export type { SxProp } from "./sx";
 
 // ---------------------------------------------------------------------------
 // Helper types for custom shorthands + $-prefixed breakpoint props
@@ -143,7 +150,18 @@ export type BoxLayoutProps = Pick<
   | "columnGap"
 > &
   LayoutShorthandProps &
-  LayoutBreakpointProps;
+  LayoutBreakpointProps & {
+    /**
+     * Escape-hatch style prop — accepts any Box style prop including responsive
+     * values, token references, and $-breakpoint groups. Applied on top of the
+     * component's own styles via its root Box wrapper.
+     *
+     * @example
+     * <Button sx={{ mt: 16, $md: { mt: 24 }, bg: colors.celurenBlue[500] }} />
+     * <Card sx={{ p: { base: 12, md: 20 }, rounded: radius.xl }} />
+     */
+    sx?: SxProp;
+  };
 
 // ---------------------------------------------------------------------------
 // Runtime key lists — used by extractBoxLayoutProps
@@ -209,14 +227,23 @@ const BOX_LAYOUT_PROP_KEYS: ReadonlySet<string> = new Set<string>([
  */
 export function extractBoxLayoutProps<P extends object>(
   props: P,
-): { layout: Partial<BoxLayoutProps>; rest: Omit<P, keyof BoxLayoutProps> } {
+): {
+  layout: Partial<BoxLayoutProps>;
+  sxProps: Partial<BoxLayoutProps>;
+  rest: Omit<P, keyof BoxLayoutProps>;
+} {
   const configShorthands = getUiConfig()?.shorthands ?? {};
   const layout: Partial<BoxLayoutProps> = {};
+  let sxProps: Partial<BoxLayoutProps> = {};
   const rest: Record<string, unknown> = {};
 
   for (const key of Object.keys(props as Record<string, unknown>)) {
     const value = (props as Record<string, unknown>)[key];
-    if (
+    if (key === "sx") {
+      // Spread sx contents into sxProps — they'll be passed to the Box wrapper
+      // alongside the regular layout props so Box resolves them all at once.
+      sxProps = (value as Partial<BoxLayoutProps>) ?? {};
+    } else if (
       BOX_LAYOUT_PROP_KEYS.has(key) ||
       key.startsWith("$") ||
       Object.prototype.hasOwnProperty.call(configShorthands, key)
@@ -229,6 +256,7 @@ export function extractBoxLayoutProps<P extends object>(
 
   return {
     layout,
+    sxProps,
     rest: rest as Omit<P, keyof BoxLayoutProps>,
   };
 }

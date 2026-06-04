@@ -11,6 +11,8 @@ import type { BoxProps, StyleProp } from "../primitives/Box";
 import { Text, ETextType } from "../primitives/Text";
 import { PROGRESS_KF, HEIGHT } from "./Progress.style";
 import type { ProgressSize, ProgressVariant } from "./Progress.types";
+import type { SxProp } from "../shared/sx";
+import type { SzrFC } from "../shared/types";
 
 export type { ProgressSize, ProgressVariant };
 
@@ -29,6 +31,7 @@ export interface ProgressProps extends Omit<BoxProps, "children"> {
   labelTextStyle?: StyleProp;
   percentageTextType?: ETextType;
   percentageTextStyle?: StyleProp;
+  sx?: SxProp;
 }
 
 let progressKfInjected = false;
@@ -41,7 +44,7 @@ function injectProgressKf() {
   progressKfInjected = true;
 }
 
-export const Progress: React.FC<ProgressProps> = ({
+export const Progress: SzrFC<ProgressProps> = ({
   value,
   max = 100,
   size = "md",
@@ -57,6 +60,7 @@ export const Progress: React.FC<ProgressProps> = ({
   percentageTextType = ETextType.XSLabel,
   percentageTextStyle,
   testID,
+  sx,
   ...boxProps
 }) => {
   const themed = useThemedColors();
@@ -88,6 +92,7 @@ export const Progress: React.FC<ProgressProps> = ({
         gap={6}
         data-testid={testID}
         {...boxProps}
+        {...sx}
       >
         {(showLabel || label || showPercentage) && (
           <div
@@ -160,7 +165,7 @@ export const Progress: React.FC<ProgressProps> = ({
   };
 
   return (
-    <Box testID={testID} {...boxProps}>
+    <Box testID={testID} {...boxProps} {...sx}>
       {(label || showPercentage) && (
         <View
           style={{

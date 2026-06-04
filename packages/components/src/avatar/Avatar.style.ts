@@ -1,9 +1,9 @@
 /**
  * Avatar.style.ts — geometry-only style constants for the Avatar component.
  * All colors are resolved at render time via useThemedColors() in Avatar.tsx.
- * Decorative gradients live in Avatar.gradients.ts (theme-independent, Req 10.6).
  */
 
+import { registerClasses } from "../shared/componentSheet";
 import type { AvatarSize, AvatarShape } from "./Avatar.types";
 
 export const SIZE_PX: Record<AvatarSize, number> = {
@@ -38,3 +38,33 @@ export const SHAPE_RADIUS: Record<AvatarShape, string | number> = {
   rounded: "25%",
   square: 0,
 };
+
+// ── Stylesheet registration ───────────────────────────────────────────────────
+
+export const avatarClasses = registerClasses("avatar", {
+  container: {
+    position: "relative",
+    display: "inline-flex",
+    flexShrink: 0,
+  },
+  img: {
+    width: "100%",
+    height: "100%",
+    objectFit: "cover",
+  },
+  figure: {
+    overflow: "hidden",
+    display: "inline-flex",
+    alignItems: "center",
+    justifyContent: "center",
+    flexShrink: 0,
+    userSelect: "none",
+  },
+  statusDot: {
+    position: "absolute",
+    bottom: 0,
+    right: 0,
+    boxSizing: "border-box",
+    borderRadius: "50%",
+  },
+});

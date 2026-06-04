@@ -11,6 +11,8 @@ import type { BoxProps, StyleProp } from "../primitives/Box";
 import { Text, ETextType } from "../primitives/Text";
 import { TRACK, THUMB } from "./Switch.style";
 import type { SwitchSize } from "./Switch.types";
+import type { SxProp } from "../shared/sx";
+import type { SzrFC } from '../shared/types';
 
 export type { SwitchSize };
 
@@ -25,9 +27,10 @@ export interface SwitchProps extends Omit<BoxProps, "onChange" | "children"> {
   labelPosition?: "left" | "right";
   labelTextType?: ETextType;
   labelTextStyle?: StyleProp;
+  sx?: SxProp;
 }
 
-export const Switch: React.FC<SwitchProps> = ({
+export const Switch: SzrFC<SwitchProps> = ({
   value = false,
   onChange,
   disabled = false,
@@ -40,6 +43,7 @@ export const Switch: React.FC<SwitchProps> = ({
   labelTextStyle,
   testID,
   accessibilityLabel,
+  sx,
   ...boxProps
 }) => {
   const themed = useThemedColors();
@@ -114,6 +118,7 @@ export const Switch: React.FC<SwitchProps> = ({
         onClick={handleToggle}
         data-testid={testID}
         {...boxProps}
+        {...sx}
       >
         {trackEl}
         {label &&
@@ -141,7 +146,7 @@ export const Switch: React.FC<SwitchProps> = ({
   };
 
   return (
-    <Box testID={testID} {...boxProps}>
+    <Box testID={testID} {...boxProps} {...sx}>
       <RNSwitch
         value={value}
         onValueChange={onChange}

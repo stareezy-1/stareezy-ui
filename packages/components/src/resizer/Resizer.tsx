@@ -10,6 +10,8 @@ import { Box } from "../primitives/Box";
 import type { BoxProps } from "../primitives/Box";
 import { resizerGeometry } from "./Resizer.style";
 import type { ResizerDirection } from "./Resizer.types";
+import type { SxProp } from "../shared/sx";
+import type { SzrFC } from '../shared/types';
 
 export type { ResizerDirection };
 
@@ -24,9 +26,10 @@ export interface ResizerProps extends Omit<BoxProps, "children"> {
   maxHeight?: number;
   handleColor?: string;
   onResize?: (size: { width: number; height: number }) => void;
+  sx?: SxProp;
 }
 
-export const Resizer: React.FC<ResizerProps> = ({
+export const Resizer: SzrFC<ResizerProps> = ({
   children,
   direction = "horizontal",
   defaultWidth = 300,

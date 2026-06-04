@@ -1,7 +1,5 @@
 /**
  * Tag.style.ts — layout and geometry styles for the Tag component.
- *
- * IMPORTANT: No hardcoded color literals here.
  * All colors are injected at render time via useThemedColors() in Tag.tsx.
  */
 
@@ -12,6 +10,7 @@ import {
   BORDER,
   INTERACTION,
 } from "../shared/visualSpec";
+import { registerClasses } from "../shared/componentSheet";
 import { ETagVariant } from "./Tag.types";
 
 // Web base tag (no color — injected at render)
@@ -19,13 +18,13 @@ export const webTagBase: React.CSSProperties = {
   display: "inline-flex",
   flexDirection: "row",
   alignItems: "center",
-  gap: GAP.xs, // 4
-  paddingTop: GAP.xs - 2, // 2
-  paddingBottom: GAP.xs - 2, // 2
-  paddingLeft: GAP.sm - 2, // 6
-  paddingRight: GAP.sm - 2, // 6
-  borderRadius: RADIUS.full, // 9999
-  fontSize: TYPE_SCALE.label_sm, // 12
+  gap: GAP.xs,
+  paddingTop: GAP.xs - 2,
+  paddingBottom: GAP.xs - 2,
+  paddingLeft: GAP.sm - 2,
+  paddingRight: GAP.sm - 2,
+  borderRadius: RADIUS.full,
+  fontSize: TYPE_SCALE.label_sm,
   fontWeight: "500",
   lineHeight: 1.4,
   maxWidth: "100%",
@@ -67,16 +66,56 @@ export const nativeTagBase: Record<string, unknown> = {
   flexDirection: "row",
   alignItems: "center",
   alignSelf: "flex-start",
-  borderRadius: RADIUS.full, // 9999
-  paddingVertical: GAP.xs - 2, // 2
-  paddingHorizontal: GAP.sm - 2, // 6
+  borderRadius: RADIUS.full,
+  paddingVertical: GAP.xs - 2,
+  paddingHorizontal: GAP.sm - 2,
 };
 
 // Native dismiss button (no color — injected at render)
 export const nativeDismissBase: Record<string, unknown> = {
-  marginLeft: GAP.xs, // 4
+  marginLeft: GAP.xs,
   width: 14,
   height: 14,
   alignItems: "center",
   justifyContent: "center",
 };
+
+// ── Stylesheet registration ───────────────────────────────────────────────────
+
+export const tagClasses = registerClasses("tag", {
+  base: {
+    display: "inline-flex",
+    flexDirection: "row",
+    alignItems: "center",
+    gap: GAP.xs,
+    paddingTop: GAP.xs - 2,
+    paddingBottom: GAP.xs - 2,
+    paddingLeft: GAP.sm - 2,
+    paddingRight: GAP.sm - 2,
+    borderRadius: RADIUS.full,
+    fontSize: TYPE_SCALE.label_sm,
+    fontWeight: "500",
+    lineHeight: "1.4",
+    maxWidth: "100%",
+    boxSizing: "border-box",
+    userSelect: "none",
+    whiteSpace: "nowrap",
+  },
+  dismiss: {
+    display: "inline-flex",
+    alignItems: "center",
+    justifyContent: "center",
+    width: 14,
+    height: 14,
+    flexShrink: 0,
+    border: "none",
+    outline: "none",
+    cursor: "pointer",
+    background: "transparent",
+    padding: 0,
+    fontSize: 10,
+    lineHeight: 1,
+    borderRadius: "50%",
+    transition: "opacity 0.15s ease",
+  },
+});

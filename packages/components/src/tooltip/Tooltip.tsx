@@ -18,6 +18,7 @@ import type { BoxLayoutProps } from "../shared/boxLayoutProps";
 import { extractBoxLayoutProps } from "../shared/boxLayoutProps";
 import type { TooltipPlacement } from "./Tooltip.types";
 import { webTooltipBase, webTriggerWrapper } from "./Tooltip.style";
+import type { SzrFC } from '../shared/types';
 
 export type { TooltipPlacement } from "./Tooltip.types";
 
@@ -80,9 +81,10 @@ function getTooltipPositionStyle(
 // Tooltip (web-only interactive; native renders children with hint)
 // ---------------------------------------------------------------------------
 
-export const Tooltip: React.FC<TooltipProps> = (props) => {
-  const { layout, rest } = extractBoxLayoutProps(props);
-  const hasLayoutProps = Object.keys(layout).length > 0;
+export const Tooltip: SzrFC<TooltipProps> = (props) => {
+  const { layout, sxProps, rest } = extractBoxLayoutProps(props);
+  const hasLayoutProps =
+    Object.keys(layout).length > 0 || Object.keys(sxProps).length > 0;
 
   const { content, children, placement = "top", testID } = rest as TooltipProps;
 
@@ -109,7 +111,11 @@ export const Tooltip: React.FC<TooltipProps> = (props) => {
     const element = <View testID={testID}>{nativeChildren}</View>;
 
     if (hasLayoutProps) {
-      return <Box {...layout}>{element}</Box>;
+      return (
+        <Box {...layout} {...sxProps}>
+          {element}
+        </Box>
+      );
     }
     return element;
   }
@@ -184,7 +190,11 @@ export const Tooltip: React.FC<TooltipProps> = (props) => {
   );
 
   if (hasLayoutProps) {
-    return <Box {...layout}>{tooltipElement}</Box>;
+    return (
+      <Box {...layout} {...sxProps}>
+        {tooltipElement}
+      </Box>
+    );
   }
   return tooltipElement;
 };

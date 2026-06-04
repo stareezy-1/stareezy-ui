@@ -11,6 +11,8 @@ import type { BoxProps, StyleProp } from "../primitives/Box";
 import { Text, ETextType } from "../primitives/Text";
 import { SLIDER_CSS_TEMPLATE, TRACK_H, THUMB_SIZE } from "./Slider.style";
 import type { SliderSize, SliderMark } from "./Slider.types";
+import type { SxProp } from "../shared/sx";
+import type { SzrFC } from '../shared/types';
 
 export type { SliderSize, SliderMark };
 
@@ -36,6 +38,7 @@ export interface SliderProps extends Omit<BoxProps, "onChange" | "children"> {
   markTextType?: ETextType;
   /** Style override for mark label text */
   markTextStyle?: StyleProp;
+  sx?: SxProp;
 }
 
 let sliderCssInjected = false;
@@ -56,7 +59,7 @@ function injectSliderCss(color: string) {
   sliderCssInjectedColor = color;
 }
 
-export const Slider: React.FC<SliderProps> = ({
+export const Slider: SzrFC<SliderProps> = ({
   value,
   defaultValue = 0,
   min = 0,
@@ -76,6 +79,7 @@ export const Slider: React.FC<SliderProps> = ({
   markTextStyle,
   testID,
   accessibilityLabel,
+  sx,
   ...boxProps
 }) => {
   const [internalValue, setInternalValue] = React.useState(defaultValue);
@@ -104,6 +108,7 @@ export const Slider: React.FC<SliderProps> = ({
         gap={8}
         data-testid={testID}
         {...boxProps}
+        {...sx}
       >
         {showValue && (
           <div style={{ display: "flex", justifyContent: "flex-end" }}>
@@ -233,7 +238,7 @@ export const Slider: React.FC<SliderProps> = ({
   }
 
   return (
-    <Box testID={testID} {...boxProps}>
+    <Box testID={testID} {...boxProps} {...sx}>
       <RNSlider
         value={current}
         minimumValue={min}

@@ -13,6 +13,7 @@ import { flattenStyle } from "../shared/flattenStyle";
 import { isWeb } from "../shared/platform";
 import { ETouchableType } from "./TouchableOpacity.types";
 import { TOUCHABLE_PRESETS } from "./TouchableOpacity.presets";
+import type { SzrFC } from '../shared/types';
 
 export { ETouchableType } from "./TouchableOpacity.types";
 
@@ -30,7 +31,7 @@ export interface TouchableOpacityProps
   type?: ETouchableType;
 }
 
-export const TouchableOpacity: React.FC<TouchableOpacityProps> = ({
+export const TouchableOpacity: SzrFC<TouchableOpacityProps> = ({
   onPress,
   disabled,
   activeOpacity = 0.7,

@@ -15,6 +15,7 @@ import { TEXT_PRESETS } from "./Text.style";
 import { EFontStyle, ITextProps, TextStylePreset } from "./Text.props";
 import { Box } from "./Box";
 import { extractBoxLayoutProps } from "../shared/boxLayoutProps";
+import type { SzrFC } from '../shared/types';
 
 export * from "./Text.props";
 export * from "./Text.style";
@@ -43,9 +44,10 @@ const DEFAULT_PRESET: TextStylePreset = {
 // Text component
 // ---------------------------------------------------------------------------
 
-export const Text: React.FC<ITextProps> = (props) => {
-  const { layout, rest } = extractBoxLayoutProps(props);
-  const hasLayoutProps = Object.keys(layout).length > 0;
+export const Text: SzrFC<ITextProps> = (props) => {
+  const { layout, sxProps, rest } = extractBoxLayoutProps(props);
+  const hasLayoutProps =
+    Object.keys(layout).length > 0 || Object.keys(sxProps).length > 0;
 
   const {
     text = "",
@@ -124,7 +126,12 @@ export const Text: React.FC<ITextProps> = (props) => {
       </span>
     );
 
-    if (hasLayoutProps) return <Box {...layout}>{spanEl}</Box>;
+    if (hasLayoutProps)
+      return (
+        <Box {...layout} {...sxProps}>
+          {spanEl}
+        </Box>
+      );
     return spanEl;
   }
 
@@ -162,7 +169,12 @@ export const Text: React.FC<ITextProps> = (props) => {
   if (ellipsizeMode !== undefined) rnProps["ellipsizeMode"] = ellipsizeMode;
 
   const rnEl = <RNText {...rnProps} />;
-  if (hasLayoutProps) return <Box {...layout}>{rnEl}</Box>;
+  if (hasLayoutProps)
+    return (
+      <Box {...layout} {...sxProps}>
+        {rnEl}
+      </Box>
+    );
   return rnEl;
 };
 

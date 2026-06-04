@@ -1,11 +1,10 @@
 /**
  * Breadcrumb.style.ts — layout and geometry styles for the Breadcrumb component.
- *
- * IMPORTANT: No hardcoded color literals here.
  * All colors are injected at render time via useThemedColors() in Breadcrumb.tsx.
  */
 
 import { RADIUS, GAP, TYPE_SCALE, INTERACTION } from "../shared/visualSpec";
+import { registerClasses } from "../shared/componentSheet";
 
 // Web nav container
 export const webNav: React.CSSProperties = {
@@ -80,3 +79,50 @@ export const nativeCrumbBase: Record<string, unknown> = {
 export const nativeSeparator: Record<string, unknown> = {
   marginHorizontal: GAP.xs, // 4
 };
+
+// ── Stylesheet registration ───────────────────────────────────────────────────
+
+export const breadcrumbClasses = registerClasses("breadcrumb", {
+  nav: {
+    display: "inline-flex",
+    alignItems: "center",
+    flexWrap: "wrap",
+  },
+  ol: {
+    display: "inline-flex",
+    flexDirection: "row",
+    alignItems: "center",
+    flexWrap: "wrap",
+    listStyle: "none",
+    margin: 0,
+    padding: 0,
+    gap: GAP.xs,
+  },
+  li: {
+    display: "inline-flex",
+    alignItems: "center",
+    gap: GAP.xs,
+  },
+  crumb: {
+    display: "inline-flex",
+    alignItems: "center",
+    fontSize: TYPE_SCALE.label_md,
+    lineHeight: "1.4",
+    textDecoration: "none",
+    borderRadius: RADIUS.sm,
+    paddingTop: 2,
+    paddingBottom: 2,
+    paddingLeft: GAP.xs,
+    paddingRight: GAP.xs,
+    outline: "none",
+    cursor: "pointer",
+    transition: "opacity 0.15s ease",
+  },
+  separator: {
+    display: "inline-flex",
+    alignItems: "center",
+    userSelect: "none",
+    pointerEvents: "none",
+    fontSize: TYPE_SCALE.label_sm,
+  },
+});

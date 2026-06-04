@@ -1,6 +1,6 @@
 {
   "name": "@stareezy-ui/tokens",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Stareezy UI design token definitions — zero dependencies",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -47,7 +47,7 @@
     }
   },
   "devDependencies": {
-    "@types/react": "^19.0.0",
+    "@types/react": "^18.3.0",
     "fast-check": "^3.23.2",
     "react": "^18.3.0",
     "tsup": "^8.0.0",

@@ -112,12 +112,17 @@ function viteConfigWiring(): string {
   return `import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import { stareezyVitePlugin } from "@stareezy-ui/compiler";
-// Import the virtual styles so Vite resolves them
-import "virtual:stareezy-ui/styles";
 
-export default defineConfig({
-  plugins: [react(), stareezyVitePlugin()],
-});
+export default defineConfig(({ command }) => ({
+  plugins: [
+    // Only run the stareezy compiler during production builds.
+    // @babel/traverse has CJS/ESM interop issues in Vite's dev transform
+    // pipeline; Box's inline responsive style injection handles dev-time
+    // styling without the compiler.
+    ...(command === "build" ? [stareezyVitePlugin()] : []),
+    react(),
+  ],
+}));
 `;
 }
 
@@ -383,16 +388,13 @@ export default nextConfig;
         if (existsSync(configPath)) {
           const existing = readFileSync(configPath, "utf8");
           if (!existing.includes("stareezyVitePlugin")) {
-            const patched = existing
-              .replace(
-                /^(import .+\n)+/m,
-                (match) =>
-                  match +
-                  `import { stareezyVitePlugin } from "@stareezy-ui/compiler";\n`,
-              )
-              .replace(/plugins\s*:\s*\[/, "plugins: [stareezyVitePlugin(), ");
-            writeFileSync(configPath, patched, "utf8");
-            console.log(`  + patched ${name} with stareezyVitePlugin`);
+            // Rewrite the whole config to use the production-only pattern.
+            // This is safer than naively patching because create-vite's
+            // generated config uses defineConfig({}), not defineConfig(fn).
+            writeFileSync(configPath, viteConfigWiring(), "utf8");
+            console.log(
+              `  + patched ${name} with stareezyVitePlugin (build-only)`,
+            );
           }
           return;
         }

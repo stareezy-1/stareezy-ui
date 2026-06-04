@@ -11,6 +11,8 @@ import type { BoxProps, StyleProp } from "../primitives/Box";
 import { Text, ETextType } from "../primitives/Text";
 import { tabsGeometry } from "./Tabs.style";
 import type { TabsVariant, TabItem } from "./Tabs.types";
+import type { SxProp } from "../shared/sx";
+import type { SzrFC } from '../shared/types';
 
 export type { TabsVariant, TabItem };
 
@@ -24,9 +26,10 @@ export interface TabsProps extends Omit<BoxProps, "children" | "onChange"> {
   tabBarBoxProps?: Omit<BoxProps, "children">;
   labelTextType?: ETextType;
   labelTextStyle?: StyleProp;
+  sx?: SxProp;
 }
 
-export const Tabs: React.FC<TabsProps> = ({
+export const Tabs: SzrFC<TabsProps> = ({
   items,
   defaultActiveKey,
   activeKey: controlledKey,
@@ -37,6 +40,7 @@ export const Tabs: React.FC<TabsProps> = ({
   labelTextType,
   labelTextStyle,
   testID,
+  sx,
   ...boxProps
 }) => {
   const [internalKey, setInternalKey] = useState(
@@ -73,6 +77,7 @@ export const Tabs: React.FC<TabsProps> = ({
         flexDirection="column"
         data-testid={testID}
         {...boxProps}
+        {...sx}
       >
         <Box
           role="tablist"
@@ -227,7 +232,7 @@ export const Tabs: React.FC<TabsProps> = ({
   };
 
   return (
-    <Box testID={testID} {...boxProps}>
+    <Box testID={testID} {...boxProps} {...sx}>
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}

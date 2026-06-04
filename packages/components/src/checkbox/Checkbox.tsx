@@ -11,6 +11,8 @@ import type { BoxProps, StyleProp } from "../primitives/Box";
 import { Text, ETextType } from "../primitives/Text";
 import { SIZE_PX } from "./Checkbox.style";
 import type { CheckboxSize } from "./Checkbox.types";
+import type { SxProp } from "../shared/sx";
+import type { SzrFC } from '../shared/types';
 
 export type { CheckboxSize };
 
@@ -25,9 +27,10 @@ export interface CheckboxProps extends Omit<BoxProps, "onChange" | "children"> {
   color?: string;
   labelTextType?: ETextType;
   labelTextStyle?: StyleProp;
+  sx?: SxProp;
 }
 
-export const Checkbox: React.FC<CheckboxProps> = ({
+export const Checkbox: SzrFC<CheckboxProps> = ({
   checked = false,
   indeterminate = false,
   onChange,
@@ -40,6 +43,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
   labelTextStyle,
   testID,
   accessibilityLabel,
+  sx,
   ...boxProps
 }) => {
   const themed = useThemedColors();
@@ -134,6 +138,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
         onClick={handleChange}
         data-testid={testID}
         {...boxProps}
+        {...sx}
       >
         {boxEl}
         {label &&
@@ -162,7 +167,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
   };
 
   return (
-    <Box testID={testID} {...boxProps}>
+    <Box testID={testID} {...boxProps} {...sx}>
       <TouchableOpacity
         onPress={handleChange}
         disabled={disabled}

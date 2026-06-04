@@ -10,6 +10,8 @@ import { Box } from "../primitives/Box";
 import type { BoxProps } from "../primitives/Box";
 import { SPINNER_KF, SIZE_MAP, THICKNESS_MAP } from "./Spinner.style";
 import type { SpinnerSize, SpinnerVariant } from "./Spinner.types";
+import type { SxProp } from "../shared/sx";
+import type { SzrFC } from '../shared/types';
 
 export type { SpinnerSize, SpinnerVariant };
 
@@ -19,6 +21,7 @@ export interface SpinnerProps extends Omit<BoxProps, "children"> {
   trackColor?: string;
   variant?: SpinnerVariant;
   label?: string;
+  sx?: SxProp;
 }
 
 let kfInjected = false;
@@ -31,13 +34,14 @@ function injectKf() {
   kfInjected = true;
 }
 
-export const Spinner: React.FC<SpinnerProps> = ({
+export const Spinner: SzrFC<SpinnerProps> = ({
   size = "md",
   color,
   trackColor,
   variant = "ring",
   label = "Loading",
   testID,
+  sx,
   ...boxProps
 }) => {
   const themed = useThemedColors();
@@ -121,6 +125,7 @@ export const Spinner: React.FC<SpinnerProps> = ({
         justifyContent="center"
         data-testid={testID}
         {...boxProps}
+        {...sx}
       >
         {inner}
       </Box>
@@ -139,6 +144,7 @@ export const Spinner: React.FC<SpinnerProps> = ({
       justifyContent="center"
       testID={testID}
       {...boxProps}
+      {...sx}
     >
       <ActivityIndicator
         size={px}

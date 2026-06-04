@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useEffect, useCallback } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { trackEvent } from "../lib/analytics";
@@ -9,49 +9,65 @@ const NAV_SECTIONS = [
   {
     title: "Getting Started",
     links: [
-      { href: "/", label: "Home", icon: "⌂" },
+      { href: "/", label: "Introduction", icon: "◈" },
       { href: "/docs/quick-start", label: "Quick Start", icon: "▶" },
       { href: "/docs/installation", label: "Installation", icon: "↓" },
       { href: "/docs/compatibility", label: "Compatibility", icon: "✓" },
-      { href: "/docs/usage", label: "Usage", icon: "◈" },
       { href: "/docs/cdn", label: "CDN Usage", icon: "↗" },
     ],
   },
   {
-    title: "Guides",
+    title: "CLI",
+    links: [{ href: "/docs/cli", label: "CLI", icon: "▶" }],
+  },
+  {
+    title: "Concepts",
     links: [
-      { href: "/docs/cli", label: "CLI", icon: "▶" },
+      { href: "/docs/usage", label: "Usage", icon: "◈" },
       { href: "/docs/theming", label: "Theming", icon: "◑" },
-      { href: "/docs/responsive", label: "Responsive System", icon: "◈" },
-      { href: "/docs/szr-custom-config", label: "SzrCustomConfig", icon: "⬢" },
-      { href: "/docs/box-layout-props", label: "BoxLayoutProps", icon: "⬡" },
-      { href: "/docs/server", label: "Server Components", icon: "⬢" },
-      { href: "/docs/compiler", label: "Compiler", icon: "⚙" },
+      { href: "/docs/responsive", label: "Responsive System", icon: "⊞" },
       { href: "/docs/create-ui", label: "createUi", icon: "◎" },
-      { href: "/docs/use-ui-config", label: "useUiConfig", icon: "◈" },
+      { href: "/docs/szr-custom-config", label: "SzrCustomConfig", icon: "⬢" },
+    ],
+  },
+  {
+    title: "Styling",
+    links: [
+      { href: "/docs/box-layout-props", label: "BoxLayoutProps", icon: "⬡" },
+      { href: "/docs/sx", label: "sx Prop", icon: "✦" },
+      { href: "/docs/stylesheet", label: "Stylesheet", icon: "⊛" },
+      { href: "/docs/compiler", label: "Compiler", icon: "⚙" },
+      { href: "/docs/server", label: "Server Components", icon: "⬢" },
+    ],
+  },
+
+  {
+    title: "Components",
+    links: [
+      { href: "/docs/components", label: "All Components", icon: "⬡" },
+      { href: "/docs/components/breadcrumb", label: "Breadcrumb", icon: "◂" },
+      { href: "/docs/components/drawer", label: "Drawer", icon: "⬜" },
+      { href: "/docs/components/pagination", label: "Pagination", icon: "◁▷" },
+      { href: "/docs/components/table", label: "Table", icon: "⊞" },
+      { href: "/docs/components/tag", label: "Tag", icon: "◈" },
+      { href: "/docs/components/tooltip", label: "Tooltip", icon: "⬦" },
+    ],
+  },
+  {
+    title: "Tokens",
+    links: [
+      { href: "/tokens", label: "Token Explorer", icon: "◉" },
+      { href: "/tokens/aurora", label: "Aurora", icon: "◉" },
+      { href: "/tokens/steins-gate", label: "Steins;Gate", icon: "⌬" },
+      { href: "/tokens/quasar", label: "Quasar", icon: "⊛" },
     ],
   },
   {
     title: "Reference",
     links: [
-      { href: "/docs/components", label: "Component API", icon: "⬡" },
-      { href: "/docs/components/breadcrumb", label: "Breadcrumb", icon: "◂" },
-      { href: "/docs/components/pagination", label: "Pagination", icon: "◁▷" },
-      { href: "/docs/components/table", label: "Table", icon: "⊞" },
-      { href: "/docs/components/tag", label: "Tag", icon: "◈" },
-      { href: "/docs/components/tooltip", label: "Tooltip", icon: "⬦" },
-      { href: "/docs/components/drawer", label: "Drawer", icon: "⬜" },
       { href: "/docs/api", label: "API Reference", icon: "◉" },
       { href: "/docs/architecture", label: "Architecture", icon: "⬢" },
-      { href: "/tokens", label: "Token Explorer", icon: "◉" },
-      { href: "/tokens/aurora", label: "Aurora Tokens", icon: "◉" },
-      { href: "/tokens/steins-gate", label: "Steins;Gate Tokens", icon: "⌬" },
-      { href: "/tokens/quasar", label: "Quasar Tokens", icon: "⊛" },
-    ],
-  },
-  {
-    title: "Credits",
-    links: [
+      { href: "/docs/use-ui-config", label: "useUiConfig", icon: "◈" },
       { href: "/docs/about", label: "About", icon: "◎" },
       { href: "/docs/thanks", label: "Special Thanks", icon: "✦" },
     ],
@@ -59,7 +75,6 @@ const NAV_SECTIONS = [
 ];
 
 interface SidebarNavProps {
-  /** Controlled open state — driven by AppHeader's hamburger on mobile */
   open?: boolean;
   onClose?: () => void;
 }
@@ -69,7 +84,6 @@ export function SidebarNav({ open = false, onClose }: SidebarNavProps) {
 
   const close = useCallback(() => onClose?.(), [onClose]);
 
-  // Close on Escape
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
       if (e.key === "Escape") close();
@@ -78,7 +92,6 @@ export function SidebarNav({ open = false, onClose }: SidebarNavProps) {
     return () => document.removeEventListener("keydown", handler);
   }, [close]);
 
-  // Prevent body scroll when drawer is open on mobile
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
     return () => {
@@ -88,14 +101,12 @@ export function SidebarNav({ open = false, onClose }: SidebarNavProps) {
 
   return (
     <>
-      {/* Overlay backdrop */}
       <div
         className={`sidebar-overlay${open ? " open" : ""}`}
         onClick={close}
         aria-hidden="true"
       />
 
-      {/* Sidebar */}
       <nav
         className={`sidebar-nav${open ? " open" : ""}`}
         aria-label="Documentation navigation"
@@ -144,7 +155,6 @@ export function SidebarNav({ open = false, onClose }: SidebarNavProps) {
           </div>
         ))}
 
-        {/* Footer */}
         <div
           style={{
             marginTop: "auto",

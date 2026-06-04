@@ -10,12 +10,14 @@ import {
 } from "./NavBar.style";
 import type { NavBarProps } from "./NavBar.types";
 import { extractBoxLayoutProps } from "../shared/boxLayoutProps";
+import type { SzrFC } from '../shared/types';
 
 export type { NavBarProps } from "./NavBar.types";
 
-export const NavBar: React.FC<NavBarProps> = (props) => {
-  const { layout, rest } = extractBoxLayoutProps(props);
-  const hasLayoutProps = Object.keys(layout).length > 0;
+export const NavBar: SzrFC<NavBarProps> = (props) => {
+  const { layout, sxProps, rest } = extractBoxLayoutProps(props);
+  const hasLayoutProps =
+    Object.keys(layout).length > 0 || Object.keys(sxProps).length > 0;
   const { logo, links, actions, scrolled = false, style } = rest as NavBarProps;
   const themed = useThemedColors();
 
@@ -51,7 +53,12 @@ export const NavBar: React.FC<NavBarProps> = (props) => {
     </header>
   );
 
-  if (hasLayoutProps) return <Box {...layout}>{headerEl}</Box>;
+  if (hasLayoutProps)
+    return (
+      <Box {...layout} {...sxProps}>
+        {headerEl}
+      </Box>
+    );
   return headerEl;
 };
 

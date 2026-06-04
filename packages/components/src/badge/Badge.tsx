@@ -3,10 +3,15 @@ import { isWeb } from "../shared/platform";
 import { useThemedColors } from "../shared/useThemedColors";
 import { Text, ETextType } from "../primitives/Text";
 import { Box } from "../primitives/Box";
-import { badgeBaseStyle, makeBadgeVariantStyles } from "./Badge.style";
+import {
+  badgeBaseStyle,
+  makeBadgeVariantStyles,
+  badgeClasses,
+} from "./Badge.style";
 import type { BadgeVariant } from "./Badge.types";
 import type { BoxLayoutProps } from "../shared/boxLayoutProps";
 import { extractBoxLayoutProps } from "../shared/boxLayoutProps";
+import type { SzrFC } from '../shared/types';
 
 export type { BadgeVariant } from "./Badge.types";
 
@@ -16,9 +21,10 @@ export interface BadgeProps extends BoxLayoutProps {
   style?: React.CSSProperties | Record<string, unknown>;
 }
 
-export const Badge: React.FC<BadgeProps> = (props) => {
-  const { layout, rest } = extractBoxLayoutProps(props);
-  const hasLayoutProps = Object.keys(layout).length > 0;
+export const Badge: SzrFC<BadgeProps> = (props) => {
+  const { layout, sxProps, rest } = extractBoxLayoutProps(props);
+  const hasLayoutProps =
+    Object.keys(layout).length > 0 || Object.keys(sxProps).length > 0;
   const { label, variant = "default", style } = rest as BadgeProps;
 
   const themed = useThemedColors();
@@ -30,8 +36,8 @@ export const Badge: React.FC<BadgeProps> = (props) => {
   if (isWeb) {
     content = (
       <span
+        className={badgeClasses.base}
         style={{
-          ...badgeBaseStyle,
           ...variantStyle,
           ...(style as React.CSSProperties),
         }}
@@ -66,7 +72,12 @@ export const Badge: React.FC<BadgeProps> = (props) => {
     );
   }
 
-  if (hasLayoutProps) return <Box {...layout}>{content}</Box>;
+  if (hasLayoutProps)
+    return (
+      <Box {...layout} {...sxProps}>
+        {content}
+      </Box>
+    );
   return content;
 };
 

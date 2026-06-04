@@ -12,6 +12,8 @@ import { Text, ETextType } from "../primitives/Text";
 import { SIZE_PX, FONT_SIZE, STATUS_SIZE, SHAPE_RADIUS } from "./Avatar.style";
 import { AVATAR_GRADIENTS, getAvatarGradient } from "./Avatar.gradients";
 import type { AvatarSize, AvatarShape, AvatarStatus } from "./Avatar.types";
+import type { SxProp } from "../shared/sx";
+import type { SzrFC } from '../shared/types';
 
 export type { AvatarSize, AvatarShape, AvatarStatus };
 
@@ -25,6 +27,7 @@ export interface AvatarProps extends Omit<BoxProps, "children"> {
   fallbackIcon?: React.ReactNode;
   initialsTextType?: ETextType;
   initialsTextStyle?: StyleProp;
+  sx?: SxProp;
 }
 
 function getInitials(name: string): string {
@@ -36,7 +39,7 @@ function getInitials(name: string): string {
   );
 }
 
-export const Avatar: React.FC<AvatarProps> = ({
+export const Avatar: SzrFC<AvatarProps> = ({
   src,
   alt,
   name,
@@ -47,6 +50,7 @@ export const Avatar: React.FC<AvatarProps> = ({
   initialsTextType,
   initialsTextStyle,
   testID,
+  sx,
   ...boxProps
 }) => {
   const [imgError, setImgError] = React.useState(false);
@@ -80,6 +84,7 @@ export const Avatar: React.FC<AvatarProps> = ({
         style={{ flexShrink: 0 }}
         data-testid={testID}
         {...boxProps}
+        {...sx}
       >
         <span
           role="img"
@@ -163,6 +168,7 @@ export const Avatar: React.FC<AvatarProps> = ({
       height={px}
       testID={testID}
       {...boxProps}
+      {...sx}
     >
       <View
         style={{

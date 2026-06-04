@@ -11,6 +11,8 @@ import type { BoxProps, StyleProp } from "../primitives/Box";
 import { Text, ETextType } from "../primitives/Text";
 import { DROPDOWN_KF, SIZE_H, FONT } from "./Dropdown.style";
 import type { DropdownSize, DropdownOption } from "./Dropdown.types";
+import type { SxProp } from "../shared/sx";
+import type { SzrFC } from '../shared/types';
 
 export type { DropdownSize, DropdownOption };
 
@@ -47,6 +49,7 @@ export interface DropdownProps extends Omit<BoxProps, "onChange" | "children"> {
   groupTextType?: ETextType;
   errorTextType?: ETextType;
   errorTextStyle?: StyleProp;
+  sx?: SxProp;
 }
 
 // ---------------------------------------------------------------------------
@@ -94,7 +97,7 @@ function injectDropdownKf() {
   dropdownKfInjected = true;
 }
 
-export const Dropdown: React.FC<DropdownProps> = ({
+export const Dropdown: SzrFC<DropdownProps> = ({
   options,
   value,
   defaultValue,
@@ -129,6 +132,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
   errorTextStyle,
   testID,
   accessibilityLabel,
+  sx,
   ...boxProps
 }) => {
   const [open, setOpen] = useState(false);
@@ -268,6 +272,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
         gap={5}
         {...(testID !== undefined ? { "data-testid": testID } : {})}
         {...boxProps}
+        {...sx}
       >
         {label && (
           <label style={{ display: "flex", alignItems: "center", gap: 3 }}>
@@ -604,7 +609,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
   )?.label;
 
   return (
-    <Box testID={testID} gap={5} {...boxProps}>
+    <Box testID={testID} gap={5} {...boxProps} {...sx}>
       {label && (
         <View style={{ flexDirection: "row", alignItems: "center", gap: 3 }}>
           <Text

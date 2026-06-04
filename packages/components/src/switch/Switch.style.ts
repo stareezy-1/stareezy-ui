@@ -4,6 +4,7 @@
  */
 
 import { INTERACTION } from "../shared/visualSpec";
+import { registerClasses } from "../shared/componentSheet";
 import type { SwitchSize } from "./Switch.types";
 
 export const TRACK: Record<SwitchSize, { w: number; h: number }> = {
@@ -18,3 +19,27 @@ export const switchStateOpacity = {
   disabled: INTERACTION.disabledOpacity,
   hover: INTERACTION.hoverOpacity,
 } as const;
+
+// ── Stylesheet registration ───────────────────────────────────────────────────
+
+export const switchClasses = registerClasses("switch", {
+  wrapper: {
+    display: "inline-flex",
+    alignItems: "center",
+    gap: 10,
+    userSelect: "none",
+  },
+  track: {
+    position: "relative",
+    display: "inline-block",
+    flexShrink: 0,
+    transition: "background-color 0.2s ease",
+    boxSizing: "border-box",
+  },
+  thumb: {
+    position: "absolute",
+    borderRadius: "50%",
+    boxShadow: "0 1px 4px rgba(0,0,0,0.25)",
+    transition: "left 0.2s cubic-bezier(0.4,0,0.2,1)",
+  },
+});

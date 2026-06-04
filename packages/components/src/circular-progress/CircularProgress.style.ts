@@ -3,6 +3,7 @@
  * All colors are resolved at render time via useThemedColors() in CircularProgress.tsx.
  */
 
+import { registerClasses } from "../shared/componentSheet";
 import type { CircularProgressSize } from "./CircularProgress.types";
 
 export const SIZE_PX: Record<CircularProgressSize, number> = {
@@ -28,3 +29,21 @@ export const FONT_SIZE: Record<CircularProgressSize, number> = {
   lg: 22,
   xl: 28,
 };
+
+// ── Stylesheet registration ───────────────────────────────────────────────────
+
+export const circularProgressClasses = registerClasses("circularprogress", {
+  svg: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    transform: "rotate(-90deg)",
+  },
+  label: {
+    position: "relative",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+});
