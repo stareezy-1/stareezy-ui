@@ -36,14 +36,8 @@
     ".next/types/**/*.ts",
     "../../packages/tokens/src/**/*.ts",
     "../../packages/tokens/src/**/*.tsx",
-    "../../packages/components/src/**/*.ts",
-    "../../packages/components/src/**/*.tsx",
     "../../packages/runtime/src/**/*.ts",
     "../../packages/core/src/**/*.ts"
   ],
-  "exclude": [
-    "node_modules",
-    "../../packages/*/node_modules",
-    "../../packages/components/src/primitives/Box.tsx"
-  ]
+  "exclude": ["node_modules", "../../packages/*/node_modules"]
 }
