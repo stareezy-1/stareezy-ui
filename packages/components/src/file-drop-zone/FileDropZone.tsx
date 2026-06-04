@@ -11,7 +11,8 @@ import {
 import type { FileDropZoneState } from "./FileDropZone.types";
 import type { BoxLayoutProps } from "../shared/boxLayoutProps";
 import { extractBoxLayoutProps } from "../shared/boxLayoutProps";
-import type { SzrFC } from '../shared/types';
+import type { SzrFC } from "../shared/types";
+import { useSx, SxStyleTag } from "../shared/useSx";
 
 export type { FileDropZoneState } from "./FileDropZone.types";
 
@@ -26,8 +27,9 @@ export interface FileDropZoneProps extends BoxLayoutProps {
 
 export const FileDropZone: SzrFC<FileDropZoneProps> = (props) => {
   const { layout, sxProps, rest } = extractBoxLayoutProps(props);
-  const hasLayoutProps =
-    Object.keys(layout).length > 0 || Object.keys(sxProps).length > 0;
+  const sx = sxProps as import("../shared/sx").SxProp;
+  const { sxStyle, sxClassName, sxCss } = useSx(sx);
+  const hasLayoutProps = Object.keys(layout).length > 0;
   const {
     onFiles,
     accept,
@@ -63,6 +65,7 @@ export const FileDropZone: SzrFC<FileDropZoneProps> = (props) => {
         ...baseStyle,
         ...stateStyle,
         ...style,
+        ...sxStyle,
       }}
       onClick={() => inputRef.current?.click()}
       onDragOver={(e) => {
@@ -116,9 +119,18 @@ export const FileDropZone: SzrFC<FileDropZoneProps> = (props) => {
 
   if (hasLayoutProps)
     return (
-      <Box {...layout} {...sxProps}>
+      <Box {...layout}>
+        {sxCss && <SxStyleTag css={sxCss} scopeClass={sxClassName} />}
         {dropZoneEl}
       </Box>
+    );
+  if (sxCss)
+    return (
+      <>
+        {/* @ts-ignore */}
+        <SxStyleTag css={sxCss} scopeClass={sxClassName} />
+        {dropZoneEl}
+      </>
     );
   return dropZoneEl;
 };

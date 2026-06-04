@@ -11,6 +11,7 @@ import type { BoxProps } from "../primitives/Box";
 import { SPINNER_KF, SIZE_MAP, THICKNESS_MAP } from "./Spinner.style";
 import type { SpinnerSize, SpinnerVariant } from "./Spinner.types";
 import type { SxProp } from "../shared/sx";
+import { useSx, SxStyleTag } from "../shared/useSx";
 import type { SzrFC } from '../shared/types';
 
 export type { SpinnerSize, SpinnerVariant };
@@ -44,6 +45,7 @@ export const Spinner: SzrFC<SpinnerProps> = ({
   sx,
   ...boxProps
 }) => {
+  const { sxStyle, sxClassName, sxCss } = useSx(sx);
   const themed = useThemedColors();
   // Resolve colors at render time — callers can still override via props
   const resolvedColor = color ?? themed.borderPrimaryBrand;
@@ -125,8 +127,10 @@ export const Spinner: SzrFC<SpinnerProps> = ({
         justifyContent="center"
         data-testid={testID}
         {...boxProps}
-        {...sx}
+        style={sxStyle as React.CSSProperties}
+        className={sxClassName || undefined}
       >
+        {sxCss && isWeb && <SxStyleTag css={sxCss} scopeClass={sxClassName} />}
         {inner}
       </Box>
     );
@@ -144,8 +148,10 @@ export const Spinner: SzrFC<SpinnerProps> = ({
       justifyContent="center"
       testID={testID}
       {...boxProps}
-      {...sx}
+      style={sxStyle as React.CSSProperties}
+      className={sxClassName || undefined}
     >
+      {sxCss && isWeb && <SxStyleTag css={sxCss} scopeClass={sxClassName} />}
       <ActivityIndicator
         size={px}
         color={resolvedColor}

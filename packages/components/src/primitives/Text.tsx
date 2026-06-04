@@ -15,7 +15,8 @@ import { TEXT_PRESETS } from "./Text.style";
 import { EFontStyle, ITextProps, TextStylePreset } from "./Text.props";
 import { Box } from "./Box";
 import { extractBoxLayoutProps } from "../shared/boxLayoutProps";
-import type { SzrFC } from '../shared/types';
+import type { SzrFC } from "../shared/types";
+import { useSx, SxStyleTag } from "../shared/useSx";
 
 export * from "./Text.props";
 export * from "./Text.style";
@@ -46,8 +47,9 @@ const DEFAULT_PRESET: TextStylePreset = {
 
 export const Text: SzrFC<ITextProps> = (props) => {
   const { layout, sxProps, rest } = extractBoxLayoutProps(props);
-  const hasLayoutProps =
-    Object.keys(layout).length > 0 || Object.keys(sxProps).length > 0;
+  const sx = sxProps as import("../shared/sx").SxProp;
+  const { sxStyle, sxClassName, sxCss } = useSx(sx);
+  const hasLayoutProps = Object.keys(layout).length > 0;
 
   const {
     text = "",
@@ -113,11 +115,14 @@ export const Text: SzrFC<ITextProps> = (props) => {
       ...(flattenStyle(style).letterSpacing !== undefined
         ? { letterSpacing: `${flattenStyle(style).letterSpacing}em` }
         : {}),
+      ...sxStyle,
     };
 
     const spanEl = (
       <span
-        className={className}
+        className={
+          [className, sxClassName].filter(Boolean).join(" ") || undefined
+        }
         style={webStyle}
         data-testid={testID}
         aria-label={accessibilityLabel ?? testID}
@@ -128,9 +133,18 @@ export const Text: SzrFC<ITextProps> = (props) => {
 
     if (hasLayoutProps)
       return (
-        <Box {...layout} {...sxProps}>
+        <Box {...layout}>
+          {sxCss && <SxStyleTag css={sxCss} scopeClass={sxClassName} />}
           {spanEl}
         </Box>
+      );
+    if (sxCss)
+      return (
+        <>
+          {/* @ts-ignore */}
+          <SxStyleTag css={sxCss} scopeClass={sxClassName} />
+          {spanEl}
+        </>
       );
     return spanEl;
   }
@@ -155,6 +169,7 @@ export const Text: SzrFC<ITextProps> = (props) => {
     ...(isItalic ? { fontStyle: "italic" } : {}),
     ...(isUnderline ? { textDecorationLine: "underline" } : {}),
     ...flattenStyle(style),
+    ...sxStyle,
   };
 
   const rnProps: Record<string, unknown> = {
@@ -169,12 +184,7 @@ export const Text: SzrFC<ITextProps> = (props) => {
   if (ellipsizeMode !== undefined) rnProps["ellipsizeMode"] = ellipsizeMode;
 
   const rnEl = <RNText {...rnProps} />;
-  if (hasLayoutProps)
-    return (
-      <Box {...layout} {...sxProps}>
-        {rnEl}
-      </Box>
-    );
+  if (hasLayoutProps) return <Box {...layout}>{rnEl}</Box>;
   return rnEl;
 };
 

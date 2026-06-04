@@ -12,7 +12,8 @@ import { Text, ETextType } from "../primitives/Text";
 import { SIZE_PX } from "./Checkbox.style";
 import type { CheckboxSize } from "./Checkbox.types";
 import type { SxProp } from "../shared/sx";
-import type { SzrFC } from '../shared/types';
+import { useSx, SxStyleTag } from "../shared/useSx";
+import type { SzrFC } from "../shared/types";
 
 export type { CheckboxSize };
 
@@ -46,6 +47,7 @@ export const Checkbox: SzrFC<CheckboxProps> = ({
   sx,
   ...boxProps
 }) => {
+  const { sxStyle, sxClassName, sxCss } = useSx(sx);
   const themed = useThemedColors();
   // Resolve colors at render time — callers can still override via props
   const resolvedColor = color ?? themed.borderPrimaryBrand;
@@ -134,12 +136,14 @@ export const Checkbox: SzrFC<CheckboxProps> = ({
         style={{
           cursor: disabled ? "not-allowed" : "pointer",
           userSelect: "none",
+          ...sxStyle,
         }}
+        className={sxClassName || undefined}
         onClick={handleChange}
         data-testid={testID}
         {...boxProps}
-        {...sx}
       >
+        {sxCss && isWeb && <SxStyleTag css={sxCss} scopeClass={sxClassName} />}
         {boxEl}
         {label &&
           (typeof label === "string" ? (
@@ -167,7 +171,13 @@ export const Checkbox: SzrFC<CheckboxProps> = ({
   };
 
   return (
-    <Box testID={testID} {...boxProps} {...sx}>
+    <Box
+      testID={testID}
+      {...boxProps}
+      style={sxStyle as Record<string, unknown>}
+      className={sxClassName || undefined}
+    >
+      {sxCss && isWeb && <SxStyleTag css={sxCss} scopeClass={sxClassName} />}
       <TouchableOpacity
         onPress={handleChange}
         disabled={disabled}

@@ -11,7 +11,8 @@ import type { BoxProps } from "../primitives/Box";
 import { SKELETON_KF } from "./Skeleton.style";
 import type { SkeletonVariant } from "./Skeleton.types";
 import type { SxProp } from "../shared/sx";
-import type { SzrFC } from '../shared/types';
+import { useSx, SxStyleTag } from "../shared/useSx";
+import type { SzrFC } from "../shared/types";
 
 export type { SkeletonVariant };
 
@@ -49,6 +50,7 @@ export const Skeleton: SzrFC<SkeletonProps> = ({
   sx,
   ...boxProps
 }) => {
+  const { sxStyle, sxClassName, sxCss } = useSx(sx);
   const themed = useThemedColors();
   const resolvedBaseColor = baseColor ?? themed.borderSecondary;
   const resolvedHighlightColor = highlightColor ?? themed.bgSecondary;
@@ -82,8 +84,12 @@ export const Skeleton: SzrFC<SkeletonProps> = ({
           aria-busy="true"
           aria-label="Loading"
           {...boxProps}
-          {...sx}
+          style={sxStyle as React.CSSProperties}
+          className={sxClassName || undefined}
         >
+          {sxCss && isWeb && (
+            <SxStyleTag css={sxCss} scopeClass={sxClassName} />
+          )}
           {Array.from({ length: lines }).map((_, i) => (
             <span
               key={i}
@@ -125,9 +131,10 @@ export const Skeleton: SzrFC<SkeletonProps> = ({
             : undefined,
           display: "block",
           flexShrink: 0,
+          ...sxStyle,
         }}
+        className={sxClassName || undefined}
         {...boxProps}
-        {...sx}
       />
     );
   }
@@ -141,9 +148,10 @@ export const Skeleton: SzrFC<SkeletonProps> = ({
         width: (width ?? "100%") as string | number,
         height: (height ?? 20) as string | number,
         backgroundColor: resolvedBaseColor,
+        ...sxStyle,
       }}
+      className={sxClassName || undefined}
       {...boxProps}
-      {...sx}
     />
   );
 };

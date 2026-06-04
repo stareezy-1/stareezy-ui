@@ -1,5 +1,89 @@
 # @stareezy-ui/components
 
+## 1.1.0
+
+### Minor Changes
+
+- feat(components,stylesheet): sx prop, responsive stylesheet, SzrFC compat fix
+
+  ## @stareezy-ui/components — minor
+
+  ### sx prop (all 34 components + Box)
+
+  - Add `sx?: SxProp` to BoxProps, BoxLayoutProps, and every component interface
+  - `sx` injects styles directly onto each component's own root element — no wrapper
+    element is ever created for sx, not even for responsive values
+  - Web: static sx values merged into inline style; responsive values + $-group syntax
+    emit scoped @media rules via SxStyleTag (injected into <head>, cleaned on unmount)
+  - Native: responsive values resolved against Dimensions.get("window").width at render
+  - sx wins on collision with component-level style props
+  - Box merges sx into resolvedProps before its resolver runs — all token refs,
+    ThemeTokens, responsive objects, and $-breakpoint groups resolve through Box's
+    full pipeline
+
+  ### useSx hook + SxStyleTag
+
+  - `shared/useSx.ts` — `useSx(sx)` returns { sxStyle, sxClassName, sxCss }
+    - Web: resolves via resolveSxWeb() → inline style + @media CSS string
+    - Native: resolves via resolveSxNative() → flat style object
+  - `SxStyleTag` — hook-only component, injects a <style data-szx> tag and cleans up
+    on unmount. Used alongside SxStyleTag when sxCss is non-empty.
+
+  ### SxProp type
+
+  - `shared/sx.ts` — SxProp picks all style-related BoxProps keys plus:
+    - Raw React.CSSProperties pass-through (boxShadow, fontFamily, textDecoration,
+      animation, transition, filter, backdropFilter, etc.)
+    - React Native style keys (elevation, tintColor, textAlignVertical, etc.)
+    - Index signature escape hatch for any other raw style key
+  - resolveSxWeb / resolveSxNative — full responsive resolver, reads from
+    **stareezy_breakpoints** (same channel as Box), handles $-group syntax
+
+  ### componentSheet utility
+
+  - `shared/componentSheet.ts` — singleton #szc-components style tag for registering
+    static geometry CSS classes from .style.ts files
+  - registerClasses(), registerKeyframes(), toCssDeclarations() helpers
+  - All 30 .style.ts files updated to export \*Classes records
+
+  ### SzrFC — React 18/19 compatible component type
+
+  - Replace React.FC<P> with SzrFC<P> across all 34 exported components
+  - SzrFC = ((props: P) => ReactElement | null) & { displayName?: string }
+  - Fixes "Box cannot be used as a JSX component" when consumer @types/react version
+    differs from library (@types/react@19 made ReactPortal.children non-optional)
+  - SzrFC exported from package index
+
+  ### New exports
+
+  - SxProp, SzrFC, extractBoxLayoutProps (sxProps + sxStyle + sxClassName + sxCss)
+
+  ### Build fix
+
+  - Resolve dist/index.d.ts missing after rebuild — all TS17001 duplicate attribute
+    errors fixed (sxStyle merged into existing style objects, not added as second prop)
+
+  ## @stareezy-ui/stylesheet — minor
+
+  - injectResponsive(className, value, cssProperties) — responsive @media injection
+  - injectComponentStyle(className, propEntries) — batch version
+  - injectRaw(css) — inject pre-built CSS string, deduplicated
+  - reset() — remove all style tags, clear dedup state
+  - buildResponsiveCss / buildComponentCss — build CSS without touching DOM
+  - buildBreakpointEntries — convert responsive map to sorted { minWidth, value } entries
+  - resolveResponsive(value, windowWidth) — React Native helper
+  - isResponsiveValue(value) — type guard
+  - getBreakpoints() — reads from **stareezy_breakpoints** global channel
+  - buildScopeClass(uid) — builds szr-<uid> scope class
+  - #sz-responsive dedicated style tag with per-breakpoint deduplication
+
+### Patch Changes
+
+- Updated dependencies
+  - @stareezy-ui/runtime@1.1.0
+  - @stareezy-ui/tokens@1.1.0
+  - @stareezy-ui/core@1.1.0
+
 ## 1.0.1
 
 ### Patch Changes

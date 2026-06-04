@@ -12,6 +12,7 @@ import { Text, ETextType } from "../primitives/Text";
 import { PROGRESS_KF, HEIGHT } from "./Progress.style";
 import type { ProgressSize, ProgressVariant } from "./Progress.types";
 import type { SxProp } from "../shared/sx";
+import { useSx, SxStyleTag } from "../shared/useSx";
 import type { SzrFC } from "../shared/types";
 
 export type { ProgressSize, ProgressVariant };
@@ -63,6 +64,7 @@ export const Progress: SzrFC<ProgressProps> = ({
   sx,
   ...boxProps
 }) => {
+  const { sxStyle, sxClassName, sxCss } = useSx(sx);
   const themed = useThemedColors();
   const resolvedColor = color ?? themed.borderPrimaryBrand;
   const resolvedTrackColor = trackColor ?? themed.borderSecondary;
@@ -92,8 +94,10 @@ export const Progress: SzrFC<ProgressProps> = ({
         gap={6}
         data-testid={testID}
         {...boxProps}
-        {...sx}
+        style={sxStyle as React.CSSProperties}
+        className={sxClassName || undefined}
       >
+        {sxCss && isWeb && <SxStyleTag css={sxCss} scopeClass={sxClassName} />}
         {(showLabel || label || showPercentage) && (
           <div
             style={{
@@ -165,7 +169,11 @@ export const Progress: SzrFC<ProgressProps> = ({
   };
 
   return (
-    <Box testID={testID} {...boxProps} {...sx}>
+    <Box testID={testID} {...boxProps}
+        style={sxStyle as Record<string, unknown>}
+        className={sxClassName || undefined}
+      >
+        {sxCss && isWeb && <SxStyleTag css={sxCss} scopeClass={sxClassName} />}
       {(label || showPercentage) && (
         <View
           style={{

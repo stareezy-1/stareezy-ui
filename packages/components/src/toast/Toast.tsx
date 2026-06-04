@@ -12,7 +12,8 @@ import {
 import type { ToastVariant } from "./Toast.types";
 import type { BoxLayoutProps } from "../shared/boxLayoutProps";
 import { extractBoxLayoutProps } from "../shared/boxLayoutProps";
-import type { SzrFC } from '../shared/types';
+import type { SzrFC } from "../shared/types";
+import { useSx, SxStyleTag } from "../shared/useSx";
 
 export type { ToastVariant } from "./Toast.types";
 
@@ -26,8 +27,9 @@ export interface ToastProps extends BoxLayoutProps {
 
 export const Toast: SzrFC<ToastProps> = (props) => {
   const { layout, sxProps, rest } = extractBoxLayoutProps(props);
-  const hasLayoutProps =
-    Object.keys(layout).length > 0 || Object.keys(sxProps).length > 0;
+  const sx = sxProps as import("../shared/sx").SxProp;
+  const { sxStyle, sxClassName, sxCss } = useSx(sx);
+  const hasLayoutProps = Object.keys(layout).length > 0;
   const {
     variant,
     message,
@@ -58,6 +60,7 @@ export const Toast: SzrFC<ToastProps> = (props) => {
           backgroundColor: toastBaseStyle.backgroundColor,
           borderColor: variantStyle.borderColor,
           ...(style as React.CSSProperties),
+          ...sxStyle,
         }}
       >
         <span
@@ -96,12 +99,9 @@ export const Toast: SzrFC<ToastProps> = (props) => {
         )}
       </div>
     );
-    if (hasLayoutProps)
-      return (
-        <Box {...layout} {...sxProps}>
-          {webContent}
-        </Box>
-      );
+    if (hasLayoutProps) return <Box {...layout}>{webContent}</Box>;
+    if (hasLayoutProps) return <Box {...layout}>{sxCss && isWeb && <SxStyleTag css={sxCss} scopeClass={sxClassName} />}{webContent}</Box>;
+    if (sxCss && isWeb) return <>{/* @ts-ignore */}<SxStyleTag css={sxCss} scopeClass={sxClassName} />{webContent}</>;
     return webContent;
   }
 
@@ -119,6 +119,7 @@ export const Toast: SzrFC<ToastProps> = (props) => {
         gap: 12,
         padding: 16,
         ...(style as Record<string, unknown>),
+        ...sxStyle,
       }}
     >
       <Text
@@ -133,12 +134,7 @@ export const Toast: SzrFC<ToastProps> = (props) => {
       )}
     </View>
   );
-  if (hasLayoutProps)
-    return (
-      <Box {...layout} {...sxProps}>
-        {nativeContent}
-      </Box>
-    );
+  if (hasLayoutProps) return <Box {...layout}>{nativeContent}</Box>;
   return nativeContent;
 };
 

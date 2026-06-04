@@ -19,6 +19,7 @@ import { extractBoxLayoutProps } from "../shared/boxLayoutProps";
 import type { DrawerAnchor } from "./Drawer.types";
 import { injectFocusStyles } from "../shared/injectFocusStyles";
 import type { SzrFC } from "../shared/types";
+import { useSx, SxStyleTag } from "../shared/useSx";
 import {
   webOverlay,
   webPanelBase,
@@ -121,8 +122,9 @@ export interface DrawerProps extends BoxLayoutProps {
 
 export const Drawer: SzrFC<DrawerProps> = (props) => {
   const { layout, sxProps, rest } = extractBoxLayoutProps(props);
-  const hasLayoutProps =
-    Object.keys(layout).length > 0 || Object.keys(sxProps).length > 0;
+  const sx = sxProps as import("../shared/sx").SxProp;
+  const { sxStyle, sxClassName, sxCss } = useSx(sx);
+  const hasLayoutProps = Object.keys(layout).length > 0;
 
   const {
     open,
@@ -199,7 +201,7 @@ export const Drawer: SzrFC<DrawerProps> = (props) => {
           role="dialog"
           aria-modal="true"
           aria-label={title ?? "Drawer"}
-          style={panelStyle}
+          style={{ ...panelStyle, ...sxStyle } as React.CSSProperties}
           data-testid={testID}
         >
           {/* Header */}
@@ -243,11 +245,20 @@ export const Drawer: SzrFC<DrawerProps> = (props) => {
 
     if (hasLayoutProps) {
       return (
-        <Box {...layout} {...sxProps}>
+        <Box {...layout}>
+          {sxCss && <SxStyleTag css={sxCss} scopeClass={sxClassName} />}
           {drawerElement}
         </Box>
       );
     }
+    if (sxCss)
+      return (
+        <>
+          {/* @ts-ignore */}
+          <SxStyleTag css={sxCss} scopeClass={sxClassName} />
+          {drawerElement}
+        </>
+      );
     return drawerElement;
   }
 
@@ -294,6 +305,7 @@ export const Drawer: SzrFC<DrawerProps> = (props) => {
             ...nativePanelGeometry[anchor],
             backgroundColor: themed.bgPrimary,
             borderColor: themed.borderDefault,
+            ...sxStyle,
           }}
           accessibilityRole="none"
           accessibilityViewIsModal={true}
@@ -342,11 +354,7 @@ export const Drawer: SzrFC<DrawerProps> = (props) => {
   );
 
   if (hasLayoutProps) {
-    return (
-      <Box {...layout} {...sxProps}>
-        {nativeElement}
-      </Box>
-    );
+    return <Box {...layout}>{nativeElement}</Box>;
   }
   return nativeElement;
 };

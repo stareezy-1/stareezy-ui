@@ -11,7 +11,8 @@ import type { BoxProps } from "../primitives/Box";
 import { resizerGeometry } from "./Resizer.style";
 import type { ResizerDirection } from "./Resizer.types";
 import type { SxProp } from "../shared/sx";
-import type { SzrFC } from '../shared/types';
+import { useSx, SxStyleTag } from "../shared/useSx";
+import type { SzrFC } from "../shared/types";
 
 export type { ResizerDirection };
 
@@ -41,8 +42,10 @@ export const Resizer: SzrFC<ResizerProps> = ({
   handleColor,
   onResize,
   testID,
+  sx,
   ...boxProps
 }) => {
+  const { sxStyle, sxClassName, sxCss } = useSx(sx);
   const themed = useThemedColors();
   const resolvedHandleColor = handleColor ?? themed.borderDefault;
   const [size, setSize] = useState({
@@ -94,7 +97,12 @@ export const Resizer: SzrFC<ResizerProps> = ({
   if (!isWeb) {
     // On native, just render children in a Box — no drag resize
     return (
-      <Box testID={testID} {...boxProps}>
+      <Box
+        testID={testID}
+        {...boxProps}
+        style={sxStyle as Record<string, unknown>}
+        className={sxClassName || undefined}
+      >
         {children}
       </Box>
     );
@@ -114,10 +122,13 @@ export const Resizer: SzrFC<ResizerProps> = ({
         width: canH ? size.width : undefined,
         height: canV ? size.height : undefined,
         overflow: "hidden",
+        ...sxStyle,
       }}
+      className={sxClassName || undefined}
       data-testid={testID}
       {...boxProps}
     >
+      {sxCss && isWeb && <SxStyleTag css={sxCss} scopeClass={sxClassName} />}
       {children}
 
       {/* Right handle */}

@@ -18,7 +18,8 @@ import type { BoxLayoutProps } from "../shared/boxLayoutProps";
 import { extractBoxLayoutProps } from "../shared/boxLayoutProps";
 import type { TooltipPlacement } from "./Tooltip.types";
 import { webTooltipBase, webTriggerWrapper } from "./Tooltip.style";
-import type { SzrFC } from '../shared/types';
+import type { SzrFC } from "../shared/types";
+import { useSx, SxStyleTag } from "../shared/useSx";
 
 export type { TooltipPlacement } from "./Tooltip.types";
 
@@ -83,8 +84,9 @@ function getTooltipPositionStyle(
 
 export const Tooltip: SzrFC<TooltipProps> = (props) => {
   const { layout, sxProps, rest } = extractBoxLayoutProps(props);
-  const hasLayoutProps =
-    Object.keys(layout).length > 0 || Object.keys(sxProps).length > 0;
+  const sx = sxProps as import("../shared/sx").SxProp;
+  const { sxStyle, sxClassName, sxCss } = useSx(sx);
+  const hasLayoutProps = Object.keys(layout).length > 0;
 
   const { content, children, placement = "top", testID } = rest as TooltipProps;
 
@@ -108,14 +110,14 @@ export const Tooltip: SzrFC<TooltipProps> = (props) => {
       return child;
     });
 
-    const element = <View testID={testID}>{nativeChildren}</View>;
+    const element = (
+      <View testID={testID} style={sxStyle}>
+        {nativeChildren}
+      </View>
+    );
 
     if (hasLayoutProps) {
-      return (
-        <Box {...layout} {...sxProps}>
-          {element}
-        </Box>
-      );
+      return <Box {...layout}>{element}</Box>;
     }
     return element;
   }
@@ -131,7 +133,9 @@ export const Tooltip: SzrFC<TooltipProps> = (props) => {
       style={{
         ...webTriggerWrapper,
         position: "relative",
+        ...sxStyle,
       }}
+      className={sxClassName || undefined}
       data-testid={testID}
     >
       {/* Trigger: clone children to attach aria-describedby */}
@@ -191,11 +195,20 @@ export const Tooltip: SzrFC<TooltipProps> = (props) => {
 
   if (hasLayoutProps) {
     return (
-      <Box {...layout} {...sxProps}>
+      <Box {...layout}>
+        {sxCss && <SxStyleTag css={sxCss} scopeClass={sxClassName} />}
         {tooltipElement}
       </Box>
     );
   }
+  if (sxCss)
+    return (
+      <>
+        {/* @ts-ignore */}
+        <SxStyleTag css={sxCss} scopeClass={sxClassName} />
+        {tooltipElement}
+      </>
+    );
   return tooltipElement;
 };
 

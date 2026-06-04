@@ -12,7 +12,8 @@ import { Text, ETextType } from "../primitives/Text";
 import { clipboardGeometry } from "./Clipboard.style";
 
 import type { SxProp } from "../shared/sx";
-import type { SzrFC } from '../shared/types';
+import { useSx, SxStyleTag } from "../shared/useSx";
+import type { SzrFC } from "../shared/types";
 
 export interface ClipboardProps extends Omit<BoxProps, "children"> {
   value: string;
@@ -40,6 +41,7 @@ export const Clipboard: SzrFC<ClipboardProps> = ({
   ...boxProps
 }) => {
   const [copied, setCopied] = useState(false);
+  const { sxStyle, sxClassName, sxCss } = useSx(sx);
   const themed = useThemedColors();
 
   const handleCopy = async () => {
@@ -79,11 +81,13 @@ export const Clipboard: SzrFC<ClipboardProps> = ({
           borderRadius: clipboardGeometry.containerBorderRadius,
           padding: `${clipboardGeometry.containerPaddingV}px ${clipboardGeometry.containerPaddingH}px`,
           maxWidth: "100%",
+          ...sxStyle,
         }}
+        className={sxClassName || undefined}
         data-testid={testID}
         {...boxProps}
-        {...sx}
       >
+        {sxCss && isWeb && <SxStyleTag css={sxCss} scopeClass={sxClassName} />}
         {showValue && (
           <Text
             type={valueTextType}
@@ -212,8 +216,10 @@ export const Clipboard: SzrFC<ClipboardProps> = ({
       p={8}
       testID={testID}
       {...boxProps}
-      {...sx}
+      style={sxStyle as React.CSSProperties}
+      className={sxClassName || undefined}
     >
+      {sxCss && isWeb && <SxStyleTag css={sxCss} scopeClass={sxClassName} />}
       {showValue && (
         <Text
           type={valueTextType}

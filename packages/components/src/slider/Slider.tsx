@@ -12,6 +12,7 @@ import { Text, ETextType } from "../primitives/Text";
 import { SLIDER_CSS_TEMPLATE, TRACK_H, THUMB_SIZE } from "./Slider.style";
 import type { SliderSize, SliderMark } from "./Slider.types";
 import type { SxProp } from "../shared/sx";
+import { useSx, SxStyleTag } from "../shared/useSx";
 import type { SzrFC } from '../shared/types';
 
 export type { SliderSize, SliderMark };
@@ -83,6 +84,7 @@ export const Slider: SzrFC<SliderProps> = ({
   ...boxProps
 }) => {
   const [internalValue, setInternalValue] = React.useState(defaultValue);
+  const { sxStyle, sxClassName, sxCss } = useSx(sx);
   const themed = useThemedColors();
   const resolvedColor = color ?? themed.borderPrimaryBrand;
   const resolvedTrackColor = trackColor ?? themed.borderSecondary;
@@ -108,8 +110,10 @@ export const Slider: SzrFC<SliderProps> = ({
         gap={8}
         data-testid={testID}
         {...boxProps}
-        {...sx}
+        style={sxStyle as React.CSSProperties}
+        className={sxClassName || undefined}
       >
+        {sxCss && isWeb && <SxStyleTag css={sxCss} scopeClass={sxClassName} />}
         {showValue && (
           <div style={{ display: "flex", justifyContent: "flex-end" }}>
             <Text
@@ -238,7 +242,11 @@ export const Slider: SzrFC<SliderProps> = ({
   }
 
   return (
-    <Box testID={testID} {...boxProps} {...sx}>
+    <Box testID={testID} {...boxProps}
+        style={sxStyle as Record<string, unknown>}
+        className={sxClassName || undefined}
+      >
+        {sxCss && isWeb && <SxStyleTag css={sxCss} scopeClass={sxClassName} />}
       <RNSlider
         value={current}
         minimumValue={min}

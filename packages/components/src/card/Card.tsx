@@ -13,7 +13,8 @@ import type { CardVariant, GlowColor } from "./Card.types";
 import type { BoxProps } from "../primitives/Box";
 import type { BoxLayoutProps } from "../shared/boxLayoutProps";
 import { extractBoxLayoutProps } from "../shared/boxLayoutProps";
-import type { SzrFC } from '../shared/types';
+import type { SzrFC } from "../shared/types";
+import { useSx, SxStyleTag } from "../shared/useSx";
 
 export type { CardVariant, GlowColor } from "./Card.types";
 
@@ -27,8 +28,9 @@ export interface CardProps extends Pick<BoxProps, "style">, BoxLayoutProps {
 
 export const Card: SzrFC<CardProps> = (props) => {
   const { layout, sxProps, rest } = extractBoxLayoutProps(props);
-  const hasLayoutProps =
-    Object.keys(layout).length > 0 || Object.keys(sxProps).length > 0;
+  const sx = sxProps as import("../shared/sx").SxProp;
+  const { sxStyle, sxClassName, sxCss } = useSx(sx);
+  const hasLayoutProps = Object.keys(layout).length > 0;
   const {
     variant = "border",
     glowColor = "green",
@@ -51,11 +53,14 @@ export const Card: SzrFC<CardProps> = (props) => {
   if (isWeb) {
     const webContent = (
       <div
-        className={cardClasses.base}
+        className={
+          [cardClasses.base, sxClassName].filter(Boolean).join(" ") || undefined
+        }
         style={{
           ...variantStyle,
           boxShadow: resolvedBoxShadow,
           ...(style as React.CSSProperties),
+          ...sxStyle,
         }}
       >
         {title && <Text type={ETextType.AuroraCardTitle} text={title} />}
@@ -65,11 +70,23 @@ export const Card: SzrFC<CardProps> = (props) => {
         {children}
       </div>
     );
+    if (hasLayoutProps) return <Box {...layout}>{webContent}</Box>;
     if (hasLayoutProps)
       return (
-        <Box {...layout} {...sxProps}>
+        <Box {...layout}>
+          {sxCss && isWeb && (
+            <SxStyleTag css={sxCss} scopeClass={sxClassName} />
+          )}
           {webContent}
         </Box>
+      );
+    if (sxCss && isWeb)
+      return (
+        <>
+          {/* @ts-ignore */}
+          <SxStyleTag css={sxCss} scopeClass={sxClassName} />
+          {webContent}
+        </>
       );
     return webContent;
   }
@@ -86,6 +103,7 @@ export const Card: SzrFC<CardProps> = (props) => {
         padding: cardBaseStyle.padding,
         backgroundColor: variantStyle.backgroundColor,
         ...(style as Record<string, unknown>),
+        ...sxStyle,
       }}
     >
       {title && <Text type={ETextType.AuroraCardTitle} text={title} />}
@@ -95,12 +113,7 @@ export const Card: SzrFC<CardProps> = (props) => {
       {children}
     </View>
   );
-  if (hasLayoutProps)
-    return (
-      <Box {...layout} {...sxProps}>
-        {nativeContent}
-      </Box>
-    );
+  if (hasLayoutProps) return <Box {...layout}>{nativeContent}</Box>;
   return nativeContent;
 };
 

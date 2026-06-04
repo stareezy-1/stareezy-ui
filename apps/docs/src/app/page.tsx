@@ -237,7 +237,7 @@ export default function HomePage() {
               textTransform: "uppercase",
             }}
           >
-            <span>◉</span> v0.4.0 — CLI + Stabilization Release
+            <span>◉</span> v1.1.0 — CLI + Stabilization Release
           </div>
 
           <h1

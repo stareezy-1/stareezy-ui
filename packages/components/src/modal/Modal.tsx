@@ -20,8 +20,9 @@ import { MODAL_KF, SIZE_W } from "./Modal.style";
 import type { ModalSize } from "./Modal.types";
 import type { BoxLayoutProps } from "../shared/boxLayoutProps";
 import { extractBoxLayoutProps } from "../shared/boxLayoutProps";
+import { useSx, SxStyleTag } from "../shared/useSx";
 import { injectFocusStyles } from "../shared/injectFocusStyles";
-import type { SzrFC } from '../shared/types';
+import type { SzrFC } from "../shared/types";
 
 export type { ModalSize };
 
@@ -119,6 +120,8 @@ function useModalFocusTrap(
 
 export const Modal: SzrFC<ModalProps> = (props) => {
   const { layout, sxProps, rest: modalRest } = extractBoxLayoutProps(props);
+  const sx = sxProps as import("../shared/sx").SxProp;
+  const { sxStyle, sxClassName, sxCss } = useSx(sx);
   const {
     open,
     onClose,
@@ -188,6 +191,7 @@ export const Modal: SzrFC<ModalProps> = (props) => {
           if (closeOnBackdrop && e.target === e.currentTarget) onClose?.();
         }}
       >
+        {sxCss && <SxStyleTag css={sxCss} scopeClass={sxClassName} />}
         {/* Backdrop */}
         <div
           aria-hidden="true"
@@ -225,6 +229,7 @@ export const Modal: SzrFC<ModalProps> = (props) => {
             boxShadow:
               "0 24px 64px rgba(0,0,0,0.18),0 8px 24px rgba(0,0,0,0.12)",
             animation: "szr-modal-in 0.22s cubic-bezier(0.34,1.56,0.64,1)",
+            ...sxStyle,
           }}
         >
           {/* Forward BoxLayoutProps and contentBoxProps via an inner Box */}
@@ -233,7 +238,6 @@ export const Modal: SzrFC<ModalProps> = (props) => {
             flexDirection="column"
             style={{ flex: 1, overflow: "hidden" } as React.CSSProperties}
             {...layout}
-            {...sxProps}
             {...contentBoxProps}
           >
             {/* Header */}
@@ -371,6 +375,7 @@ export const Modal: SzrFC<ModalProps> = (props) => {
             width: "100%",
             maxHeight: "85%",
             overflow: "hidden",
+            ...sxStyle,
           }}
           onStartShouldSetResponder={() => true}
         >

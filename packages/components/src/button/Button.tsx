@@ -38,11 +38,12 @@ import {
   BUTTON_BORDER_RADIUS,
   BUTTON_BORDER_WIDTH,
 } from "./Button.style";
+import { useSx, SxStyleTag } from "../shared/useSx";
 
 // Re-export enums from types file so consumers import from "Button" as before
 export { EButtonType, EButtonSize } from "./Button.types";
 import { EButtonType, EButtonSize } from "./Button.types";
-import type { SzrFC } from '../shared/types';
+import type { SzrFC } from "../shared/types";
 
 // ---------------------------------------------------------------------------
 // ButtonProps
@@ -282,8 +283,11 @@ function buildNativeContainerStyle(
 
 export const Button: SzrFC<ButtonProps> = (props) => {
   const { layout, sxProps, rest: buttonRest } = extractBoxLayoutProps(props);
-  const hasLayoutProps =
-    Object.keys(layout).length > 0 || Object.keys(sxProps).length > 0;
+  const hasLayoutProps = Object.keys(layout).length > 0;
+
+  // Resolve sx directly into styles — no Box wrapper created for sx.
+  const sx = sxProps as import("../shared/sx").SxProp;
+  const { sxStyle, sxClassName, sxCss } = useSx(sx);
 
   // Cast rest back to the component-specific props so TypeScript sees full types.
   // extractBoxLayoutProps strips layout keys at runtime; this cast is sound.
@@ -321,7 +325,10 @@ export const Button: SzrFC<ButtonProps> = (props) => {
 
   const a11yLabel = accessibilityLabel ?? testID;
   const isIconOnly = !!icon && !text && !children;
-  const callerFlat = flattenStyle(style) as Record<string, unknown> | null;
+  const callerFlat = {
+    ...flattenStyle(style),
+    ...sxStyle,
+  } as Record<string, unknown>;
 
   // ── Label content ──────────────────────────────────────────────────────────
   const labelContent = children ?? (
@@ -380,7 +387,8 @@ export const Button: SzrFC<ButtonProps> = (props) => {
             aria-busy={loading}
             aria-label={a11yLabel}
             data-testid={testID}
-            style={innerStyle}
+            style={{ ...innerStyle, ...sxStyle }}
+            className={sxClassName || undefined}
           >
             {labelContent}
           </button>
@@ -411,7 +419,7 @@ export const Button: SzrFC<ButtonProps> = (props) => {
             accessibilityLabel={a11yLabel}
             accessibilityState={{ disabled: !!disabled, busy: !!loading }}
             testID={testID}
-            style={innerNativeStyle}
+            style={{ ...innerNativeStyle, ...sxStyle }}
           >
             {labelContent}
           </TouchableOpacity>
@@ -443,7 +451,8 @@ export const Button: SzrFC<ButtonProps> = (props) => {
           aria-busy={loading}
           aria-label={a11yLabel}
           data-testid={testID}
-          style={iconStyle}
+          style={{ ...iconStyle, ...sxStyle }}
+          className={sxClassName || undefined}
         >
           {children ?? icon}
         </button>
@@ -466,7 +475,7 @@ export const Button: SzrFC<ButtonProps> = (props) => {
           accessibilityLabel={a11yLabel}
           accessibilityState={{ disabled: !!disabled, busy: !!loading }}
           testID={testID}
-          style={iconNativeStyle}
+          style={{ ...iconNativeStyle, ...sxStyle }}
         >
           {children ?? icon}
         </TouchableOpacity>
@@ -496,7 +505,8 @@ export const Button: SzrFC<ButtonProps> = (props) => {
         aria-busy={loading}
         aria-label={a11yLabel}
         data-testid={testID}
-        style={containerStyle}
+        style={{ ...containerStyle, ...sxStyle }}
+        className={sxClassName || undefined}
       >
         {labelContent}
       </button>
@@ -519,22 +529,30 @@ export const Button: SzrFC<ButtonProps> = (props) => {
         accessibilityLabel={a11yLabel}
         accessibilityState={{ disabled: !!disabled, busy: !!loading }}
         testID={testID}
-        style={containerNativeStyle}
+        style={{ ...containerNativeStyle, ...sxStyle }}
       >
         {labelContent}
       </TouchableOpacity>
     );
   }
 
-  // Wrap with Box to forward layout props when any are present (Req 5.4).
-  // Components with no layout props render unchanged (Req 5.5).
+  // Wrap with Box only for layout props (outer positioning).
   if (hasLayoutProps) {
     return (
-      <Box {...layout} {...sxProps}>
+      <Box {...layout}>
+        {sxCss && isWeb && <SxStyleTag css={sxCss} scopeClass={sxClassName} />}
         {buttonElement}
       </Box>
     );
   }
+  if (sxCss && isWeb)
+    return (
+      <>
+        {/* @ts-ignore */}
+        <SxStyleTag css={sxCss} scopeClass={sxClassName} />
+        {buttonElement}
+      </>
+    );
   return buttonElement;
 };
 

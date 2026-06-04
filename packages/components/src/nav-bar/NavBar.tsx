@@ -10,14 +10,16 @@ import {
 } from "./NavBar.style";
 import type { NavBarProps } from "./NavBar.types";
 import { extractBoxLayoutProps } from "../shared/boxLayoutProps";
-import type { SzrFC } from '../shared/types';
+import type { SzrFC } from "../shared/types";
+import { useSx, SxStyleTag } from "../shared/useSx";
 
 export type { NavBarProps } from "./NavBar.types";
 
 export const NavBar: SzrFC<NavBarProps> = (props) => {
   const { layout, sxProps, rest } = extractBoxLayoutProps(props);
-  const hasLayoutProps =
-    Object.keys(layout).length > 0 || Object.keys(sxProps).length > 0;
+  const sx = sxProps as import("../shared/sx").SxProp;
+  const { sxStyle, sxClassName, sxCss } = useSx(sx);
+  const hasLayoutProps = Object.keys(layout).length > 0;
   const { logo, links, actions, scrolled = false, style } = rest as NavBarProps;
   const themed = useThemedColors();
 
@@ -41,6 +43,7 @@ export const NavBar: SzrFC<NavBarProps> = (props) => {
         WebkitBackdropFilter: scrolled ? "blur(20px)" : "blur(8px)",
         transition: "backdrop-filter 0.3s ease, border-color 0.3s ease",
         ...(style as React.CSSProperties),
+        ...sxStyle,
       }}
     >
       {logo && <div style={navBarLogoStyle}>{logo}</div>}
@@ -55,9 +58,18 @@ export const NavBar: SzrFC<NavBarProps> = (props) => {
 
   if (hasLayoutProps)
     return (
-      <Box {...layout} {...sxProps}>
+      <Box {...layout}>
+        {sxCss && <SxStyleTag css={sxCss} scopeClass={sxClassName} />}
         {headerEl}
       </Box>
+    );
+  if (sxCss)
+    return (
+      <>
+        {/* @ts-ignore */}
+        <SxStyleTag css={sxCss} scopeClass={sxClassName} />
+        {headerEl}
+      </>
     );
   return headerEl;
 };

@@ -11,7 +11,8 @@ import type { BoxProps, StyleProp } from "../primitives/Box";
 import { Text, ETextType } from "../primitives/Text";
 import type { DividerOrientation, DividerVariant } from "./Divider.types";
 import type { SxProp } from "../shared/sx";
-import type { SzrFC } from '../shared/types';
+import { useSx, SxStyleTag } from "../shared/useSx";
+import type { SzrFC } from "../shared/types";
 
 export type { DividerOrientation, DividerVariant };
 
@@ -44,6 +45,7 @@ export const Divider: SzrFC<DividerProps> = ({
   sx,
   ...boxProps
 }) => {
+  const { sxStyle, sxClassName, sxCss } = useSx(sx);
   const isHorizontal = orientation === "horizontal";
 
   if (isWeb) {
@@ -59,8 +61,12 @@ export const Divider: SzrFC<DividerProps> = ({
           aria-orientation={orientation}
           data-testid={testID}
           {...boxProps}
-          {...sx}
+          style={sxStyle as React.CSSProperties}
+          className={sxClassName || undefined}
         >
+          {sxCss && isWeb && (
+            <SxStyleTag css={sxCss} scopeClass={sxClassName} />
+          )}
           {labelPosition !== "left" && (
             <div
               style={{
@@ -118,11 +124,12 @@ export const Divider: SzrFC<DividerProps> = ({
                 backgroundColor: color,
               }),
           flexShrink: 0,
+          ...sxStyle,
         }}
+        className={sxClassName || undefined}
         {...(isHorizontal ? { my: spacingProp * 0.5 } : {})}
         {...(!isHorizontal ? { mx: spacingProp * 0.5 } : {})}
         {...boxProps}
-        {...sx}
       />
     );
   }
