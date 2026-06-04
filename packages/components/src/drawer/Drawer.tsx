@@ -18,8 +18,8 @@ import type { BoxLayoutProps } from "../shared/boxLayoutProps";
 import { extractBoxLayoutProps } from "../shared/boxLayoutProps";
 import type { DrawerAnchor } from "./Drawer.types";
 import { injectFocusStyles } from "../shared/injectFocusStyles";
+import type { SzrFC } from "../shared/types";
 import {
-import type { SzrFC } from '../shared/types';
   webOverlay,
   webPanelBase,
   webPanelGeometry,

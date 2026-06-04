@@ -14,8 +14,8 @@ import { Box } from "../primitives/Box";
 import type { BoxLayoutProps } from "../shared/boxLayoutProps";
 import { extractBoxLayoutProps } from "../shared/boxLayoutProps";
 import { ETagVariant } from "./Tag.types";
+import type { SzrFC } from "../shared/types";
 import {
-import type { SzrFC } from '../shared/types';
   webTagBase,
   webVariantBorder,
   webDismissBase,
