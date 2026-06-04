@@ -4,18 +4,18 @@ on:
   pull_request:
     branches: [main]
 
-defaults:
-  run:
-    working-directory: stareezy-ui
-
 jobs:
   chromatic:
     name: Chromatic
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: .
+
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # needed for Chromatic's baseline comparison
+          fetch-depth: 0
 
       - uses: pnpm/action-setup@v3
         with:
@@ -25,6 +25,7 @@ jobs:
         with:
           node-version: 20
           cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -42,7 +43,5 @@ jobs:
         with:
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
           storybookBuildDir: apps/storybook/storybook-static
-          workingDir: stareezy-ui
-          # autoAcceptChanges: main  ← uncomment to auto-accept on main branch
-          exitZeroOnChanges: false # block approval on visual diffs
-          onlyChanged: true # only upload changed stories
+          exitZeroOnChanges: false
+          onlyChanged: true

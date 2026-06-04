@@ -41,5 +41,9 @@
     "../../packages/runtime/src/**/*.ts",
     "../../packages/core/src/**/*.ts"
   ],
-  "exclude": ["node_modules", "../../packages/*/node_modules"]
+  "exclude": [
+    "node_modules",
+    "../../packages/*/node_modules",
+    "../../packages/components/src/primitives/Box.tsx"
+  ]
 }
