@@ -46,8 +46,7 @@
   "dependencies": {
     "@stareezy-ui/tokens": "workspace:*",
     "@stareezy-ui/core": "workspace:*",
-    "@stareezy-ui/runtime": "workspace:*",
-    "@stareezy-ui/stylesheet": "workspace:*"
+    "@stareezy-ui/runtime": "workspace:*"
   },
   "peerDependencies": {
     "react": "^18 || ^19",
