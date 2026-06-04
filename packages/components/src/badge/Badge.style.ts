@@ -1,41 +1,54 @@
-import { aurora, glow } from "@stareezy-ui/tokens";
+import { RADIUS, GAP, INTERACTION } from "../shared/visualSpec";
+import type { useThemedColors } from "../shared/useThemedColors";
 
-export const badgeVariantStyles = {
-  green: {
-    backgroundColor: aurora.auroraGreen.value,
-    color: aurora.deepSpace.value,
-    boxShadow: glow.green.value,
-  },
-  amber: {
-    backgroundColor: aurora.warningAmber.value,
-    color: aurora.deepSpace.value,
-    boxShadow: "none",
-  },
-  red: {
-    backgroundColor: aurora.errorRed.value,
-    color: aurora.starWhite.value,
-    boxShadow: "none",
-  },
-  purple: {
-    backgroundColor: aurora.nebulaPurple.value,
-    color: aurora.starWhite.value,
-    boxShadow: glow.purple.value,
-  },
-  default: {
-    backgroundColor: aurora.borderSubtle.value,
-    color: aurora.textSecondary.value,
-    boxShadow: "none",
-  },
-} as const;
+// ── Base geometry (theme-independent) ────────────────────────────────────────
 
 export const badgeBaseStyle = {
   display: "inline-flex",
   alignItems: "center",
   justifyContent: "center",
-  paddingTop: 3,
-  paddingBottom: 3,
-  paddingLeft: 10,
-  paddingRight: 10,
-  borderRadius: 100,
+  paddingTop: GAP.xs - 1, // 3
+  paddingBottom: GAP.xs - 1, // 3
+  paddingLeft: GAP.sm + 2, // 10
+  paddingRight: GAP.sm + 2, // 10
+  borderRadius: RADIUS.full, // 9999
   flexShrink: 0,
 } as const;
+
+export const badgeStateOpacity = {
+  disabled: INTERACTION.disabledOpacity,
+} as const;
+
+// ── Themed style factory ──────────────────────────────────────────────────────
+
+export function makeBadgeVariantStyles(
+  themed: ReturnType<typeof useThemedColors>,
+) {
+  return {
+    green: {
+      backgroundColor: themed.colorSuccess,
+      color: themed.textInverse,
+      boxShadow: themed.glowGreen,
+    },
+    amber: {
+      backgroundColor: themed.colorWarning,
+      color: themed.textInverse,
+      boxShadow: "none",
+    },
+    red: {
+      backgroundColor: themed.colorDanger,
+      color: themed.surface,
+      boxShadow: "none",
+    },
+    purple: {
+      backgroundColor: themed.colorInfo,
+      color: themed.surface,
+      boxShadow: themed.glowPurple,
+    },
+    default: {
+      backgroundColor: themed.borderDefault,
+      color: themed.textSecondary,
+      boxShadow: "none",
+    },
+  } as const;
+}

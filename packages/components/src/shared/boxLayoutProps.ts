@@ -1,0 +1,240 @@
+/**
+ * BoxLayoutProps — shared layout/spacing/flex props propagated to every component.
+ *
+ * Includes spacing, sizing, flex props from BoxProps PLUS custom shorthand props
+ * and $-prefixed breakpoint group props derived from the consuming app's
+ * createUi({ shorthands, media }) configuration.
+ *
+ * Requirements: 5.1
+ */
+
+import { getUiConfig } from "@stareezy-ui/tokens";
+import type { SzrShorthands } from "@stareezy-ui/tokens";
+import type { BoxProps } from "../primitives/Box";
+import type { BreakpointKey, Responsive } from "../primitives/breakpoints";
+
+// ---------------------------------------------------------------------------
+// Re-export helper from boxProps
+// ---------------------------------------------------------------------------
+
+export { stripUndefined } from "./boxProps";
+
+// ---------------------------------------------------------------------------
+// Helper types for custom shorthands + $-prefixed breakpoint props
+// ---------------------------------------------------------------------------
+
+/**
+ * Custom shorthand props derived from SzrCustomConfig["shorthands"].
+ *
+ * - No augmentation (shorthands key is a wide `string` index) → `{}` (no extra props)
+ * - Augmented with literal keys → each key accepts a plain value OR a responsive object
+ *
+ * This mirrors CustomShorthandProps in Box.tsx so every component that extends
+ * BoxLayoutProps automatically gains the app's custom shorthand props (bg, br, etc.).
+ */
+type LayoutShorthandProps = string extends keyof SzrShorthands
+  ? // eslint-disable-next-line @typescript-eslint/ban-types
+    {}
+  : {
+      [K in keyof SzrShorthands]?: Responsive<string | number>;
+    };
+
+/**
+ * $-prefixed breakpoint prop keys derived from BreakpointKey.
+ * e.g. "$sm" | "$md" | "$lg" | "$xl" | "$2xl"
+ */
+type LayoutBreakpointPropKey = `$${Exclude<BreakpointKey, "base">}`;
+
+/**
+ * Partial style group props for the $-prefixed breakpoint-as-prop syntax.
+ * Each key accepts a partial set of Box style props scoped to that breakpoint.
+ */
+type LayoutBreakpointProps = {
+  [K in LayoutBreakpointPropKey]?: Partial<
+    Pick<
+      BoxProps,
+      | "p"
+      | "px"
+      | "py"
+      | "pt"
+      | "pb"
+      | "pl"
+      | "pr"
+      | "m"
+      | "mx"
+      | "my"
+      | "mt"
+      | "mb"
+      | "ml"
+      | "mr"
+      | "width"
+      | "height"
+      | "minWidth"
+      | "maxWidth"
+      | "minHeight"
+      | "maxHeight"
+      | "flex"
+      | "flexDirection"
+      | "flexGrow"
+      | "flexShrink"
+      | "flexBasis"
+      | "alignItems"
+      | "alignSelf"
+      | "justifyContent"
+      | "gap"
+      | "rowGap"
+      | "columnGap"
+    >
+  >;
+};
+
+// ---------------------------------------------------------------------------
+// BoxLayoutProps
+// ---------------------------------------------------------------------------
+
+/**
+ * The set of layout-related props shared across every component in the library.
+ *
+ * Includes:
+ * - Spacing (p/m and all directional variants)
+ * - Sizing (width/height/min/max)
+ * - Flex layout (flex, flexDirection, alignItems, gap, etc.)
+ * - Custom shorthand props from `createUi({ shorthands })` — e.g. `bg`, `br`
+ * - $-prefixed breakpoint group props from `createUi({ media })` — e.g. `$md`, `$lg`
+ *
+ * Every component in @stareezy-ui/components extends this type, so responsive
+ * layout and shorthand props work on Button, Input, Card, and all others.
+ */
+export type BoxLayoutProps = Pick<
+  BoxProps,
+  // ── Spacing ───────────────────────────────────────────────────────────────
+  | "p"
+  | "px"
+  | "py"
+  | "pt"
+  | "pb"
+  | "pl"
+  | "pr"
+  | "m"
+  | "mx"
+  | "my"
+  | "mt"
+  | "mb"
+  | "ml"
+  | "mr"
+  // ── Sizing ────────────────────────────────────────────────────────────────
+  | "width"
+  | "height"
+  | "minWidth"
+  | "maxWidth"
+  | "minHeight"
+  | "maxHeight"
+  // ── Flex ──────────────────────────────────────────────────────────────────
+  | "flex"
+  | "flexDirection"
+  | "flexGrow"
+  | "flexShrink"
+  | "flexBasis"
+  | "alignItems"
+  | "alignSelf"
+  | "justifyContent"
+  | "gap"
+  | "rowGap"
+  | "columnGap"
+> &
+  LayoutShorthandProps &
+  LayoutBreakpointProps;
+
+// ---------------------------------------------------------------------------
+// Runtime key lists — used by extractBoxLayoutProps
+// ---------------------------------------------------------------------------
+
+/**
+ * Explicit BoxLayoutProps keys (spacing + sizing + flex).
+ * Custom shorthands and $-prefixed keys are detected dynamically at runtime.
+ */
+const BOX_LAYOUT_PROP_KEYS: ReadonlySet<string> = new Set<string>([
+  // Spacing
+  "p",
+  "px",
+  "py",
+  "pt",
+  "pb",
+  "pl",
+  "pr",
+  "m",
+  "mx",
+  "my",
+  "mt",
+  "mb",
+  "ml",
+  "mr",
+  // Sizing
+  "width",
+  "height",
+  "minWidth",
+  "maxWidth",
+  "minHeight",
+  "maxHeight",
+  // Flex
+  "flex",
+  "flexDirection",
+  "flexGrow",
+  "flexShrink",
+  "flexBasis",
+  "alignItems",
+  "alignSelf",
+  "justifyContent",
+  "gap",
+  "rowGap",
+  "columnGap",
+]);
+
+// ---------------------------------------------------------------------------
+// extractBoxLayoutProps
+// ---------------------------------------------------------------------------
+
+/**
+ * Splits a props object into `{ layout, rest }` at runtime.
+ *
+ * A prop is routed to `layout` when:
+ * 1. It is one of the explicit BoxLayoutProps keys (spacing/sizing/flex)
+ * 2. It starts with `$` (breakpoint-as-prop group, e.g. `$md`)
+ * 3. It is a key in the configured custom shorthands from `getUiConfig().shorthands`
+ *    (e.g. `bg`, `br` when declared in stareezy.config.ts)
+ *
+ * Everything else goes to `rest`.
+ *
+ * Requirements: 5.1
+ */
+export function extractBoxLayoutProps<P extends object>(
+  props: P,
+): { layout: Partial<BoxLayoutProps>; rest: Omit<P, keyof BoxLayoutProps> } {
+  const configShorthands = getUiConfig()?.shorthands ?? {};
+  const layout: Partial<BoxLayoutProps> = {};
+  const rest: Record<string, unknown> = {};
+
+  for (const key of Object.keys(props as Record<string, unknown>)) {
+    const value = (props as Record<string, unknown>)[key];
+    if (
+      BOX_LAYOUT_PROP_KEYS.has(key) ||
+      key.startsWith("$") ||
+      Object.prototype.hasOwnProperty.call(configShorthands, key)
+    ) {
+      (layout as Record<string, unknown>)[key] = value;
+    } else {
+      rest[key] = value;
+    }
+  }
+
+  return {
+    layout,
+    rest: rest as Omit<P, keyof BoxLayoutProps>,
+  };
+}
+
+// ---------------------------------------------------------------------------
+// Re-export BreakpointKey for convenience
+// ---------------------------------------------------------------------------
+
+export type { BreakpointKey };

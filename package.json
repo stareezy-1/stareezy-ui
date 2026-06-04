@@ -9,25 +9,31 @@
     "pnpm": ">=9.0.0"
   },
   "scripts": {
-    "build": "pnpm run build:tokens && pnpm run build:core && pnpm run build:runtime && pnpm run build:stylesheet && pnpm run build:compiler && pnpm run build:components",
+    "build": "pnpm run build:tokens && pnpm run build:core && pnpm run build:runtime && pnpm run build:stylesheet && pnpm run build:compiler && pnpm run build:components && pnpm run build:cli",
     "build:tokens": "pnpm --filter @stareezy-ui/tokens build",
     "build:core": "pnpm --filter @stareezy-ui/core build",
     "build:runtime": "pnpm --filter @stareezy-ui/runtime build",
     "build:stylesheet": "pnpm --filter @stareezy-ui/stylesheet build",
     "build:compiler": "pnpm --filter @stareezy-ui/compiler build",
     "build:components": "pnpm --filter @stareezy-ui/components build",
+    "build:cli": "pnpm --filter @stareezy-ui/cli build",
     "build:cdn": "pnpm --filter @stareezy-ui/tokens build:cdn && pnpm --filter @stareezy-ui/stylesheet build:cdn && pnpm --filter @stareezy-ui/core build:cdn && pnpm --filter @stareezy-ui/runtime build:cdn && pnpm --filter @stareezy-ui/components build:cdn",
     "build:apps": "pnpm --filter './apps/**' build",
     "typecheck": "pnpm -r typecheck",
     "test": "pnpm -r test",
     "lint": "pnpm -r lint",
+    "check:peers": "node scripts/check-peer-ranges.mjs",
+    "size": "size-limit",
     "clean": "pnpm -r clean && rm -rf node_modules",
     "changeset": "changeset",
     "version-packages": "changeset version",
     "release": "pnpm run build && pnpm run build:cdn && changeset publish"
   },
   "devDependencies": {
-    "@changesets/cli": "^2.27.1"
+    "@changesets/cli": "^2.27.1",
+    "@size-limit/preset-small-lib": "^11.0.0",
+    "fast-check": "^3.19.0",
+    "size-limit": "^11.0.0"
   },
   "workspaces": [
     "packages/*",

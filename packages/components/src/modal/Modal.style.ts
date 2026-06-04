@@ -1,10 +1,9 @@
 /**
- * Modal.style.ts — style constants for the Modal component.
- *
- * All token values accessed via .value — no hardcoded colors.
+ * Modal.style.ts — geometry-only style constants for the Modal component.
+ * All colors are resolved at render time via useThemedColors() in Modal.tsx.
  */
 
-import { colors } from "@stareezy-ui/tokens";
+import { RADIUS, GAP, ELEVATION, INTERACTION } from "../shared/visualSpec";
 import type { ModalSize } from "./Modal.types";
 
 export const MODAL_KF = `
@@ -27,14 +26,16 @@ export const SIZE_W: Record<ModalSize, string> = {
   full: "100vw",
 };
 
-export const modalStyles = {
-  headerBorderColor: `1px solid ${colors.beauBlue[200].value}`,
-  footerBorderColor: `1px solid ${colors.beauBlue[200].value}`,
-  titleColor: colors.raisinBlack[800].value,
-  closeButtonColor: colors.beauBlue[700].value,
-  closeButtonHoverBg: colors.beauBlue[100].value,
-  closeButtonHoverColor: colors.raisinBlack[800].value,
-  rnBorderColor: colors.beauBlue[200].value,
-  rnTitleColor: colors.raisinBlack[800].value,
-  rnCloseColor: colors.beauBlue[700].value,
+export const modalGeometry = {
+  borderRadius: RADIUS.xl, // 12
+  headerPaddingV: GAP.md, // 12
+  headerPaddingH: GAP.lg, // 16
+  bodyPaddingH: GAP.lg, // 16
+  bodyPaddingV: GAP.md, // 12
+  footerPaddingV: GAP.md, // 12
+  footerPaddingH: GAP.lg, // 16
+  elevation: ELEVATION.xl,
+  closeButtonSize: 32,
+  closeButtonRadius: RADIUS.md, // 8
+  disabledOpacity: INTERACTION.disabledOpacity,
 } as const;

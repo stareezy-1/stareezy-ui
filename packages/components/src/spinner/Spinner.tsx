@@ -4,10 +4,11 @@
  */
 
 import React from "react";
-import { colors } from "@stareezy-ui/tokens";
 import { isWeb } from "../shared/platform";
+import { useThemedColors } from "../shared/useThemedColors";
 import { Box } from "../primitives/Box";
 import type { BoxProps } from "../primitives/Box";
+import { SPINNER_KF, SIZE_MAP, THICKNESS_MAP } from "./Spinner.style";
 import type { SpinnerSize, SpinnerVariant } from "./Spinner.types";
 
 export type { SpinnerSize, SpinnerVariant };
@@ -20,45 +21,30 @@ export interface SpinnerProps extends Omit<BoxProps, "children"> {
   label?: string;
 }
 
-const SIZE_MAP: Record<SpinnerSize, number> = {
-  xs: 16,
-  sm: 20,
-  md: 28,
-  lg: 40,
-  xl: 56,
-};
-const THICKNESS_MAP: Record<SpinnerSize, number> = {
-  xs: 2,
-  sm: 2,
-  md: 3,
-  lg: 3,
-  xl: 4,
-};
-
-const KEYFRAMES = `
-@keyframes szr-spin { to { transform: rotate(360deg); } }
-@keyframes szr-pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
-`;
-
 let kfInjected = false;
 function injectKf() {
   if (kfInjected || typeof document === "undefined") return;
   const el = document.createElement("style");
   el.setAttribute("data-szr-kf", "spinner");
-  el.textContent = KEYFRAMES;
+  el.textContent = SPINNER_KF;
   document.head.appendChild(el);
   kfInjected = true;
 }
 
 export const Spinner: React.FC<SpinnerProps> = ({
   size = "md",
-  color = colors.celurenBlue[400].value,
-  trackColor = colors.beauBlue[200].value,
+  color,
+  trackColor,
   variant = "ring",
   label = "Loading",
   testID,
   ...boxProps
 }) => {
+  const themed = useThemedColors();
+  // Resolve colors at render time — callers can still override via props
+  const resolvedColor = color ?? themed.borderPrimaryBrand;
+  const resolvedTrackColor = trackColor ?? themed.borderSecondary;
+
   const px = SIZE_MAP[size];
   const thickness = THICKNESS_MAP[size];
 
@@ -86,7 +72,7 @@ export const Spinner: React.FC<SpinnerProps> = ({
                 width: dotSize,
                 height: dotSize,
                 borderRadius: "50%",
-                backgroundColor: color,
+                backgroundColor: resolvedColor,
                 display: "inline-block",
                 animation: `szr-spin 1.2s ease-in-out ${i * 0.16}s infinite`,
               }}
@@ -104,7 +90,7 @@ export const Spinner: React.FC<SpinnerProps> = ({
             width: px,
             height: px,
             borderRadius: "50%",
-            backgroundColor: color,
+            backgroundColor: resolvedColor,
             animation: "szr-pulse 1.4s ease-in-out infinite",
           }}
         />
@@ -119,8 +105,8 @@ export const Spinner: React.FC<SpinnerProps> = ({
             width: px,
             height: px,
             borderRadius: "50%",
-            border: `${thickness}px solid ${trackColor}`,
-            borderTopColor: color,
+            border: `${thickness}px solid ${resolvedTrackColor}`,
+            borderTopColor: resolvedColor,
             animation: "szr-spin 0.65s linear infinite",
             flexShrink: 0,
           }}
@@ -154,7 +140,11 @@ export const Spinner: React.FC<SpinnerProps> = ({
       testID={testID}
       {...boxProps}
     >
-      <ActivityIndicator size={px} color={color} accessibilityLabel={label} />
+      <ActivityIndicator
+        size={px}
+        color={resolvedColor}
+        accessibilityLabel={label}
+      />
     </Box>
   );
 };

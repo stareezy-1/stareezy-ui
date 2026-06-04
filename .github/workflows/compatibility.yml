@@ -1,0 +1,121 @@
+name: Compatibility Matrix
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  compatibility:
+    name: "${{ matrix.framework }} ${{ matrix.version }} — ${{ matrix.integration-dir }}"
+    runs-on: ubuntu-latest
+    continue-on-error: false
+
+    strategy:
+      # Run all matrix jobs even if one fails, so we get the full picture.
+      fail-fast: false
+      matrix:
+        include:
+          # Next.js — full 14 / 15 / 16 range (Req 8.1, 8.2)
+          - framework: next
+            version: "14"
+            next-version: "14.x"
+            integration-dir: integration/next-app-14
+          - framework: next
+            version: "15"
+            next-version: "15.x"
+            integration-dir: integration/next-app-15
+          - framework: next
+            version: "16"
+            next-version: "^16.0.0"
+            integration-dir: integration/next-app-16
+
+          # Vite — all four majors 4 / 5 / 6 / 7 via the same project (Req 8.3)
+          - framework: vite
+            version: "4"
+            vite-version: "^4.0.0"
+            integration-dir: integration/vite-app
+          - framework: vite
+            version: "5"
+            vite-version: "^5.0.0"
+            integration-dir: integration/vite-app
+          - framework: vite
+            version: "6"
+            vite-version: "^6.0.0"
+            integration-dir: integration/vite-app
+          - framework: vite
+            version: "7"
+            vite-version: "^7.0.0"
+            integration-dir: integration/vite-app
+
+          # Expo — full 54 / 55 / 56 range (Req 8.4, 8.5)
+          - framework: expo
+            version: "54"
+            integration-dir: integration/expo-app-54
+          - framework: expo
+            version: "55"
+            integration-dir: integration/expo-app-55
+          - framework: expo
+            version: "56"
+            integration-dir: integration/expo-app-56
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 9
+
+      - name: Set up Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install monorepo dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build all packages
+        run: pnpm run build
+
+      - name: Run peer-dependency range check
+        run: node scripts/check-peer-ranges.mjs
+
+      # -----------------------------------------------------------------------
+      # Integration project build (Task 8 — projects are now committed)
+      # For Vite matrix rows we override the vite dep to the pinned major.
+      # Integration projects are workspace members — their @stareezy-ui/*
+      # deps are resolved from the monorepo build, so no separate install
+      # lock file is needed; we use pnpm with --no-frozen-lockfile.
+      # -----------------------------------------------------------------------
+      - name: Pin Vite version for Vite matrix rows
+        if: matrix.framework == 'vite' && matrix.vite-version != ''
+        working-directory: ${{ matrix.integration-dir }}
+        shell: bash
+        run: |
+          # Override the vite devDependency to the matrix-specified major so
+          # the build is validated against exactly that version.
+          pnpm add --save-dev "vite@${{ matrix.vite-version }}" --no-frozen-lockfile
+
+      - name: Install integration project dependencies
+        working-directory: ${{ matrix.integration-dir }}
+        run: pnpm install --no-frozen-lockfile
+
+      - name: Build integration project (production)
+        working-directory: ${{ matrix.integration-dir }}
+        run: pnpm run build
+
+      # -----------------------------------------------------------------------
+      # Failure reporting — Req 7.8 / 8.6
+      # -----------------------------------------------------------------------
+      - name: Report failure details
+        if: failure()
+        shell: bash
+        run: |
+          echo "::error::Compatibility build FAILED"
+          echo "  Framework:           ${{ matrix.framework }}"
+          echo "  Version:             ${{ matrix.version }}"
+          echo "  Integration project: ${{ matrix.integration-dir }}"

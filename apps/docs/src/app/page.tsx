@@ -11,6 +11,13 @@ export const metadata: Metadata = {
 
 const PACKAGES = [
   {
+    name: "@stareezy-ui/cli",
+    icon: "▶",
+    color: "#f59e0b",
+    desc: "First-party CLI. `stareezy create` scaffolds pre-wired Next.js, Vite, or Expo projects. `stareezy add` installs components with dep resolution.",
+    badge: "New in v0.4",
+  },
+  {
     name: "@stareezy-ui/tokens",
     icon: "◉",
     color: "#00ff88",
@@ -28,38 +35,43 @@ const PACKAGES = [
     name: "@stareezy-ui/components",
     icon: "⬡",
     color: "#00cc6a",
-    desc: "17+ cross-platform components. Box, Text, Button, Input, Modal, Badge, Card, Toast and more.",
-    badge: "17+ components",
+    desc: "31+ cross-platform components. All theme-reactive. ./server RSC-safe entry. Every component accepts BoxLayoutProps + $-prefixed breakpoint props.",
+    badge: "31+ components",
   },
   {
     name: "@stareezy-ui/compiler",
     icon: "⚙",
     color: "#f59e0b",
-    desc: "Babel/Vite plugin. Extracts token props at build time and emits atomic CSS — zero runtime cost.",
+    desc: "Babel/Vite/Metro plugin. Extracts token props at build time and emits atomic CSS — zero runtime cost. Works on Vite 4–7, Next.js 14–16, Expo 54–56.",
     badge: "Optional",
-  },
-  {
-    name: "@stareezy-ui/stylesheet",
-    icon: "◈",
-    color: "#0ea5e9",
-    desc: "Atomic CSS sheet management. Deduplicates rules, injects :root variables, handles theme switching.",
-    badge: "Web",
   },
   {
     name: "@stareezy-ui/core",
     icon: "⬢",
     color: "#a78bfa",
-    desc: "Utilities, hooks, and platform helpers. useDeviceLayout, useDocsTheme, string/date/currency utils.",
+    desc: "Utilities, hooks, and platform helpers. useDeviceLayout, platform detection, string/date/currency utils.",
     badge: "Utilities",
   },
 ];
 
 const QUICK_LINKS = [
   {
+    href: "/docs/cli",
+    label: "CLI",
+    icon: "▶",
+    desc: "Scaffold with one command",
+  },
+  {
     href: "/docs/installation",
     label: "Installation",
     icon: "↓",
     desc: "Get running in 5 minutes",
+  },
+  {
+    href: "/docs/responsive",
+    label: "Responsive System",
+    icon: "◈",
+    desc: "Config-driven breakpoints",
   },
   {
     href: "/docs/usage",
@@ -71,37 +83,25 @@ const QUICK_LINKS = [
     href: "/docs/theming",
     label: "Theming",
     icon: "◑",
-    desc: "4 themes, auto-switching",
+    desc: "5 themes, auto-switching",
   },
   {
-    href: "/docs/create-ui",
-    label: "createUi",
-    icon: "◎",
-    desc: "Configure at startup",
-  },
-  {
-    href: "/docs/use-ui-config",
-    label: "useUiConfig",
-    icon: "⚛",
-    desc: "Reactive config access",
+    href: "/docs/server",
+    label: "Server Components",
+    icon: "⬢",
+    desc: "RSC-safe ./server entry",
   },
   {
     href: "/docs/components",
     label: "Components",
     icon: "⬡",
-    desc: "17+ cross-platform",
+    desc: "31+ cross-platform",
   },
   {
     href: "/docs/compiler",
     label: "Compiler",
     icon: "⚙",
     desc: "Build-time optimization",
-  },
-  {
-    href: "/tokens",
-    label: "Token Explorer",
-    icon: "◉",
-    desc: "Browse 300+ tokens",
   },
 ];
 
@@ -133,6 +133,13 @@ const THEMES = [
     accent: "#4a9eff",
     text: "#e8dcc8",
     desc: "Midnight navy",
+  },
+  {
+    name: "quasar",
+    bg: "#06030f",
+    accent: "#a855f7",
+    text: "#f3e8ff",
+    desc: "Deep violet",
   },
 ];
 
@@ -230,7 +237,7 @@ export default function HomePage() {
               textTransform: "uppercase",
             }}
           >
-            <span>◉</span> v0.3.0 — Quasar Release
+            <span>◉</span> v0.4.0 — CLI + Stabilization Release
           </div>
 
           <h1
@@ -262,8 +269,8 @@ export default function HomePage() {
             }}
           >
             Cross-platform token system and component library for React Native
-            and web. Four themes, O(1) runtime, build-time compiler — all
-            tree-shakeable. Theme-reactive props via the{" "}
+            and web. Five themes, O(1) runtime, build-time compiler — all
+            tree-shakeable. Scaffold in one command with the{" "}
             <code
               style={{
                 fontSize: "0.9em",
@@ -274,9 +281,9 @@ export default function HomePage() {
                 border: "1px solid var(--brand-100)",
               }}
             >
-              t
+              stareezy
             </code>{" "}
-            accessor.
+            CLI.
           </p>
 
           <div
@@ -289,8 +296,8 @@ export default function HomePage() {
           >
             {[
               { value: "300+", label: "Tokens" },
-              { value: "17+", label: "Components" },
-              { value: "4", label: "Themes" },
+              { value: "31+", label: "Components" },
+              { value: "5", label: "Themes" },
               { value: "O(1)", label: "Runtime" },
             ].map((s) => (
               <div key={s.label}>
@@ -442,7 +449,7 @@ export default function HomePage() {
               margin: 0,
             }}
           >
-            Four built-in themes
+            Five built-in themes
           </p>
           <Link
             href="/docs/theming"
@@ -877,7 +884,7 @@ setTheme('steins-gate') // → ibmBlue, ivoryText, labNight`}</code>
           }}
         >
           <span style={{ color: "var(--brand-primary)" }}>$</span>
-          <span>pnpm add @stareezy-ui/tokens @stareezy-ui/components</span>
+          <span>npx stareezy create my-app --template next</span>
         </div>
         <TrackedLink
           href="/docs/installation"

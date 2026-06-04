@@ -46,6 +46,10 @@ export type {
   Responsive,
 } from "./primitives/Box";
 
+// ── BoxLayoutProps ─────────────────────────────────────────────────────────────
+export type { BoxLayoutProps } from "./shared/boxLayoutProps";
+export { extractBoxLayoutProps } from "./shared/boxLayoutProps";
+
 // ── Platform ──────────────────────────────────────────────────────────────────
 export {
   isWeb,
@@ -186,3 +190,27 @@ export type {
 // ── Toast ─────────────────────────────────────────────────────────────────────
 export { Toast } from "./toast/Toast";
 export type { ToastProps, ToastVariant } from "./toast/Toast";
+
+// ── Breadcrumb ────────────────────────────────────────────────────────────────
+export { Breadcrumb } from "./breadcrumb/Breadcrumb";
+export type { BreadcrumbProps, BreadcrumbItem } from "./breadcrumb/Breadcrumb";
+
+// ── Pagination ────────────────────────────────────────────────────────────────
+export { Pagination, EPaginationVariant } from "./pagination/Pagination";
+export type { PaginationProps } from "./pagination/Pagination";
+
+// ── Table ─────────────────────────────────────────────────────────────────────
+export { Table } from "./table/Table";
+export type { TableProps, TableColumn, TableRow } from "./table/Table";
+
+// ── Tag ───────────────────────────────────────────────────────────────────────
+export { Tag, ETagVariant } from "./tag/Tag";
+export type { TagProps } from "./tag/Tag";
+
+// ── Tooltip ───────────────────────────────────────────────────────────────────
+export { Tooltip } from "./tooltip/Tooltip";
+export type { TooltipProps, TooltipPlacement } from "./tooltip/Tooltip";
+
+// ── Drawer ────────────────────────────────────────────────────────────────────
+export { Drawer } from "./drawer/Drawer";
+export type { DrawerProps, DrawerAnchor } from "./drawer/Drawer";

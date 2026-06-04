@@ -31,7 +31,9 @@
       "@stareezy-ui/stylesheet": ["packages/stylesheet/src/index.ts"],
       "@stareezy-ui/stylesheet/*": ["packages/stylesheet/src/*"],
       "@stareezy-ui/components": ["packages/components/src/index.ts"],
-      "@stareezy-ui/components/*": ["packages/components/src/*"]
+      "@stareezy-ui/components/*": ["packages/components/src/*"],
+      "@stareezy-ui/cli": ["packages/cli/src/index.ts"],
+      "@stareezy-ui/cli/*": ["packages/cli/src/*"]
     }
   },
   "references": [
@@ -40,7 +42,8 @@
     { "path": "packages/runtime" },
     { "path": "packages/stylesheet" },
     { "path": "packages/compiler" },
-    { "path": "packages/components" }
+    { "path": "packages/components" },
+    { "path": "packages/cli" }
   ],
   "exclude": ["node_modules", "**/dist/**", "**/node_modules/**"]
 }

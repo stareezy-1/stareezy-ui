@@ -1,35 +1,42 @@
 import React from "react";
 import { isWeb } from "../shared/platform";
+import { useThemedColors } from "../shared/useThemedColors";
 import { Text, ETextType } from "../primitives/Text";
+import { Box } from "../primitives/Box";
 import {
-  progressPanelContainerStyle,
-  progressStepStatusStyles,
+  makeProgressPanelContainerStyle,
+  makeProgressStepStatusStyles,
 } from "./ProgressPanel.style";
 import type { ProgressStep } from "./ProgressPanel.types";
-import { aurora } from "@stareezy-ui/tokens";
+import type { BoxLayoutProps } from "../shared/boxLayoutProps";
+import { extractBoxLayoutProps } from "../shared/boxLayoutProps";
 
 export type { ProgressStep } from "./ProgressPanel.types";
 
-export interface ProgressPanelProps {
+export interface ProgressPanelProps extends BoxLayoutProps {
   steps: ProgressStep[];
   currentStep: number;
   style?: React.CSSProperties | Record<string, unknown>;
 }
 
-export const ProgressPanel: React.FC<ProgressPanelProps> = ({
-  steps,
-  currentStep,
-  style,
-}) => {
+export const ProgressPanel: React.FC<ProgressPanelProps> = (props) => {
+  const { layout, rest } = extractBoxLayoutProps(props);
+  const hasLayoutProps = Object.keys(layout).length > 0;
+  const { steps, currentStep, style } = rest as ProgressPanelProps;
+  const themed = useThemedColors();
+
+  const containerStyle = makeProgressPanelContainerStyle(themed);
+  const stepStatusStyles = makeProgressStepStatusStyles(themed);
+
   const completedCount = steps.filter((s) => s.status === "complete").length;
   const percentage =
     steps.length > 0 ? Math.round((completedCount / steps.length) * 100) : 0;
 
   if (isWeb) {
-    return (
+    const webContent = (
       <div
         style={{
-          ...progressPanelContainerStyle,
+          ...containerStyle,
           ...(style as React.CSSProperties),
         }}
       >
@@ -46,7 +53,7 @@ export const ProgressPanel: React.FC<ProgressPanelProps> = ({
             style={{
               flex: 1,
               height: 4,
-              backgroundColor: aurora.borderSubtle.value,
+              backgroundColor: themed.borderDefault,
               borderRadius: 2,
               overflow: "hidden",
             }}
@@ -55,7 +62,7 @@ export const ProgressPanel: React.FC<ProgressPanelProps> = ({
               style={{
                 width: `${percentage}%`,
                 height: "100%",
-                backgroundColor: aurora.auroraGreen.value,
+                backgroundColor: themed.colorSuccess,
                 borderRadius: 2,
                 transition: "width 0.3s ease",
               }}
@@ -64,12 +71,12 @@ export const ProgressPanel: React.FC<ProgressPanelProps> = ({
           <Text
             type={ETextType.AuroraStatLabel}
             text={`${percentage}%`}
-            color={aurora.textSecondary.value}
+            color={themed.textSecondary}
           />
         </div>
         {/* Steps */}
         {steps.map((step, index) => {
-          const statusStyle = progressStepStatusStyles[step.status];
+          const statusStyle = stepStatusStyles[step.status];
           const isCurrentStep = index === currentStep;
           return (
             <div
@@ -103,7 +110,7 @@ export const ProgressPanel: React.FC<ProgressPanelProps> = ({
                 <span
                   style={{
                     marginLeft: "auto",
-                    color: aurora.auroraGreen.value,
+                    color: themed.colorSuccess,
                     fontSize: 12,
                   }}
                 >
@@ -114,7 +121,7 @@ export const ProgressPanel: React.FC<ProgressPanelProps> = ({
                 <span
                   style={{
                     marginLeft: "auto",
-                    color: aurora.errorRed.value,
+                    color: themed.colorDanger,
                     fontSize: 12,
                   }}
                 >
@@ -126,16 +133,19 @@ export const ProgressPanel: React.FC<ProgressPanelProps> = ({
         })}
       </div>
     );
+    if (hasLayoutProps) return <Box {...layout}>{webContent}</Box>;
+    return webContent;
   }
 
   // React Native
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
   const { View } = require("react-native") as {
     View: React.ComponentType<Record<string, unknown>>;
   };
-  return (
+  const nativeContent = (
     <View style={{ padding: 20, ...(style as Record<string, unknown>) }}>
       {steps.map((step) => {
-        const statusStyle = progressStepStatusStyles[step.status];
+        const statusStyle = stepStatusStyles[step.status];
         return (
           <View
             key={step.id}
@@ -164,6 +174,8 @@ export const ProgressPanel: React.FC<ProgressPanelProps> = ({
       })}
     </View>
   );
+  if (hasLayoutProps) return <Box {...layout}>{nativeContent}</Box>;
+  return nativeContent;
 };
 
 ProgressPanel.displayName = "ProgressPanel";

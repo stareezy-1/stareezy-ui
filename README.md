@@ -15,36 +15,101 @@
 
 ## What is Stareezy UI?
 
-Stareezy UI is a **fully typed, object-based design token system and cross-platform component library** for React Native and web. It solves a problem that every design system eventually hits: your tokens are strings, your styles are untyped, and your theme switching causes re-renders.
-
-Every design value — color, spacing, radius, typography, shadow, motion — is a typed `Token<T>` object. The compiler extracts token props at build time into atomic CSS. The runtime resolves styles in O(1) via a `Map`. Theme switching is pure CSS variables — zero JavaScript re-renders.
+Stareezy UI is a **fully typed, object-based design token system and cross-platform component library** for React Native and web. Every design value — color, spacing, radius, typography, shadow, motion — is a typed `Token<T>` object. Theme switching is pure CSS variables — zero JavaScript re-renders.
 
 ```tsx
-import { colors, spacing, radius } from "@stareezy-ui/tokens";
+import { colors, spacing, t } from "@stareezy-ui/tokens";
 import { Box, Text, Button } from "@stareezy-ui/components";
 
 // Full TypeScript autocomplete. Same code on web and React Native.
-<Box bg={colors.celurenBlue[500]} p={spacing[4]} rounded={radius.md}>
+// t.* props resolve to the current theme's value at render time.
+<Box bg={t.backgrounds.secondary} p={spacing[4]} rounded={8}>
   <Text type="M-heading-bold" text="Hello, Stareezy UI" />
-  <Button variant="primary" text="Get Started" />
+  <Button type="Primary" text="Get Started" />
 </Box>;
 ```
 
 ---
 
-## Why not Tamagui, Radix, Shadcn, or Chakra?
+## Scaffold a project in one command
 
-|                         | Stareezy UI     | Tamagui         | Radix UI    | Shadcn UI   | Chakra UI   |
-| ----------------------- | --------------- | --------------- | ----------- | ----------- | ----------- |
-| Typed token objects     | ✅ `Token<T>`   | ⚠️ string-based | ❌          | ❌          | ⚠️          |
-| React Native + Web      | ✅ same API     | ✅              | ❌ web only | ❌ web only | ❌ web only |
-| O(1) style runtime      | ✅ Map.get()    | ⚠️              | N/A         | N/A         | ❌          |
-| Build-time compiler     | ✅ Babel + Vite | ✅              | ❌          | ❌          | ❌          |
-| Zero-dep token layer    | ✅              | ❌              | ❌          | ❌          | ❌          |
-| CDN / script tag        | ✅              | ❌              | ❌          | ❌          | ❌          |
-| Theme switch re-renders | ❌ none         | ⚠️ some         | N/A         | N/A         | ⚠️ some     |
+```bash
+# Next.js 15 App Router
+npx stareezy create my-app --template next
 
-**The core difference:** Stareezy UI treats tokens as first-class typed objects, not strings. This enables the compiler to detect token usage statically, the runtime to resolve styles without parsing, and TypeScript to catch invalid values at compile time — not at runtime.
+# Vite + React 19
+npx stareezy create my-app --template vite
+
+# Expo SDK 56 (React Native 0.85 + React 19)
+npx stareezy create my-app --template expo
+```
+
+Each template ships pre-wired with `stareezy.config.ts`, compiler/runtime setup, and `ThemeProvider`. No manual wiring needed.
+
+---
+
+## What changed in v0.4
+
+### Config-driven responsive type system (Core Vision Gap closed)
+
+`createUi({ media, shorthands })` now drives the entire type system. Declare breakpoints once and every prop, autocomplete, and error derives from your config — no separate manual wiring.
+
+```ts
+const ui = createUi({
+  media: { sm: 480, md: 768, lg: 1024 },
+  shorthands: { p: "padding", br: "borderRadius", w: "width" } as const,
+});
+// BreakpointKey is now "base" | "sm" | "md" | "lg" — from your config
+// <Box p={{ base: 8, md: 16, lg: 24 }} />  ← fully typed
+```
+
+### `$`-prefixed breakpoint-as-prop syntax (Tamagui-style)
+
+Group multiple style props under a single breakpoint key:
+
+```tsx
+<Box $md={{ p: 16, br: 8 }} $lg={{ p: 24, br: 12, flexDirection: "row" }} />
+```
+
+### `BoxLayoutProps` on every component
+
+Every component in the library now accepts spacing, sizing, flex, and `$`-prefixed props:
+
+```tsx
+<Button p={{ base: 8, md: 12 }} w={{ base: "100%", md: "auto" }} />
+<Input w={{ base: "100%", md: 360 }} mb={8} />
+```
+
+### React Server Components — `./server` entry
+
+Hook-free primitives safe for Next.js App Router Server Components:
+
+```tsx
+// In a Server Component — no "use client" needed
+import { Box, Stack, Text, Divider } from "@stareezy-ui/components/server";
+```
+
+### 6 new components
+
+Breadcrumb, Pagination, Table, Tag, Tooltip, Drawer — all theme-reactive, all accessible, all extending `BoxLayoutProps`.
+
+### All existing components are now theme-reactive
+
+Every existing component now resolves colors from the active theme at render time via `useThemedColors()`. No more components locked to the aurora or light palette.
+
+### Five themes
+
+Added the **Quasar** theme (deep violet, pulsar orange accent). All five themes: `light`, `dark`, `aurora`, `steins-gate`, `quasar`.
+
+### @stareezy-ui/cli
+
+First-party CLI with `create`, `add`, and `init` commands:
+
+```bash
+npx stareezy create my-app --template next   # scaffold pre-wired project
+npx stareezy init                             # add wiring to existing project
+npx stareezy add button input card drawer    # add components with dep resolution
+```
 
 ---
 
@@ -53,106 +118,100 @@ import { Box, Text, Button } from "@stareezy-ui/components";
 | Package                                            | Description                                                         | Size                                                                                                                  |
 | -------------------------------------------------- | ------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
 | [`@stareezy-ui/tokens`](./packages/tokens)         | Token definitions, theme system, `createUi` — **zero dependencies** | [![npm](https://img.shields.io/npm/v/@stareezy-ui/tokens)](https://www.npmjs.com/package/@stareezy-ui/tokens)         |
-| [`@stareezy-ui/components`](./packages/components) | 17+ cross-platform UI components                                    | [![npm](https://img.shields.io/npm/v/@stareezy-ui/components)](https://www.npmjs.com/package/@stareezy-ui/components) |
+| [`@stareezy-ui/components`](./packages/components) | 31+ cross-platform UI components                                    | [![npm](https://img.shields.io/npm/v/@stareezy-ui/components)](https://www.npmjs.com/package/@stareezy-ui/components) |
+| [`@stareezy-ui/cli`](./packages/cli)               | Scaffolding CLI — `create`, `add`, `init`                           | [![npm](https://img.shields.io/npm/v/@stareezy-ui/cli)](https://www.npmjs.com/package/@stareezy-ui/cli)               |
 | [`@stareezy-ui/runtime`](./packages/runtime)       | O(1) style registry, web + RN adapters                              | [![npm](https://img.shields.io/npm/v/@stareezy-ui/runtime)](https://www.npmjs.com/package/@stareezy-ui/runtime)       |
-| [`@stareezy-ui/compiler`](./packages/compiler)     | Babel/Vite build-time transform                                     | [![npm](https://img.shields.io/npm/v/@stareezy-ui/compiler)](https://www.npmjs.com/package/@stareezy-ui/compiler)     |
+| [`@stareezy-ui/compiler`](./packages/compiler)     | Babel/Vite/Metro build-time transform                               | [![npm](https://img.shields.io/npm/v/@stareezy-ui/compiler)](https://www.npmjs.com/package/@stareezy-ui/compiler)     |
 | [`@stareezy-ui/core`](./packages/core)             | Utilities, hooks, platform helpers                                  | [![npm](https://img.shields.io/npm/v/@stareezy-ui/core)](https://www.npmjs.com/package/@stareezy-ui/core)             |
 | [`@stareezy-ui/stylesheet`](./packages/stylesheet) | Atomic CSS sheet management                                         | [![npm](https://img.shields.io/npm/v/@stareezy-ui/stylesheet)](https://www.npmjs.com/package/@stareezy-ui/stylesheet) |
-
-Install only what you need. Every package is independently tree-shakeable.
 
 ---
 
 ## Quick Start
 
-### Web — React / Next.js / Vite
+### CLI (fastest)
 
 ```bash
-# Tokens only (zero dependencies, ~25 KB)
-pnpm add @stareezy-ui/tokens
+npx stareezy create my-app --template next
+cd my-app
+pnpm install
+pnpm dev
+```
 
-# Full component library
+### Manual — Web (React 19 / Next.js 15 / Vite 7)
+
+```bash
 pnpm add @stareezy-ui/tokens @stareezy-ui/components @stareezy-ui/runtime
-
-# Build-time compiler (optional, dev dependency)
 pnpm add -D @stareezy-ui/compiler
 ```
 
-**vite.config.ts**
+**stareezy.config.ts** (project root):
+
+```ts
+import { createUi, themes } from "@stareezy-ui/tokens";
+
+const ui = createUi({
+  themes: { aurora: themes.aurora, dark: themes.dark, light: themes.light },
+  media: { sm: 480, md: 768, lg: 1024, xl: 1280, "2xl": 1536 },
+  shorthands: {
+    p: "padding", m: "margin", br: "borderRadius", w: "width",
+  } as const,
+});
+
+declare module "@stareezy-ui/tokens" {
+  interface SzrCustomConfig extends typeof ui {}
+}
+export default ui;
+```
+
+**vite.config.ts** (or in `next.config.ts` webpack config):
 
 ```ts
 import { stareezyVitePlugin } from "@stareezy-ui/compiler";
-
-export default {
-  plugins: [stareezyVitePlugin()],
-};
+export default { plugins: [stareezyVitePlugin()] };
 ```
 
-**App root**
+**App root**:
 
 ```tsx
 import { ThemeProvider } from "@stareezy-ui/tokens";
-
-export default function App() {
-  return <ThemeProvider theme="light">{/* your app */}</ThemeProvider>;
+export default function App({ children }) {
+  return <ThemeProvider defaultTheme="aurora">{children}</ThemeProvider>;
 }
 ```
 
-### React Native — Expo / bare workflow
+### Manual — React Native / Expo SDK 56
 
 ```bash
 yarn add @stareezy-ui/tokens @stareezy-ui/components @stareezy-ui/runtime
 yarn add -D @stareezy-ui/compiler
-
-# Only needed for the Slider component
-yarn add @react-native-community/slider
-npx pod-install  # bare workflow only
 ```
 
-**metro.config.js**
+**metro.config.js**:
 
 ```js
 const { getDefaultConfig } = require("expo/metro-config");
 const config = getDefaultConfig(__dirname);
-config.resolver.unstable_enablePackageExports = true;
+config.transformer = {
+  ...config.transformer,
+  babelTransformerPath: require.resolve("@stareezy-ui/compiler/metro"),
+};
 module.exports = config;
 ```
 
-**babel.config.js**
+---
 
-```js
-const { stareezyBabelPlugin } = require("@stareezy-ui/compiler/babel");
+## Compatibility
 
-module.exports = function (api) {
-  api.cache(true);
-  return {
-    presets: ["babel-preset-expo"],
-    plugins: [stareezyBabelPlugin()],
-  };
-};
-```
+| Framework    | Supported versions |
+| ------------ | ------------------ |
+| React        | 18, 19             |
+| React Native | 0.81 – 0.86        |
+| Expo SDK     | 54, 55, 56         |
+| Next.js      | 14, 15, 16         |
+| Vite         | 4, 5, 6, 7         |
 
-### CDN / Script tag
-
-No bundler? Load directly from jsDelivr:
-
-```html
-<!-- React (required peer dep) -->
-<script src="https://cdn.jsdelivr.net/npm/react@18/umd/react.production.min.js"></script>
-
-<!-- Tokens only (~25 KB) -->
-<script src="https://cdn.jsdelivr.net/npm/@stareezy-ui/tokens/dist/cdn/stareezy-tokens.global.js"></script>
-
-<!-- OR: Full component library (~118 KB) -->
-<script src="https://cdn.jsdelivr.net/npm/@stareezy-ui/components/dist/cdn/stareezy-ui.global.js"></script>
-
-<script>
-  const { colors, spacing } = StareezyTokens;
-  console.log(colors.celurenBlue[500].value); // "#024CCE"
-</script>
-```
-
-See the [CDN usage guide](https://ui.stareezy.tech/docs/cdn) for full documentation.
+All `@stareezy-ui/*` packages declare ranged `peerDependencies` — no hard-pinned major versions.
 
 ---
 
@@ -161,228 +220,136 @@ See the [CDN usage guide](https://ui.stareezy.tech/docs/cdn) for full documentat
 Every design value is a typed `Token<T>` object:
 
 ```ts
-type Token<T> = {
-  readonly __token: true; // compiler discriminant
-  readonly id: string; // stable identifier
-  readonly value: T; // resolved primitive
-};
-```
+import { colors, spacing, radius, t } from "@stareezy-ui/tokens";
 
-```ts
-import {
-  colors,
-  spacing,
-  radius,
-  typography,
-  shadow,
-  timing,
-} from "@stareezy-ui/tokens";
-
-// Full TypeScript autocomplete on every value
 colors.celurenBlue[500].value; // "#024CCE"
 spacing[4].value; // 16
 radius.md.value; // 8
 
-// Use .value anywhere tokens aren't accepted (inline styles, StyleSheet, etc.)
-const style = { backgroundColor: colors.celurenBlue[500].value };
+// t.* = ThemeToken — resolves to current theme's value at render time
+t.text.primary; // → "#0f1010" (light), "#f0f6fc" (dark), "#f0f0f8" (aurora)
+t.backgrounds.primary; // → brand color in current theme
 ```
 
-### Custom tokens with `createUi`
+### createUi — configure once
 
 ```ts
-import { createUi, token } from "@stareezy-ui/tokens";
+import { createUi, themes, token } from "@stareezy-ui/tokens";
 
 const ui = createUi({
-  tokens: {
-    brand: {
-      primary: token("#FF6B35", "brand-primary"),
-      secondary: token("#004E89", "brand-secondary"),
-    },
-  },
-  breakpoints: { sm: 640, md: 768, lg: 1024, xl: 1280 },
   themes: {
-    aurora: {
-      "bg.primary": token("#050505", "aurora-bg-primary"),
-      "text.primary": token("#ffffff", "aurora-text-primary"),
-    },
+    aurora: themes.aurora, dark: themes.dark, light: themes.light,
+    "steins-gate": themes["steins-gate"], quasar: themes.quasar,
   },
+  tokens: {
+    brand: { primary: token("#FF6B35", "brand-primary") },
+  },
+  media: { sm: 480, md: 768, lg: 1024, xl: 1280 },
+  shorthands: { bg: "backgroundColor", p: "padding", br: "borderRadius" } as const,
 });
 
-ui.tokens.brand.primary.value; // "#FF6B35" — fully typed
+// Type augmentation — makes your config flow into BoxProps everywhere
+declare module "@stareezy-ui/tokens" {
+  interface SzrCustomConfig extends typeof ui {}
+}
 ```
 
 ---
 
 ## Components
 
-17+ cross-platform components that work identically on web and React Native:
+31+ cross-platform components that work identically on web and React Native.
 
-**Primitives** — `Box`, `Text`, `TouchableOpacity`
+**Primitives** — `Box`, `View`, `Text`, `HStack`, `VStack`, `Divider`
+
+**RSC-safe** (via `./server`) — `Box`, `View`, `Stack`, `Text`, `Divider`
 
 **Inputs** — `Button`, `Input`, `Checkbox`, `Switch`, `Slider`, `Dropdown`
 
 **Feedback** — `Badge`, `Toast`, `Progress`, `CircularProgress`, `Spinner`, `Skeleton`
 
-**Overlay** — `Modal`, `BottomSheets`, `Tooltip`
+**Overlay** — `Modal`, `Drawer`, `Tooltip`
 
-**Navigation** — `Tabs`, `Accordion`, `CommandPalette`
+**Navigation** — `Tabs`, `Accordion`, `Breadcrumb`, `Pagination`, `CommandPalette`
 
-**Layout** — `Card`, `Divider`, `Avatar`, `Clipboard`
+**Data** — `Table`
 
-All components accept token objects directly as props:
+**Display** — `Card`, `Avatar`, `Tag`, `Clipboard`, `NavBar`
+
+All components accept `BoxLayoutProps` — responsive spacing/sizing/flex props work everywhere:
 
 ```tsx
-import { colors, spacing, radius } from "@stareezy-ui/tokens";
-import { Box, Text, Badge, Button } from "@stareezy-ui/components";
-
-function ProfileCard() {
-  return (
-    <Box bg={colors.neutral[50]} p={spacing[6]} rounded={radius.lg}>
-      <Badge variant="green" label="Active" />
-      <Text type="L-heading-bold" text="Jane Smith" />
-      <Text
-        type="S-body"
-        text="Senior Engineer"
-        color={colors.neutral[500].value}
-      />
-      <Button variant="primary" text="View Profile" />
-    </Box>
-  );
-}
+// These all work the same way
+<Button  p={{ base: 8, md: 12 }} w={{ base: "100%", md: "auto" }} />
+<Input   w={{ base: "100%", md: 360 }} mb={8} />
+<Card    p={{ base: 12, md: 20 }} $lg={{ flexDirection: "row" }} />
+<Drawer  open={open} onClose={close} anchor="right" />
 ```
 
 ---
 
 ## Theming
 
-Themes are CSS variable maps — switching themes is a single attribute change, no JavaScript re-renders:
+Five built-in themes — switch with a single call, zero re-renders:
 
 ```tsx
 import { ThemeProvider, useThemeSwitch } from "@stareezy-ui/tokens";
 
-// Built-in themes: "light" | "dark" | "aurora"
-<ThemeProvider theme="aurora">
+// Available: "light" | "dark" | "aurora" | "steins-gate" | "quasar"
+<ThemeProvider defaultTheme="aurora">
   <App />
 </ThemeProvider>;
 
-// Switch at runtime — zero re-renders
 function ThemeToggle() {
   const { setTheme } = useThemeSwitch();
-  return <Button onPress={() => setTheme("dark")} text="Dark mode" />;
+  return (
+    <>
+      <button onClick={() => setTheme("aurora")}>Aurora</button>
+      <button onClick={() => setTheme("quasar")}>Quasar</button>
+      <button onClick={() => setTheme("steins-gate")}>Steins;Gate</button>
+    </>
+  );
 }
 ```
 
-Custom theme overrides:
-
-```ts
-const ui = createUi({
-  themes: {
-    brand: {
-      "bg.primary": token("#0a0a0a", "brand-bg"),
-      "text.primary": token("#f5f5f5", "brand-text"),
-      accent: token("#FF6B35", "brand-accent"),
-    },
-  },
-});
-```
+All components are **Theme_Reactive** — no hardcoded colors anywhere in the library. Colors come from `useThemedColors()` at render time.
 
 ---
 
 ## Architecture
 
 ```
-@stareezy-ui/tokens       ← zero deps — token definitions, theme system, createUi
+@stareezy-ui/tokens       ← zero deps — token definitions, 5 themes, createUi, SzrCustomConfig
          ↓
 @stareezy-ui/core         ← utilities, hooks, platform detection
 @stareezy-ui/stylesheet   ← atomic CSS injection, :root variable management
          ↓
 @stareezy-ui/runtime      ← O(1) style registry, web + RN adapters
          ↓
-@stareezy-ui/compiler     ← Babel/Vite build-time transform (devDependency only)
+@stareezy-ui/compiler     ← Babel/Vite/Metro build-time transform (devDependency only)
          ↓
-@stareezy-ui/components   ← 17+ cross-platform UI components
+@stareezy-ui/components   ← 31+ cross-platform UI components (. and ./server entries)
+         ↓
+@stareezy-ui/cli          ← create / add / init scaffolding tool
 ```
-
-**Build dependency chain:** `tokens` → `core` / `stylesheet` → `runtime` → `compiler` → `components`
-
-The compiler is optional. Without it, the runtime adapter handles style resolution at render time. With it, token props are extracted at build time into atomic CSS classes — zero runtime cost.
-
----
-
-## Accessibility
-
-Stareezy UI components are built with accessibility in mind:
-
-- Keyboard navigation support on all interactive components
-- ARIA attributes on Modal, Tooltip, Accordion, Tabs, CommandPalette
-- Focus management and focus trapping in overlays
-- `prefers-reduced-motion` respected in animation tokens
-- Screen reader labels on icon-only buttons and controls
-
-> Full WCAG 2.1 AA compliance requires manual testing with assistive technologies. We provide the primitives — your implementation determines the outcome.
-
----
-
-## SSR Support
-
-The token system and theme provider are SSR-safe. CSS variables are injected server-side, so there is no flash of unstyled content on hydration. The `ThemeProvider` accepts an initial theme that matches the server-rendered output.
-
-```tsx
-// Next.js App Router
-import { ThemeProvider } from "@stareezy-ui/tokens";
-
-export default function RootLayout({ children }) {
-  return (
-    <html>
-      <body>
-        <ThemeProvider theme="light">{children}</ThemeProvider>
-      </body>
-    </html>
-  );
-}
-```
-
----
-
-## Testing
-
-Tests use [Vitest](https://vitest.dev/) with [fast-check](https://fast-check.dev/) for property-based testing:
-
-```bash
-pnpm test              # run all tests
-pnpm typecheck         # type-check all packages
-```
-
-Property tests cover token serialization, style resolution, compiler transforms, and component prop validation. Each package runs tests independently — no cross-package test pollution.
 
 ---
 
 ## Monorepo Development
 
 ```bash
-# Install all dependencies
-pnpm install
-
-# Build all packages in dependency order
-pnpm run build
-
-# Build CDN bundles (IIFE)
-pnpm run build:cdn
-
-# Run all tests
-pnpm test
-
-# Type-check all packages
-pnpm typecheck
-
-# Start docs dev server
-pnpm --filter @stareezy-ui/docs dev
-
-# Start Storybook
-pnpm --filter @stareezy-ui/storybook storybook
+pnpm install                          # install all deps
+pnpm run build                        # build all packages in dependency order
+pnpm test                             # run all tests
+pnpm typecheck                        # type-check all packages
+pnpm --filter @stareezy-ui/docs dev   # start docs dev server
+pnpm --filter @stareezy-ui/storybook storybook  # start Storybook
+pnpm check:peers                      # verify peerDependency ranges
+pnpm size                             # check bundle size budgets
 
 # Build a single package
 pnpm --filter @stareezy-ui/tokens build
+pnpm --filter @stareezy-ui/cli build
 ```
 
 ### Release
@@ -390,44 +357,36 @@ pnpm --filter @stareezy-ui/tokens build
 ```bash
 pnpm changeset              # describe changes, select version bump
 pnpm run version-packages   # apply version bumps + update CHANGELOGs
-pnpm run release            # build → build:cdn → publish to npm
+pnpm run release            # build → publish to npm
 ```
 
 ---
 
 ## Apps
 
-| App                                    | Description                                             |
-| -------------------------------------- | ------------------------------------------------------- |
-| [`apps/docs`](./apps/docs)             | Documentation site — Next.js, Token Explorer, CDN guide |
-| [`apps/storybook`](./apps/storybook)   | Component stories — Storybook 8                         |
-| [`apps/playground`](./apps/playground) | Live code sandbox                                       |
+| App                                    | Description                                                      |
+| -------------------------------------- | ---------------------------------------------------------------- |
+| [`apps/docs`](./apps/docs)             | Documentation site — Next.js 14, full guide coverage             |
+| [`apps/storybook`](./apps/storybook)   | Component stories — Storybook 8 with Chromatic visual regression |
+| [`apps/playground`](./apps/playground) | Live code sandbox                                                |
 
 ---
 
-## Roadmap
+## Testing
 
-- [ ] CLI — `npx create-stareezy-app` scaffolding
-- [ ] VS Code extension — token autocomplete in style files
-- [ ] Figma plugin — sync design tokens from Figma variables
-- [ ] React Server Components adapter
-- [ ] Animation system — token-driven motion primitives
-- [ ] More components — DataTable, DatePicker, Combobox, FileUpload
-- [ ] Accessibility audit — full WCAG 2.1 AA certification per component
+```bash
+pnpm test       # all tests (Vitest + fast-check property-based)
+pnpm typecheck  # all packages
+```
 
----
+Six consolidated correctness properties (fast-check, ≥100 iterations each):
 
-## Contributing
-
-Contributions are welcome. Please read the guidelines before opening a PR.
-
-1. Fork the repository
-2. Create a feature branch: `git checkout -b feat/my-feature`
-3. Make your changes
-4. Add a changeset: `pnpm changeset`
-5. Push and open a pull request
-
-For bug reports and feature requests, open an [issue](https://github.com/stareezy-1/stareezy-ui/issues).
+- Responsive resolution round-trip
+- Breakpoint-sync invariant (`createUi` → runtime)
+- `$`-group precedence over responsive object
+- CLI dependency closure
+- CLI init/add idempotency
+- Theme-reactivity across all five themes
 
 ---
 

@@ -1,0 +1,48 @@
+name: Chromatic Visual Regression
+
+on:
+  pull_request:
+    branches: [main]
+
+defaults:
+  run:
+    working-directory: stareezy-ui
+
+jobs:
+  chromatic:
+    name: Chromatic
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # needed for Chromatic's baseline comparison
+
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 9
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build packages
+        run: pnpm run build
+
+      - name: Build Storybook
+        run: pnpm --filter @stareezy-ui/storybook build-storybook
+        env:
+          NODE_OPTIONS: --max_old_space_size=4096
+
+      - name: Publish to Chromatic
+        uses: chromaui/action@v11
+        with:
+          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+          storybookBuildDir: apps/storybook/storybook-static
+          workingDir: stareezy-ui
+          # autoAcceptChanges: main  ← uncomment to auto-accept on main branch
+          exitZeroOnChanges: false # block approval on visual diffs
+          onlyChanged: true # only upload changed stories

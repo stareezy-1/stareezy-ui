@@ -4,11 +4,12 @@
  */
 
 import React, { useState, useRef, useEffect, useCallback } from "react";
-import { colors } from "@stareezy-ui/tokens";
 import { isWeb } from "../shared/platform";
+import { useThemedColors } from "../shared/useThemedColors";
 import { Box } from "../primitives/Box";
 import type { BoxProps, StyleProp } from "../primitives/Box";
 import { Text, ETextType } from "../primitives/Text";
+import { DROPDOWN_KF, SIZE_H, FONT } from "./Dropdown.style";
 import type { DropdownSize, DropdownOption } from "./Dropdown.types";
 
 export type { DropdownSize, DropdownOption };
@@ -37,52 +38,28 @@ export interface DropdownProps extends Omit<BoxProps, "onChange" | "children"> {
   contentContainerStyle?: React.CSSProperties;
   renderEmpty?: React.ReactNode;
   renderFooter?: React.ReactNode;
-  /** ETextType for the label above the trigger */
   labelTextType?: ETextType;
-  /** Style override for the label text */
   labelTextStyle?: StyleProp;
-  /** ETextType for the selected value / placeholder text in the trigger */
   triggerTextType?: ETextType;
-  /** Style override for the trigger text */
   triggerTextStyle?: StyleProp;
-  /** ETextType for option labels (when label is a string) */
   optionTextType?: ETextType;
-  /** Style override for option label text */
   optionTextStyle?: StyleProp;
-  /** ETextType for group header labels */
   groupTextType?: ETextType;
-  /** ETextType for the error message */
   errorTextType?: ETextType;
-  /** Style override for the error message text */
   errorTextStyle?: StyleProp;
 }
 
 // ---------------------------------------------------------------------------
-// Constants
+// Internal spinner
 // ---------------------------------------------------------------------------
 
-const SIZE_H: Record<DropdownSize, number> = { sm: 34, md: 42, lg: 50 };
-const FONT: Record<DropdownSize, number> = { sm: 13, md: 14, lg: 15 };
-
-const DROPDOWN_KF = `
-@keyframes szr-dropdown-in {
-  from { opacity: 0; transform: translateY(-6px) scale(0.98); }
-  to   { opacity: 1; transform: translateY(0)    scale(1);    }
-}
-@keyframes szr-spin { to { transform: rotate(360deg); } }
-`;
-
-let dropdownKfInjected = false;
-function injectDropdownKf() {
-  if (dropdownKfInjected || typeof document === "undefined") return;
-  const el = document.createElement("style");
-  el.setAttribute("data-szr-kf", "dropdown");
-  el.textContent = DROPDOWN_KF;
-  document.head.appendChild(el);
-  dropdownKfInjected = true;
-}
-
-function ListSpinner({ color }: { color: string }) {
+function ListSpinner({
+  color,
+  trackColor,
+}: {
+  color: string;
+  trackColor: string;
+}) {
   return (
     <div
       style={{ display: "flex", justifyContent: "center", padding: "10px 0" }}
@@ -94,7 +71,7 @@ function ListSpinner({ color }: { color: string }) {
           width: 18,
           height: 18,
           borderRadius: "50%",
-          border: `2px solid ${colors.beauBlue[200].value}`,
+          border: `2px solid ${trackColor}`,
           borderTopColor: color,
           animation: "szr-spin 0.65s linear infinite",
         }}
@@ -106,6 +83,16 @@ function ListSpinner({ color }: { color: string }) {
 // ---------------------------------------------------------------------------
 // Dropdown component
 // ---------------------------------------------------------------------------
+
+let dropdownKfInjected = false;
+function injectDropdownKf() {
+  if (dropdownKfInjected || typeof document === "undefined") return;
+  const el = document.createElement("style");
+  el.setAttribute("data-szr-kf", "dropdown");
+  el.textContent = DROPDOWN_KF;
+  document.head.appendChild(el);
+  dropdownKfInjected = true;
+}
 
 export const Dropdown: React.FC<DropdownProps> = ({
   options,
@@ -153,6 +140,8 @@ export const Dropdown: React.FC<DropdownProps> = ({
   const containerRef = useRef<HTMLDivElement>(null);
   const searchRef = useRef<HTMLInputElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
+
+  const themed = useThemedColors();
 
   const current = value ?? internalValue;
   const search =
@@ -254,16 +243,16 @@ export const Dropdown: React.FC<DropdownProps> = ({
     injectDropdownKf();
 
     const borderColor = hasError
-      ? colors.crimsonRed[500].value
+      ? themed.colorDanger
       : open
-      ? colors.celurenBlue[400].value
-      : colors.beauBlue[300].value;
+      ? themed.borderPrimaryBrand
+      : themed.borderDefault;
 
     const focusRing =
       open && !hasError
-        ? `0 0 0 3px ${colors.celurenBlue[25].value}`
+        ? themed.focusRing
         : hasError
-        ? `0 0 0 3px ${colors.crimsonRed[50].value}`
+        ? themed.focusRingError
         : "none";
 
     const triggerLabel = selectedLabels.length
@@ -285,7 +274,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
             <Text
               type={labelTextType}
               text={label}
-              color={colors.raisinBlack[800].value}
+              color={themed.textPrimary}
               style={{
                 letterSpacing: "0.01em",
                 ...(labelTextStyle as React.CSSProperties),
@@ -295,7 +284,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
               <Text
                 type={ETextType.XSLabel}
                 text="*"
-                color={colors.crimsonRed[500].value}
+                color={themed.colorDanger}
               />
             )}
           </label>
@@ -321,7 +310,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
               padding: `0 ${size === "sm" ? 10 : 14}px`,
               border: `1.5px solid ${borderColor}`,
               borderRadius: 8,
-              backgroundColor: disabled ? colors.beauBlue[50].value : "#ffffff",
+              backgroundColor: disabled ? themed.bgDisabled : themed.surface,
               cursor: disabled ? "not-allowed" : "pointer",
               opacity: disabled ? 0.65 : 1,
               transition: "border-color 0.18s ease, box-shadow 0.18s ease",
@@ -345,8 +334,8 @@ export const Dropdown: React.FC<DropdownProps> = ({
                   text={triggerLabel}
                   color={
                     selectedLabels.length
-                      ? colors.raisinBlack[800].value
-                      : colors.beauBlue[600].value
+                      ? themed.textPrimary
+                      : themed.textSecondary
                   }
                   style={{
                     fontSize,
@@ -367,7 +356,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
                 flexShrink: 0,
                 transform: open ? "rotate(180deg)" : "rotate(0deg)",
                 transition: "transform 0.2s ease",
-                color: colors.beauBlue[600].value,
+                color: themed.textSecondary,
               }}
             >
               <path
@@ -390,8 +379,8 @@ export const Dropdown: React.FC<DropdownProps> = ({
                 left: 0,
                 right: 0,
                 zIndex: 200,
-                backgroundColor: "#ffffff",
-                border: `1.5px solid ${colors.beauBlue[200].value}`,
+                backgroundColor: themed.surface,
+                border: `1.5px solid ${themed.borderDefault}`,
                 borderRadius: 10,
                 boxShadow:
                   "0 8px 32px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.08)",
@@ -407,7 +396,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
                 <div
                   style={{
                     padding: "8px 10px",
-                    borderBottom: `1px solid ${colors.beauBlue[100].value}`,
+                    borderBottom: `1px solid ${themed.borderSecondary}`,
                     flexShrink: 0,
                   }}
                 >
@@ -419,23 +408,22 @@ export const Dropdown: React.FC<DropdownProps> = ({
                     onChange={(e) => handleSearchChange(e.target.value)}
                     style={{
                       width: "100%",
-                      border: `1px solid ${colors.beauBlue[200].value}`,
+                      border: `1px solid ${themed.borderDefault}`,
                       borderRadius: 6,
                       padding: "6px 10px",
                       fontSize: 13,
                       outline: "none",
                       fontFamily: "Inter,system-ui,sans-serif",
-                      color: colors.raisinBlack[800].value,
+                      color: themed.textPrimary,
                       boxSizing: "border-box",
                       transition: "border-color 0.15s ease",
                     }}
                     onFocus={(e) => {
                       e.currentTarget.style.borderColor =
-                        colors.celurenBlue[400].value;
+                        themed.borderPrimaryBrand;
                     }}
                     onBlur={(e) => {
-                      e.currentTarget.style.borderColor =
-                        colors.beauBlue[200].value;
+                      e.currentTarget.style.borderColor = themed.borderDefault;
                     }}
                   />
                 </div>
@@ -453,7 +441,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
                         <Text
                           type={ETextType.XSParagraphRegular}
                           text="No options found"
-                          color={colors.beauBlue[600].value}
+                          color={themed.textSecondary}
                         />
                       </div>
                     ))}
@@ -469,7 +457,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
                             <Text
                               type={groupTextType}
                               text={group}
-                              color={colors.beauBlue[600].value}
+                              color={themed.textSecondary}
                               style={{
                                 letterSpacing: "0.06em",
                                 textTransform: "uppercase",
@@ -498,7 +486,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
                                   : "pointer",
                                 opacity: opt.disabled ? 0.45 : 1,
                                 backgroundColor: isSelected
-                                  ? colors.celurenBlue[25].value
+                                  ? themed.bgSelected
                                   : "transparent",
                                 transition: "background 0.1s ease",
                               }}
@@ -506,8 +494,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
                                 if (!opt.disabled && !isSelected)
                                   (
                                     e.currentTarget as HTMLDivElement
-                                  ).style.backgroundColor =
-                                    colors.beauBlue[50].value;
+                                  ).style.backgroundColor = themed.bgHover;
                               }}
                               onMouseLeave={(e) => {
                                 if (!isSelected)
@@ -528,8 +515,8 @@ export const Dropdown: React.FC<DropdownProps> = ({
                                     text={opt.label}
                                     color={
                                       isSelected
-                                        ? colors.celurenBlue[600].value
-                                        : colors.raisinBlack[800].value
+                                        ? themed.bgSelectedText
+                                        : themed.textPrimary
                                     }
                                     style={{
                                       fontSize,
@@ -551,7 +538,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
                                 >
                                   <path
                                     d="M2 7L5.5 10.5L12 3.5"
-                                    stroke={colors.celurenBlue[500].value}
+                                    stroke={themed.bgSelectedText}
                                     strokeWidth="2"
                                     strokeLinecap="round"
                                     strokeLinejoin="round"
@@ -566,7 +553,10 @@ export const Dropdown: React.FC<DropdownProps> = ({
                   })}
 
                   {loading && (
-                    <ListSpinner color={colors.celurenBlue[400].value} />
+                    <ListSpinner
+                      color={themed.borderPrimaryBrand}
+                      trackColor={themed.borderSecondary}
+                    />
                   )}
                   {renderFooter}
                 </div>
@@ -579,7 +569,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
           <Text
             type={errorTextType}
             text={errorMessage!}
-            color={colors.crimsonRed[500].value}
+            color={themed.colorDanger}
             style={{
               fontWeight: "500",
               ...(errorTextStyle as React.CSSProperties),
@@ -620,14 +610,14 @@ export const Dropdown: React.FC<DropdownProps> = ({
           <Text
             type={labelTextType}
             text={label}
-            color={colors.raisinBlack[800].value}
+            color={themed.textPrimary}
             style={labelTextStyle as Record<string, unknown>}
           />
           {isRequired && (
             <Text
               type={ETextType.XSLabel}
               text=" *"
-              color={colors.crimsonRed[500].value}
+              color={themed.colorDanger}
             />
           )}
         </View>
@@ -645,11 +635,9 @@ export const Dropdown: React.FC<DropdownProps> = ({
           justifyContent: "space-between",
           paddingHorizontal: 14,
           borderWidth: 1.5,
-          borderColor: hasError
-            ? colors.crimsonRed[500].value
-            : colors.beauBlue[300].value,
+          borderColor: hasError ? themed.colorDanger : themed.borderDefault,
           borderRadius: 8,
-          backgroundColor: disabled ? colors.beauBlue[50].value : "#ffffff",
+          backgroundColor: disabled ? themed.bgDisabled : themed.surface,
           opacity: disabled ? 0.65 : 1,
         }}
       >
@@ -657,11 +645,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
           <Text
             type={triggerTextType}
             text={selectedLabel ?? placeholder}
-            color={
-              selectedLabel
-                ? colors.raisinBlack[800].value
-                : colors.beauBlue[600].value
-            }
+            color={selectedLabel ? themed.textPrimary : themed.textSecondary}
             style={{
               flex: 1,
               fontSize,
@@ -674,7 +658,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
             <Text
               type={triggerTextType}
               text={placeholder}
-              color={colors.beauBlue[600].value}
+              color={themed.textSecondary}
               style={{
                 flex: 1,
                 fontSize,
@@ -687,7 +671,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
         <Text
           type={ETextType.XSParagraphRegular}
           text="▼"
-          color={colors.beauBlue[600].value}
+          color={themed.textSecondary}
         />
       </TouchableOpacity>
 
@@ -708,7 +692,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
         >
           <View
             style={{
-              backgroundColor: "#fff",
+              backgroundColor: themed.surface,
               borderTopLeftRadius: 20,
               borderTopRightRadius: 20,
               maxHeight: "70%",
@@ -723,7 +707,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
                   width: 36,
                   height: 4,
                   borderRadius: 2,
-                  backgroundColor: colors.beauBlue[300].value,
+                  backgroundColor: themed.borderDefault,
                 }}
               />
             </View>
@@ -732,13 +716,13 @@ export const Dropdown: React.FC<DropdownProps> = ({
                 paddingHorizontal: 16,
                 paddingBottom: 12,
                 borderBottomWidth: 1,
-                borderBottomColor: colors.beauBlue[200].value,
+                borderBottomColor: themed.borderDefault,
               }}
             >
               <Text
                 type={ETextType.XSHeadingBold}
                 text={label ?? "Select"}
-                color={colors.raisinBlack[800].value}
+                color={themed.textPrimary}
                 style={{ textAlign: "center" }}
               />
             </View>
@@ -749,22 +733,22 @@ export const Dropdown: React.FC<DropdownProps> = ({
                   paddingHorizontal: 12,
                   paddingVertical: 8,
                   borderBottomWidth: 1,
-                  borderBottomColor: colors.beauBlue[100].value,
+                  borderBottomColor: themed.borderSecondary,
                 }}
               >
                 <RNTextInput
                   value={search}
                   onChangeText={handleSearchChange}
                   placeholder={searchPlaceholder}
-                  placeholderTextColor={colors.beauBlue[600].value}
+                  placeholderTextColor={themed.textSecondary}
                   style={{
                     height: 38,
                     borderWidth: 1,
-                    borderColor: colors.beauBlue[200].value,
+                    borderColor: themed.borderDefault,
                     borderRadius: 8,
                     paddingHorizontal: 10,
                     fontSize: 14,
-                    color: colors.raisinBlack[800].value,
+                    color: themed.textPrimary,
                   }}
                   allowFontScaling={false}
                   autoFocus
@@ -786,7 +770,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
                         <Text
                           type={ETextType.XSParagraphRegular}
                           text="No options found"
-                          color={colors.beauBlue[600].value}
+                          color={themed.textSecondary}
                         />
                       </View>
                     )
@@ -798,7 +782,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
                     <View style={{ paddingVertical: 12, alignItems: "center" }}>
                       <ActivityIndicator
                         size="small"
-                        color={colors.celurenBlue[400].value}
+                        color={themed.borderPrimaryBrand}
                       />
                     </View>
                   )}
@@ -820,10 +804,10 @@ export const Dropdown: React.FC<DropdownProps> = ({
                       paddingHorizontal: 16,
                       paddingVertical: 13,
                       borderBottomWidth: 1,
-                      borderBottomColor: colors.beauBlue[100].value,
+                      borderBottomColor: themed.borderSecondary,
                       opacity: item.disabled ? 0.45 : 1,
                       backgroundColor: isSelected
-                        ? colors.celurenBlue[25].value
+                        ? themed.bgSelected
                         : "transparent",
                     }}
                   >
@@ -838,8 +822,8 @@ export const Dropdown: React.FC<DropdownProps> = ({
                         text={item.label}
                         color={
                           isSelected
-                            ? colors.celurenBlue[600].value
-                            : colors.raisinBlack[800].value
+                            ? themed.bgSelectedText
+                            : themed.textPrimary
                         }
                         style={{
                           flex: 1,
@@ -857,7 +841,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
                       <Text
                         type={ETextType.MParagraphRegular}
                         text="✓"
-                        color={colors.celurenBlue[500].value}
+                        color={themed.bgSelectedText}
                       />
                     )}
                   </TouchableOpacity>
@@ -872,7 +856,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
         <Text
           type={errorTextType}
           text={errorMessage!}
-          color={colors.crimsonRed[500].value}
+          color={themed.colorDanger}
           style={{
             fontWeight: "500",
             ...(errorTextStyle as Record<string, unknown>),

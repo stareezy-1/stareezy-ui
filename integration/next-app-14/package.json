@@ -1,0 +1,22 @@
+{
+  "name": "integration-next-app-14",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "build": "next build"
+  },
+  "dependencies": {
+    "next": "14.x",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "@stareezy-ui/components": "workspace:*",
+    "@stareezy-ui/tokens": "workspace:*",
+    "@stareezy-ui/compiler": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.0",
+    "@types/react-dom": "^18.0.0",
+    "@types/node": "^20.0.0",
+    "typescript": "^5.4.0"
+  }
+}

@@ -1,10 +1,9 @@
 /**
- * Switch.style.ts — style constants for the Switch component.
- *
- * All token values accessed via .value — no hardcoded colors.
+ * Switch.style.ts — geometry-only style constants for the Switch component.
+ * All colors are resolved at render time via useThemedColors() in Switch.tsx.
  */
 
-import { colors } from "@stareezy-ui/tokens";
+import { INTERACTION } from "../shared/visualSpec";
 import type { SwitchSize } from "./Switch.types";
 
 export const TRACK: Record<SwitchSize, { w: number; h: number }> = {
@@ -15,9 +14,7 @@ export const TRACK: Record<SwitchSize, { w: number; h: number }> = {
 
 export const THUMB: Record<SwitchSize, number> = { sm: 12, md: 18, lg: 24 };
 
-export const switchStyles = {
-  defaultActiveColor: colors.celurenBlue[400].value,
-  defaultInactiveColor: colors.beauBlue[300].value,
-  labelColorDisabled: colors.beauBlue[600].value,
-  labelColorEnabled: colors.raisinBlack[800].value,
+export const switchStateOpacity = {
+  disabled: INTERACTION.disabledOpacity,
+  hover: INTERACTION.hoverOpacity,
 } as const;

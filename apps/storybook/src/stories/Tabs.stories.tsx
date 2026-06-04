@@ -1,33 +1,33 @@
+/**
+ * Tabs stories — covers all variants, sizes, interaction states (disabled, badge).
+ * Requirements: 11.8
+ */
+
+import React from "react";
 import type { Meta, StoryObj } from "@storybook/react";
 import { Tabs } from "@stareezy-ui/components";
 import type { TabItem } from "@stareezy-ui/components";
+
+const content = (text: string) => (
+  <p style={{ margin: 0, fontSize: 14 }}>{text}</p>
+);
 
 const ITEMS: TabItem[] = [
   {
     key: "overview",
     label: "Overview",
-    content: (
-      <p style={{ margin: 0, fontSize: 14, color: "#515253" }}>
-        Overview content goes here.
-      </p>
-    ),
+    content: content("Overview content goes here."),
   },
   {
     key: "specs",
     label: "Specs",
-    content: (
-      <p style={{ margin: 0, fontSize: 14, color: "#515253" }}>
-        Technical specifications.
-      </p>
-    ),
+    content: content("Technical specifications."),
   },
   {
     key: "reviews",
     label: "Reviews",
     badge: "12",
-    content: (
-      <p style={{ margin: 0, fontSize: 14, color: "#515253" }}>User reviews.</p>
-    ),
+    content: content("User reviews."),
   },
   { key: "disabled", label: "Disabled", disabled: true, content: null },
 ];
@@ -59,7 +59,7 @@ export const Card: Story = {
 };
 
 export const FullWidth: Story = {
-  name: "Full Width",
+  name: "Full width",
   args: {
     items: ITEMS,
     variant: "underline",
@@ -68,27 +68,37 @@ export const FullWidth: Story = {
   },
 };
 
+export const WithBadge: Story = {
+  name: "With badge count",
+  args: { items: ITEMS, variant: "pills", defaultActiveKey: "reviews" },
+};
+
+export const DisabledTab: Story = {
+  name: "With disabled tab",
+  args: { items: ITEMS, variant: "underline", defaultActiveKey: "overview" },
+};
+
 export const WithIcons: Story = {
-  name: "With Icons",
+  name: "With icons",
   args: {
     items: [
       {
         key: "home",
         label: "Home",
         icon: "⌂",
-        content: <p style={{ margin: 0, fontSize: 14 }}>Home content</p>,
+        content: content("Home content"),
       },
       {
         key: "search",
         label: "Search",
         icon: "⌕",
-        content: <p style={{ margin: 0, fontSize: 14 }}>Search content</p>,
+        content: content("Search content"),
       },
       {
         key: "profile",
         label: "Profile",
         icon: "◉",
-        content: <p style={{ margin: 0, fontSize: 14 }}>Profile content</p>,
+        content: content("Profile content"),
       },
     ],
     variant: "pills",
@@ -96,14 +106,24 @@ export const WithIcons: Story = {
   },
 };
 
-export const WithBoxProps: Story = {
-  name: "With BoxProps (p, bg, rounded)",
-  args: {
-    items: ITEMS,
-    variant: "underline",
-    defaultActiveKey: "overview",
-    p: 16,
-    bg: "#f8fafc",
-    rounded: 12,
-  },
+export const AllVariants: Story = {
+  name: "All variants",
+  render: () => (
+    <div style={{ display: "flex", flexDirection: "column", gap: 32 }}>
+      {(["underline", "pills", "card"] as const).map((v) => (
+        <div key={v}>
+          <p
+            style={{
+              fontSize: 12,
+              marginBottom: 8,
+              textTransform: "capitalize",
+            }}
+          >
+            {v}
+          </p>
+          <Tabs items={ITEMS} variant={v} defaultActiveKey="overview" />
+        </div>
+      ))}
+    </div>
+  ),
 };

@@ -4,10 +4,11 @@
  */
 
 import React from "react";
-import { colors } from "@stareezy-ui/tokens";
 import { isWeb } from "../shared/platform";
+import { useThemedColors } from "../shared/useThemedColors";
 import { Box } from "../primitives/Box";
 import type { BoxProps } from "../primitives/Box";
+import { SKELETON_KF } from "./Skeleton.style";
 import type { SkeletonVariant } from "./Skeleton.types";
 
 export type { SkeletonVariant };
@@ -22,13 +23,6 @@ export interface SkeletonProps
   baseColor?: string;
   highlightColor?: string;
 }
-
-const SKELETON_KF = `
-@keyframes szr-skeleton-wave {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
-}
-`;
 
 let skeletonKfInjected = false;
 function injectSkeletonKf() {
@@ -46,11 +40,14 @@ export const Skeleton: React.FC<SkeletonProps> = ({
   height,
   lines = 1,
   animated = true,
-  baseColor = colors.beauBlue[200].value,
-  highlightColor = colors.beauBlue[50].value,
+  baseColor,
+  highlightColor,
   testID,
   ...boxProps
 }) => {
+  const themed = useThemedColors();
+  const resolvedBaseColor = baseColor ?? themed.borderSecondary;
+  const resolvedHighlightColor = highlightColor ?? themed.bgSecondary;
   const getBorderRadius = () => {
     switch (variant) {
       case "circular":
@@ -68,8 +65,8 @@ export const Skeleton: React.FC<SkeletonProps> = ({
     injectSkeletonKf();
 
     const shimmerBg = animated
-      ? `linear-gradient(90deg,${baseColor} 25%,${highlightColor} 50%,${baseColor} 75%)`
-      : baseColor;
+      ? `linear-gradient(90deg,${resolvedBaseColor} 25%,${resolvedHighlightColor} 50%,${resolvedBaseColor} 75%)`
+      : resolvedBaseColor;
 
     if (lines > 1 && variant === "text") {
       return (
@@ -137,7 +134,7 @@ export const Skeleton: React.FC<SkeletonProps> = ({
       style={{
         width: (width ?? "100%") as string | number,
         height: (height ?? 20) as string | number,
-        backgroundColor: baseColor,
+        backgroundColor: resolvedBaseColor,
       }}
       {...boxProps}
     />

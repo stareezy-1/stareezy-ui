@@ -31,12 +31,14 @@ export type { ThemeOverride } from "./themes";
 export { ThemeProvider, useTheme, useThemeSwitch } from "./ThemeProvider";
 export type { ThemeProviderProps, ResolvedTheme } from "./ThemeProvider";
 
-export { createUi, getUiConfig } from "./createUi";
+export { createUi, getUiConfig, applyRuntimeBreakpoints } from "./createUi";
 export type {
   CreateUiConfig,
   UiConfig,
   UiBreakpointConfig,
   CustomTokenGroups,
+  MediaConfig,
+  ShorthandConfig,
   FontConfig,
   AnimationPreset,
   UiSettings,
@@ -72,15 +74,17 @@ export type { ThemeToken } from "./themeTokens";
 
 // ---------------------------------------------------------------------------
 // Module augmentation — users extend SzrCustomConfig in their ui.config.ts
-// to make custom shorthands flow into BoxProps automatically.
+// to make custom shorthands and media breakpoints flow into the type system.
 //
 // Usage in your ui.config.ts:
 //
 //   import { createUi } from '@stareezy-ui/tokens'
-//   export const ui = createUi({ shorthands: { bg: 'backgroundColor' } as const })
-//   type AppConfig = typeof ui
+//   export const ui = createUi({
+//     media: { sm: 640, md: 768, lg: 1024 } as const,
+//     shorthands: { bg: 'backgroundColor' } as const,
+//   })
 //   declare module '@stareezy-ui/tokens' {
-//     interface SzrCustomConfig extends AppConfig {}
+//     interface SzrCustomConfig extends typeof ui {}
 //   }
 // ---------------------------------------------------------------------------
 
@@ -88,12 +92,23 @@ export type { ThemeToken } from "./themeTokens";
  * Extend this interface in your app's ui.config.ts to register your
  * createUi() config with the type system.
  *
+ * When augmented with a `media` shape, `ConfigBreakpointKey` derives
+ * `"base"` plus the exact declared media keys. When augmented with a
+ * `shorthands` shape, those keys surface as custom props on Box.
+ *
  * @example
  * ```ts
  * // ui.config.ts
  * import { createUi } from '@stareezy-ui/tokens'
  *
  * export const ui = createUi({
+ *   media: {
+ *     sm: 640,
+ *     md: 768,
+ *     lg: 1024,
+ *     xl: 1280,
+ *     '2xl': 1536,
+ *   } as const,
  *   shorthands: {
  *     bg:  'backgroundColor',
  *     p:   'padding',
@@ -103,22 +118,60 @@ export type { ThemeToken } from "./themeTokens";
  *   } as const,
  * })
  *
- * type AppConfig = typeof ui
  * declare module '@stareezy-ui/tokens' {
- *   interface SzrCustomConfig extends AppConfig {}
+ *   interface SzrCustomConfig extends typeof ui {}
  * }
  * ```
  *
- * Once declared, `<Box bg={...} />` will be a valid typed prop even if `bg`
- * is not in the built-in BoxProps — TypeScript reads it from your config.
+ * Once declared, `ConfigBreakpointKey` reflects the exact media keys you
+ * configured, and `<Box bg={...} />` will be a valid typed prop.
  */
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface SzrCustomConfig {}
+export interface SzrCustomConfig {
+  // This interface is intentionally empty.
+  // Consumers augment it with their exact createUi() config type:
+  //
+  //   type CustomUi = typeof ui;
+  //   declare module "@stareezy-ui/tokens" {
+  //     interface SzrCustomConfig extends CustomUi {}
+  //   }
+  //
+  // Both `media` and `shorthands` are deliberately NOT declared here.
+  // Declaring them as wide types (Record<string,number> / Record<string,string>)
+  // would cause the keyof discriminants in ConfigBreakpointKey and SzrShorthands
+  // to always evaluate to their fallback branches, making the augmentation
+  // appear to have no effect.
+}
 
 /**
- * Extracts the shorthands record from SzrCustomConfig if the user has
- * augmented it, otherwise falls back to the built-in shorthand map.
+ * The default breakpoint union used when no media augmentation is present.
+ * Matches the built-in DEFAULT_BREAKPOINTS in createUi.
  */
-export type SzrShorthands = SzrCustomConfig extends { shorthands: infer S }
-  ? S
-  : Record<string, string>;
+export type DefaultBreakpointKey = "base" | "sm" | "md" | "lg" | "xl" | "2xl";
+
+/**
+ * Derives the BreakpointKey union from the augmented SzrCustomConfig's `media` shape.
+ *
+ * - No augmentation (no `media` key at all) → `DefaultBreakpointKey`
+ * - Augmented with literal keys → `"base"` plus the exact declared media keys
+ */
+export type ConfigBreakpointKey = SzrCustomConfig extends {
+  media: infer TMedia;
+}
+  ? string extends keyof TMedia
+    ? DefaultBreakpointKey // wide type — use defaults
+    : "base" | Extract<keyof TMedia, string> // literal keys — use them
+  : DefaultBreakpointKey; // no media declared — use defaults
+
+/**
+ * Extracts the shorthands record from SzrCustomConfig if the consumer has
+ * augmented it with literal shorthand keys.
+ *
+ * - No augmentation (no `shorthands` key at all) → `Record<never, never>` (no extra props)
+ * - Augmented with `shorthands: { bg: "backgroundColor", br: "borderRadius" }` →
+ *   those keys become props on Box / BoxLayoutProps
+ */
+export type SzrShorthands = SzrCustomConfig extends { shorthands: infer T }
+  ? string extends keyof T
+    ? Record<never, never> // consumer accidentally used a wide type — no extra props
+    : T // literal keys — expose them as props
+  : Record<never, never>; // no shorthands declared — no extra props

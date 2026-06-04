@@ -1,0 +1,21 @@
+{
+  "name": "integration-expo-app-54",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "build": "npx tsc --noEmit"
+  },
+  "dependencies": {
+    "expo": "~54.0.0",
+    "react": "18.2.0",
+    "react-native": "0.74.0",
+    "@stareezy-ui/components": "workspace:*",
+    "@stareezy-ui/tokens": "workspace:*",
+    "@stareezy-ui/compiler": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/react": "~18.2.0",
+    "@types/react-native": "~0.73.0",
+    "typescript": "^5.4.0"
+  }
+}

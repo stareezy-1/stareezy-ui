@@ -4,11 +4,12 @@
  */
 
 import React, { useState } from "react";
-import { colors } from "@stareezy-ui/tokens";
 import { isWeb } from "../shared/platform";
+import { useThemedColors } from "../shared/useThemedColors";
 import { Box } from "../primitives/Box";
 import type { BoxProps, StyleProp } from "../primitives/Box";
 import { Text, ETextType } from "../primitives/Text";
+import { clipboardGeometry } from "./Clipboard.style";
 
 export interface ClipboardProps extends Omit<BoxProps, "children"> {
   value: string;
@@ -17,9 +18,7 @@ export interface ClipboardProps extends Omit<BoxProps, "children"> {
   children?: React.ReactNode;
   onCopy?: (value: string) => void;
   successDuration?: number;
-  /** ETextType for the displayed value text */
   valueTextType?: ETextType;
-  /** Style override for the displayed value text */
   valueTextStyle?: StyleProp;
 }
 
@@ -36,6 +35,7 @@ export const Clipboard: React.FC<ClipboardProps> = ({
   ...boxProps
 }) => {
   const [copied, setCopied] = useState(false);
+  const themed = useThemedColors();
 
   const handleCopy = async () => {
     try {
@@ -69,10 +69,10 @@ export const Clipboard: React.FC<ClipboardProps> = ({
         alignItems="center"
         gap={8}
         style={{
-          background: colors.beauBlue[50].value,
-          border: `1px solid ${colors.beauBlue[200].value}`,
-          borderRadius: 8,
-          padding: "6px 10px",
+          background: themed.bgSecondary,
+          border: `1px solid ${themed.borderDefault}`,
+          borderRadius: clipboardGeometry.containerBorderRadius,
+          padding: `${clipboardGeometry.containerPaddingV}px ${clipboardGeometry.containerPaddingH}px`,
           maxWidth: "100%",
         }}
         data-testid={testID}
@@ -82,7 +82,7 @@ export const Clipboard: React.FC<ClipboardProps> = ({
           <Text
             type={valueTextType}
             text={display}
-            color={colors.raisinBlack[800].value}
+            color={themed.textPrimary}
             style={{
               fontFamily: "'Fira Code',monospace,Inter,system-ui,sans-serif",
               overflow: "hidden",
@@ -110,22 +110,20 @@ export const Clipboard: React.FC<ClipboardProps> = ({
               display: "inline-flex",
               alignItems: "center",
               justifyContent: "center",
-              width: 28,
-              height: 28,
-              borderRadius: 6,
+              width: clipboardGeometry.buttonSize,
+              height: clipboardGeometry.buttonSize,
+              borderRadius: clipboardGeometry.buttonBorderRadius,
               border: "none",
-              background: copied ? colors.lawnGreen[50].value : "transparent",
+              background: copied ? themed.bgSelected : "transparent",
               cursor: "pointer",
-              color: copied
-                ? colors.lawnGreen[600].value
-                : colors.beauBlue[700].value,
+              color: copied ? themed.colorSuccess : themed.textSecondary,
               transition: "background 0.15s ease,color 0.15s ease",
               flexShrink: 0,
             }}
             onMouseEnter={(e) => {
               if (!copied)
                 (e.currentTarget as HTMLButtonElement).style.background =
-                  colors.beauBlue[100].value;
+                  themed.bgHover;
             }}
             onMouseLeave={(e) => {
               if (!copied)
@@ -201,9 +199,9 @@ export const Clipboard: React.FC<ClipboardProps> = ({
       flexDirection="row"
       alignItems="center"
       gap={8}
-      bg={colors.beauBlue[50].value}
+      bg={themed.bgSecondary}
       borderWidth={1}
-      borderColor={colors.beauBlue[200].value}
+      borderColor={themed.borderDefault}
       rounded={8}
       p={8}
       testID={testID}
@@ -213,7 +211,7 @@ export const Clipboard: React.FC<ClipboardProps> = ({
         <Text
           type={valueTextType}
           text={display}
-          color={colors.raisinBlack[800].value}
+          color={themed.textPrimary}
           style={{ flex: 1, ...(valueTextStyle as Record<string, unknown>) }}
           numberOfLines={1}
         />
@@ -226,9 +224,7 @@ export const Clipboard: React.FC<ClipboardProps> = ({
         <Text
           type={ETextType.XSLabel}
           text={copied ? "✓" : "Copy"}
-          color={
-            copied ? colors.lawnGreen[600].value : colors.beauBlue[700].value
-          }
+          color={copied ? themed.colorSuccess : themed.textSecondary}
         />
       </TouchableOpacity>
     </Box>

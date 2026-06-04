@@ -1,12 +1,9 @@
 /**
- * Divider.style.ts — style constants for the Divider component.
- *
- * All token values accessed via .value — no hardcoded colors.
+ * Divider.style.ts — geometry-only style constants for the Divider component.
+ * All colors are resolved at render time via useThemedColors() in Divider.tsx.
  */
 
-import { colors } from "@stareezy-ui/tokens";
-
-export const dividerStyles = {
-  defaultColor: colors.beauBlue[300].value,
-  labelColor: colors.beauBlue[700].value,
+export const dividerGeometry = {
+  thickness: 1,
+  labelGap: 12,
 } as const;

@@ -4,11 +4,12 @@
  */
 
 import React, { useState, useRef, useEffect } from "react";
-import { colors } from "@stareezy-ui/tokens";
 import { isWeb } from "../shared/platform";
+import { useThemedColors } from "../shared/useThemedColors";
 import { Box } from "../primitives/Box";
 import type { BoxProps, StyleProp } from "../primitives/Box";
 import { Text, ETextType } from "../primitives/Text";
+import { ACCORDION_KF, accordionGeometry } from "./Accordion.style";
 import type { AccordionVariant } from "./Accordion.types";
 
 export interface AccordionItem {
@@ -27,22 +28,12 @@ export interface AccordionProps
   defaultOpen?: string[];
   multiple?: boolean;
   variant?: AccordionVariant;
-  onChange?: (openKeys: string[]) => void /** ETextType for item titles */;
+  onChange?: (openKeys: string[]) => void;
   titleTextType?: ETextType;
-  /** Style override for item titles */
   titleTextStyle?: StyleProp;
-  /** ETextType for item content (when content is a string) */
   contentTextType?: ETextType;
-  /** Style override for item content text */
   contentTextStyle?: StyleProp;
 }
-
-const ACCORDION_KF = `
-@keyframes szr-accordion-open {
-  from { opacity: 0; transform: translateY(-4px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-`;
 
 let accordionKfInjected = false;
 function injectAccordionKf() {
@@ -90,6 +81,7 @@ export const Accordion: React.FC<AccordionProps> = ({
   ...boxProps
 }) => {
   const [openKeys, setOpenKeys] = useState<string[]>(defaultOpen);
+  const themed = useThemedColors();
 
   const toggle = (key: string) => {
     const next = openKeys.includes(key)
@@ -110,12 +102,12 @@ export const Accordion: React.FC<AccordionProps> = ({
       <Box
         display="flex"
         flexDirection="column"
-        gap={isSeparated ? 8 : 0}
+        gap={isSeparated ? accordionGeometry.itemGap : 0}
         style={{
-          border: isBordered
-            ? `1px solid ${colors.beauBlue[300].value}`
+          border: isBordered ? `1px solid ${themed.borderDefault}` : undefined,
+          borderRadius: isBordered
+            ? accordionGeometry.borderedBorderRadius
             : undefined,
-          borderRadius: isBordered ? 12 : undefined,
           overflow: isBordered ? "hidden" : undefined,
         }}
         data-testid={testID}
@@ -129,13 +121,15 @@ export const Accordion: React.FC<AccordionProps> = ({
               key={item.key}
               style={{
                 border: isSeparated
-                  ? `1px solid ${colors.beauBlue[300].value}`
+                  ? `1px solid ${themed.borderDefault}`
                   : undefined,
-                borderRadius: isSeparated ? 10 : undefined,
+                borderRadius: isSeparated
+                  ? accordionGeometry.separatedBorderRadius
+                  : undefined,
                 overflow: isSeparated ? "hidden" : undefined,
                 borderBottom:
                   !isSeparated && !isLast
-                    ? `1px solid ${colors.beauBlue[200].value}`
+                    ? `1px solid ${themed.borderSecondary}`
                     : undefined,
               }}
             >
@@ -151,10 +145,8 @@ export const Accordion: React.FC<AccordionProps> = ({
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "space-between",
-                  padding: "14px 18px",
-                  background: isOpen
-                    ? colors.beauBlue[50].value
-                    : "transparent",
+                  padding: `${accordionGeometry.triggerPaddingV}px ${accordionGeometry.triggerPaddingH}px`,
+                  background: isOpen ? themed.bgHover : "transparent",
                   border: "none",
                   cursor: item.disabled ? "not-allowed" : "pointer",
                   opacity: item.disabled ? 0.5 : 1,
@@ -175,8 +167,8 @@ export const Accordion: React.FC<AccordionProps> = ({
                     <span
                       style={{
                         color: isOpen
-                          ? colors.celurenBlue[400].value
-                          : colors.beauBlue[700].value,
+                          ? themed.borderPrimaryBrand
+                          : themed.textSecondary,
                         flexShrink: 0,
                       }}
                     >
@@ -188,9 +180,7 @@ export const Accordion: React.FC<AccordionProps> = ({
                       type={titleTextType}
                       text={item.title}
                       color={
-                        isOpen
-                          ? colors.celurenBlue[500].value
-                          : colors.raisinBlack[800].value
+                        isOpen ? themed.textImportantBrand : themed.textPrimary
                       }
                       style={{
                         transition: "color 0.15s ease",
@@ -212,8 +202,8 @@ export const Accordion: React.FC<AccordionProps> = ({
                     transform: isOpen ? "rotate(180deg)" : "rotate(0deg)",
                     transition: "transform 0.25s cubic-bezier(0.4,0,0.2,1)",
                     color: isOpen
-                      ? colors.celurenBlue[400].value
-                      : colors.beauBlue[600].value,
+                      ? themed.borderPrimaryBrand
+                      : themed.textSecondary,
                   }}
                 >
                   <path
@@ -233,7 +223,7 @@ export const Accordion: React.FC<AccordionProps> = ({
                 <AnimatedPanel open={isOpen}>
                   <div
                     style={{
-                      padding: "4px 18px 16px",
+                      padding: `${accordionGeometry.contentPaddingTop}px ${accordionGeometry.contentPaddingH}px ${accordionGeometry.contentPaddingBottom}px`,
                       animation: isOpen
                         ? "szr-accordion-open 0.2s ease"
                         : undefined,
@@ -243,7 +233,7 @@ export const Accordion: React.FC<AccordionProps> = ({
                       <Text
                         type={contentTextType}
                         text={item.content}
-                        color={colors.raisinBlack[600].value}
+                        color={themed.textSecondary}
                         style={{
                           lineHeight: 1.6,
                           ...(contentTextStyle as React.CSSProperties),
@@ -278,7 +268,7 @@ export const Accordion: React.FC<AccordionProps> = ({
             key={item.key}
             style={{
               borderBottomWidth: 1,
-              borderBottomColor: colors.beauBlue[200].value,
+              borderBottomColor: themed.borderSecondary,
             }}
           >
             <TouchableOpacity
@@ -298,7 +288,7 @@ export const Accordion: React.FC<AccordionProps> = ({
                 <Text
                   type={titleTextType}
                   text={item.title}
-                  color={colors.raisinBlack[800].value}
+                  color={themed.textPrimary}
                   style={{
                     flex: 1,
                     ...(titleTextStyle as Record<string, unknown>),
@@ -310,7 +300,7 @@ export const Accordion: React.FC<AccordionProps> = ({
               <Text
                 type={ETextType.XSParagraphRegular}
                 text={isOpen ? "▲" : "▼"}
-                color={colors.beauBlue[600].value}
+                color={themed.textSecondary}
               />
             </TouchableOpacity>
             {isOpen && (
@@ -319,7 +309,7 @@ export const Accordion: React.FC<AccordionProps> = ({
                   <Text
                     type={contentTextType}
                     text={item.content}
-                    color={colors.raisinBlack[600].value}
+                    color={themed.textSecondary}
                     style={{
                       lineHeight: 22,
                       ...(contentTextStyle as Record<string, unknown>),

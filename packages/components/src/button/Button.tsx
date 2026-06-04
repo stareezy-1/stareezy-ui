@@ -8,14 +8,17 @@
  */
 
 import React from "react";
-import { colors, spacing } from "@stareezy-ui/tokens";
+import { spacing } from "@stareezy-ui/tokens";
 import { Text, ETextType } from "../primitives/Text";
 import { useThemedColors } from "../shared/useThemedColors";
 import { flattenStyle } from "../shared/flattenStyle";
 import { isWeb } from "../shared/platform";
 import { View } from "../primitives/View";
 import type { StyleProp } from "../primitives/Box";
+import { Box } from "../primitives/Box";
 import { TouchableOpacity } from "../primitives/TouchableOpacity";
+import type { BoxLayoutProps } from "../shared/boxLayoutProps";
+import { extractBoxLayoutProps } from "../shared/boxLayoutProps";
 import {
   webBase,
   webTypeGeometry,
@@ -34,7 +37,6 @@ import {
   nativeAbsoluteBottomOuterGeometry,
   BUTTON_BORDER_RADIUS,
   BUTTON_BORDER_WIDTH,
-  SPINNER_COLOR_FALLBACK,
 } from "./Button.style";
 
 // Re-export enums from types file so consumers import from "Button" as before
@@ -45,7 +47,7 @@ import { EButtonType, EButtonSize } from "./Button.types";
 // ButtonProps
 // ---------------------------------------------------------------------------
 
-export interface ButtonProps {
+export interface ButtonProps extends BoxLayoutProps {
   /** Button label text. */
   text?: string;
   /** Button type / variant. Default: Primary. */
@@ -96,7 +98,7 @@ function ActivityIndicatorShim({
   if (isWeb) {
     return (
       <span
-        style={{ ...webSpinner, borderColor: color ?? SPINNER_COLOR_FALLBACK }}
+        style={{ ...webSpinner, borderColor: color ?? "currentColor" }}
         aria-hidden="true"
       />
     );
@@ -129,7 +131,7 @@ function useButtonColors(
     [EButtonType.Ghost]: "rgba(255,255,255,0.05)",
     // Outline: no token match for this semi-transparent blue tint — kept with comment
     [EButtonType.Outline]: "rgba(59,130,246,0.05)", // no token — nearest: colors.celurenBlue[300] at full opacity
-    [EButtonType.Danger]: colors.danger.main.value,
+    [EButtonType.Danger]: themed.colorDanger,
   };
 
   const disabledBgMap: Partial<Record<EButtonType, string>> = {
@@ -161,9 +163,9 @@ function useButtonColors(
     [EButtonType.AbsoluteBottom]: "#ffffff",
     [EButtonType.AbsoluteBottomWithBorder]: "#ffffff",
     [EButtonType.Transparent]: themed.textPrimary,
-    [EButtonType.Ghost]: colors.neutral[10].value,
-    [EButtonType.Outline]: colors.celurenBlue[400].value,
-    [EButtonType.Danger]: colors.neutral[10].value,
+    [EButtonType.Ghost]: themed.surface,
+    [EButtonType.Outline]: themed.borderPrimaryBrand,
+    [EButtonType.Danger]: themed.surface,
   };
 
   return {
@@ -190,6 +192,7 @@ function buildWebContainerStyle(
   backgroundColor: string,
   borderColor: string | undefined,
   callerStyle: React.CSSProperties | null,
+  focusRing?: string,
 ): React.CSSProperties {
   const geometry = webTypeGeometry[type];
   const sizeStyle = isIconOnly
@@ -225,6 +228,7 @@ function buildWebContainerStyle(
         }
       : {}),
     ...(disabled ? webDisabledOverride : {}),
+    ...(focusRing ? { boxShadow: focusRing } : {}),
     ...(callerStyle ?? {}),
   };
 }
@@ -276,6 +280,11 @@ function buildNativeContainerStyle(
 // ---------------------------------------------------------------------------
 
 export const Button: React.FC<ButtonProps> = (props) => {
+  const { layout, rest: buttonRest } = extractBoxLayoutProps(props);
+  const hasLayoutProps = Object.keys(layout).length > 0;
+
+  // Cast rest back to the component-specific props so TypeScript sees full types.
+  // extractBoxLayoutProps strips layout keys at runtime; this cast is sound.
   const {
     text,
     type = EButtonType.Primary,
@@ -294,7 +303,7 @@ export const Button: React.FC<ButtonProps> = (props) => {
     testID,
     accessibilityLabel,
     fullWidth = false,
-  } = props;
+  } = buttonRest as ButtonProps;
 
   const themed = useThemedColors();
   const { backgroundColor, borderColor, textColor } = useButtonColors(
@@ -302,6 +311,11 @@ export const Button: React.FC<ButtonProps> = (props) => {
     disabled,
     themed,
   );
+
+  // Focus ring for keyboard navigation (web only — applied via onFocus/onBlur)
+  const [isFocused, setIsFocused] = React.useState(false);
+  const webFocusRing =
+    isWeb && isFocused && !disabled ? themed.focusRing : undefined;
 
   const a11yLabel = accessibilityLabel ?? testID;
   const isIconOnly = !!icon && !text && !children;
@@ -322,11 +336,16 @@ export const Button: React.FC<ButtonProps> = (props) => {
       {loading && (
         <ActivityIndicatorShim
           size={spacing.large.value}
-          color={colors.raisinBlack[300].value}
+          color={themed.textSecondary}
         />
       )}
     </>
   );
+
+  // ── Build the core button element ─────────────────────────────────────────
+  // Rendered first, then optionally wrapped in a Box for layout props.
+
+  let buttonElement: React.ReactElement;
 
   // ── AbsoluteBottomWithBorder ───────────────────────────────────────────────
   if (type === EButtonType.AbsoluteBottomWithBorder) {
@@ -345,12 +364,15 @@ export const Button: React.FC<ButtonProps> = (props) => {
         backgroundColor,
         borderColor,
         callerFlat as React.CSSProperties | null,
+        webFocusRing,
       );
-      return (
+      buttonElement = (
         <div style={outerStyle}>
           <button
             type="button"
             onClick={onPress}
+            onFocus={() => setIsFocused(true)}
+            onBlur={() => setIsFocused(false)}
             disabled={disabled}
             aria-disabled={disabled}
             aria-busy={loading}
@@ -362,42 +384,40 @@ export const Button: React.FC<ButtonProps> = (props) => {
           </button>
         </div>
       );
+    } else {
+      const outerNativeStyle = {
+        ...nativeAbsoluteBottomOuterGeometry,
+        backgroundColor: themed.surface,
+        borderTopWidth: BUTTON_BORDER_WIDTH,
+        borderTopColor: themed.borderTertiary,
+      };
+      const innerNativeStyle = buildNativeContainerStyle(
+        type,
+        size,
+        false,
+        disabled,
+        false,
+        backgroundColor,
+        borderColor,
+        callerFlat,
+      );
+      buttonElement = (
+        <View style={outerNativeStyle}>
+          <TouchableOpacity
+            onPress={onPress}
+            disabled={disabled}
+            accessibilityLabel={a11yLabel}
+            accessibilityState={{ disabled: !!disabled, busy: !!loading }}
+            testID={testID}
+            style={innerNativeStyle}
+          >
+            {labelContent}
+          </TouchableOpacity>
+        </View>
+      );
     }
-
-    const outerNativeStyle = {
-      ...nativeAbsoluteBottomOuterGeometry,
-      backgroundColor: themed.surface,
-      borderTopWidth: BUTTON_BORDER_WIDTH,
-      borderTopColor: themed.borderTertiary,
-    };
-    const innerNativeStyle = buildNativeContainerStyle(
-      type,
-      size,
-      false,
-      disabled,
-      false,
-      backgroundColor,
-      borderColor,
-      callerFlat,
-    );
-    return (
-      <View style={outerNativeStyle}>
-        <TouchableOpacity
-          onPress={onPress}
-          disabled={disabled}
-          accessibilityLabel={a11yLabel}
-          accessibilityState={{ disabled: !!disabled, busy: !!loading }}
-          testID={testID}
-          style={innerNativeStyle}
-        >
-          {labelContent}
-        </TouchableOpacity>
-      </View>
-    );
-  }
-
-  // ── Icon-only ──────────────────────────────────────────────────────────────
-  if (isIconOnly) {
+    // ── Icon-only ──────────────────────────────────────────────────────────────
+  } else if (isIconOnly) {
     if (isWeb) {
       const iconStyle = buildWebContainerStyle(
         type,
@@ -408,11 +428,14 @@ export const Button: React.FC<ButtonProps> = (props) => {
         backgroundColor,
         borderColor,
         callerFlat as React.CSSProperties | null,
+        webFocusRing,
       );
-      return (
+      buttonElement = (
         <button
           type="button"
           onClick={onPress}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
           disabled={disabled}
           aria-disabled={disabled}
           aria-busy={loading}
@@ -423,33 +446,32 @@ export const Button: React.FC<ButtonProps> = (props) => {
           {children ?? icon}
         </button>
       );
+    } else {
+      const iconNativeStyle = buildNativeContainerStyle(
+        type,
+        size,
+        true,
+        disabled,
+        false,
+        backgroundColor,
+        borderColor,
+        callerFlat,
+      );
+      buttonElement = (
+        <TouchableOpacity
+          onPress={onPress}
+          disabled={disabled}
+          accessibilityLabel={a11yLabel}
+          accessibilityState={{ disabled: !!disabled, busy: !!loading }}
+          testID={testID}
+          style={iconNativeStyle}
+        >
+          {children ?? icon}
+        </TouchableOpacity>
+      );
     }
-    const iconNativeStyle = buildNativeContainerStyle(
-      type,
-      size,
-      true,
-      disabled,
-      false,
-      backgroundColor,
-      borderColor,
-      callerFlat,
-    );
-    return (
-      <TouchableOpacity
-        onPress={onPress}
-        disabled={disabled}
-        accessibilityLabel={a11yLabel}
-        accessibilityState={{ disabled: !!disabled, busy: !!loading }}
-        testID={testID}
-        style={iconNativeStyle}
-      >
-        {children ?? icon}
-      </TouchableOpacity>
-    );
-  }
-
-  // ── Standard button ────────────────────────────────────────────────────────
-  if (isWeb) {
+    // ── Standard button ────────────────────────────────────────────────────────
+  } else if (isWeb) {
     const containerStyle = buildWebContainerStyle(
       type,
       size,
@@ -459,11 +481,14 @@ export const Button: React.FC<ButtonProps> = (props) => {
       backgroundColor,
       borderColor,
       callerFlat as React.CSSProperties | null,
+      webFocusRing,
     );
-    return (
+    buttonElement = (
       <button
         type="button"
         onClick={onPress}
+        onFocus={() => setIsFocused(true)}
+        onBlur={() => setIsFocused(false)}
         disabled={disabled}
         aria-disabled={disabled}
         aria-busy={loading}
@@ -474,30 +499,37 @@ export const Button: React.FC<ButtonProps> = (props) => {
         {labelContent}
       </button>
     );
+  } else {
+    const containerNativeStyle = buildNativeContainerStyle(
+      type,
+      size,
+      false,
+      disabled,
+      fullWidth,
+      backgroundColor,
+      borderColor,
+      callerFlat,
+    );
+    buttonElement = (
+      <TouchableOpacity
+        onPress={onPress}
+        disabled={disabled}
+        accessibilityLabel={a11yLabel}
+        accessibilityState={{ disabled: !!disabled, busy: !!loading }}
+        testID={testID}
+        style={containerNativeStyle}
+      >
+        {labelContent}
+      </TouchableOpacity>
+    );
   }
 
-  const containerNativeStyle = buildNativeContainerStyle(
-    type,
-    size,
-    false,
-    disabled,
-    fullWidth,
-    backgroundColor,
-    borderColor,
-    callerFlat,
-  );
-  return (
-    <TouchableOpacity
-      onPress={onPress}
-      disabled={disabled}
-      accessibilityLabel={a11yLabel}
-      accessibilityState={{ disabled: !!disabled, busy: !!loading }}
-      testID={testID}
-      style={containerNativeStyle}
-    >
-      {labelContent}
-    </TouchableOpacity>
-  );
+  // Wrap with Box to forward layout props when any are present (Req 5.4).
+  // Components with no layout props render unchanged (Req 5.5).
+  if (hasLayoutProps) {
+    return <Box {...layout}>{buttonElement}</Box>;
+  }
+  return buttonElement;
 };
 
 Button.displayName = "Button";

@@ -13,6 +13,8 @@ import { isWeb } from "../shared/platform";
 import { flattenStyle } from "../shared/flattenStyle";
 import { TEXT_PRESETS } from "./Text.style";
 import { EFontStyle, ITextProps, TextStylePreset } from "./Text.props";
+import { Box } from "./Box";
+import { extractBoxLayoutProps } from "../shared/boxLayoutProps";
 
 export * from "./Text.props";
 export * from "./Text.style";
@@ -42,6 +44,9 @@ const DEFAULT_PRESET: TextStylePreset = {
 // ---------------------------------------------------------------------------
 
 export const Text: React.FC<ITextProps> = (props) => {
+  const { layout, rest } = extractBoxLayoutProps(props);
+  const hasLayoutProps = Object.keys(layout).length > 0;
+
   const {
     text = "",
     emptyState = "",
@@ -57,7 +62,7 @@ export const Text: React.FC<ITextProps> = (props) => {
     ellipsizeMode,
     className,
     allowFontScaling,
-  } = props;
+  } = rest as ITextProps;
 
   const themed = useThemedColors();
   const resolvedColor = colorOverride ?? themed.textPrimary;
@@ -108,7 +113,7 @@ export const Text: React.FC<ITextProps> = (props) => {
         : {}),
     };
 
-    return (
+    const spanEl = (
       <span
         className={className}
         style={webStyle}
@@ -118,6 +123,9 @@ export const Text: React.FC<ITextProps> = (props) => {
         {content}
       </span>
     );
+
+    if (hasLayoutProps) return <Box {...layout}>{spanEl}</Box>;
+    return spanEl;
   }
 
   // React Native — lineHeight is already an absolute pixel value, use directly.
@@ -153,7 +161,9 @@ export const Text: React.FC<ITextProps> = (props) => {
   if (numberOfLines !== undefined) rnProps["numberOfLines"] = numberOfLines;
   if (ellipsizeMode !== undefined) rnProps["ellipsizeMode"] = ellipsizeMode;
 
-  return <RNText {...rnProps} />;
+  const rnEl = <RNText {...rnProps} />;
+  if (hasLayoutProps) return <Box {...layout}>{rnEl}</Box>;
+  return rnEl;
 };
 
 Text.displayName = "Text";

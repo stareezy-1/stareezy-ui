@@ -1,11 +1,10 @@
 /**
- * Avatar.style.ts — style constants for the Avatar component.
- *
- * All token values accessed via .value — no hardcoded colors.
+ * Avatar.style.ts — geometry-only style constants for the Avatar component.
+ * All colors are resolved at render time via useThemedColors() in Avatar.tsx.
+ * Decorative gradients live in Avatar.gradients.ts (theme-independent, Req 10.6).
  */
 
-import { colors } from "@stareezy-ui/tokens";
-import type { AvatarSize, AvatarShape, AvatarStatus } from "./Avatar.types";
+import type { AvatarSize, AvatarShape } from "./Avatar.types";
 
 export const SIZE_PX: Record<AvatarSize, number> = {
   xs: 24,
@@ -34,28 +33,8 @@ export const STATUS_SIZE: Record<AvatarSize, number> = {
   "2xl": 16,
 };
 
-export const STATUS_COLORS: Record<AvatarStatus, string> = {
-  online: colors.lawnGreen[500].value,
-  offline: colors.beauBlue[600].value,
-  away: colors.brightYellowCrayola[500].value,
-  busy: colors.crimsonRed[500].value,
-};
-
 export const SHAPE_RADIUS: Record<AvatarShape, string | number> = {
   circle: "50%",
   rounded: "25%",
   square: 0,
 };
-
-export const GRADIENTS = [
-  "linear-gradient(135deg,#667eea 0%,#764ba2 100%)",
-  "linear-gradient(135deg,#f093fb 0%,#f5576c 100%)",
-  "linear-gradient(135deg,#4facfe 0%,#00f2fe 100%)",
-  "linear-gradient(135deg,#43e97b 0%,#38f9d7 100%)",
-  "linear-gradient(135deg,#fa709a 0%,#fee140 100%)",
-  "linear-gradient(135deg,#a18cd1 0%,#fbc2eb 100%)",
-  "linear-gradient(135deg,#ffecd2 0%,#fcb69f 100%)",
-  "linear-gradient(135deg,#a1c4fd 0%,#c2e9fb 100%)",
-];
-
-export const rnFallbackBgColor = colors.celurenBlue[400].value;

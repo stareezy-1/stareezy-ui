@@ -1,10 +1,9 @@
 /**
- * Spinner.style.ts — style constants for the Spinner component.
- *
- * All token values accessed via .value — no hardcoded colors.
+ * Spinner.style.ts — geometry-only style constants for the Spinner component.
+ * All colors are resolved at render time via useThemedColors() in Spinner.tsx.
  */
 
-import { colors } from "@stareezy-ui/tokens";
+import { INTERACTION } from "../shared/visualSpec";
 import type { SpinnerSize } from "./Spinner.types";
 
 export const SPINNER_KF = `
@@ -28,7 +27,6 @@ export const THICKNESS_MAP: Record<SpinnerSize, number> = {
   xl: 4,
 };
 
-export const spinnerStyles = {
-  defaultColor: colors.celurenBlue[400].value,
-  defaultTrackColor: colors.beauBlue[200].value,
+export const spinnerStateOpacity = {
+  disabled: INTERACTION.disabledOpacity,
 } as const;

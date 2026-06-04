@@ -4,11 +4,12 @@
  */
 
 import React from "react";
-import { colors } from "@stareezy-ui/tokens";
 import { isWeb } from "../shared/platform";
+import { useThemedColors } from "../shared/useThemedColors";
 import { Box } from "../primitives/Box";
 import type { BoxProps, StyleProp } from "../primitives/Box";
 import { Text, ETextType } from "../primitives/Text";
+import { SLIDER_CSS_TEMPLATE, TRACK_H, THUMB_SIZE } from "./Slider.style";
 import type { SliderSize, SliderMark } from "./Slider.types";
 
 export type { SliderSize, SliderMark };
@@ -37,41 +38,22 @@ export interface SliderProps extends Omit<BoxProps, "onChange" | "children"> {
   markTextStyle?: StyleProp;
 }
 
-const SLIDER_CSS = `
-.szr-slider {
-  -webkit-appearance: none; appearance: none;
-  width: 100%; outline: none; cursor: pointer; background: transparent;
-}
-.szr-slider::-webkit-slider-thumb {
-  -webkit-appearance: none; appearance: none; border-radius: 50%;
-  background: #ffffff;
-  box-shadow: 0 1px 6px rgba(0,0,0,0.2), 0 0 0 2px var(--szr-slider-color,#1B5ED3);
-  cursor: pointer;
-  transition: box-shadow 0.15s ease, transform 0.1s ease;
-}
-.szr-slider::-webkit-slider-thumb:hover {
-  transform: scale(1.15);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.25), 0 0 0 3px var(--szr-slider-color,#1B5ED3);
-}
-.szr-slider::-moz-range-thumb {
-  border: none; border-radius: 50%; background: #ffffff;
-  box-shadow: 0 1px 6px rgba(0,0,0,0.2), 0 0 0 2px var(--szr-slider-color,#1B5ED3);
-  cursor: pointer;
-}
-.szr-slider:disabled { cursor: not-allowed; opacity: 0.5; }
-`;
-
-const TRACK_H: Record<SliderSize, number> = { sm: 4, md: 6, lg: 8 };
-const THUMB_SIZE: Record<SliderSize, number> = { sm: 14, md: 18, lg: 22 };
-
 let sliderCssInjected = false;
-function injectSliderCss() {
-  if (sliderCssInjected || typeof document === "undefined") return;
-  const el = document.createElement("style");
-  el.setAttribute("data-szr-kf", "slider");
-  el.textContent = SLIDER_CSS;
-  document.head.appendChild(el);
+let sliderCssInjectedColor = "";
+function injectSliderCss(color: string) {
+  if (sliderCssInjected && sliderCssInjectedColor === color) return;
+  if (typeof document === "undefined") return;
+  let el = document.querySelector(
+    "[data-szr-kf='slider']",
+  ) as HTMLStyleElement | null;
+  if (!el) {
+    el = document.createElement("style");
+    el.setAttribute("data-szr-kf", "slider");
+    document.head.appendChild(el);
+  }
+  el.textContent = SLIDER_CSS_TEMPLATE(color);
   sliderCssInjected = true;
+  sliderCssInjectedColor = color;
 }
 
 export const Slider: React.FC<SliderProps> = ({
@@ -81,8 +63,8 @@ export const Slider: React.FC<SliderProps> = ({
   max = 100,
   step = 1,
   size = "md",
-  color = colors.celurenBlue[400].value,
-  trackColor = colors.beauBlue[200].value,
+  color,
+  trackColor,
   disabled = false,
   showValue = false,
   marks,
@@ -97,6 +79,10 @@ export const Slider: React.FC<SliderProps> = ({
   ...boxProps
 }) => {
   const [internalValue, setInternalValue] = React.useState(defaultValue);
+  const themed = useThemedColors();
+  const resolvedColor = color ?? themed.borderPrimaryBrand;
+  const resolvedTrackColor = trackColor ?? themed.borderSecondary;
+
   const current = value ?? internalValue;
   const pct = ((current - min) / (max - min)) * 100;
   const trackH = TRACK_H[size];
@@ -109,7 +95,7 @@ export const Slider: React.FC<SliderProps> = ({
   };
 
   if (isWeb) {
-    injectSliderCss();
+    injectSliderCss(resolvedColor);
 
     return (
       <Box
@@ -124,9 +110,9 @@ export const Slider: React.FC<SliderProps> = ({
             <Text
               type={valueTextType}
               text={String(current)}
-              color={color}
+              color={resolvedColor}
               style={{
-                background: `${color}18`,
+                background: `${resolvedColor}18`,
                 padding: "2px 8px",
                 borderRadius: 20,
                 ...(valueTextStyle as React.CSSProperties),
@@ -155,8 +141,8 @@ export const Slider: React.FC<SliderProps> = ({
               {
                 height: trackH,
                 borderRadius: trackH / 2,
-                background: `linear-gradient(to right,${color} ${pct}%,${trackColor} ${pct}%)`,
-                "--szr-slider-color": color,
+                background: `linear-gradient(to right,${resolvedColor} ${pct}%,${resolvedTrackColor} ${pct}%)`,
+                "--szr-slider-color": resolvedColor,
                 WebkitAppearance: "none",
                 appearance: "none",
                 width: "100%",
@@ -190,14 +176,16 @@ export const Slider: React.FC<SliderProps> = ({
                       height: 6,
                       borderRadius: 1,
                       backgroundColor:
-                        mark.value <= current ? color : trackColor,
+                        mark.value <= current
+                          ? resolvedColor
+                          : resolvedTrackColor,
                     }}
                   />
                   {mark.label && (
                     <Text
                       type={markTextType}
                       text={mark.label}
-                      color={colors.beauBlue[700].value}
+                      color={themed.textSecondary}
                       style={{
                         whiteSpace: "nowrap",
                         ...(markTextStyle as React.CSSProperties),
@@ -252,9 +240,9 @@ export const Slider: React.FC<SliderProps> = ({
         maximumValue={max}
         step={step}
         disabled={disabled}
-        minimumTrackTintColor={color}
-        maximumTrackTintColor={trackColor}
-        thumbTintColor={color}
+        minimumTrackTintColor={resolvedColor}
+        maximumTrackTintColor={resolvedTrackColor}
+        thumbTintColor={resolvedColor}
         onValueChange={(v: number) => {
           setInternalValue(v);
           onChange?.(v);

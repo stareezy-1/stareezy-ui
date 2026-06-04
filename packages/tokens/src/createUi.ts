@@ -49,7 +49,6 @@ import { semanticColors } from "./semantic";
 import { themes } from "./themes";
 import type { ThemeOverride } from "./themes";
 import { t } from "./themeTokens";
-import type { ThemeToken } from "./themeTokens";
 
 // ---------------------------------------------------------------------------
 // Breakpoint config (mirrors packages/components/src/primitives/breakpoints.ts)
@@ -161,8 +160,16 @@ export class FontNotFoundError extends Error {
 /** A record of custom token groups — each value is a record of Token<T>. */
 export type CustomTokenGroups = Record<string, Record<string, Token<unknown>>>;
 
+/** A generic media breakpoint config preserving literal key types. */
+export type MediaConfig = Record<string, number>;
+
+/** Shorthand map: shorthand prop name → full CSS/RN style property name. */
+export type ShorthandConfig = Record<string, string>;
+
 export interface CreateUiConfig<
   TTokens extends CustomTokenGroups = CustomTokenGroups,
+  TMedia extends MediaConfig = MediaConfig,
+  TShorthands extends ShorthandConfig = ShorthandConfig,
 > {
   /**
    * Custom token groups to register alongside the built-in tokens.
@@ -192,11 +199,12 @@ export interface CreateUiConfig<
   /**
    * Named media query breakpoints (min-width in px, mobile-first).
    * Supersedes `breakpoints` when both are provided.
+   * Keys are preserved as literal types when declared with `as const`.
    *
    * @example
-   * media: { sm: 640, md: 768, lg: 1024 }
+   * media: { sm: 640, md: 768, lg: 1024 } as const
    */
-  media?: Partial<UiBreakpointConfig>;
+  media?: TMedia;
 
   /**
    * Default theme to apply when no ThemeProvider is present.
@@ -243,22 +251,34 @@ export interface CreateUiConfig<
    * @example
    * shorthands: { bg: 'backgroundColor', p: 'padding', m: 'margin' }
    */
-  shorthands?: Record<string, string>;
+  shorthands?: TShorthands;
 }
 
 // ---------------------------------------------------------------------------
 // createUi return type
 // ---------------------------------------------------------------------------
 
-export type UiConfig<TTokens extends CustomTokenGroups> = {
+export type UiConfig<
+  TTokens extends CustomTokenGroups,
+  TMedia extends MediaConfig = MediaConfig,
+  TShorthands extends ShorthandConfig = ShorthandConfig,
+> = {
   /** All built-in tokens merged with your custom token groups. */
   tokens: typeof BUILTIN_TOKENS & TTokens;
   /** Resolved breakpoint config (built-in defaults merged with overrides). */
   breakpoints: UiBreakpointConfig;
+  /**
+   * The media config as passed to createUi, with literal keys preserved.
+   * Used for module augmentation via `SzrCustomConfig extends typeof ui`.
+   */
+  media: TMedia;
   /** The default theme name or override object. */
   defaultTheme: keyof typeof themes | ThemeOverride;
-  /** Registered prop shorthands (config-level, takes precedence over Box built-ins). */
-  shorthands: Record<string, string>;
+  /**
+   * Registered prop shorthands (config-level, takes precedence over Box built-ins).
+   * Literal keys preserved so module augmentation flows into CustomShorthandProps.
+   */
+  shorthands: TShorthands;
   /**
    * Theme-reactive token references.
    * Pass these directly as `bg`, `color`, `borderColor` props on Box and
@@ -299,7 +319,7 @@ export type UiConfig<TTokens extends CustomTokenGroups> = {
    */
   registerTokens<TNew extends CustomTokenGroups>(
     t: TNew,
-  ): UiConfig<TTokens & TNew>;
+  ): UiConfig<TTokens & TNew, TMedia, TShorthands>;
   /**
    * Update breakpoints after initial setup.
    * Useful when breakpoints need to be adjusted at runtime (e.g. based on device).
@@ -308,10 +328,33 @@ export type UiConfig<TTokens extends CustomTokenGroups> = {
 };
 
 // ---------------------------------------------------------------------------
+// Global breakpoint channel (Task 2.1 — Req 3.1)
+// ---------------------------------------------------------------------------
+
+/**
+ * Writes the resolved breakpoint map to the shared global channel
+ * (`globalThis.__stareezy_breakpoints__`) so the runtime/components packages
+ * can read them without importing `@stareezy-ui/tokens` (which would create a
+ * dependency cycle).
+ *
+ * This function is intentionally side-effect-only and dependency-free.
+ * It is the single write path to the breakpoint channel; `configureBreakpoints`
+ * in `@stareezy-ui/components` reads from this same key on first access.
+ */
+export function applyRuntimeBreakpoints(
+  resolved: Record<string, number>,
+): void {
+  if (typeof globalThis !== "undefined") {
+    (globalThis as Record<string, unknown>)["__stareezy_breakpoints__"] =
+      resolved;
+  }
+}
+
+// ---------------------------------------------------------------------------
 // Module-level singleton — stores the active config
 // ---------------------------------------------------------------------------
 
-let _activeConfig: UiConfig<CustomTokenGroups> | null = null;
+let _activeConfig: UiConfig<CustomTokenGroups, MediaConfig> | null = null;
 
 /**
  * Returns the active `createUi` config, or `null` if `createUi` has not been
@@ -320,7 +363,7 @@ let _activeConfig: UiConfig<CustomTokenGroups> | null = null;
  *
  * Requirements: 10.11
  */
-export function getUiConfig(): UiConfig<CustomTokenGroups> | null {
+export function getUiConfig(): UiConfig<CustomTokenGroups, MediaConfig> | null {
   return _activeConfig;
 }
 
@@ -340,7 +383,15 @@ export function getUiConfig(): UiConfig<CustomTokenGroups> | null {
  */
 export function createUi<
   TTokens extends CustomTokenGroups = Record<never, never>,
->(config: CreateUiConfig<TTokens> = {}): UiConfig<TTokens> {
+  TMedia extends MediaConfig = Record<never, never>,
+  TShorthands extends ShorthandConfig = Record<never, never>,
+>(
+  config: CreateUiConfig<TTokens, TMedia, TShorthands> = {} as CreateUiConfig<
+    TTokens,
+    TMedia,
+    TShorthands
+  >,
+): UiConfig<TTokens, TMedia, TShorthands> {
   const {
     tokens: customTokens,
     breakpoints: bpOverrides,
@@ -350,11 +401,11 @@ export function createUi<
     animations: customAnimations = {},
     themes: customThemes = {},
     settings: customSettings = {},
-    shorthands: customShorthands = {},
+    shorthands: customShorthands = {} as TShorthands,
   } = config;
 
   // Merge breakpoints: start with defaults, apply legacy breakpoints, then
-  // media takes precedence when both are provided (Requirements 10.2)
+  // media takes precedence when both are provided.
   const resolvedBreakpoints: UiBreakpointConfig = {
     ...DEFAULT_BREAKPOINTS,
     ...(bpOverrides ?? {}),
@@ -373,10 +424,15 @@ export function createUi<
     ...customThemes,
   };
 
-  // Apply breakpoints globally if running in a browser/RN environment
-  if (typeof globalThis !== "undefined") {
-    const g = globalThis as Record<string, unknown>;
-    g["__stareezy_breakpoints__"] = resolvedBreakpoints;
+  // Auto-sync the media config into the runtime breakpoint store (Task 2.2 — Reqs 3.1, 3.2).
+  // Only push when the caller explicitly provided `media`; leave the runtime store
+  // untouched when falling back to built-in defaults so consumers that never call
+  // createUi (or call it without a `media` key) still see the defaults the
+  // runtime/components package initialises itself with.
+  if (mediaOverrides !== undefined) {
+    applyRuntimeBreakpoints(
+      resolvedBreakpoints as unknown as Record<string, number>,
+    );
   }
 
   function getTokens(): typeof BUILTIN_TOKENS & TTokens {
@@ -403,33 +459,36 @@ export function createUi<
 
   function registerTokens<TNew extends CustomTokenGroups>(
     newTokens: TNew,
-  ): UiConfig<TTokens & TNew> {
-    const cfg: Parameters<typeof createUi<TTokens & TNew>>[0] = {
+  ): UiConfig<TTokens & TNew, TMedia, TShorthands> {
+    const cfg: CreateUiConfig<TTokens & TNew, TMedia, TShorthands> = {
       tokens: { ...(customTokens ?? {}), ...newTokens } as TTokens & TNew,
       defaultTheme,
     };
     if (bpOverrides !== undefined) cfg.breakpoints = bpOverrides;
-    if (mediaOverrides !== undefined) cfg.media = mediaOverrides;
+    if (mediaOverrides !== undefined) cfg.media = mediaOverrides as TMedia;
     if (customFonts !== undefined) cfg.fonts = customFonts;
     if (customAnimations !== undefined) cfg.animations = customAnimations;
     if (customThemes !== undefined) cfg.themes = customThemes;
     if (customSettings !== undefined) cfg.settings = customSettings;
     if (customShorthands !== undefined) cfg.shorthands = customShorthands;
-    return createUi<TTokens & TNew>(cfg);
+    return createUi<TTokens & TNew, TMedia, TShorthands>(cfg);
   }
 
   function updateBreakpoints(overrides: Partial<UiBreakpointConfig>): void {
     Object.assign(resolvedBreakpoints, overrides);
-    if (typeof globalThis !== "undefined") {
-      (globalThis as Record<string, unknown>)["__stareezy_breakpoints__"] = {
-        ...resolvedBreakpoints,
-      };
-    }
+    applyRuntimeBreakpoints({ ...resolvedBreakpoints } as unknown as Record<
+      string,
+      number
+    >);
   }
 
-  const uiConfig: UiConfig<TTokens> = {
+  const uiConfig: UiConfig<TTokens, TMedia, TShorthands> = {
     tokens: mergedTokens,
     breakpoints: resolvedBreakpoints,
+    // Preserve the literal-keyed media map for module augmentation:
+    // `declare module '@stareezy-ui/tokens' { interface SzrCustomConfig extends typeof ui {} }`
+    // surfaces TMedia through SzrCustomConfig["media"], driving ConfigBreakpointKey.
+    media: (mediaOverrides ?? {}) as TMedia,
     defaultTheme,
     shorthands: customShorthands,
     t,
@@ -441,8 +500,8 @@ export function createUi<
     updateBreakpoints,
   };
 
-  // Store as active config singleton (Requirements 10.11)
-  _activeConfig = uiConfig as UiConfig<CustomTokenGroups>;
+  // Store as active config singleton
+  _activeConfig = uiConfig as UiConfig<CustomTokenGroups, MediaConfig>;
 
   return uiConfig;
 }

@@ -1,10 +1,9 @@
 /**
- * Skeleton.style.ts — style constants for the Skeleton component.
- *
- * All token values accessed via .value — no hardcoded colors.
+ * Skeleton.style.ts — geometry-only style constants for the Skeleton component.
+ * All colors are resolved at render time via useThemedColors() in Skeleton.tsx.
  */
 
-import { colors } from "@stareezy-ui/tokens";
+import { RADIUS } from "../shared/visualSpec";
 
 export const SKELETON_KF = `
 @keyframes szr-skeleton-wave {
@@ -13,7 +12,8 @@ export const SKELETON_KF = `
 }
 `;
 
-export const skeletonStyles = {
-  defaultBaseColor: colors.beauBlue[200].value,
-  defaultHighlightColor: colors.beauBlue[50].value,
+export const skeletonGeometry = {
+  textBorderRadius: RADIUS.sm, // 6 — text lines
+  rectBorderRadius: RADIUS.md, // 8 — rectangular blocks
+  circleBorderRadius: RADIUS.full, // 9999 — avatar circles
 } as const;

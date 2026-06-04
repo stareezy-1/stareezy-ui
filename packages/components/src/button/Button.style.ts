@@ -8,7 +8,8 @@
  * No inline styles in Button.tsx — import everything from here.
  */
 
-import { colors, spacing, radius, ss } from "@stareezy-ui/tokens";
+import { spacing, radius, ss } from "@stareezy-ui/tokens";
+import { INTERACTION, FOCUS_RING, BORDER } from "../shared/visualSpec";
 import { EButtonType, EButtonSize } from "./Button.types";
 
 // ---------------------------------------------------------------------------
@@ -17,7 +18,7 @@ import { EButtonType, EButtonSize } from "./Button.types";
 
 export const BUTTON_BORDER_RADIUS = radius.full.value;
 export const BUTTON_BORDER_WIDTH = spacing[1].value;
-export const SPINNER_COLOR_FALLBACK = colors.raisinBlack[300].value;
+// SPINNER_COLOR_FALLBACK is resolved at render time via useThemedColors() — removed from module scope
 
 // ---------------------------------------------------------------------------
 // Web base — layout skeleton shared by all button types
@@ -186,10 +187,13 @@ export const webIconDefaultPadding: React.CSSProperties = {
 // ---------------------------------------------------------------------------
 
 export const webDisabledOverride: React.CSSProperties = {
-  opacity: 0.6,
+  opacity: INTERACTION.disabledOpacity,
   cursor: "not-allowed",
   pointerEvents: "none",
 };
+
+export const webFocusRingOffset = FOCUS_RING.offset;
+export const webFocusRingWidth = FOCUS_RING.width;
 
 // ---------------------------------------------------------------------------
 // Web AbsoluteBottomWithBorder outer wrapper (static geometry only)

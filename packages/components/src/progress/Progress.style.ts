@@ -1,10 +1,9 @@
 /**
- * Progress.style.ts — style constants for the Progress component.
- *
- * All token values accessed via .value — no hardcoded colors.
+ * Progress.style.ts — geometry-only style constants for the Progress component.
+ * All colors are resolved at render time via useThemedColors() in Progress.tsx.
  */
 
-import { colors } from "@stareezy-ui/tokens";
+import { RADIUS } from "../shared/visualSpec";
 import type { ProgressSize } from "./Progress.types";
 
 export const PROGRESS_KF = `
@@ -21,11 +20,6 @@ export const HEIGHT: Record<ProgressSize, number> = {
   lg: 12,
 };
 
-export const progressStyles = {
-  defaultColor: colors.celurenBlue[400].value,
-  defaultTrackColor: colors.beauBlue[200].value,
-  gradientFrom: colors.celurenBlue[300].value,
-  gradientTo: colors.celurenBlue[500].value,
-  stripeSecondary: colors.celurenBlue[300].value,
-  labelColor: colors.raisinBlack[800].value,
+export const progressGeometry = {
+  trackBorderRadius: RADIUS.full, // pill-shaped track
 } as const;

@@ -4,11 +4,12 @@
  */
 
 import React from "react";
-import { colors } from "@stareezy-ui/tokens";
 import { isWeb } from "../shared/platform";
+import { useThemedColors } from "../shared/useThemedColors";
 import { Box } from "../primitives/Box";
 import type { BoxProps, StyleProp } from "../primitives/Box";
 import { Text, ETextType } from "../primitives/Text";
+import { SIZE_PX } from "./Checkbox.style";
 import type { CheckboxSize } from "./Checkbox.types";
 
 export type { CheckboxSize };
@@ -22,13 +23,9 @@ export interface CheckboxProps extends Omit<BoxProps, "onChange" | "children"> {
   disabled?: boolean;
   size?: CheckboxSize;
   color?: string;
-  /** ETextType for the label text (when label is a string) */
   labelTextType?: ETextType;
-  /** Style override for the label text */
   labelTextStyle?: StyleProp;
 }
-
-const SIZE_PX: Record<CheckboxSize, number> = { sm: 16, md: 20, lg: 24 };
 
 export const Checkbox: React.FC<CheckboxProps> = ({
   checked = false,
@@ -38,15 +35,20 @@ export const Checkbox: React.FC<CheckboxProps> = ({
   labelPosition = "right",
   disabled = false,
   size = "md",
-  color = colors.celurenBlue[400].value,
+  color,
   labelTextType = ETextType.SParagraphRegular,
   labelTextStyle,
   testID,
   accessibilityLabel,
   ...boxProps
 }) => {
+  const themed = useThemedColors();
+  // Resolve colors at render time — callers can still override via props
+  const resolvedColor = color ?? themed.borderPrimaryBrand;
+
   const px = SIZE_PX[size];
   const isChecked = checked || indeterminate;
+  const [isFocused, setIsFocused] = React.useState(false);
 
   const handleChange = () => {
     if (!disabled) onChange?.(!checked);
@@ -61,6 +63,8 @@ export const Checkbox: React.FC<CheckboxProps> = ({
         aria-label={accessibilityLabel}
         tabIndex={disabled ? -1 : 0}
         onClick={handleChange}
+        onFocus={() => setIsFocused(true)}
+        onBlur={() => setIsFocused(false)}
         onKeyDown={(e) => {
           if (e.key === " " || e.key === "Enter") {
             e.preventDefault();
@@ -71,8 +75,10 @@ export const Checkbox: React.FC<CheckboxProps> = ({
           width: px,
           height: px,
           borderRadius: Math.round(px * 0.2),
-          border: `2px solid ${isChecked ? color : colors.beauBlue[400].value}`,
-          backgroundColor: isChecked ? color : "transparent",
+          border: `2px solid ${
+            isChecked ? resolvedColor : themed.borderDefault
+          }`,
+          backgroundColor: isChecked ? resolvedColor : "transparent",
           display: "inline-flex",
           alignItems: "center",
           justifyContent: "center",
@@ -83,6 +89,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
           transform: isChecked ? "scale(1)" : "scale(0.95)",
           opacity: disabled ? 0.5 : 1,
           boxSizing: "border-box",
+          boxShadow: isFocused && !disabled ? themed.focusRing : undefined,
         }}
       >
         {indeterminate ? (
@@ -90,7 +97,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
             style={{
               width: px * 0.5,
               height: 2,
-              backgroundColor: "#fff",
+              backgroundColor: themed.surface,
               borderRadius: 1,
             }}
           />
@@ -104,7 +111,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
           >
             <path
               d="M1 5L4.5 8.5L11 1.5"
-              stroke="white"
+              stroke={themed.surface}
               strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -134,11 +141,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
             <Text
               type={labelTextType}
               text={label}
-              color={
-                disabled
-                  ? colors.beauBlue[600].value
-                  : colors.raisinBlack[800].value
-              }
+              color={disabled ? themed.textDisabled : themed.textPrimary}
               style={{
                 lineHeight: 1.5,
                 ...(labelTextStyle as React.CSSProperties),
@@ -182,8 +185,8 @@ export const Checkbox: React.FC<CheckboxProps> = ({
             height: px,
             borderRadius: Math.round(px * 0.2),
             borderWidth: 2,
-            borderColor: isChecked ? color : colors.beauBlue[400].value,
-            backgroundColor: isChecked ? color : "transparent",
+            borderColor: isChecked ? resolvedColor : themed.borderDefault,
+            backgroundColor: isChecked ? resolvedColor : "transparent",
             alignItems: "center",
             justifyContent: "center",
           }}
@@ -191,7 +194,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
           {checked && !indeterminate && (
             <Text
               text="✓"
-              color="#fff"
+              color={themed.surface}
               style={{ fontSize: px * 0.55, fontWeight: "700" }}
             />
           )}
@@ -200,7 +203,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
               style={{
                 width: px * 0.5,
                 height: 2,
-                backgroundColor: "#fff",
+                backgroundColor: themed.surface,
                 borderRadius: 1,
               }}
             />
@@ -211,7 +214,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
             <Text
               type={labelTextType}
               text={label}
-              color={colors.raisinBlack[800].value}
+              color={themed.textPrimary}
               style={labelTextStyle as Record<string, unknown>}
             />
           ) : (
