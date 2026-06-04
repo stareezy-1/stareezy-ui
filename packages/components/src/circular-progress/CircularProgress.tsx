@@ -16,7 +16,8 @@ import {
 } from "./CircularProgress.style";
 import type { CircularProgressSize } from "./CircularProgress.types";
 import type { SxProp } from "../shared/sx";
-import type { SzrFC } from '../shared/types';
+import { useSx, SxStyleTag } from "../shared/useSx";
+import type { SzrFC } from "../shared/types";
 
 export type { CircularProgressSize };
 
@@ -55,6 +56,7 @@ export const CircularProgress: SzrFC<CircularProgressProps> = ({
   sx,
   ...boxProps
 }) => {
+  const { sxStyle, sxClassName, sxCss } = useSx(sx);
   const themed = useThemedColors();
   const resolvedColor = color ?? themed.borderPrimaryBrand;
   const resolvedTrackColor = trackColor ?? themed.borderSecondary;
@@ -75,7 +77,8 @@ export const CircularProgress: SzrFC<CircularProgressProps> = ({
         justifyContent="center"
         width={px}
         height={px}
-        style={{ flexShrink: 0 }}
+        style={{ flexShrink: 0, ...sxStyle }}
+        className={sxClassName || undefined}
         role="progressbar"
         aria-valuenow={value}
         aria-valuemin={0}
@@ -83,8 +86,8 @@ export const CircularProgress: SzrFC<CircularProgressProps> = ({
         aria-label={label}
         data-testid={testID}
         {...boxProps}
-        {...sx}
       >
+        {sxCss && isWeb && <SxStyleTag css={sxCss} scopeClass={sxClassName} />}
         <svg
           width={px}
           height={px}
@@ -164,8 +167,10 @@ export const CircularProgress: SzrFC<CircularProgressProps> = ({
       justifyContent="center"
       testID={testID}
       {...boxProps}
-      {...sx}
+      style={sxStyle as React.CSSProperties}
+      className={sxClassName || undefined}
     >
+      {sxCss && isWeb && <SxStyleTag css={sxCss} scopeClass={sxClassName} />}
       <View
         style={{
           width: px,

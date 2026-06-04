@@ -12,7 +12,8 @@ import { Text, ETextType } from "../primitives/Text";
 import { ACCORDION_KF, accordionGeometry } from "./Accordion.style";
 import type { AccordionVariant } from "./Accordion.types";
 import type { SxProp } from "../shared/sx";
-import type { SzrFC } from '../shared/types';
+import { useSx, SxStyleTag } from "../shared/useSx";
+import type { SzrFC } from "../shared/types";
 
 export interface AccordionItem {
   key: string;
@@ -86,6 +87,7 @@ export const Accordion: SzrFC<AccordionProps> = ({
   ...boxProps
 }) => {
   const [openKeys, setOpenKeys] = useState<string[]>(defaultOpen);
+  const { sxStyle, sxClassName, sxCss } = useSx(sx);
   const themed = useThemedColors();
 
   const toggle = (key: string) => {
@@ -114,11 +116,13 @@ export const Accordion: SzrFC<AccordionProps> = ({
             ? accordionGeometry.borderedBorderRadius
             : undefined,
           overflow: isBordered ? "hidden" : undefined,
+          ...sxStyle,
         }}
         data-testid={testID}
         {...boxProps}
-        {...sx}
+        className={sxClassName || undefined}
       >
+        {sxCss && isWeb && <SxStyleTag css={sxCss} scopeClass={sxClassName} />}
         {items.map((item, idx) => {
           const isOpen = openKeys.includes(item.key);
           const isLast = idx === items.length - 1;
@@ -266,7 +270,13 @@ export const Accordion: SzrFC<AccordionProps> = ({
   };
 
   return (
-    <Box testID={testID} {...boxProps} {...sx}>
+    <Box
+      testID={testID}
+      {...boxProps}
+      style={sxStyle as Record<string, unknown>}
+      className={sxClassName || undefined}
+    >
+      {sxCss && isWeb && <SxStyleTag css={sxCss} scopeClass={sxClassName} />}
       {items.map((item) => {
         const isOpen = openKeys.includes(item.key);
         return (

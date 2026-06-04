@@ -13,7 +13,8 @@ import { SIZE_PX, FONT_SIZE, STATUS_SIZE, SHAPE_RADIUS } from "./Avatar.style";
 import { AVATAR_GRADIENTS, getAvatarGradient } from "./Avatar.gradients";
 import type { AvatarSize, AvatarShape, AvatarStatus } from "./Avatar.types";
 import type { SxProp } from "../shared/sx";
-import type { SzrFC } from '../shared/types';
+import { useSx, SxStyleTag } from "../shared/useSx";
+import type { SzrFC } from "../shared/types";
 
 export type { AvatarSize, AvatarShape, AvatarStatus };
 
@@ -54,6 +55,7 @@ export const Avatar: SzrFC<AvatarProps> = ({
   ...boxProps
 }) => {
   const [imgError, setImgError] = React.useState(false);
+  const { sxStyle, sxClassName, sxCss } = useSx(sx);
   const themed = useThemedColors();
 
   // Status colors resolved from the theme at render time
@@ -81,11 +83,12 @@ export const Avatar: SzrFC<AvatarProps> = ({
       <Box
         position="relative"
         display="inline-flex"
-        style={{ flexShrink: 0 }}
+        style={{ flexShrink: 0, ...sxStyle } as React.CSSProperties}
+        className={sxClassName || undefined}
         data-testid={testID}
         {...boxProps}
-        {...sx}
       >
+        {sxCss && isWeb && <SxStyleTag css={sxCss} scopeClass={sxClassName} />}
         <span
           role="img"
           aria-label={alt ?? name ?? "avatar"}
@@ -168,8 +171,10 @@ export const Avatar: SzrFC<AvatarProps> = ({
       height={px}
       testID={testID}
       {...boxProps}
-      {...sx}
+      style={sxStyle as React.CSSProperties}
+      className={sxClassName || undefined}
     >
+      {sxCss && isWeb && <SxStyleTag css={sxCss} scopeClass={sxClassName} />}
       <View
         style={{
           width: px,

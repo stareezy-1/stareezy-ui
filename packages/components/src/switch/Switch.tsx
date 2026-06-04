@@ -12,7 +12,8 @@ import { Text, ETextType } from "../primitives/Text";
 import { TRACK, THUMB } from "./Switch.style";
 import type { SwitchSize } from "./Switch.types";
 import type { SxProp } from "../shared/sx";
-import type { SzrFC } from '../shared/types';
+import { useSx, SxStyleTag } from "../shared/useSx";
+import type { SzrFC } from "../shared/types";
 
 export type { SwitchSize };
 
@@ -46,6 +47,7 @@ export const Switch: SzrFC<SwitchProps> = ({
   sx,
   ...boxProps
 }) => {
+  const { sxStyle, sxClassName, sxCss } = useSx(sx);
   const themed = useThemedColors();
   // Resolve colors at render time — callers can still override via props
   const resolvedActiveColor = activeColor ?? themed.borderPrimaryBrand;
@@ -114,12 +116,14 @@ export const Switch: SzrFC<SwitchProps> = ({
         style={{
           cursor: disabled ? "not-allowed" : "pointer",
           userSelect: "none",
+          ...sxStyle,
         }}
+        className={sxClassName || undefined}
         onClick={handleToggle}
         data-testid={testID}
         {...boxProps}
-        {...sx}
       >
+        {sxCss && isWeb && <SxStyleTag css={sxCss} scopeClass={sxClassName} />}
         {trackEl}
         {label &&
           (typeof label === "string" ? (
@@ -146,7 +150,13 @@ export const Switch: SzrFC<SwitchProps> = ({
   };
 
   return (
-    <Box testID={testID} {...boxProps} {...sx}>
+    <Box
+      testID={testID}
+      {...boxProps}
+      style={sxStyle as Record<string, unknown>}
+      className={sxClassName || undefined}
+    >
+      {sxCss && isWeb && <SxStyleTag css={sxCss} scopeClass={sxClassName} />}
       <RNSwitch
         value={value}
         onValueChange={onChange}

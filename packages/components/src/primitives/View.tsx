@@ -20,7 +20,7 @@ import { Box } from "./Box";
 import type { BoxProps, StyleProp } from "./Box";
 import { EViewType } from "./View.types";
 import { VIEW_PRESETS } from "./View.presets";
-import type { SzrFC } from '../shared/types';
+import type { SzrFC } from "../shared/types";
 
 export { EViewType } from "./View.types";
 

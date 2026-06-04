@@ -11,7 +11,8 @@ import {
 import type { BadgeVariant } from "./Badge.types";
 import type { BoxLayoutProps } from "../shared/boxLayoutProps";
 import { extractBoxLayoutProps } from "../shared/boxLayoutProps";
-import type { SzrFC } from '../shared/types';
+import type { SzrFC } from "../shared/types";
+import { useSx, SxStyleTag } from "../shared/useSx";
 
 export type { BadgeVariant } from "./Badge.types";
 
@@ -23,8 +24,9 @@ export interface BadgeProps extends BoxLayoutProps {
 
 export const Badge: SzrFC<BadgeProps> = (props) => {
   const { layout, sxProps, rest } = extractBoxLayoutProps(props);
-  const hasLayoutProps =
-    Object.keys(layout).length > 0 || Object.keys(sxProps).length > 0;
+  const sx = sxProps as import("../shared/sx").SxProp;
+  const { sxStyle, sxClassName, sxCss } = useSx(sx);
+  const hasLayoutProps = Object.keys(layout).length > 0;
   const { label, variant = "default", style } = rest as BadgeProps;
 
   const themed = useThemedColors();
@@ -36,10 +38,14 @@ export const Badge: SzrFC<BadgeProps> = (props) => {
   if (isWeb) {
     content = (
       <span
-        className={badgeClasses.base}
+        className={
+          [badgeClasses.base, sxClassName].filter(Boolean).join(" ") ||
+          undefined
+        }
         style={{
           ...variantStyle,
           ...(style as React.CSSProperties),
+          ...sxStyle,
         }}
       >
         <Text
@@ -61,6 +67,7 @@ export const Badge: SzrFC<BadgeProps> = (props) => {
           ...badgeBaseStyle,
           backgroundColor: variantStyle.backgroundColor,
           ...(style as Record<string, unknown>),
+          ...sxStyle,
         }}
       >
         <Text
@@ -72,11 +79,14 @@ export const Badge: SzrFC<BadgeProps> = (props) => {
     );
   }
 
-  if (hasLayoutProps)
+  if (hasLayoutProps) return <Box {...layout}>{content}</Box>;
+  if (sxCss && isWeb)
     return (
-      <Box {...layout} {...sxProps}>
+      <>
+        {/* @ts-ignore */}
+        <SxStyleTag css={sxCss} scopeClass={sxClassName} />
         {content}
-      </Box>
+      </>
     );
   return content;
 };

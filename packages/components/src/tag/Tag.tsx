@@ -15,6 +15,7 @@ import type { BoxLayoutProps } from "../shared/boxLayoutProps";
 import { extractBoxLayoutProps } from "../shared/boxLayoutProps";
 import { ETagVariant } from "./Tag.types";
 import type { SzrFC } from "../shared/types";
+import { useSx, SxStyleTag } from "../shared/useSx";
 import {
   webTagBase,
   webVariantBorder,
@@ -80,8 +81,9 @@ function resolveTagColors(
 
 export const Tag: SzrFC<TagProps> = (props) => {
   const { layout, sxProps, rest } = extractBoxLayoutProps(props);
-  const hasLayoutProps =
-    Object.keys(layout).length > 0 || Object.keys(sxProps).length > 0;
+  const sx = sxProps as import("../shared/sx").SxProp;
+  const { sxStyle, sxClassName, sxCss } = useSx(sx);
+  const hasLayoutProps = Object.keys(layout).length > 0;
 
   const {
     label,
@@ -106,6 +108,7 @@ export const Tag: SzrFC<TagProps> = (props) => {
         backgroundColor: bg,
         color: fg,
         borderColor: border,
+        ...sxStyle,
       }}
     >
       {label}
@@ -139,6 +142,7 @@ export const Tag: SzrFC<TagProps> = (props) => {
         ...(variant === ETagVariant.Outline
           ? { borderWidth: 1, borderColor: border }
           : {}),
+        ...sxStyle,
       };
 
       return (
@@ -170,11 +174,20 @@ export const Tag: SzrFC<TagProps> = (props) => {
 
   if (hasLayoutProps) {
     return (
-      <Box {...layout} {...sxProps}>
+      <Box {...layout}>
+        {sxCss && isWeb && <SxStyleTag css={sxCss} scopeClass={sxClassName} />}
         {tagElement}
       </Box>
     );
   }
+  if (sxCss && isWeb)
+    return (
+      <>
+        {/* @ts-ignore */}
+        <SxStyleTag css={sxCss} scopeClass={sxClassName} />
+        {tagElement}
+      </>
+    );
   return tagElement;
 };
 

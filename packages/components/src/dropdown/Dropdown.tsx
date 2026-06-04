@@ -12,6 +12,7 @@ import { Text, ETextType } from "../primitives/Text";
 import { DROPDOWN_KF, SIZE_H, FONT } from "./Dropdown.style";
 import type { DropdownSize, DropdownOption } from "./Dropdown.types";
 import type { SxProp } from "../shared/sx";
+import { useSx, SxStyleTag } from "../shared/useSx";
 import type { SzrFC } from '../shared/types';
 
 export type { DropdownSize, DropdownOption };
@@ -145,6 +146,7 @@ export const Dropdown: SzrFC<DropdownProps> = ({
   const searchRef = useRef<HTMLInputElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
 
+  const { sxStyle, sxClassName, sxCss } = useSx(sx);
   const themed = useThemedColors();
 
   const current = value ?? internalValue;
@@ -272,8 +274,10 @@ export const Dropdown: SzrFC<DropdownProps> = ({
         gap={5}
         {...(testID !== undefined ? { "data-testid": testID } : {})}
         {...boxProps}
-        {...sx}
+        style={sxStyle as React.CSSProperties}
+        className={sxClassName || undefined}
       >
+        {sxCss && isWeb && <SxStyleTag css={sxCss} scopeClass={sxClassName} />}
         {label && (
           <label style={{ display: "flex", alignItems: "center", gap: 3 }}>
             <Text
@@ -609,7 +613,11 @@ export const Dropdown: SzrFC<DropdownProps> = ({
   )?.label;
 
   return (
-    <Box testID={testID} gap={5} {...boxProps} {...sx}>
+    <Box testID={testID} gap={5} {...boxProps}
+        style={sxStyle as Record<string, unknown>}
+        className={sxClassName || undefined}
+      >
+        {sxCss && isWeb && <SxStyleTag css={sxCss} scopeClass={sxClassName} />}
       {label && (
         <View style={{ flexDirection: "row", alignItems: "center", gap: 3 }}>
           <Text

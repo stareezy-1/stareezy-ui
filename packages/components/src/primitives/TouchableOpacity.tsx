@@ -13,7 +13,7 @@ import { flattenStyle } from "../shared/flattenStyle";
 import { isWeb } from "../shared/platform";
 import { ETouchableType } from "./TouchableOpacity.types";
 import { TOUCHABLE_PRESETS } from "./TouchableOpacity.presets";
-import type { SzrFC } from '../shared/types';
+import type { SzrFC } from "../shared/types";
 
 export { ETouchableType } from "./TouchableOpacity.types";
 

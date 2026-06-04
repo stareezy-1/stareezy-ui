@@ -15,6 +15,7 @@ import type { BoxLayoutProps } from "../shared/boxLayoutProps";
 import { extractBoxLayoutProps } from "../shared/boxLayoutProps";
 import type { BreadcrumbItem } from "./Breadcrumb.types";
 import type { SzrFC } from "../shared/types";
+import { useSx, SxStyleTag } from "../shared/useSx";
 import {
   webNav,
   webOl,
@@ -47,8 +48,9 @@ export interface BreadcrumbProps extends BoxLayoutProps {
 
 export const Breadcrumb: SzrFC<BreadcrumbProps> = (props) => {
   const { layout, sxProps, rest } = extractBoxLayoutProps(props);
-  const hasLayoutProps =
-    Object.keys(layout).length > 0 || Object.keys(sxProps).length > 0;
+  const sx = sxProps as import("../shared/sx").SxProp;
+  const { sxStyle, sxClassName, sxCss } = useSx(sx);
+  const hasLayoutProps = Object.keys(layout).length > 0;
 
   const {
     items,
@@ -63,7 +65,7 @@ export const Breadcrumb: SzrFC<BreadcrumbProps> = (props) => {
     <nav
       role="navigation"
       aria-label={accessibilityLabel}
-      style={webNav}
+      style={{ ...webNav, ...sxStyle } as React.CSSProperties}
       data-testid={testID}
     >
       <ol style={webOl}>
@@ -135,7 +137,7 @@ export const Breadcrumb: SzrFC<BreadcrumbProps> = (props) => {
           accessibilityRole="menu"
           accessibilityLabel={accessibilityLabel}
           testID={testID}
-          style={nativeContainer}
+          style={{ ...nativeContainer, ...sxStyle }}
         >
           {items.map((item, index) => {
             const isLast = index === items.length - 1;
@@ -190,11 +192,20 @@ export const Breadcrumb: SzrFC<BreadcrumbProps> = (props) => {
 
   if (hasLayoutProps) {
     return (
-      <Box {...layout} {...sxProps}>
+      <Box {...layout}>
+        {sxCss && isWeb && <SxStyleTag css={sxCss} scopeClass={sxClassName} />}
         {breadcrumbElement}
       </Box>
     );
   }
+  if (sxCss && isWeb)
+    return (
+      <>
+        {/* @ts-ignore */}
+        <SxStyleTag css={sxCss} scopeClass={sxClassName} />
+        {breadcrumbElement}
+      </>
+    );
   return breadcrumbElement;
 };
 

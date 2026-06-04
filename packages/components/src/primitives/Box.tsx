@@ -892,10 +892,16 @@ export function Box(props: BoxProps): React.ReactElement | null {
 
   // Merge sx into props so Box's resolver pipeline processes sx keys identically
   // to top-level props. sx values win on key collision (spread last).
-  const resolvedProps: BoxProps =
-    props.sx && Object.keys(props.sx).length > 0
-      ? { ...props, ...props.sx, sx: undefined }
-      : props;
+  // Destructure sx out before spreading to satisfy exactOptionalPropertyTypes —
+  // setting sx: undefined explicitly would violate the flag.
+  let resolvedProps: BoxProps;
+  if (props.sx && Object.keys(props.sx).length > 0) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { sx: _sx, ...propsWithoutSx } = props;
+    resolvedProps = { ...propsWithoutSx, ...props.sx } as BoxProps;
+  } else {
+    resolvedProps = props;
+  }
 
   // Strip consumed props from rest to avoid DOM warnings
   const consumedSet = new Set<string>(ALL_CONSUMED_PROPS);

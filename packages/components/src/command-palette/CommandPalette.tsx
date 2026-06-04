@@ -14,7 +14,8 @@ import {
 import type { CommandItem } from "./CommandPalette.types";
 import type { BoxLayoutProps } from "../shared/boxLayoutProps";
 import { extractBoxLayoutProps } from "../shared/boxLayoutProps";
-import type { SzrFC } from '../shared/types';
+import type { SzrFC } from "../shared/types";
+import { useSx, SxStyleTag } from "../shared/useSx";
 
 export type { CommandItem } from "./CommandPalette.types";
 
@@ -26,8 +27,9 @@ export interface CommandPaletteProps extends BoxLayoutProps {
 
 export const CommandPalette: SzrFC<CommandPaletteProps> = (props) => {
   const { layout, sxProps, rest } = extractBoxLayoutProps(props);
-  const hasLayoutProps =
-    Object.keys(layout).length > 0 || Object.keys(sxProps).length > 0;
+  const sx = sxProps as import("../shared/sx").SxProp;
+  const { sxStyle, sxClassName, sxCss } = useSx(sx);
+  const hasLayoutProps = Object.keys(layout).length > 0;
   const {
     items,
     onClose,
@@ -65,7 +67,7 @@ export const CommandPalette: SzrFC<CommandPaletteProps> = (props) => {
         if (e.target === e.currentTarget) onClose();
       }}
     >
-      <div style={containerStyle}>
+      <div style={{ ...containerStyle, ...sxStyle }}>
         <input
           autoFocus
           style={inputStyle}
@@ -120,9 +122,18 @@ export const CommandPalette: SzrFC<CommandPaletteProps> = (props) => {
 
   if (hasLayoutProps)
     return (
-      <Box {...layout} {...sxProps}>
+      <Box {...layout}>
+        {sxCss && <SxStyleTag css={sxCss} scopeClass={sxClassName} />}
         {paletteEl}
       </Box>
+    );
+  if (sxCss)
+    return (
+      <>
+        {/* @ts-ignore */}
+        <SxStyleTag css={sxCss} scopeClass={sxClassName} />
+        {paletteEl}
+      </>
     );
   return paletteEl;
 };
