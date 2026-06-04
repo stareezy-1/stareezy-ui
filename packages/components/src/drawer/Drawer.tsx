@@ -18,6 +18,7 @@ import type { BoxLayoutProps } from "../shared/boxLayoutProps";
 import { extractBoxLayoutProps } from "../shared/boxLayoutProps";
 import type { DrawerAnchor } from "./Drawer.types";
 import { injectFocusStyles } from "../shared/injectFocusStyles";
+import type { SzrFC } from "../shared/types";
 import {
   webOverlay,
   webPanelBase,
@@ -118,9 +119,10 @@ export interface DrawerProps extends BoxLayoutProps {
 // Drawer
 // ---------------------------------------------------------------------------
 
-export const Drawer: React.FC<DrawerProps> = (props) => {
-  const { layout, rest } = extractBoxLayoutProps(props);
-  const hasLayoutProps = Object.keys(layout).length > 0;
+export const Drawer: SzrFC<DrawerProps> = (props) => {
+  const { layout, sxProps, rest } = extractBoxLayoutProps(props);
+  const hasLayoutProps =
+    Object.keys(layout).length > 0 || Object.keys(sxProps).length > 0;
 
   const {
     open,
@@ -240,7 +242,11 @@ export const Drawer: React.FC<DrawerProps> = (props) => {
     );
 
     if (hasLayoutProps) {
-      return <Box {...layout}>{drawerElement}</Box>;
+      return (
+        <Box {...layout} {...sxProps}>
+          {drawerElement}
+        </Box>
+      );
     }
     return drawerElement;
   }
@@ -336,7 +342,11 @@ export const Drawer: React.FC<DrawerProps> = (props) => {
   );
 
   if (hasLayoutProps) {
-    return <Box {...layout}>{nativeElement}</Box>;
+    return (
+      <Box {...layout} {...sxProps}>
+        {nativeElement}
+      </Box>
+    );
   }
   return nativeElement;
 };

@@ -1,5 +1,100 @@
 # @stareezy-ui/stylesheet
 
+## 1.0.1
+
+### Patch Changes
+
+- ## stylesheet — responsive media query support
+
+  The stylesheet package now fully mirrors Box's breakpoints/media system.
+
+  **New APIs:**
+
+  - `injectResponsive(className, value, cssProperties)` — injects base + `@media(min-width:Npx)` rules from a responsive value object `{ base, sm, md, lg, xl, "2xl" }`
+  - `injectComponentStyle(className, propEntries)` — batch version for multiple props
+  - `injectRaw(css)` — inject a pre-built CSS string, deduplicated
+  - `reset()` — remove all style tags and clear dedup state (useful in tests)
+  - `buildResponsiveCss(selector, value, cssProps)` — build CSS string without touching the DOM
+  - `buildComponentCss(className, propEntries)` — build a full responsive block
+  - `buildBreakpointEntries(value)` — convert a responsive map to sorted `{ minWidth, value }` entries
+  - `resolveResponsive(value, windowWidth)` — React Native helper
+  - `isResponsiveValue(value)` — type guard
+  - `getBreakpoints()` — returns the breakpoint map synced from `createUi({ media })`
+  - `buildScopeClass(uid)` — builds a `szr-<uid>` scope class name
+
+  Responsive rules are written to a new dedicated `#sz-responsive` style tag and deduplicated per class+property+breakpoint. Breakpoints are read from `globalThis.__stareezy_breakpoints__` — the same channel `createUi({ media })` writes — so stylesheet rules always stay in sync with Box's responsive props.
+
+  ## components — sx prop + React cross-version compatibility
+
+  ### sx prop
+
+  Every component (including `Box` itself) now accepts an `sx` prop. It works like Tamagui/Chakra's `sx`: pass any Box style prop and it is applied on top of the component's own styles. `sx` values win on collision.
+
+  ```tsx
+  // Responsive, token-aware, breakpoint-grouped — all fully supported
+  <Button sx={{ mt: { base: 8, md: 16 }, alignSelf: "flex-end" }} />
+  <Card sx={{ rounded: radius.xl, bg: colors.celurenBlue[25] }} />
+  <Box sx={{ $md: { flexDirection: "row", gap: 16 } }}>…</Box>
+  ```
+
+  **How it works:**
+
+  - On components that use `extractBoxLayoutProps` (Badge, Button, Card, Input, etc.): `sx` contents are extracted into `sxProps` and spread onto the Box wrapper alongside `layout` props. Box resolves everything through its full pipeline.
+  - On components that spread `...boxProps` directly onto Box (Accordion, Avatar, Spinner, Tabs, etc.): `sx` is destructured and spread as `{...sx}` on the root Box.
+  - On Box itself: `sx` contents are merged into `resolvedProps` at the top of the function body before any resolver runs. `sx` keys override matching top-level props.
+
+  `sx` is typed as `SxProp` — a subset of `BoxProps` covering all style keys (spacing, sizing, flex, colors, borders, position, visual, responsive objects, `$`-breakpoint groups, custom shorthands). Interaction handlers, accessibility props, and `children` are excluded.
+
+  ### SzrFC — React 18/19 compatible component type
+
+  Replaced `React.FC<P>` with `SzrFC<P>` across all 34 exported components. `SzrFC` is defined as:
+
+  ```ts
+  type SzrFC<P> = ((props: P) => React.ReactElement | null) & {
+    displayName?: string;
+  };
+  ```
+
+  This resolves the `'Box' cannot be used as a JSX component` error that occurred when a consuming project used a different `@types/react` version than the library. `React.FC` in `@types/react@19` changed its return type in a way that breaks consumers on React 18 types (the `ReactPortal.children` non-optional issue). `SzrFC` is stable across React 16, 17, 18, and 19.
+
+  `SzrFC` is exported from the package for consumers who need it.
+
+  ### componentSheet shared utility
+
+  Added `src/shared/componentSheet.ts` — a singleton style tag manager (`#szc-components`) for registering static geometry CSS classes from `.style.ts` files. All `.style.ts` files updated to export `*Classes` records via `registerClasses()`.
+
+  ### New exports
+
+  - `SxProp` — the sx prop type
+  - `SzrFC` — the React-version-agnostic component function type
+
+  ## cli — upstream scaffolder integration
+
+  `stareezy create` now delegates to the official framework scaffolders instead of copying a static template:
+
+  - `next` → `npx create-next-app@latest <name> --typescript --app --no-tailwind`
+  - `vite` → `npx create-vite@latest <name> --template react-ts`
+  - `expo` → `npx create-expo-app@latest <name> --template blank-typescript`
+
+  After the upstream scaffolder completes, `@stareezy-ui/*` packages are installed and `stareezy init` runs automatically to layer on `stareezy.config.ts`, compiler wiring, and ThemeProvider. Package manager (`pnpm`/`yarn`/`bun`/`npm`) is detected from the caller's lockfile.
+
+  ## compiler — Vite plugin production-only
+
+  The Vite template and `init` wiring now use the production-only plugin pattern:
+
+  ```ts
+  // vite.config.ts
+  export default defineConfig(({ command }) => ({
+    plugins: [...(command === "build" ? [stareezyVitePlugin()] : []), react()],
+  }));
+  ```
+
+  This avoids `@babel/traverse` CJS/ESM interop issues in Vite's dev transform pipeline. Box's inline responsive style injection handles dev-time styling without the compiler.
+
+  ## tokens — @types/react alignment
+
+  Downgraded `@types/react` devDep from `^19.0.0` to `^18.3.0` to match the rest of the monorepo and prevent the dual-version type conflict described above.
+
 ## 1.0.0
 
 ### Major Changes

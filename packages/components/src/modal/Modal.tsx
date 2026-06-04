@@ -21,6 +21,7 @@ import type { ModalSize } from "./Modal.types";
 import type { BoxLayoutProps } from "../shared/boxLayoutProps";
 import { extractBoxLayoutProps } from "../shared/boxLayoutProps";
 import { injectFocusStyles } from "../shared/injectFocusStyles";
+import type { SzrFC } from '../shared/types';
 
 export type { ModalSize };
 
@@ -116,8 +117,8 @@ function useModalFocusTrap(
 // Modal component
 // ---------------------------------------------------------------------------
 
-export const Modal: React.FC<ModalProps> = (props) => {
-  const { layout, rest: modalRest } = extractBoxLayoutProps(props);
+export const Modal: SzrFC<ModalProps> = (props) => {
+  const { layout, sxProps, rest: modalRest } = extractBoxLayoutProps(props);
   const {
     open,
     onClose,
@@ -232,6 +233,7 @@ export const Modal: React.FC<ModalProps> = (props) => {
             flexDirection="column"
             style={{ flex: 1, overflow: "hidden" } as React.CSSProperties}
             {...layout}
+            {...sxProps}
             {...contentBoxProps}
           >
             {/* Header */}

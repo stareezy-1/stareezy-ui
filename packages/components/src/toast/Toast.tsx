@@ -4,10 +4,15 @@ import { isWeb } from "../shared/platform";
 import { useThemedColors } from "../shared/useThemedColors";
 import { Text, ETextType } from "../primitives/Text";
 import { Box } from "../primitives/Box";
-import { makeToastBaseStyle, makeToastVariantStyles } from "./Toast.style";
+import {
+  makeToastBaseStyle,
+  makeToastVariantStyles,
+  toastClasses,
+} from "./Toast.style";
 import type { ToastVariant } from "./Toast.types";
 import type { BoxLayoutProps } from "../shared/boxLayoutProps";
 import { extractBoxLayoutProps } from "../shared/boxLayoutProps";
+import type { SzrFC } from '../shared/types';
 
 export type { ToastVariant } from "./Toast.types";
 
@@ -19,9 +24,10 @@ export interface ToastProps extends BoxLayoutProps {
   style?: React.CSSProperties | Record<string, unknown>;
 }
 
-export const Toast: React.FC<ToastProps> = (props) => {
-  const { layout, rest } = extractBoxLayoutProps(props);
-  const hasLayoutProps = Object.keys(layout).length > 0;
+export const Toast: SzrFC<ToastProps> = (props) => {
+  const { layout, sxProps, rest } = extractBoxLayoutProps(props);
+  const hasLayoutProps =
+    Object.keys(layout).length > 0 || Object.keys(sxProps).length > 0;
   const {
     variant,
     message,
@@ -47,8 +53,9 @@ export const Toast: React.FC<ToastProps> = (props) => {
       <div
         role="alert"
         aria-live="polite"
+        className={toastClasses.base}
         style={{
-          ...toastBaseStyle,
+          backgroundColor: toastBaseStyle.backgroundColor,
           borderColor: variantStyle.borderColor,
           ...(style as React.CSSProperties),
         }}
@@ -89,7 +96,12 @@ export const Toast: React.FC<ToastProps> = (props) => {
         )}
       </div>
     );
-    if (hasLayoutProps) return <Box {...layout}>{webContent}</Box>;
+    if (hasLayoutProps)
+      return (
+        <Box {...layout} {...sxProps}>
+          {webContent}
+        </Box>
+      );
     return webContent;
   }
 
@@ -121,7 +133,12 @@ export const Toast: React.FC<ToastProps> = (props) => {
       )}
     </View>
   );
-  if (hasLayoutProps) return <Box {...layout}>{nativeContent}</Box>;
+  if (hasLayoutProps)
+    return (
+      <Box {...layout} {...sxProps}>
+        {nativeContent}
+      </Box>
+    );
   return nativeContent;
 };
 

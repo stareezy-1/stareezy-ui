@@ -1,15 +1,15 @@
 {
   "name": "@stareezy-ui/stylesheet",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Stareezy UI stylesheet — atomic CSS sheet management and CSS variable injection",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
+      "types": "./dist/index.d.ts",
       "import": "./dist/index.mjs",
-      "require": "./dist/index.js",
-      "types": "./dist/index.d.ts"
+      "require": "./dist/index.js"
     }
   },
   "files": [

@@ -42,6 +42,7 @@ import {
 // Re-export enums from types file so consumers import from "Button" as before
 export { EButtonType, EButtonSize } from "./Button.types";
 import { EButtonType, EButtonSize } from "./Button.types";
+import type { SzrFC } from '../shared/types';
 
 // ---------------------------------------------------------------------------
 // ButtonProps
@@ -279,9 +280,10 @@ function buildNativeContainerStyle(
 // Button component
 // ---------------------------------------------------------------------------
 
-export const Button: React.FC<ButtonProps> = (props) => {
-  const { layout, rest: buttonRest } = extractBoxLayoutProps(props);
-  const hasLayoutProps = Object.keys(layout).length > 0;
+export const Button: SzrFC<ButtonProps> = (props) => {
+  const { layout, sxProps, rest: buttonRest } = extractBoxLayoutProps(props);
+  const hasLayoutProps =
+    Object.keys(layout).length > 0 || Object.keys(sxProps).length > 0;
 
   // Cast rest back to the component-specific props so TypeScript sees full types.
   // extractBoxLayoutProps strips layout keys at runtime; this cast is sound.
@@ -527,7 +529,11 @@ export const Button: React.FC<ButtonProps> = (props) => {
   // Wrap with Box to forward layout props when any are present (Req 5.4).
   // Components with no layout props render unchanged (Req 5.5).
   if (hasLayoutProps) {
-    return <Box {...layout}>{buttonElement}</Box>;
+    return (
+      <Box {...layout} {...sxProps}>
+        {buttonElement}
+      </Box>
+    );
   }
   return buttonElement;
 };

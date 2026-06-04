@@ -15,6 +15,8 @@ import {
   FONT_SIZE,
 } from "./CircularProgress.style";
 import type { CircularProgressSize } from "./CircularProgress.types";
+import type { SxProp } from "../shared/sx";
+import type { SzrFC } from '../shared/types';
 
 export type { CircularProgressSize };
 
@@ -33,9 +35,10 @@ export interface CircularProgressProps extends Omit<BoxProps, "children"> {
   valueTextType?: ETextType;
   /** Style override for the percentage value text */
   valueTextStyle?: StyleProp;
+  sx?: SxProp;
 }
 
-export const CircularProgress: React.FC<CircularProgressProps> = ({
+export const CircularProgress: SzrFC<CircularProgressProps> = ({
   value,
   max = 100,
   size = "md",
@@ -49,6 +52,7 @@ export const CircularProgress: React.FC<CircularProgressProps> = ({
   valueTextType,
   valueTextStyle,
   testID,
+  sx,
   ...boxProps
 }) => {
   const themed = useThemedColors();
@@ -79,6 +83,7 @@ export const CircularProgress: React.FC<CircularProgressProps> = ({
         aria-label={label}
         data-testid={testID}
         {...boxProps}
+        {...sx}
       >
         <svg
           width={px}
@@ -159,6 +164,7 @@ export const CircularProgress: React.FC<CircularProgressProps> = ({
       justifyContent="center"
       testID={testID}
       {...boxProps}
+      {...sx}
     >
       <View
         style={{

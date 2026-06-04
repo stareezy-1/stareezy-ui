@@ -14,6 +14,7 @@ import { Box } from "../primitives/Box";
 import type { BoxLayoutProps } from "../shared/boxLayoutProps";
 import { extractBoxLayoutProps } from "../shared/boxLayoutProps";
 import type { BreadcrumbItem } from "./Breadcrumb.types";
+import type { SzrFC } from "../shared/types";
 import {
   webNav,
   webOl,
@@ -44,9 +45,10 @@ export interface BreadcrumbProps extends BoxLayoutProps {
 // Breadcrumb
 // ---------------------------------------------------------------------------
 
-export const Breadcrumb: React.FC<BreadcrumbProps> = (props) => {
-  const { layout, rest } = extractBoxLayoutProps(props);
-  const hasLayoutProps = Object.keys(layout).length > 0;
+export const Breadcrumb: SzrFC<BreadcrumbProps> = (props) => {
+  const { layout, sxProps, rest } = extractBoxLayoutProps(props);
+  const hasLayoutProps =
+    Object.keys(layout).length > 0 || Object.keys(sxProps).length > 0;
 
   const {
     items,
@@ -187,7 +189,11 @@ export const Breadcrumb: React.FC<BreadcrumbProps> = (props) => {
   );
 
   if (hasLayoutProps) {
-    return <Box {...layout}>{breadcrumbElement}</Box>;
+    return (
+      <Box {...layout} {...sxProps}>
+        {breadcrumbElement}
+      </Box>
+    );
   }
   return breadcrumbElement;
 };

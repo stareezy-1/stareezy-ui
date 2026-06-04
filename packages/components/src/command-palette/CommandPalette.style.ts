@@ -3,6 +3,7 @@
  * All colors are resolved at render time via useThemedColors() in CommandPalette.tsx.
  */
 
+import { registerClasses } from "../shared/componentSheet";
 import type { useThemedColors } from "../shared/useThemedColors";
 
 export const commandPaletteOverlayGeometry = {
@@ -50,6 +51,53 @@ export const commandPaletteItemGeometry = {
   cursor: "pointer",
   transition: "background 0.15s",
 } as const;
+
+// ── Stylesheet registration ───────────────────────────────────────────────────
+
+export const commandPaletteClasses = registerClasses("cmdpalette", {
+  overlay: {
+    position: "fixed",
+    inset: 0,
+    zIndex: 1000,
+    display: "flex",
+    alignItems: "flex-start",
+    justifyContent: "center",
+    paddingTop: 80,
+    backdropFilter: "blur(8px)",
+  },
+  container: {
+    width: "100%",
+    maxWidth: 560,
+    borderRadius: 16,
+    overflow: "hidden",
+    borderWidth: 1,
+    borderStyle: "solid",
+  },
+  input: {
+    width: "100%",
+    background: "transparent",
+    border: "none",
+    outline: "none",
+    fontSize: 16,
+    fontFamily: "Inter, system-ui, sans-serif",
+    boxSizing: "border-box",
+    padding: "16px 20px",
+  },
+  list: {
+    maxHeight: 360,
+    overflowY: "auto",
+    padding: 8,
+  },
+  item: {
+    display: "flex",
+    alignItems: "center",
+    gap: 12,
+    padding: "10px 12px",
+    borderRadius: 8,
+    cursor: "pointer",
+    transition: "background 0.15s",
+  },
+});
 
 // ── Themed style factories ────────────────────────────────────────────────────
 

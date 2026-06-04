@@ -1,33 +1,34 @@
 /**
- * create command — scaffold a pre-wired stareezy-ui starter project.
+ * create command — scaffold a stareezy-ui starter using the official CLI of
+ * each framework (create-next-app / create-vite / create-expo-app), then
+ * layer on the stareezy config, compiler wiring and ThemeProvider.
  *
- * Supports three templates: next | vite | expo
- * Copies the template directory to the target path and substitutes {{PROJECT_NAME}}.
+ * Strategy:
+ *   1. Run the upstream scaffolder (honours their defaults / prompts)
+ *   2. Immediately run `stareezy init` in the created directory to inject
+ *      stareezy.config.ts, compiler wiring, and ThemeProvider
  *
  * Uses only Node.js built-ins. No external deps.
  */
 
-import {
-  cpSync,
-  existsSync,
-  mkdirSync,
-  readdirSync,
-  readFileSync,
-  statSync,
-  writeFileSync,
-} from "fs";
-import { basename, join, resolve } from "path";
+import { existsSync } from "fs";
+import { resolve, basename } from "path";
+import { execSync, spawnSync } from "child_process";
 import { createInterface } from "readline";
+import { detectPackageManager } from "../detect.js";
+import { runInit } from "./init.js";
 
 export type TemplateKind = "next" | "vite" | "expo";
 
 export interface CreateOptions {
-  /** Project name (directory name + package.json name). */
+  /** Project name (directory name). */
   projectName?: string;
   /** Template to scaffold. */
   template?: TemplateKind;
   /** Where to create the project. Defaults to process.cwd()/<projectName>. */
   cwd?: string;
+  /** Skip all prompts, accept defaults. */
+  yes?: boolean;
 }
 
 // ---------------------------------------------------------------------------
@@ -46,106 +47,125 @@ function prompt(question: string): Promise<string> {
 
 async function promptTemplate(): Promise<TemplateKind> {
   console.log("\nSelect a template:");
-  console.log(
-    "  1. next  — Next.js App Router (14–16) with RSC + client boundary",
-  );
-  console.log("  2. vite  — Vite + React with the Vite plugin");
-  console.log(
-    "  3. expo  — Expo SDK 55 (also builds on 54/56) with Metro transformer",
-  );
+  console.log("  1. next  — Next.js App Router via create-next-app");
+  console.log("  2. vite  — Vite + React via create-vite");
+  console.log("  3. expo  — Expo SDK via create-expo-app");
 
   while (true) {
     const answer = await prompt("\nTemplate (next/vite/expo or 1/2/3): ");
-    const normalized = answer.toLowerCase();
-    if (normalized === "1" || normalized === "next") return "next";
-    if (normalized === "2" || normalized === "vite") return "vite";
-    if (normalized === "3" || normalized === "expo") return "expo";
+    const n = answer.toLowerCase();
+    if (n === "1" || n === "next") return "next";
+    if (n === "2" || n === "vite") return "vite";
+    if (n === "3" || n === "expo") return "expo";
     console.log("  Please enter 'next', 'vite', or 'expo'.");
   }
 }
 
 // ---------------------------------------------------------------------------
-// Template resolution
+// Package-manager executor
 // ---------------------------------------------------------------------------
 
-/** Resolve the absolute path to the built-in template directory. */
-function resolveTemplateDir(kind: TemplateKind): string {
-  // __dirname points to dist/ after build; templates are co-located in src/
-  // and copied verbatim by tsup. We support both source-tree and dist layouts.
-  const candidates = [
-    // dist layout (after build): dist/templates/<kind>
-    join(__dirname, "templates", kind),
-    // source layout (ts-node / development): src/templates/<kind>
-    join(__dirname, "..", "src", "templates", kind),
-    // one level up from commands/ folder
-    join(__dirname, "..", "templates", kind),
-  ];
-
-  for (const candidate of candidates) {
-    if (existsSync(candidate)) return candidate;
+function resolveRunner(pm: string): string {
+  // pnpm and bun have their own create commands; yarn/npm use npx
+  switch (pm) {
+    case "pnpm":
+      return "pnpm";
+    case "bun":
+      return "bunx";
+    default:
+      return "npx";
   }
+}
 
-  throw new Error(
-    `Template directory for "${kind}" not found. ` +
-      `Tried: ${candidates.join(", ")}`,
-  );
+/**
+ * Build the `create-*` command for each template.
+ * We pass `--yes` / `--default` flags when the user chose --yes so the
+ * upstream scaffolder also skips its own prompts.
+ */
+function buildScaffoldCmd(
+  template: TemplateKind,
+  projectName: string,
+  pm: string,
+  yes: boolean,
+): string {
+  const runner = resolveRunner(pm);
+
+  switch (template) {
+    case "next": {
+      // create-next-app flags:
+      //   --typescript  always use TS
+      //   --app         App Router
+      //   --no-tailwind skip Tailwind (we ship our own style system)
+      //   --no-eslint   user can add later
+      //   --yes         accept all defaults silently
+      const yesFlag = yes ? " --yes" : "";
+      return `${runner} create-next-app@latest ${projectName} --typescript --app --no-tailwind --no-eslint${yesFlag}`;
+    }
+
+    case "vite": {
+      // create-vite flags:
+      //   --template react-ts  always React + TypeScript
+      //   create-vite doesn't support --yes; name + template are enough for non-interactive
+      return `${runner} create-vite@latest ${projectName} --template react-ts`;
+    }
+
+    case "expo": {
+      // create-expo-app flags:
+      //   --template blank-typescript  TypeScript blank template
+      //   --no-install                 we install after patching package.json
+      const yesFlag = yes ? " --yes" : "";
+      return `${runner} create-expo-app@latest ${projectName} --template blank-typescript${yesFlag}`;
+    }
+  }
 }
 
 // ---------------------------------------------------------------------------
-// File tree copy with substitution
+// stareezy packages installer
 // ---------------------------------------------------------------------------
 
-/**
- * Recursively copy `srcDir` to `destDir`, substituting `{{PROJECT_NAME}}`
- * in file contents and renaming `package.json.tpl` → `package.json`.
- */
-function copyTemplate(
-  srcDir: string,
-  destDir: string,
-  projectName: string,
-): void {
-  mkdirSync(destDir, { recursive: true });
+const STAREEZY_DEPS = [
+  "@stareezy-ui/tokens",
+  "@stareezy-ui/components",
+  "@stareezy-ui/runtime",
+];
+const STAREEZY_DEV_DEPS = ["@stareezy-ui/compiler"];
 
-  for (const entry of readdirSync(srcDir)) {
-    const srcPath = join(srcDir, entry);
-    const stat = statSync(srcPath);
+function buildInstallCmd(pkgs: string[], pm: string, dev: boolean): string {
+  const flag = dev ? (pm === "npm" ? "--save-dev" : "-D") : "";
+  const list = pkgs.join(" ");
+  switch (pm) {
+    case "pnpm":
+      return `pnpm add ${flag} ${list}`.trim();
+    case "yarn":
+      return `yarn add ${flag} ${list}`.trim();
+    case "bun":
+      return `bun add ${flag} ${list}`.trim();
+    default:
+      return `npm install ${flag} ${list}`.trim();
+  }
+}
 
-    if (stat.isDirectory()) {
-      copyTemplate(srcPath, join(destDir, entry), projectName);
-      continue;
-    }
+function installStareezyPackages(targetDir: string, pm: string): void {
+  console.log("\n  Installing @stareezy-ui/* packages...");
 
-    // Rename .tpl extension
-    const destName = entry.endsWith(".tpl") ? entry.slice(0, -4) : entry;
-    const destPath = join(destDir, destName);
+  const depCmd = buildInstallCmd(STAREEZY_DEPS, pm, false);
+  console.log(`  Running: ${depCmd}`);
+  try {
+    execSync(depCmd, { cwd: targetDir, stdio: "inherit" });
+  } catch {
+    console.warn(
+      `  ⚠ Failed to install runtime packages. Run manually:\n    ${depCmd}`,
+    );
+  }
 
-    // Substitute project name in text files
-    const textExtensions = new Set([
-      ".ts",
-      ".tsx",
-      ".js",
-      ".jsx",
-      ".mjs",
-      ".cjs",
-      ".json",
-      ".md",
-      ".txt",
-      ".html",
-      ".css",
-      ".yaml",
-      ".yml",
-    ]);
-    const ext = destName.slice(destName.lastIndexOf("."));
-
-    if (textExtensions.has(ext)) {
-      const content = readFileSync(srcPath, "utf8")
-        .split("{{PROJECT_NAME}}")
-        .join(projectName);
-      writeFileSync(destPath, content, "utf8");
-    } else {
-      // Binary files — copy as-is
-      cpSync(srcPath, destPath);
-    }
+  const devCmd = buildInstallCmd(STAREEZY_DEV_DEPS, pm, true);
+  console.log(`  Running: ${devCmd}`);
+  try {
+    execSync(devCmd, { cwd: targetDir, stdio: "inherit" });
+  } catch {
+    console.warn(
+      `  ⚠ Failed to install dev packages. Run manually:\n    ${devCmd}`,
+    );
   }
 }
 
@@ -155,6 +175,7 @@ function copyTemplate(
 
 export async function runCreate(options: CreateOptions = {}): Promise<void> {
   const cwd = options.cwd ?? process.cwd();
+  const yes = options.yes ?? false;
 
   // 1. Resolve project name
   let projectName = options.projectName;
@@ -183,7 +204,7 @@ export async function runCreate(options: CreateOptions = {}): Promise<void> {
     template = await promptTemplate();
   }
 
-  // 3. Resolve target directory
+  // 3. Compute target directory
   const targetDir = resolve(cwd, safeName);
 
   if (existsSync(targetDir)) {
@@ -194,13 +215,48 @@ export async function runCreate(options: CreateOptions = {}): Promise<void> {
     process.exit(1);
   }
 
-  // 4. Copy template
-  console.log(`\nScaffolding "${safeName}" using the ${template} template...`);
+  // 4. Detect package manager from the workspace/caller context
+  const pm = detectPackageManager(cwd);
 
-  const templateDir = resolveTemplateDir(template);
-  copyTemplate(templateDir, targetDir, safeName);
+  // 5. Run the upstream scaffolder
+  const scaffoldCmd = buildScaffoldCmd(template, safeName, pm, yes);
+  console.log(`\nScaffolding "${safeName}" with ${template}...`);
+  console.log(`  Running: ${scaffoldCmd}\n`);
 
-  // 5. Done — print next steps
+  const scaffoldResult = spawnSync(scaffoldCmd, {
+    cwd,
+    stdio: "inherit",
+    shell: true,
+  });
+
+  if (scaffoldResult.status !== 0) {
+    console.error(
+      `\nError: scaffolder exited with status ${
+        scaffoldResult.status ?? "unknown"
+      }.`,
+    );
+    console.error(
+      "Make sure you have an internet connection and the scaffolder is available.",
+    );
+    process.exit(scaffoldResult.status ?? 1);
+  }
+
+  if (!existsSync(targetDir)) {
+    console.error(
+      `\nError: scaffolder did not create "${targetDir}". ` +
+        "The project name may have been changed by the scaffolder's own prompts.",
+    );
+    process.exit(1);
+  }
+
+  // 6. Install stareezy packages into the new project
+  installStareezyPackages(targetDir, pm);
+
+  // 7. Layer on stareezy: config, compiler wiring, ThemeProvider
+  console.log("\n  Wiring stareezy-ui...");
+  await runInit({ cwd: targetDir, yes: true });
+
+  // 8. Done — print next steps
   const relTarget = basename(targetDir);
   console.log(`\n✓ Created ${relTarget}/\n`);
   console.log("Next steps:");
@@ -208,22 +264,31 @@ export async function runCreate(options: CreateOptions = {}): Promise<void> {
 
   switch (template) {
     case "next":
-      console.log("  npm install   # or pnpm install / yarn");
-      console.log("  npm run dev");
+      console.log(
+        `  ${pm === "pnpm" ? "pnpm" : pm === "yarn" ? "yarn" : "npm run"} dev`,
+      );
+      console.log(
+        `\n  Wrap your root app/layout.tsx with <Providers> from app/providers.tsx`,
+      );
       break;
     case "vite":
-      console.log("  npm install   # or pnpm install / yarn");
-      console.log("  npm run dev");
+      console.log(
+        `  ${pm === "pnpm" ? "pnpm" : pm === "yarn" ? "yarn" : "npm run"} dev`,
+      );
+      console.log(
+        `\n  Wrap your main App with <Providers> from src/providers.tsx`,
+      );
       break;
     case "expo":
-      console.log("  npm install   # or yarn");
       console.log("  expo start");
+      console.log(
+        `\n  Wrap your root _layout.tsx with <Providers> from src/providers.tsx`,
+      );
       break;
   }
 
   console.log(
-    "\nThe project already includes stareezy.config.ts, compiler wiring,\n" +
-      "and a ThemeProvider. Edit stareezy.config.ts to customise your\n" +
-      "media breakpoints and shorthands.\n",
+    "\nstareezy.config.ts is ready — edit it to customise your\n" +
+      "media breakpoints and prop shorthands.\n",
   );
 }

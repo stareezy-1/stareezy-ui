@@ -4,6 +4,7 @@
  */
 
 import { RADIUS, TYPE_SCALE, GAP, INTERACTION } from "../shared/visualSpec";
+import { registerClasses } from "../shared/componentSheet";
 import { EInputSize } from "./Input.types";
 
 export const SIZE_PADDING_V: Record<EInputSize, number> = {
@@ -33,3 +34,31 @@ export const SIZE_BORDER_RADIUS: Record<EInputSize, number> = {
 export const inputStateOpacity = {
   disabled: INTERACTION.disabledOpacity,
 } as const;
+
+// ── Stylesheet registration ───────────────────────────────────────────────────
+
+export const inputClasses = registerClasses("input", {
+  wrapper: {
+    display: "flex",
+    flexDirection: "column",
+    gap: 5,
+  },
+  field: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    transition: "border-color 0.18s ease, box-shadow 0.18s ease",
+    boxSizing: "border-box",
+    gap: GAP.sm,
+    borderWidth: 1,
+    borderStyle: "solid",
+  },
+  nativeInput: {
+    flex: 1,
+    border: "none",
+    outline: "none",
+    background: "transparent",
+    fontFamily: "Inter, system-ui, sans-serif",
+    lineHeight: "1.5",
+  },
+});

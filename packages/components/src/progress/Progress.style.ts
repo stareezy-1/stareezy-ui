@@ -4,6 +4,7 @@
  */
 
 import { RADIUS } from "../shared/visualSpec";
+import { registerClasses, registerKeyframes } from "../shared/componentSheet";
 import type { ProgressSize } from "./Progress.types";
 
 export const PROGRESS_KF = `
@@ -21,5 +22,25 @@ export const HEIGHT: Record<ProgressSize, number> = {
 };
 
 export const progressGeometry = {
-  trackBorderRadius: RADIUS.full, // pill-shaped track
+  trackBorderRadius: RADIUS.full,
 } as const;
+
+// ── Stylesheet registration ───────────────────────────────────────────────────
+
+export const progressClasses = registerClasses("progress", {
+  track: {
+    width: "100%",
+    overflow: "hidden",
+  },
+  fill: {
+    height: "100%",
+    transition: "width 0.4s cubic-bezier(0.4,0,0.2,1)",
+  },
+  header: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+});
+
+registerKeyframes("szr-progress-kf", PROGRESS_KF);

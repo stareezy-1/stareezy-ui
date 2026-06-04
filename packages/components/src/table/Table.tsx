@@ -14,6 +14,7 @@ import { Box } from "../primitives/Box";
 import type { BoxLayoutProps } from "../shared/boxLayoutProps";
 import { extractBoxLayoutProps } from "../shared/boxLayoutProps";
 import type { TableColumn, TableRow } from "./Table.types";
+import type { SzrFC } from "../shared/types";
 import {
   webTableWrapper,
   webTable,
@@ -48,9 +49,10 @@ export interface TableProps extends BoxLayoutProps {
 // Table
 // ---------------------------------------------------------------------------
 
-export const Table: React.FC<TableProps> = (props) => {
-  const { layout, rest } = extractBoxLayoutProps(props);
-  const hasLayoutProps = Object.keys(layout).length > 0;
+export const Table: SzrFC<TableProps> = (props) => {
+  const { layout, sxProps, rest } = extractBoxLayoutProps(props);
+  const hasLayoutProps =
+    Object.keys(layout).length > 0 || Object.keys(sxProps).length > 0;
 
   const { columns, rows, caption, testID, accessibilityLabel } =
     rest as TableProps;
@@ -200,7 +202,11 @@ export const Table: React.FC<TableProps> = (props) => {
   );
 
   if (hasLayoutProps) {
-    return <Box {...layout}>{tableElement}</Box>;
+    return (
+      <Box {...layout} {...sxProps}>
+        {tableElement}
+      </Box>
+    );
   }
   return tableElement;
 };

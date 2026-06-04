@@ -7,11 +7,13 @@ import {
   cardBaseStyle,
   makeCardVariantStyles,
   makeCardGlowColorStyles,
+  cardClasses,
 } from "./Card.style";
 import type { CardVariant, GlowColor } from "./Card.types";
 import type { BoxProps } from "../primitives/Box";
 import type { BoxLayoutProps } from "../shared/boxLayoutProps";
 import { extractBoxLayoutProps } from "../shared/boxLayoutProps";
+import type { SzrFC } from '../shared/types';
 
 export type { CardVariant, GlowColor } from "./Card.types";
 
@@ -23,9 +25,10 @@ export interface CardProps extends Pick<BoxProps, "style">, BoxLayoutProps {
   children?: React.ReactNode;
 }
 
-export const Card: React.FC<CardProps> = (props) => {
-  const { layout, rest } = extractBoxLayoutProps(props);
-  const hasLayoutProps = Object.keys(layout).length > 0;
+export const Card: SzrFC<CardProps> = (props) => {
+  const { layout, sxProps, rest } = extractBoxLayoutProps(props);
+  const hasLayoutProps =
+    Object.keys(layout).length > 0 || Object.keys(sxProps).length > 0;
   const {
     variant = "border",
     glowColor = "green",
@@ -48,8 +51,8 @@ export const Card: React.FC<CardProps> = (props) => {
   if (isWeb) {
     const webContent = (
       <div
+        className={cardClasses.base}
         style={{
-          ...cardBaseStyle,
           ...variantStyle,
           boxShadow: resolvedBoxShadow,
           ...(style as React.CSSProperties),
@@ -62,7 +65,12 @@ export const Card: React.FC<CardProps> = (props) => {
         {children}
       </div>
     );
-    if (hasLayoutProps) return <Box {...layout}>{webContent}</Box>;
+    if (hasLayoutProps)
+      return (
+        <Box {...layout} {...sxProps}>
+          {webContent}
+        </Box>
+      );
     return webContent;
   }
 
@@ -87,7 +95,12 @@ export const Card: React.FC<CardProps> = (props) => {
       {children}
     </View>
   );
-  if (hasLayoutProps) return <Box {...layout}>{nativeContent}</Box>;
+  if (hasLayoutProps)
+    return (
+      <Box {...layout} {...sxProps}>
+        {nativeContent}
+      </Box>
+    );
   return nativeContent;
 };
 

@@ -4,6 +4,7 @@
  */
 
 import { RADIUS, GAP, BORDER, INTERACTION } from "../shared/visualSpec";
+import { registerClasses } from "../shared/componentSheet";
 import type { useThemedColors } from "../shared/useThemedColors";
 
 export const fileDropZoneGeometry = {
@@ -11,14 +12,35 @@ export const fileDropZoneGeometry = {
   flexDirection: "column" as const,
   alignItems: "center",
   justifyContent: "center",
-  gap: GAP.md, // 12
-  padding: GAP.xl + GAP.sm, // 32 (approx 40 rounded to nearest gap combo)
-  borderRadius: RADIUS.xl, // 12
+  gap: GAP.md,
+  padding: GAP.xl + GAP.sm,
+  borderRadius: RADIUS.xl,
   cursor: "pointer",
   transition: "all 0.2s ease",
   textAlign: "center" as const,
   minHeight: 160,
 } as const;
+
+// ── Stylesheet registration ───────────────────────────────────────────────────
+
+export const fileDropZoneClasses = registerClasses("filedropzone", {
+  base: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: GAP.md,
+    padding: GAP.xl + GAP.sm,
+    borderRadius: RADIUS.xl,
+    cursor: "pointer",
+    transition: "all 0.2s ease",
+    textAlign: "center",
+    minHeight: 160,
+    borderWidth: BORDER.thick,
+    borderStyle: "dashed",
+    boxSizing: "border-box",
+  },
+});
 
 // ── Themed style factories ────────────────────────────────────────────────────
 

@@ -11,6 +11,9 @@ import type { BoxProps, StyleProp } from "../primitives/Box";
 import { Text, ETextType } from "../primitives/Text";
 import { clipboardGeometry } from "./Clipboard.style";
 
+import type { SxProp } from "../shared/sx";
+import type { SzrFC } from '../shared/types';
+
 export interface ClipboardProps extends Omit<BoxProps, "children"> {
   value: string;
   displayValue?: string;
@@ -20,9 +23,10 @@ export interface ClipboardProps extends Omit<BoxProps, "children"> {
   successDuration?: number;
   valueTextType?: ETextType;
   valueTextStyle?: StyleProp;
+  sx?: SxProp;
 }
 
-export const Clipboard: React.FC<ClipboardProps> = ({
+export const Clipboard: SzrFC<ClipboardProps> = ({
   value,
   displayValue,
   showValue = true,
@@ -32,6 +36,7 @@ export const Clipboard: React.FC<ClipboardProps> = ({
   valueTextType = ETextType.XSParagraphRegular,
   valueTextStyle,
   testID,
+  sx,
   ...boxProps
 }) => {
   const [copied, setCopied] = useState(false);
@@ -77,6 +82,7 @@ export const Clipboard: React.FC<ClipboardProps> = ({
         }}
         data-testid={testID}
         {...boxProps}
+        {...sx}
       >
         {showValue && (
           <Text
@@ -206,6 +212,7 @@ export const Clipboard: React.FC<ClipboardProps> = ({
       p={8}
       testID={testID}
       {...boxProps}
+      {...sx}
     >
       {showValue && (
         <Text

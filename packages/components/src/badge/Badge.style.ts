@@ -1,7 +1,8 @@
 import { RADIUS, GAP, INTERACTION } from "../shared/visualSpec";
+import { registerClasses, registerClass } from "../shared/componentSheet";
 import type { useThemedColors } from "../shared/useThemedColors";
 
-// ── Base geometry (theme-independent) ────────────────────────────────────────
+// ── Geometry (theme-independent) ─────────────────────────────────────────────
 
 export const badgeBaseStyle = {
   display: "inline-flex",
@@ -18,6 +19,23 @@ export const badgeBaseStyle = {
 export const badgeStateOpacity = {
   disabled: INTERACTION.disabledOpacity,
 } as const;
+
+// ── Stylesheet registration ───────────────────────────────────────────────────
+
+/** Static class names registered in the shared component stylesheet. */
+export const badgeClasses = registerClasses("badge", {
+  base: {
+    display: "inline-flex",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingTop: GAP.xs - 1,
+    paddingBottom: GAP.xs - 1,
+    paddingLeft: GAP.sm + 2,
+    paddingRight: GAP.sm + 2,
+    borderRadius: RADIUS.full,
+    flexShrink: 0,
+  },
+});
 
 // ── Themed style factory ──────────────────────────────────────────────────────
 

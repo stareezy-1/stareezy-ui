@@ -11,6 +11,8 @@ import type { BoxProps, StyleProp } from "../primitives/Box";
 import { Text, ETextType } from "../primitives/Text";
 import { ACCORDION_KF, accordionGeometry } from "./Accordion.style";
 import type { AccordionVariant } from "./Accordion.types";
+import type { SxProp } from "../shared/sx";
+import type { SzrFC } from '../shared/types';
 
 export interface AccordionItem {
   key: string;
@@ -33,6 +35,8 @@ export interface AccordionProps
   titleTextStyle?: StyleProp;
   contentTextType?: ETextType;
   contentTextStyle?: StyleProp;
+  /** sx prop — apply any Box style prop (responsive values, tokens, breakpoints) to the root element. */
+  sx?: SxProp;
 }
 
 let accordionKfInjected = false;
@@ -67,7 +71,7 @@ const AnimatedPanel: React.FC<{ open: boolean; children: React.ReactNode }> = ({
   );
 };
 
-export const Accordion: React.FC<AccordionProps> = ({
+export const Accordion: SzrFC<AccordionProps> = ({
   items,
   defaultOpen = [],
   multiple = false,
@@ -78,6 +82,7 @@ export const Accordion: React.FC<AccordionProps> = ({
   contentTextType = ETextType.SParagraphRegular,
   contentTextStyle,
   testID,
+  sx,
   ...boxProps
 }) => {
   const [openKeys, setOpenKeys] = useState<string[]>(defaultOpen);
@@ -112,6 +117,7 @@ export const Accordion: React.FC<AccordionProps> = ({
         }}
         data-testid={testID}
         {...boxProps}
+        {...sx}
       >
         {items.map((item, idx) => {
           const isOpen = openKeys.includes(item.key);
@@ -260,7 +266,7 @@ export const Accordion: React.FC<AccordionProps> = ({
   };
 
   return (
-    <Box testID={testID} {...boxProps}>
+    <Box testID={testID} {...boxProps} {...sx}>
       {items.map((item) => {
         const isOpen = openKeys.includes(item.key);
         return (

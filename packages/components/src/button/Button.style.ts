@@ -10,6 +10,7 @@
 
 import { spacing, radius, ss } from "@stareezy-ui/tokens";
 import { INTERACTION, FOCUS_RING, BORDER } from "../shared/visualSpec";
+import { registerClasses, registerKeyframes } from "../shared/componentSheet";
 import { EButtonType, EButtonSize } from "./Button.types";
 
 // ---------------------------------------------------------------------------
@@ -308,3 +309,68 @@ export const nativeAbsoluteBottomOuterGeometry: Record<string, unknown> = {
   paddingVertical: spacing.extraMedium.value,
   paddingHorizontal: spacing.extraMedium.value,
 };
+
+// ── Stylesheet registration ───────────────────────────────────────────────────
+
+export const buttonClasses = registerClasses("button", {
+  webBase: {
+    display: "inline-flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    alignSelf: "flex-start",
+    boxSizing: "border-box",
+    outline: "none",
+    border: "none",
+    cursor: "pointer",
+    transition:
+      "opacity 0.18s ease, background-color 0.18s ease, box-shadow 0.18s ease, transform 0.12s ease",
+    userSelect: "none",
+    gap: spacing[8].value,
+    whiteSpace: "nowrap",
+    flexShrink: 0,
+    maxHeight: "none",
+    minHeight: 0,
+    fontFamily: "Inter, system-ui, sans-serif",
+    letterSpacing: "0.01em",
+  },
+  disabled: {
+    opacity: INTERACTION.disabledOpacity,
+    cursor: "not-allowed",
+    pointerEvents: "none",
+  },
+  fullWidth: {
+    display: "flex",
+    width: "100%",
+    alignSelf: "auto",
+  },
+  absoluteBottomOuter: {
+    position: "absolute",
+    bottom: 0,
+    right: 0,
+    left: 0,
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingTop: spacing.extraMedium.value,
+    paddingBottom: spacing.extraMedium.value,
+    paddingLeft: spacing.extraMedium.value,
+    paddingRight: spacing.extraMedium.value,
+    boxSizing: "border-box",
+  },
+  spinner: {
+    display: "inline-block",
+    borderStyle: "solid",
+    borderTopColor: "transparent",
+    borderRadius: "50%",
+    animation: "szr-spin 0.7s linear infinite",
+    marginLeft: spacing[8].value,
+    flexShrink: 0,
+  },
+});
+
+registerKeyframes(
+  "szr-button-spin",
+  `@keyframes szr-spin { to { transform: rotate(360deg); } }`,
+);

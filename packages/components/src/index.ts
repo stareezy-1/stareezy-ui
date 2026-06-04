@@ -47,7 +47,7 @@ export type {
 } from "./primitives/Box";
 
 // ── BoxLayoutProps ─────────────────────────────────────────────────────────────
-export type { BoxLayoutProps } from "./shared/boxLayoutProps";
+export type { BoxLayoutProps, SxProp } from "./shared/boxLayoutProps";
 export { extractBoxLayoutProps } from "./shared/boxLayoutProps";
 
 // ── Platform ──────────────────────────────────────────────────────────────────
@@ -58,6 +58,9 @@ export {
   isAndroid,
   getPlatformOS,
 } from "./shared/platform";
+
+// ── SzrFC ────────────────────────────────────────────────────────────────────
+export type { SzrFC } from "./shared/types";
 
 // ── Button ────────────────────────────────────────────────────────────────────
 export { Button, EButtonType, EButtonSize } from "./button/Button";

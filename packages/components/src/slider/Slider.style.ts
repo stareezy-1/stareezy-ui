@@ -2,19 +2,14 @@
  * Slider.style.ts — geometry-only style constants for the Slider component.
  * All colors are resolved at render time via useThemedColors() in Slider.tsx.
  *
- * NOTE: The CSS pseudo-element rules for ::-webkit-slider-thumb and
- * ::-moz-range-thumb cannot use dynamic colors because they are injected via
- * a <style> tag, not inline styles. The thumb background is intentionally
- * white (theme-independent) since it appears on a colored track. The shadow
- * rgba values are visual depth — not semantic colors. These are exempt from
- * the "no hardcoded color" rule per Req 10.6 (decorative non-theme values).
+ * NOTE: The CSS pseudo-element rules for ::-webkit-slider-thumb cannot use
+ * dynamic colors because they require a <style> tag. The thumb background is
+ * intentionally white (theme-independent). Exempt from "no hardcoded color"
+ * rule per Req 10.6 (decorative non-theme values).
  */
 
+import { registerClasses, registerKeyframes } from "../shared/componentSheet";
 import type { SliderSize } from "./Slider.types";
-
-// ---------------------------------------------------------------------------
-// CSS template — thumb/shadow colors are decorative and theme-independent
-// ---------------------------------------------------------------------------
 
 export const SLIDER_CSS_TEMPLATE = (brandColor: string) => `
 .szr-slider {
@@ -40,13 +35,40 @@ export const SLIDER_CSS_TEMPLATE = (brandColor: string) => `
 .szr-slider:disabled { cursor: not-allowed; opacity: 0.5; }
 `;
 
-// ---------------------------------------------------------------------------
-// Geometry maps
-// ---------------------------------------------------------------------------
-
 export const TRACK_H: Record<SliderSize, number> = { sm: 4, md: 6, lg: 8 };
 export const THUMB_SIZE: Record<SliderSize, number> = {
   sm: 14,
   md: 18,
   lg: 22,
 };
+
+// ── Stylesheet registration ───────────────────────────────────────────────────
+
+export const sliderClasses = registerClasses("slider", {
+  root: {
+    display: "flex",
+    flexDirection: "column",
+    gap: 8,
+  },
+  valueRow: {
+    display: "flex",
+    justifyContent: "flex-end",
+  },
+  marksRow: {
+    position: "relative",
+    height: 20,
+  },
+  mark: {
+    position: "absolute",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    gap: 2,
+    transform: "translateX(-50%)",
+  },
+  markTick: {
+    width: 2,
+    height: 6,
+    borderRadius: 1,
+  },
+});

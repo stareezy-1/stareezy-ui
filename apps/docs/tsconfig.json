@@ -36,8 +36,6 @@
     ".next/types/**/*.ts",
     "../../packages/tokens/src/**/*.ts",
     "../../packages/tokens/src/**/*.tsx",
-    "../../packages/components/src/**/*.ts",
-    "../../packages/components/src/**/*.tsx",
     "../../packages/runtime/src/**/*.ts",
     "../../packages/core/src/**/*.ts"
   ],

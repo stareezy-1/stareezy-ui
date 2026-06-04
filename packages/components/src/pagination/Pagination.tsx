@@ -13,6 +13,7 @@ import { isWeb } from "../shared/platform";
 import { Box } from "../primitives/Box";
 import type { BoxLayoutProps } from "../shared/boxLayoutProps";
 import { extractBoxLayoutProps } from "../shared/boxLayoutProps";
+import type { SzrFC } from "../shared/types";
 import {
   webNav,
   webPageButtonBase,
@@ -82,9 +83,10 @@ function buildPageRange(
 // Pagination
 // ---------------------------------------------------------------------------
 
-export const Pagination: React.FC<PaginationProps> = (props) => {
-  const { layout, rest } = extractBoxLayoutProps(props);
-  const hasLayoutProps = Object.keys(layout).length > 0;
+export const Pagination: SzrFC<PaginationProps> = (props) => {
+  const { layout, sxProps, rest } = extractBoxLayoutProps(props);
+  const hasLayoutProps =
+    Object.keys(layout).length > 0 || Object.keys(sxProps).length > 0;
 
   const {
     page,
@@ -264,7 +266,11 @@ export const Pagination: React.FC<PaginationProps> = (props) => {
   );
 
   if (hasLayoutProps) {
-    return <Box {...layout}>{paginationElement}</Box>;
+    return (
+      <Box {...layout} {...sxProps}>
+        {paginationElement}
+      </Box>
+    );
   }
   return paginationElement;
 };

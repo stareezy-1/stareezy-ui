@@ -9,6 +9,7 @@
 import React from "react";
 import { Box } from "./Box";
 import type { BoxProps } from "./Box";
+import type { SzrFC } from '../shared/types';
 export {
   EStackAlign,
   EStackJustify,
@@ -19,12 +20,12 @@ export {
 export type HStackProps = BoxProps;
 export type VStackProps = BoxProps;
 
-export const HStack: React.FC<HStackProps> = ({ flexDirection, ...rest }) => (
+export const HStack: SzrFC<HStackProps> = ({ flexDirection, ...rest }) => (
   <Box flexDirection={flexDirection ?? "row"} {...rest} />
 );
 HStack.displayName = "HStack";
 
-export const VStack: React.FC<VStackProps> = ({ flexDirection, ...rest }) => (
+export const VStack: SzrFC<VStackProps> = ({ flexDirection, ...rest }) => (
   <Box flexDirection={flexDirection ?? "column"} {...rest} />
 );
 VStack.displayName = "VStack";

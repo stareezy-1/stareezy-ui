@@ -1,7 +1,5 @@
 /**
  * Drawer.style.ts — layout and geometry styles for the Drawer component.
- *
- * IMPORTANT: No hardcoded color literals here.
  * All colors are injected at render time via useThemedColors() in Drawer.tsx.
  */
 
@@ -13,6 +11,7 @@ import {
   INTERACTION,
   ELEVATION,
 } from "../shared/visualSpec";
+import { registerClasses } from "../shared/componentSheet";
 import type { DrawerAnchor } from "./Drawer.types";
 
 // Web overlay backdrop (no color — injected at render)
@@ -44,7 +43,7 @@ export const webPanelGeometry: Record<DrawerAnchor, React.CSSProperties> = {
     bottom: 0,
     width: 320,
     maxWidth: "90vw",
-    borderTopRightRadius: RADIUS.lg, // 10
+    borderTopRightRadius: RADIUS.lg,
     borderBottomRightRadius: RADIUS.lg,
     borderRightWidth: BORDER.default,
     borderRightStyle: "solid",
@@ -55,7 +54,7 @@ export const webPanelGeometry: Record<DrawerAnchor, React.CSSProperties> = {
     bottom: 0,
     width: 320,
     maxWidth: "90vw",
-    borderTopLeftRadius: RADIUS.lg, // 10
+    borderTopLeftRadius: RADIUS.lg,
     borderBottomLeftRadius: RADIUS.lg,
     borderLeftWidth: BORDER.default,
     borderLeftStyle: "solid",
@@ -65,7 +64,7 @@ export const webPanelGeometry: Record<DrawerAnchor, React.CSSProperties> = {
     left: 0,
     right: 0,
     maxHeight: "85vh",
-    borderTopLeftRadius: RADIUS.lg, // 10
+    borderTopLeftRadius: RADIUS.lg,
     borderTopRightRadius: RADIUS.lg,
     borderTopWidth: BORDER.default,
     borderTopStyle: "solid",
@@ -93,10 +92,10 @@ export const webHeader: React.CSSProperties = {
   flexDirection: "row",
   alignItems: "center",
   justifyContent: "space-between",
-  paddingTop: GAP.md, // 12
-  paddingBottom: GAP.md, // 12
-  paddingLeft: GAP.lg, // 16
-  paddingRight: GAP.lg, // 16
+  paddingTop: GAP.md,
+  paddingBottom: GAP.md,
+  paddingLeft: GAP.lg,
+  paddingRight: GAP.lg,
   flexShrink: 0,
   borderBottomWidth: BORDER.default,
   borderBottomStyle: "solid",
@@ -104,7 +103,7 @@ export const webHeader: React.CSSProperties = {
 
 // Header title
 export const webHeaderTitle: React.CSSProperties = {
-  fontSize: TYPE_SCALE.label_lg, // 16
+  fontSize: TYPE_SCALE.label_lg,
   fontWeight: "600",
   lineHeight: 1.4,
   margin: 0,
@@ -117,11 +116,8 @@ export const webCloseButton: React.CSSProperties = {
   justifyContent: "center",
   width: 32,
   height: 32,
-  borderRadius: RADIUS.md, // 8
+  borderRadius: RADIUS.md,
   border: "none",
-  // Note: outline is intentionally NOT set to "none" here.
-  // The [data-szr-close]:focus-visible CSS rule in shared/focusStyles
-  // provides the keyboard focus indicator.
   cursor: "pointer",
   background: "transparent",
   fontSize: 18,
@@ -137,7 +133,7 @@ export const webBody: React.CSSProperties = {
   display: "flex",
   flexDirection: "column",
   overflowY: "auto",
-  padding: GAP.lg, // 16
+  padding: GAP.lg,
 };
 
 // Native backdrop (no color — injected at render)
@@ -168,10 +164,63 @@ export const nativeHeader: Record<string, unknown> = {
   flexDirection: "row",
   alignItems: "center",
   justifyContent: "space-between",
-  padding: GAP.md, // 12
+  padding: GAP.md,
   borderBottomWidth: BORDER.default,
 };
 
 export const nativeBody: Record<string, unknown> = {
-  padding: GAP.lg, // 16
+  padding: GAP.lg,
 };
+
+// ── Stylesheet registration ───────────────────────────────────────────────────
+
+export const drawerClasses = registerClasses("drawer", {
+  backdrop: {
+    position: "fixed",
+    inset: 0,
+    zIndex: 1000,
+  },
+  panel: {
+    position: "fixed",
+    zIndex: 1001,
+    display: "flex",
+    flexDirection: "column",
+    overflowY: "auto",
+    boxSizing: "border-box",
+    transition: "transform 0.28s ease",
+  },
+  header: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingTop: GAP.md,
+    paddingBottom: GAP.md,
+    paddingLeft: GAP.lg,
+    paddingRight: GAP.lg,
+    flexShrink: 0,
+    borderBottomWidth: BORDER.default,
+    borderBottomStyle: "solid",
+  },
+  body: {
+    display: "flex",
+    flexDirection: "column",
+    overflowY: "auto",
+    padding: GAP.lg,
+  },
+  closeBtn: {
+    display: "inline-flex",
+    alignItems: "center",
+    justifyContent: "center",
+    width: 32,
+    height: 32,
+    borderRadius: RADIUS.md,
+    border: "none",
+    cursor: "pointer",
+    background: "transparent",
+    fontSize: 18,
+    lineHeight: 1,
+    flexShrink: 0,
+    transition: "opacity 0.15s ease",
+  },
+});

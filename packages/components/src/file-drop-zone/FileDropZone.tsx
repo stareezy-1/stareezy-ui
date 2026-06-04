@@ -11,6 +11,7 @@ import {
 import type { FileDropZoneState } from "./FileDropZone.types";
 import type { BoxLayoutProps } from "../shared/boxLayoutProps";
 import { extractBoxLayoutProps } from "../shared/boxLayoutProps";
+import type { SzrFC } from '../shared/types';
 
 export type { FileDropZoneState } from "./FileDropZone.types";
 
@@ -23,9 +24,10 @@ export interface FileDropZoneProps extends BoxLayoutProps {
   style?: React.CSSProperties;
 }
 
-export const FileDropZone: React.FC<FileDropZoneProps> = (props) => {
-  const { layout, rest } = extractBoxLayoutProps(props);
-  const hasLayoutProps = Object.keys(layout).length > 0;
+export const FileDropZone: SzrFC<FileDropZoneProps> = (props) => {
+  const { layout, sxProps, rest } = extractBoxLayoutProps(props);
+  const hasLayoutProps =
+    Object.keys(layout).length > 0 || Object.keys(sxProps).length > 0;
   const {
     onFiles,
     accept,
@@ -112,7 +114,12 @@ export const FileDropZone: React.FC<FileDropZoneProps> = (props) => {
     </div>
   );
 
-  if (hasLayoutProps) return <Box {...layout}>{dropZoneEl}</Box>;
+  if (hasLayoutProps)
+    return (
+      <Box {...layout} {...sxProps}>
+        {dropZoneEl}
+      </Box>
+    );
   return dropZoneEl;
 };
 

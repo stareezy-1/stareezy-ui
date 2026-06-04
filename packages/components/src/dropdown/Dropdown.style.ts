@@ -10,6 +10,7 @@ import {
   INTERACTION,
   TYPE_SCALE,
 } from "../shared/visualSpec";
+import { registerClasses, registerKeyframes } from "../shared/componentSheet";
 import type { DropdownSize } from "./Dropdown.types";
 
 export const DROPDOWN_KF = `
@@ -38,3 +39,57 @@ export const dropdownGeometry = {
   disabledOpacity: INTERACTION.disabledOpacity,
   hoverOpacity: INTERACTION.hoverOpacity,
 } as const;
+
+// ── Stylesheet registration ───────────────────────────────────────────────────
+
+export const dropdownClasses = registerClasses("dropdown", {
+  trigger: {
+    width: "100%",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    borderRadius: RADIUS.md,
+    cursor: "pointer",
+    transition: "border-color 0.18s ease, box-shadow 0.18s ease",
+    boxSizing: "border-box",
+    gap: GAP.sm,
+    textAlign: "left",
+    borderWidth: 1,
+    borderStyle: "solid",
+  },
+  chevron: {
+    flexShrink: 0,
+    transition: "transform 0.2s ease",
+  },
+  menu: {
+    position: "absolute",
+    zIndex: 200,
+    borderRadius: RADIUS.md + 2,
+    overflow: "hidden",
+    animation: "szr-dropdown-in 0.18s ease",
+    maxHeight: 300,
+    display: "flex",
+    flexDirection: "column",
+    borderWidth: 1,
+    borderStyle: "solid",
+  },
+  option: {
+    display: "flex",
+    alignItems: "center",
+    gap: GAP.sm + 2,
+    padding: `${dropdownGeometry.itemPaddingV}px ${dropdownGeometry.itemPaddingH}px`,
+    cursor: "pointer",
+    transition: "background 0.1s ease",
+  },
+  groupLabel: {
+    paddingTop: GAP.sm,
+    paddingBottom: GAP.xs,
+    paddingLeft: dropdownGeometry.itemPaddingH,
+    paddingRight: dropdownGeometry.itemPaddingH,
+    fontSize: dropdownGeometry.groupLabelFontSize,
+    letterSpacing: "0.06em",
+    textTransform: "uppercase",
+  },
+});
+
+registerKeyframes("szr-dropdown-kf", DROPDOWN_KF);

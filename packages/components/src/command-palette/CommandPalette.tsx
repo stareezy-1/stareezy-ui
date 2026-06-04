@@ -14,6 +14,7 @@ import {
 import type { CommandItem } from "./CommandPalette.types";
 import type { BoxLayoutProps } from "../shared/boxLayoutProps";
 import { extractBoxLayoutProps } from "../shared/boxLayoutProps";
+import type { SzrFC } from '../shared/types';
 
 export type { CommandItem } from "./CommandPalette.types";
 
@@ -23,9 +24,10 @@ export interface CommandPaletteProps extends BoxLayoutProps {
   placeholder?: string;
 }
 
-export const CommandPalette: React.FC<CommandPaletteProps> = (props) => {
-  const { layout, rest } = extractBoxLayoutProps(props);
-  const hasLayoutProps = Object.keys(layout).length > 0;
+export const CommandPalette: SzrFC<CommandPaletteProps> = (props) => {
+  const { layout, sxProps, rest } = extractBoxLayoutProps(props);
+  const hasLayoutProps =
+    Object.keys(layout).length > 0 || Object.keys(sxProps).length > 0;
   const {
     items,
     onClose,
@@ -116,7 +118,12 @@ export const CommandPalette: React.FC<CommandPaletteProps> = (props) => {
     </div>
   );
 
-  if (hasLayoutProps) return <Box {...layout}>{paletteEl}</Box>;
+  if (hasLayoutProps)
+    return (
+      <Box {...layout} {...sxProps}>
+        {paletteEl}
+      </Box>
+    );
   return paletteEl;
 };
 

@@ -10,6 +10,8 @@ import { Box } from "../primitives/Box";
 import type { BoxProps, StyleProp } from "../primitives/Box";
 import { Text, ETextType } from "../primitives/Text";
 import type { DividerOrientation, DividerVariant } from "./Divider.types";
+import type { SxProp } from "../shared/sx";
+import type { SzrFC } from '../shared/types';
 
 export type { DividerOrientation, DividerVariant };
 
@@ -25,9 +27,10 @@ export interface DividerProps extends Omit<BoxProps, "children"> {
   labelTextType?: ETextType;
   /** Style override for the label text */
   labelTextStyle?: StyleProp;
+  sx?: SxProp;
 }
 
-export const Divider: React.FC<DividerProps> = ({
+export const Divider: SzrFC<DividerProps> = ({
   orientation = "horizontal",
   variant = "solid",
   color = colors.beauBlue[300].value,
@@ -38,6 +41,7 @@ export const Divider: React.FC<DividerProps> = ({
   labelTextType = ETextType.XSLabel,
   labelTextStyle,
   testID,
+  sx,
   ...boxProps
 }) => {
   const isHorizontal = orientation === "horizontal";
@@ -55,6 +59,7 @@ export const Divider: React.FC<DividerProps> = ({
           aria-orientation={orientation}
           data-testid={testID}
           {...boxProps}
+          {...sx}
         >
           {labelPosition !== "left" && (
             <div
@@ -117,6 +122,7 @@ export const Divider: React.FC<DividerProps> = ({
         {...(isHorizontal ? { my: spacingProp * 0.5 } : {})}
         {...(!isHorizontal ? { mx: spacingProp * 0.5 } : {})}
         {...boxProps}
+        {...sx}
       />
     );
   }

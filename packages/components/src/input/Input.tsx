@@ -22,6 +22,7 @@ import {
 } from "./Input.style";
 import type { BoxLayoutProps } from "../shared/boxLayoutProps";
 import { extractBoxLayoutProps } from "../shared/boxLayoutProps";
+import type { SzrFC } from '../shared/types';
 
 export { EInputType, EInputSize };
 export { ELabelsType, EHintTextType };
@@ -81,9 +82,10 @@ export interface IInputProps extends BoxLayoutProps {
   errorTextStyle?: StyleProp;
 }
 
-export const Input: React.FC<IInputProps> = (props) => {
-  const { layout, rest: inputRest } = extractBoxLayoutProps(props);
-  const hasLayoutProps = Object.keys(layout).length > 0;
+export const Input: SzrFC<IInputProps> = (props) => {
+  const { layout, sxProps, rest: inputRest } = extractBoxLayoutProps(props);
+  const hasLayoutProps =
+    Object.keys(layout).length > 0 || Object.keys(sxProps).length > 0;
 
   // Cast rest back to the component-specific props — extractBoxLayoutProps strips
   // layout keys at runtime; this cast is sound.
@@ -369,7 +371,12 @@ export const Input: React.FC<IInputProps> = (props) => {
         )}
       </div>
     );
-    if (hasLayoutProps) return <Box {...layout}>{webContent}</Box>;
+    if (hasLayoutProps)
+      return (
+        <Box {...layout} {...sxProps}>
+          {webContent}
+        </Box>
+      );
     return webContent;
   }
 
@@ -488,7 +495,12 @@ export const Input: React.FC<IInputProps> = (props) => {
       )}
     </View>
   );
-  if (hasLayoutProps) return <Box {...layout}>{nativeContent}</Box>;
+  if (hasLayoutProps)
+    return (
+      <Box {...layout} {...sxProps}>
+        {nativeContent}
+      </Box>
+    );
   return nativeContent;
 };
 
