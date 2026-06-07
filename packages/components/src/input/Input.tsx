@@ -4,7 +4,7 @@
  */
 
 import React, { useState } from "react";
-import { spacing } from "@quasify-ui/tokens";
+import { spacing } from "@stareezy-ui/tokens";
 import { useThemedColors } from "../shared/useThemedColors";
 import { ELabelsType, EHintTextType } from "../shared/types";
 import { isWeb } from "../shared/platform";

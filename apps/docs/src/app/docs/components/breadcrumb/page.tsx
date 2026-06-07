@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   description:
     "Cross-platform Breadcrumb navigation component with separator customization, overflow handling, and full accessibility support.",
   alternates: {
-    canonical: "https://ui.quasify.app/docs/components/breadcrumb",
+    canonical: "https://ui.stareezy.tech/docs/components/breadcrumb",
   },
 };
 
@@ -26,7 +26,7 @@ export default function BreadcrumbPage() {
           border: "1px solid var(--color-border)",
         }}
       >
-        <code>{`import { Breadcrumb } from '@quasify-ui/components'`}</code>
+        <code>{`import { Breadcrumb } from '@stareezy-ui/components'`}</code>
       </pre>
 
       <h2 className="gradient-text">Basic usage</h2>

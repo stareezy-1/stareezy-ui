@@ -1,4 +1,4 @@
-// @quasify-ui/stylesheet
+// @stareezy-ui/stylesheet
 // Atomic CSS sheet management, CSS variable injection, and responsive media
 // query helpers matching Box's breakpoints/media prop system.
 //
@@ -46,7 +46,7 @@ const BUILTIN_BREAKPOINTS: BreakpointMap = {
  */
 export function getBreakpoints(): Readonly<BreakpointMap> {
   const global = globalThis as Record<string, unknown>;
-  const fromChannel = global["__Quasify_breakpoints__"];
+  const fromChannel = global["__stareezy_breakpoints__"];
   if (
     fromChannel !== null &&
     typeof fromChannel === "object" &&
@@ -202,7 +202,7 @@ export function buildComponentCss(
 
 /**
  * Manages atomic CSS class injection and CSS variable (`:root`) injection for
- * the Quasify UI web runtime. Now also supports responsive / media-query style
+ * the Stareezy UI web runtime. Now also supports responsive / media-query style
  * injection via `injectResponsive()` and `injectComponentStyle()`, matching
  * Box's breakpoints/media prop system.
  *
@@ -438,7 +438,7 @@ export class AtomicStyleSheet {
 }
 
 // ---------------------------------------------------------------------------
-// Standalone helpers (used by @quasify-ui/runtime and the compiler)
+// Standalone helpers (used by @stareezy-ui/runtime and the compiler)
 // ---------------------------------------------------------------------------
 
 /**

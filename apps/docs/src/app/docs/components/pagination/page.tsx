@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   description:
     "Cross-platform Pagination component with page range display, ellipsis, size variants, and keyboard navigation.",
   alternates: {
-    canonical: "https://ui.quasify.app/docs/components/pagination",
+    canonical: "https://ui.stareezy.tech/docs/components/pagination",
   },
 };
 
@@ -22,7 +22,7 @@ export default function PaginationPage() {
     >
       <h2 className="gradient-text">Import</h2>
       <pre>
-        <code>{`import { Pagination } from '@quasify-ui/components'`}</code>
+        <code>{`import { Pagination } from '@stareezy-ui/components'`}</code>
       </pre>
 
       <h2 className="gradient-text">Basic usage</h2>

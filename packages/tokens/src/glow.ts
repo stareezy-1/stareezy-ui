@@ -1,5 +1,5 @@
 /**
- * Glow shadow tokens for Quasify UI.
+ * Glow shadow tokens for Stareezy UI.
  *
  * Aurora-inspired glow effects using aurora green and nebula purple.
  * Use as `box-shadow` values on web.

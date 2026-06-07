@@ -14,7 +14,7 @@ export const EXAMPLES: Record<string, PlaygroundExample> = {
   return (
     <VStack gap={16} style={{ maxWidth: 340 }}>
       <Box bg="#024CCE" p={20} rounded={12}>
-        <Text style={{ fontSize: 20, fontWeight: 800, color: '#fff', marginBottom: 6 }}>Hello, Quasify UI</Text>
+        <Text style={{ fontSize: 20, fontWeight: 800, color: '#fff', marginBottom: 6 }}>Hello, Stareezy UI</Text>
         <Text style={{ fontSize: 14, color: 'rgba(255,255,255,0.75)' }}>A fully typed design token system.</Text>
       </Box>
       <HStack gap={8}>
@@ -199,7 +199,7 @@ export const EXAMPLES: Record<string, PlaygroundExample> = {
     icon: "⊞",
     code: `function Demo() {
   const items = [
-    { key: '1', title: 'What is Quasify UI?', content: 'A fully typed, cross-platform design token system and component library for React Native and web.' },
+    { key: '1', title: 'What is Stareezy UI?', content: 'A fully typed, cross-platform design token system and component library for React Native and web.' },
     { key: '2', title: 'How do tokens work?', content: 'Tokens are plain objects with an id and value. The runtime resolves them in O(1) via a Map lookup.' },
     { key: '3', title: 'Is it cross-platform?', content: 'Yes — the same component API works on web and React Native. One source of truth.' },
     { key: '4', title: 'Disabled item', content: 'This item cannot be opened.', disabled: true },
@@ -373,9 +373,9 @@ export const EXAMPLES: Record<string, PlaygroundExample> = {
     code: `function Demo() {
   return (
     <VStack gap={16} style={{ maxWidth: 380 }}>
-      <VStack gap={6}><Text style={{ fontSize: 13, fontWeight: 600, color: '#0F1010' }}>Install command</Text><Clipboard value="pnpm add @quasify-ui/components @quasify-ui/tokens" /></VStack>
+      <VStack gap={6}><Text style={{ fontSize: 13, fontWeight: 600, color: '#0F1010' }}>Install command</Text><Clipboard value="pnpm add @stareezy-ui/components @stareezy-ui/tokens" /></VStack>
       <VStack gap={6}><Text style={{ fontSize: 13, fontWeight: 600, color: '#0F1010' }}>API Key</Text><Clipboard value="sk-live-abc123xyz789" displayValue="sk-live-••••••••••789" /></VStack>
-      <VStack gap={6}><Text style={{ fontSize: 13, fontWeight: 600, color: '#0F1010' }}>Import snippet</Text><Clipboard value="import { Box, Text, Button } from '@quasify-ui/components'" /></VStack>
+      <VStack gap={6}><Text style={{ fontSize: 13, fontWeight: 600, color: '#0F1010' }}>Import snippet</Text><Clipboard value="import { Box, Text, Button } from '@stareezy-ui/components'" /></VStack>
     </VStack>
   );
 }`,

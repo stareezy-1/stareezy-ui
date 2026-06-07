@@ -1,7 +1,7 @@
 "use client";
 // Client Component — uses the full interactive entry
-import { Button } from "@quasify-ui/components";
-import { useThemeSwitch } from "@quasify-ui/tokens";
+import { Button } from "@stareezy-ui/components";
+import { useThemeSwitch } from "@stareezy-ui/tokens";
 
 export function HeroSection() {
   const { theme, setTheme } = useThemeSwitch();
@@ -20,13 +20,13 @@ export function HeroSection() {
           type="Primary"
           text="Get Started"
           onPress={() =>
-            window.open("https://ui.quasify.app/docs/quick-start", "_blank")
+            window.open("https://ui.stareezy.tech/docs/quick-start", "_blank")
           }
         />
         <Button
           type="Secondary"
           text="Documentation"
-          onPress={() => window.open("https://ui.quasify.app", "_blank")}
+          onPress={() => window.open("https://ui.stareezy.tech", "_blank")}
         />
       </div>
 

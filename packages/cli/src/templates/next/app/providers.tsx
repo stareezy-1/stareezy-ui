@@ -1,5 +1,5 @@
 "use client";
-import { ThemeProvider } from "@quasify-ui/tokens";
+import { ThemeProvider } from "@stareezy-ui/tokens";
 import { type ReactNode } from "react";
 
 export function Providers({ children }: { children: ReactNode }) {

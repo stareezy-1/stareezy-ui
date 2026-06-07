@@ -1,7 +1,7 @@
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { Providers } from "@/src/providers";
-import "../quasify.config";
+import "../stareezy.config";
 
 export default function RootLayout() {
   return (

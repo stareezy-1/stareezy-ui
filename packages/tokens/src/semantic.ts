@@ -1,5 +1,5 @@
 /**
- * Semantic color tokens for Quasify UI.
+ * Semantic color tokens for Stareezy UI.
  *
  * Semantic tokens REFERENCE primitive token objects directly — they do not
  * create new Token instances.  This means `semanticColors.text.primary` is

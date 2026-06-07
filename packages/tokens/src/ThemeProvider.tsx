@@ -227,13 +227,13 @@ function WebThemeProvider({
 
     if (!styleElRef.current) {
       const el = document.createElement("style");
-      el.setAttribute("data-Quasify-theme", dataTheme);
+      el.setAttribute("data-stareezy-theme", dataTheme);
       el.textContent = css;
       document.head.appendChild(el);
       styleElRef.current = el;
     } else {
       styleElRef.current.textContent = css;
-      styleElRef.current.setAttribute("data-Quasify-theme", dataTheme);
+      styleElRef.current.setAttribute("data-stareezy-theme", dataTheme);
     }
 
     return () => {
@@ -321,7 +321,7 @@ export function useThemeSwitch(): {
           (globalThis as Record<string, unknown>)["process"] !== "production"
         ) {
           console.warn(
-            "[Quasify-ui] useThemeSwitch() called outside of a ThemeProvider.",
+            "[stareezy-ui] useThemeSwitch() called outside of a ThemeProvider.",
           );
         }
         return;

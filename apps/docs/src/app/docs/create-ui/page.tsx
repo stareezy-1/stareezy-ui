@@ -4,15 +4,15 @@ import { DocPage, Callout, Step, PropRow } from "../../../components/DocPage";
 export const metadata: Metadata = {
   title: "createUi",
   description:
-    "Configure Quasify UI tokens, themes, shorthands, and breakpoints at app startup. Includes module augmentation for typed custom shorthands.",
-  alternates: { canonical: "https://ui.quasify.app/docs/create-ui" },
+    "Configure Stareezy UI tokens, themes, shorthands, and breakpoints at app startup. Includes module augmentation for typed custom shorthands.",
+  alternates: { canonical: "https://ui.stareezy.tech/docs/create-ui" },
 };
 
 export default function CreateUiPage() {
   return (
     <DocPage
       title="createUi"
-      description="The Quasify UI configuration factory — themes, tokens, shorthands, breakpoints, and module augmentation."
+      description="The Stareezy UI configuration factory — themes, tokens, shorthands, breakpoints, and module augmentation."
       badge="API Reference"
       icon="◎"
       badgeColor="#ff6a1a"
@@ -20,13 +20,13 @@ export default function CreateUiPage() {
       <h2 className="gradient-text">Overview</h2>
       <p>
         <code>createUi()</code> is the single entry point for configuring
-        Quasify UI. Call it once at app startup in a{" "}
-        <code>quasify.config.ts</code> file, export the result, and import it
+        Stareezy UI. Call it once at app startup in a{" "}
+        <code>stareezy.config.ts</code> file, export the result, and import it
         wherever you need typed token access.
       </p>
 
       <Callout type="tip">
-        The recommended pattern is a dedicated <code>quasify.config.ts</code>{" "}
+        The recommended pattern is a dedicated <code>stareezy.config.ts</code>{" "}
         at your project root. The compiler reads this file automatically to pick
         up your custom shorthands at build time.
       </Callout>
@@ -39,8 +39,8 @@ export default function CreateUiPage() {
           boxShadow: "0 0 40px rgba(255,106,26,0.03)",
         }}
       >
-        <code>{`// quasify.config.ts
-import { createUi, token, themes, motion } from '@quasify-ui/tokens'
+        <code>{`// stareezy.config.ts
+import { createUi, token, themes, motion } from '@stareezy-ui/tokens'
 
 export const ui = createUi({
   // Register all four built-in themes (+ any custom ones)
@@ -101,8 +101,8 @@ export const ui = createUi({
 // Makes your shorthands flow into BoxProps as typed props.
 // Without this, TypeScript won't know about your custom shorthands.
 type AppConfig = typeof ui
-declare module '@quasify-ui/tokens' {
-  interface QuasifyCustomConfig extends AppConfig {}
+declare module '@stareezy-ui/tokens' {
+  interface SzrCustomConfig extends AppConfig {}
 }
 
 export default ui`}</code>
@@ -161,9 +161,9 @@ export default ui`}</code>
         props for theme-reactive colors:
       </p>
       <pre>
-        <code>{`import { ui } from './quasify.config'
+        <code>{`import { ui } from './stareezy.config'
 
-// ui.t is identical to importing t from '@quasify-ui/tokens'
+// ui.t is identical to importing t from '@stareezy-ui/tokens'
 <Box bg={ui.t.backgrounds.primary} color={ui.t.text.primary} />
 
 // Custom tokens are on ui.tokens
@@ -182,17 +182,17 @@ export default ui`}</code>
 
       <Step n={1} title="Next.js (App Router)">
         <pre>
-          <code>{`// quasify.config.ts — at project root
-import { createUi, themes } from '@quasify-ui/tokens'
+          <code>{`// stareezy.config.ts — at project root
+import { createUi, themes } from '@stareezy-ui/tokens'
 export const ui = createUi({ themes: { aurora: themes.aurora } })
 type AppConfig = typeof ui
-declare module '@quasify-ui/tokens' {
-  interface QuasifyCustomConfig extends AppConfig {}
+declare module '@stareezy-ui/tokens' {
+  interface SzrCustomConfig extends AppConfig {}
 }
 
 // app/layout.tsx
-import { ThemeProvider } from '@quasify-ui/tokens'
-import './quasify.config'  // side-effect: registers singleton
+import { ThemeProvider } from '@stareezy-ui/tokens'
+import './stareezy.config'  // side-effect: registers singleton
 
 export default function RootLayout({ children }) {
   return (
@@ -207,8 +207,8 @@ export default function RootLayout({ children }) {
       <Step n={2} title="Vite / React SPA">
         <pre>
           <code>{`// main.tsx
-import './quasify.config'  // must be first import
-import { ThemeProvider } from '@quasify-ui/tokens'
+import './stareezy.config'  // must be first import
+import { ThemeProvider } from '@stareezy-ui/tokens'
 import ReactDOM from 'react-dom/client'
 import App from './App'
 
@@ -221,8 +221,8 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       <Step n={3} title="React Native / Expo">
         <pre>
           <code>{`// App.tsx
-import './quasify.config'  // must be first import
-import { ThemeProvider } from '@quasify-ui/tokens'
+import './stareezy.config'  // must be first import
+import { ThemeProvider } from '@stareezy-ui/tokens'
 
 export default function App() {
   return (
@@ -235,7 +235,7 @@ export default function App() {
       </Step>
 
       <Callout type="warning">
-        Import <code>quasify.config.ts</code> exactly once, as the first import
+        Import <code>stareezy.config.ts</code> exactly once, as the first import
         in your entry file. Calling <code>createUi()</code> again replaces the
         global singleton.
       </Callout>

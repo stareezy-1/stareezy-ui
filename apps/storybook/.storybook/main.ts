@@ -29,16 +29,16 @@ const config: StorybookConfig = {
     config.resolve = config.resolve ?? {};
     config.resolve.alias = {
       ...config.resolve.alias,
-      "@quasify-ui/tokens": path.resolve(root, "packages/tokens/src/index.ts"),
-      "@quasify-ui/components": path.resolve(
+      "@stareezy-ui/tokens": path.resolve(root, "packages/tokens/src/index.ts"),
+      "@stareezy-ui/components": path.resolve(
         root,
         "packages/components/src/index.ts",
       ),
-      "@quasify-ui/runtime": path.resolve(
+      "@stareezy-ui/runtime": path.resolve(
         root,
         "packages/runtime/src/index.ts",
       ),
-      "@quasify-ui/core": path.resolve(root, "packages/core/src/index.ts"),
+      "@stareezy-ui/core": path.resolve(root, "packages/core/src/index.ts"),
     };
     return config;
   },

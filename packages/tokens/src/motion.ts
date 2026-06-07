@@ -1,5 +1,5 @@
 /**
- * Motion tokens for Quasify UI.
+ * Motion tokens for Stareezy UI.
  *
  * Provides duration and easing tokens for consistent animations
  * across web and React Native.

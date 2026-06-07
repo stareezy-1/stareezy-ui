@@ -1,5 +1,5 @@
 /**
- * Shadow tokens and boxShadow utility for Quasify UI.
+ * Shadow tokens and boxShadow utility for Stareezy UI.
  *
  * `ShadowStyle` mirrors the cross-platform shadow shape used by both
  * React Native (`shadowColor`, `shadowOffset`, `shadowRadius`, `shadowOpacity`)

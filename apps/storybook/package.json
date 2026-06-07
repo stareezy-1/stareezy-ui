@@ -1,5 +1,5 @@
 {
-  "name": "@quasify-ui/storybook",
+  "name": "@stareezy-ui/storybook",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -7,8 +7,8 @@
     "build-storybook": "storybook build"
   },
   "dependencies": {
-    "@quasify-ui/components": "workspace:*",
-    "@quasify-ui/tokens": "workspace:*"
+    "@stareezy-ui/components": "workspace:*",
+    "@stareezy-ui/tokens": "workspace:*"
   },
   "devDependencies": {
     "@storybook/addon-controls": "^8.4.0",

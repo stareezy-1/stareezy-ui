@@ -4,7 +4,7 @@ import { DocPage, Callout, PropRow } from "../../../components/DocPage";
 export const metadata: Metadata = {
   title: "Stylesheet",
   description:
-    "Atomic CSS sheet management with responsive breakpoint support for Quasify UI.",
+    "Atomic CSS sheet management with responsive breakpoint support for Stareezy UI.",
 };
 
 export default function StylesheetPage() {
@@ -17,15 +17,15 @@ export default function StylesheetPage() {
       icon="⊛"
     >
       <Callout type="info">
-        <code>@quasify-ui/stylesheet</code> is used internally by{" "}
-        <code>@quasify-ui/runtime</code>. You only need it directly when
+        <code>@stareezy-ui/stylesheet</code> is used internally by{" "}
+        <code>@stareezy-ui/runtime</code>. You only need it directly when
         building a custom runtime adapter or injecting styles outside of{" "}
         <code>Box</code>.
       </Callout>
 
       <h2 className="gradient-text">Install</h2>
       <pre>
-        <code>pnpm add @quasify-ui/stylesheet</code>
+        <code>pnpm add @stareezy-ui/stylesheet</code>
       </pre>
 
       <h2 className="gradient-text">Overview</h2>
@@ -90,7 +90,7 @@ export default function StylesheetPage() {
           boxShadow: "0 0 40px rgba(255,106,26,0.03)",
         }}
       >
-        <code>{`import { AtomicStyleSheet } from "@quasify-ui/stylesheet";
+        <code>{`import { AtomicStyleSheet } from "@stareezy-ui/stylesheet";
 
 const sheet = new AtomicStyleSheet();
 
@@ -605,10 +605,10 @@ sheet.injectResponsive(
         <code>{`{ sm: 480, md: 768, lg: 1024, xl: 1280, "2xl": 1536 }`}</code>
       </pre>
       <p>
-        Override them in your <code>quasify.config.ts</code>:
+        Override them in your <code>stareezy.config.ts</code>:
       </p>
       <pre>
-        <code>{`import { createUi } from "@quasify-ui/tokens";
+        <code>{`import { createUi } from "@stareezy-ui/tokens";
 
 const ui = createUi({
   media: { sm: 640, md: 768, lg: 1024, xl: 1280, "2xl": 1536 },
@@ -628,7 +628,7 @@ export default ui;`}</code>
       >
         The stylesheet package has zero runtime dependencies — it only touches{" "}
         <code>document.head</code> and the{" "}
-        <code>globalThis.__Quasify_breakpoints__</code> channel. Safe to use in
+        <code>globalThis.__stareezy_breakpoints__</code> channel. Safe to use in
         any web bundler environment.
       </div>
     </DocPage>

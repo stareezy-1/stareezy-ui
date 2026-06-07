@@ -68,7 +68,7 @@ export default function MotionTokensPage() {
 
       <h2>Usage</h2>
       <pre>
-        <code>{`import { motion } from '@quasify-ui/tokens'
+        <code>{`import { motion } from '@stareezy-ui/tokens'
 
 // Duration tokens (number in ms)
 motion.duration.instant.value // 100

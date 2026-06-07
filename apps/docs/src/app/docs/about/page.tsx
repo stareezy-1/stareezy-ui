@@ -5,13 +5,13 @@ import { DocPage, Callout } from "../../../components/DocPage";
 export const metadata: Metadata = {
   title: "About",
   description:
-    "Quasify UI is built by Muhammad Bintang Al Akbar — a developer focused on typed design systems and cross-platform UI.",
-  alternates: { canonical: "https://ui.quasify.app/docs/about" },
+    "Stareezy UI is built by Muhammad Bintang Al Akbar — a developer focused on typed design systems and cross-platform UI.",
+  alternates: { canonical: "https://ui.stareezy.tech/docs/about" },
   openGraph: {
-    title: "About — Quasify UI",
+    title: "About — Stareezy UI",
     description:
-      "Quasify UI is built by Muhammad Bintang Al Akbar. Learn about the project and reach out.",
-    url: "https://ui.quasify.app/docs/about",
+      "Stareezy UI is built by Muhammad Bintang Al Akbar. Learn about the project and reach out.",
+    url: "https://ui.stareezy.tech/docs/about",
   },
 };
 
@@ -143,7 +143,7 @@ export default function AboutPage() {
                 fontFamily: "var(--font-mono)",
               }}
             >
-              Quasify
+              Stareezy
             </div>
 
             <p
@@ -155,14 +155,14 @@ export default function AboutPage() {
                 maxWidth: 520,
               }}
             >
-              I built Quasify UI to solve a real problem: design tokens that
+              I built Stareezy UI to solve a real problem: design tokens that
               are fully typed, work the same on React Native and web, and don't
               require a runtime that slows things down. Every package in this
               library is something I needed and couldn't find elsewhere.
             </p>
 
             <a
-              href="https://quasify.app"
+              href="https://stareezy.tech"
               target="_blank"
               rel="noopener noreferrer"
               style={{
@@ -180,7 +180,7 @@ export default function AboutPage() {
                   "0 0 24px rgba(255,106,26,0.3)",
               }}
             >
-              quasify.app ↗
+              stareezy.tech ↗
             </a>
           </div>
         </div>
@@ -269,7 +269,7 @@ export default function AboutPage() {
 
       <h2 className="gradient-text">Get in touch</h2>
       <p>
-        If you&apos;re using Quasify UI, found a bug, or want to contribute —
+        If you&apos;re using Stareezy UI, found a bug, or want to contribute —
         reach out. The best place is the GitHub repo or my personal site.
       </p>
 
@@ -282,7 +282,7 @@ export default function AboutPage() {
         }}
       >
         <a
-          href="https://quasify.app"
+          href="https://stareezy.tech"
           target="_blank"
           rel="noopener noreferrer"
           style={{
@@ -298,10 +298,10 @@ export default function AboutPage() {
             textDecoration: "none",
           }}
         >
-          ◎ quasify.app
+          ◎ stareezy.tech
         </a>
         <a
-          href="https://github.com/quasify-ui/quasify-ui"
+          href="https://github.com/stareezy-1/stareezy-ui"
           target="_blank"
           rel="noopener noreferrer"
           style={{

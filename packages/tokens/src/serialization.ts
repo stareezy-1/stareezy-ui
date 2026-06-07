@@ -1,5 +1,5 @@
 /**
- * Token serialization and deserialization for Quasify UI.
+ * Token serialization and deserialization for Stareezy UI.
  * Enables tokens to be persisted, transmitted, and reconstructed without loss of identity.
  */
 

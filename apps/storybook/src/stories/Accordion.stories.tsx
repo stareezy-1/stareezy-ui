@@ -1,13 +1,13 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { Accordion } from "@quasify-ui/components";
-import type { AccordionItem } from "@quasify-ui/components";
+import { Accordion } from "@stareezy-ui/components";
+import type { AccordionItem } from "@stareezy-ui/components";
 
 const ITEMS: AccordionItem[] = [
   {
     key: "1",
-    title: "What is Quasify UI?",
+    title: "What is Stareezy UI?",
     content:
-      "Quasify UI is a fully typed, cross-platform design token system and component library for React Native and web.",
+      "Stareezy UI is a fully typed, cross-platform design token system and component library for React Native and web.",
   },
   {
     key: "2",

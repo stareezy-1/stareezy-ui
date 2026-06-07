@@ -12,7 +12,7 @@
  *
  * Property 4 — CLI add dependency closure
  *   Result contains every requested component, its transitive component
- *   closure, and required @quasify-ui/* deps.
+ *   closure, and required @stareezy-ui/* deps.
  *   Validates: Requirements 17.2 (via Requirement 12.13)
  *
  * Property 5 — CLI add/init idempotency
@@ -44,7 +44,7 @@ interface ComponentRegistryEntry {
   packageDeps: string[];
 }
 
-const BASE_PACKAGES = ["@quasify-ui/components", "@quasify-ui/tokens"];
+const BASE_PACKAGES = ["@stareezy-ui/components", "@stareezy-ui/tokens"];
 
 const REGISTRY: ComponentRegistryEntry[] = [
   { name: "button", files: [], componentDeps: [], packageDeps: BASE_PACKAGES },
@@ -128,9 +128,9 @@ function getAllComponentNames(): string[] {
 // Inlined idempotent init logic (mirrors packages/cli/src/commands/init.ts)
 // ---------------------------------------------------------------------------
 
-const Quasify_CONFIG_CONTENT = `import { createUi } from "@quasify-ui/tokens";\nconst ui = createUi({});\nexport default ui;\n`;
+const Stareezy_CONFIG_CONTENT = `import { createUi } from "@stareezy-ui/tokens";\nconst ui = createUi({});\nexport default ui;\n`;
 
-const PROVIDERS_CONTENT = `import { ThemeProvider } from "@quasify-ui/tokens";\nexport function Providers({ children }) { return <ThemeProvider>{children}</ThemeProvider>; }\n`;
+const PROVIDERS_CONTENT = `import { ThemeProvider } from "@stareezy-ui/tokens";\nexport function Providers({ children }) { return <ThemeProvider>{children}</ThemeProvider>; }\n`;
 
 type Framework = "next" | "vite" | "expo";
 
@@ -169,12 +169,12 @@ function runIdempotentInit(dir: string): InitResult {
     skippedThemeProvider: false,
   };
 
-  // 1. quasify.config.ts — only write when absent
-  const configPath = join(dir, "quasify.config.ts");
+  // 1. stareezy.config.ts — only write when absent
+  const configPath = join(dir, "stareezy.config.ts");
   if (existsSync(configPath)) {
     result.skippedConfig = true;
   } else {
-    writeFileSync(configPath, Quasify_CONFIG_CONTENT, "utf8");
+    writeFileSync(configPath, Stareezy_CONFIG_CONTENT, "utf8");
     result.createdConfig = true;
   }
 
@@ -243,8 +243,8 @@ describe("Property 4 — CLI add dependency closure", () => {
     );
   });
 
-  // Property 4c — Required @quasify-ui/* package deps are always present
-  it("result contains all required @quasify-ui/* package deps", () => {
+  // Property 4c — Required @stareezy-ui/* package deps are always present
+  it("result contains all required @stareezy-ui/* package deps", () => {
     fc.assert(
       fc.property(
         fc.uniqueArray(fc.constantFrom(...allNames), {
@@ -255,8 +255,8 @@ describe("Property 4 — CLI add dependency closure", () => {
           const resolved = resolveComponentClosure(requestedNames);
           const pkgDeps = collectPackageDeps(resolved);
           return (
-            pkgDeps.includes("@quasify-ui/components") &&
-            pkgDeps.includes("@quasify-ui/tokens")
+            pkgDeps.includes("@stareezy-ui/components") &&
+            pkgDeps.includes("@stareezy-ui/tokens")
           );
         },
       ),
@@ -345,8 +345,8 @@ function makeProjectDir(framework: Framework): string {
 }
 
 describe("Property 5 — CLI add/init idempotency", () => {
-  // Property 5a — Running init twice produces byte-identical quasify.config.ts
-  it("running init twice produces identical quasify.config.ts content", () => {
+  // Property 5a — Running init twice produces byte-identical stareezy.config.ts
+  it("running init twice produces identical stareezy.config.ts content", () => {
     fc.assert(
       fc.property(
         fc.constantFrom("next", "vite", "expo") as fc.Arbitrary<Framework>,
@@ -355,13 +355,13 @@ describe("Property 5 — CLI add/init idempotency", () => {
 
           runIdempotentInit(dir);
           const configAfterFirst = readFileSync(
-            join(dir, "quasify.config.ts"),
+            join(dir, "stareezy.config.ts"),
             "utf8",
           );
 
           runIdempotentInit(dir);
           const configAfterSecond = readFileSync(
-            join(dir, "quasify.config.ts"),
+            join(dir, "stareezy.config.ts"),
             "utf8",
           );
 

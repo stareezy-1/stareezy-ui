@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   title: "Table",
   description:
     "Cross-platform Table component with sorting, striped rows, sticky headers, and full accessibility support.",
-  alternates: { canonical: "https://ui.quasify.app/docs/components/table" },
+  alternates: { canonical: "https://ui.stareezy.tech/docs/components/table" },
 };
 
 export default function TablePage() {
@@ -20,7 +20,7 @@ export default function TablePage() {
     >
       <h2 className="gradient-text">Import</h2>
       <pre>
-        <code>{`import { Table } from '@quasify-ui/components'`}</code>
+        <code>{`import { Table } from '@stareezy-ui/components'`}</code>
       </pre>
 
       <h2 className="gradient-text">Basic usage</h2>

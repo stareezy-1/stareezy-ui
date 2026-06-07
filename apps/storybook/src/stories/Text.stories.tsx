@@ -9,7 +9,7 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react";
-import { Text, ETextType, EFontStyle } from "@quasify-ui/components";
+import { Text, ETextType, EFontStyle } from "@stareezy-ui/components";
 
 const meta: Meta<typeof Text> = {
   title: "Components/Text",

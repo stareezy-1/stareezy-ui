@@ -1,7 +1,7 @@
 {
-  "name": "@quasify-ui/stylesheet",
+  "name": "@stareezy-ui/stylesheet",
   "version": "1.1.0",
-  "description": "Quasify UI stylesheet — atomic CSS sheet management and CSS variable injection",
+  "description": "Stareezy UI stylesheet — atomic CSS sheet management and CSS variable injection",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
@@ -18,14 +18,14 @@
   ],
   "license": "MIT",
   "keywords": [
-    "Quasify-ui",
+    "Stareezy-ui",
     "stylesheet",
     "atomic-css",
     "css-variables"
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/quasify-ui/quasify-ui.git",
+    "url": "https://github.com/stareezy-1/stareezy-ui.git",
     "directory": "packages/stylesheet"
   },
   "scripts": {

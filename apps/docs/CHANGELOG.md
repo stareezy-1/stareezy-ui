@@ -1,4 +1,4 @@
-# @quasify-ui/docs
+# @stareezy-ui/docs
 
 ## 0.2.0
 
@@ -34,7 +34,7 @@
 
 ### Minor Changes
 
-- ffc8daa: Initial release of the Quasify UI documentation site.
+- ffc8daa: Initial release of the Stareezy UI documentation site.
 
   - Next.js 14 App Router
   - Documentation pages: installation, usage, theming, compiler, createUi, components, architecture, migration

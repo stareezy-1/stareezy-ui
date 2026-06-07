@@ -4,8 +4,8 @@ import { DocPage, Callout } from "../../../components/DocPage";
 export const metadata: Metadata = {
   title: "Architecture",
   description:
-    "Quasify UI monorepo architecture — packages, token flow, and design decisions.",
-  alternates: { canonical: "https://ui.quasify.app/docs/architecture" },
+    "Stareezy UI monorepo architecture — packages, token flow, and design decisions.",
+  alternates: { canonical: "https://ui.stareezy.tech/docs/architecture" },
 };
 
 const PACKAGES = [
@@ -37,13 +37,13 @@ const PACKAGES = [
     name: "compiler",
     color: "#5D2555",
     deps: "tokens (build-time only)",
-    desc: "Babel/Vite/Metro plugin. Reads quasify.config.ts, extracts Token props at build time, emits atomic CSS. ThemeToken props are not extracted — they resolve at runtime.",
+    desc: "Babel/Vite/Metro plugin. Reads stareezy.config.ts, extracts Token props at build time, emits atomic CSS. ThemeToken props are not extracted — they resolve at runtime.",
   },
   {
     name: "components",
     color: "#535A5E",
     deps: "tokens, core, runtime",
-    desc: "17+ cross-platform components. Box accepts Token<T>, ThemeToken, and plain values. Custom shorthands from QuasifyCustomConfig are typed via module augmentation.",
+    desc: "17+ cross-platform components. Box accepts Token<T>, ThemeToken, and plain values. Custom shorthands from SzrCustomConfig are typed via module augmentation.",
   },
 ];
 
@@ -51,14 +51,14 @@ export default function ArchitecturePage() {
   return (
     <DocPage
       title="Architecture"
-      description="How Quasify UI is organized as a monorepo with strict dependency boundaries."
+      description="How Stareezy UI is organized as a monorepo with strict dependency boundaries."
       badge="Reference"
       icon="⬢"
       badgeColor="#6a5048"
     >
       <h2 className="gradient-text">Package structure</h2>
       <pre>
-        <code>{`quasify-ui/
+        <code>{`stareezy-ui/
 ├── packages/
 │   ├── tokens/       # Token definitions, theme system, t accessor, createUi
 │   ├── core/         # Utilities, hooks, platform helpers
@@ -115,7 +115,7 @@ export default function ArchitecturePage() {
                   color: "var(--brand-500)",
                 }}
               >
-                @quasify-ui/{pkg.name}
+                @stareezy-ui/{pkg.name}
               </code>
               <div
                 style={{
@@ -223,18 +223,18 @@ export default function ArchitecturePage() {
 
       <h2 className="gradient-text">Two token types</h2>
       <p>
-        There are two distinct token types in Quasify UI — understanding the
+        There are two distinct token types in Stareezy UI — understanding the
         difference is key:
       </p>
       <pre>
         <code>{`// Token<T> — static, always the same value
-import { colors } from '@quasify-ui/tokens'
+import { colors } from '@stareezy-ui/tokens'
 colors.celurenBlue[500]
 // { __token: true, id: "celurenBlue-500", value: "#024CCE" }
 // → Extracted by compiler, resolved to CSS class at build time
 
 // ThemeToken — dynamic, resolves to current theme's value at render time
-import { t } from '@quasify-ui/tokens'
+import { t } from '@stareezy-ui/tokens'
 t.text.primary
 // { __themeToken: true, path: "text.primary" }
 // → NOT extracted by compiler, resolved via useTheme() at render time
@@ -247,9 +247,9 @@ t.text.primary
         <code>BoxProps</code> via TypeScript module augmentation:
       </p>
       <pre>
-        <code>{`// quasify.config.ts
-declare module '@quasify-ui/tokens' {
-  interface QuasifyCustomConfig extends typeof ui {}
+        <code>{`// stareezy.config.ts
+declare module '@stareezy-ui/tokens' {
+  interface SzrCustomConfig extends typeof ui {}
 }
 
 // Now BoxProps includes your shorthands:

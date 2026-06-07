@@ -2,10 +2,10 @@ import type { Metadata } from "next";
 import { DocPage, Callout, Step } from "../../../components/DocPage";
 
 export const metadata: Metadata = {
-  title: "@quasify-ui/cli",
+  title: "@stareezy-ui/cli",
   description:
-    "First-party CLI for scaffolding new Quasify UI projects and adding components to existing Next.js, Vite, and Expo apps.",
-  alternates: { canonical: "https://ui.quasify.app/docs/cli" },
+    "First-party CLI for scaffolding new Stareezy UI projects and adding components to existing Next.js, Vite, and Expo apps.",
+  alternates: { canonical: "https://ui.stareezy.tech/docs/cli" },
 };
 
 const cmdCard: React.CSSProperties = {
@@ -61,7 +61,7 @@ const codeBlockInner: React.CSSProperties = {
 export default function CliPage() {
   return (
     <DocPage
-      title="@quasify-ui/cli"
+      title="@stareezy-ui/cli"
       description="Scaffold new projects and add components with a single command — no manual wiring of createUi, the compiler, the runtime, or ThemeProvider."
       badge="CLI"
       icon="▶"
@@ -70,11 +70,11 @@ export default function CliPage() {
       <h2 className="gradient-text" style={sectionHeader}>Installation</h2>
       <div style={codeBlock}>
         <code style={codeBlockInner}>{`# Use directly with npx (no install required)
-npx quasify create my-app
+npx stareezy create my-app
 
 # Or install globally
-npm install -g @quasify-ui/cli
-quasify create my-app`}</code>
+npm install -g @stareezy-ui/cli
+stareezy create my-app`}</code>
       </div>
 
       {/* ── create command ───────────────────────────────────────────────── */}
@@ -82,22 +82,22 @@ quasify create my-app`}</code>
       <p>
         The <code>create</code> command scaffolds a new project from one of the
         three pre-wired templates. Each template ships with{" "}
-        <code>quasify.config.ts</code>, compiler wiring, a configured{" "}
+        <code>stareezy.config.ts</code>, compiler wiring, a configured{" "}
         <code>ThemeProvider</code>, and a curated set of components — ready to
         run without any additional setup.
       </p>
 
       <div style={cmdCard}>
-        <div style={cmdCode}>quasify create &lt;name&gt; [--template next|vite|expo]</div>
+        <div style={cmdCode}>stareezy create &lt;name&gt; [--template next|vite|expo]</div>
         <p style={cmdDesc}>
           Scaffold a new pre-wired project from one of the starter templates.
         </p>
       </div>
 
       <div style={codeBlock}>
-        <code style={codeBlockInner}>{`quasify create my-app --template next   # Next.js 14 App Router
-quasify create my-app --template vite   # Vite + React
-quasify create my-app --template expo   # Expo SDK 55`}</code>
+        <code style={codeBlockInner}>{`stareezy create my-app --template next   # Next.js 14 App Router
+stareezy create my-app --template vite   # Vite + React
+stareezy create my-app --template expo   # Expo SDK 55`}</code>
       </div>
 
       <p>
@@ -105,7 +105,7 @@ quasify create my-app --template expo   # Expo SDK 55`}</code>
       </p>
 
       <div style={codeBlock}>
-        <code style={codeBlockInner}>{`$ quasify create my-app
+        <code style={codeBlockInner}>{`$ stareezy create my-app
 
 ? Select a template:
   ❯ next   — Next.js 14 App Router
@@ -117,8 +117,8 @@ quasify create my-app --template expo   # Expo SDK 55`}</code>
         <p>Scaffolds a Next.js 14 App Router project pre-wired with:</p>
         <ul style={{ listStyle: "none", padding: 0, margin: "0.75rem 0 1rem 0" }}>
           {[
-            "<code>quasify.config.ts</code> with <code>media</code> breakpoints and <code>shorthands</code>",
-            "<code>@quasify-ui/compiler</code> Vite plugin in <code>next.config.ts</code>",
+            "<code>stareezy.config.ts</code> with <code>media</code> breakpoints and <code>shorthands</code>",
+            "<code>@stareezy-ui/compiler</code> Vite plugin in <code>next.config.ts</code>",
             'Server primitives imported from <code>&quot;./server&quot;</code>',
             'Interactive components wrapped in a <code>&quot;use client&quot;</code> boundary',
             "<code>ThemeProvider</code> in a client <code>Providers</code> component",
@@ -130,7 +130,7 @@ quasify create my-app --template expo   # Expo SDK 55`}</code>
           ))}
         </ul>
         <div style={codeBlock}>
-          <code style={codeBlockInner}>{`quasify create my-next-app --template next
+          <code style={codeBlockInner}>{`stareezy create my-next-app --template next
 cd my-next-app
 pnpm install
 pnpm dev`}</code>
@@ -141,9 +141,9 @@ pnpm dev`}</code>
         <p>Scaffolds a Vite + React project pre-wired with:</p>
         <ul style={{ listStyle: "none", padding: 0, margin: "0.75rem 0 1rem 0" }}>
           {[
-            "<code>quasify.config.ts</code> with <code>media</code> and <code>shorthands</code>",
-            "<code>quasifyVitePlugin()</code> in <code>vite.config.ts</code>",
-            "<code>import &apos;virtual:quasify-ui/styles&apos;</code> in the entry file",
+            "<code>stareezy.config.ts</code> with <code>media</code> and <code>shorthands</code>",
+            "<code>stareezyVitePlugin()</code> in <code>vite.config.ts</code>",
+            "<code>import &apos;virtual:stareezy-ui/styles&apos;</code> in the entry file",
             "<code>ThemeProvider</code> wrapping the app in <code>main.tsx</code>",
           ].map((item, i) => (
             <li key={i} style={{ marginBottom: "0.4rem", color: "var(--color-text-2)" }}>
@@ -153,7 +153,7 @@ pnpm dev`}</code>
           ))}
         </ul>
         <div style={codeBlock}>
-          <code style={codeBlockInner}>{`quasify create my-vite-app --template vite
+          <code style={codeBlockInner}>{`stareezy create my-vite-app --template vite
 cd my-vite-app
 npm install
 npm run dev`}</code>
@@ -164,8 +164,8 @@ npm run dev`}</code>
         <p>Scaffolds an Expo SDK 55 project pre-wired with:</p>
         <ul style={{ listStyle: "none", padding: 0, margin: "0.75rem 0 1rem 0" }}>
           {[
-            "<code>quasify.config.ts</code> with <code>media</code> and <code>shorthands</code>",
-            "<code>quasifyMetroTransformer</code> in <code>metro.config.js</code>",
+            "<code>stareezy.config.ts</code> with <code>media</code> and <code>shorthands</code>",
+            "<code>stareezyMetroTransformer</code> in <code>metro.config.js</code>",
             "<code>ThemeProvider</code> in <code>App.tsx</code>",
             "Compatible with Expo SDK 54 and 56 (see Compatibility guide)",
           ].map((item, i) => (
@@ -176,7 +176,7 @@ npm run dev`}</code>
           ))}
         </ul>
         <div style={codeBlock}>
-          <code style={codeBlockInner}>{`quasify create my-expo-app --template expo
+          <code style={codeBlockInner}>{`stareezy create my-expo-app --template expo
 cd my-expo-app
 yarn install
 expo start`}</code>
@@ -186,13 +186,13 @@ expo start`}</code>
       {/* ── init command ─────────────────────────────────────────────────── */}
       <h2 className="gradient-text" style={sectionHeader}>init — wire an existing project</h2>
       <p>
-        The <code>init</code> command adds Quasify UI wiring to an existing
+        The <code>init</code> command adds Stareezy UI wiring to an existing
         project. It detects your framework and package manager automatically,
         then creates any of the following that are absent:
       </p>
       <ul>
         <li>
-          <code>quasify.config.ts</code> with <code>createUi</code>,{" "}
+          <code>stareezy.config.ts</code> with <code>createUi</code>,{" "}
           <code>media</code>, and <code>shorthands</code>
         </li>
         <li>
@@ -205,9 +205,9 @@ expo start`}</code>
       </ul>
 
       <div style={cmdCard}>
-        <div style={cmdCode}>quasify init</div>
+        <div style={cmdCode}>stareezy init</div>
         <p style={cmdDesc}>
-          Add <code>quasify.config.ts</code>, compiler wiring, and <code>ThemeProvider</code>{" "}
+          Add <code>stareezy.config.ts</code>, compiler wiring, and <code>ThemeProvider</code>{" "}
           to an existing project — idempotent and safe to re-run.
         </p>
       </div>
@@ -221,17 +221,17 @@ expo start`}</code>
       {/* ── add command ──────────────────────────────────────────────────── */}
       <h2 className="gradient-text" style={sectionHeader}>add — install components</h2>
       <p>
-        The <code>add</code> command installs one or more Quasify UI components
+        The <code>add</code> command installs one or more Stareezy UI components
         into an existing Next.js, Vite, or Expo project. It:
       </p>
       <ul>
         <li>Detects your framework and package manager</li>
         <li>
           Resolves the full dependency closure (component → its component deps →
-          required <code>@quasify-ui/*</code> packages)
+          required <code>@stareezy-ui/*</code> packages)
         </li>
         <li>
-          Installs missing <code>@quasify-ui/*</code> packages
+          Installs missing <code>@stareezy-ui/*</code> packages
         </li>
         <li>
           Offers to run <code>init</code> if wiring is absent
@@ -239,7 +239,7 @@ expo start`}</code>
       </ul>
 
       <div style={cmdCard}>
-        <div style={cmdCode}>quasify add &lt;component...&gt;</div>
+        <div style={cmdCode}>stareezy add &lt;component...&gt;</div>
         <p style={cmdDesc}>
           Install one or more components (with transitive dependencies) into an existing project.
         </p>
@@ -247,13 +247,13 @@ expo start`}</code>
 
       <div style={codeBlock}>
         <code style={codeBlockInner}>{`# Install a single component
-quasify add button
+stareezy add button
 
 # Install multiple components at once
-quasify add button input card
+stareezy add button input card
 
 # Install new components (6 added in v0.4)
-quasify add breadcrumb pagination table tag tooltip drawer`}</code>
+stareezy add breadcrumb pagination table tag tooltip drawer`}</code>
       </div>
 
       <Callout type="tip">
@@ -307,15 +307,15 @@ quasify add breadcrumb pagination table tag tooltip drawer`}</code>
       <h2 className="gradient-text" style={sectionHeader}>Command reference</h2>
       {[
         {
-          cmd: "quasify create <name> [--template next|vite|expo]",
+          cmd: "stareezy create <name> [--template next|vite|expo]",
           desc: "Scaffold a new pre-wired project from a template",
         },
         {
-          cmd: "quasify init",
-          desc: "Add quasify.config.ts, compiler wiring, and ThemeProvider to an existing project (idempotent)",
+          cmd: "stareezy init",
+          desc: "Add stareezy.config.ts, compiler wiring, and ThemeProvider to an existing project (idempotent)",
         },
         {
-          cmd: "quasify add <component...>",
+          cmd: "stareezy add <component...>",
           desc: "Install one or more components (with transitive deps) into an existing project",
         },
       ].map(({ cmd, desc }) => (

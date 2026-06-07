@@ -1,5 +1,5 @@
-// Quasify UI Docs Service Worker
-const CACHE = "quasify-ui-docs-v1";
+// Stareezy UI Docs Service Worker
+const CACHE = "stareezy-ui-docs-v1";
 const PRECACHE = ["/"];
 
 self.addEventListener("install", (e) => {

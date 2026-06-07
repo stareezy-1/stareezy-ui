@@ -215,7 +215,7 @@ export default function QuasarTokensPage() {
 
       <h2>Usage</h2>
       <pre>
-        <code>{`import { quasar } from '@quasify-ui/tokens'
+        <code>{`import { quasar } from '@stareezy-ui/tokens'
 
 // Access token values
 quasar.plasmaOrange.value      // "#ff6a1a"
@@ -302,7 +302,7 @@ const ui = createUi({
         and light (ember glow on ivory) variants via <code>getVariant</code>.
       </p>
       <pre>
-        <code>{`import { quasarVariants, getVariant } from '@quasify-ui/tokens'
+        <code>{`import { quasarVariants, getVariant } from '@stareezy-ui/tokens'
 
 const darkTokens  = getVariant(quasarVariants, 'dark')
 const lightTokens = getVariant(quasarVariants, 'light')

@@ -2,13 +2,13 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 
 export const metadata: Metadata = {
-  title: "Quasify AI — AI-Powered UI Builder",
+  title: "Stareezy AI — AI-Powered UI Builder",
   description:
-    "Describe the UI you want to build in plain English. Quasify AI generates production-ready components using your design tokens.",
+    "Describe the UI you want to build in plain English. Stareezy AI generates production-ready components using your design tokens.",
   openGraph: {
-    title: "Quasify AI — AI-Powered UI Builder",
+    title: "Stareezy AI — AI-Powered UI Builder",
     description:
-      "Describe the UI you want to build. Quasify AI generates production-ready Quasify UI components.",
+      "Describe the UI you want to build. Stareezy AI generates production-ready Stareezy UI components.",
   },
 };
 

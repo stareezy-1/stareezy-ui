@@ -5,8 +5,8 @@
 
 import React from "react";
 import type { Meta, StoryObj } from "@storybook/react";
-import { Tooltip } from "@quasify-ui/components";
-import type { TooltipPlacement } from "@quasify-ui/components";
+import { Tooltip } from "@stareezy-ui/components";
+import type { TooltipPlacement } from "@stareezy-ui/components";
 
 const meta: Meta<typeof Tooltip> = {
   title: "Components/Tooltip",

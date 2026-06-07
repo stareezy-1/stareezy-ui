@@ -1,5 +1,5 @@
 /**
- * Steins;Gate token group for Quasify UI.
+ * Steins;Gate token group for Stareezy UI.
  *
  * Palette drawn from the Steins;Gate visual novel:
  * - Midnight navy backgrounds — Akihabara at night, the lab at 3am

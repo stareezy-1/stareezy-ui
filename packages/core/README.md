@@ -1,13 +1,13 @@
-# @quasify-ui/core
+# @stareezy-ui/core
 
-Shared utilities, hooks, and platform helpers for Quasify UI.
+Shared utilities, hooks, and platform helpers for Stareezy UI.
 
-[![npm](https://img.shields.io/npm/v/@quasify-ui/core)](https://www.npmjs.com/package/@quasify-ui/core)
+[![npm](https://img.shields.io/npm/v/@stareezy-ui/core)](https://www.npmjs.com/package/@stareezy-ui/core)
 
 ## Install
 
 ```bash
-pnpm add @quasify-ui/core
+pnpm add @stareezy-ui/core
 ```
 
 ## Utilities
@@ -34,7 +34,7 @@ import {
   convertSpacing,
   // Weeks
   isoWeeks,
-} from "@quasify-ui/core";
+} from "@stareezy-ui/core";
 
 formatToRupiah(1000000); // "Rp 1.000.000"
 formatToRupiah(1000000, true); // "1.000.000"
@@ -44,7 +44,7 @@ convertSpacing(16); // 16 on web, ms(16) on RN
 ## Hooks
 
 ```ts
-import { useDeviceLayout } from "@quasify-ui/core";
+import { useDeviceLayout } from "@stareezy-ui/core";
 
 function MyComponent() {
   const { width, height, isSmall } = useDeviceLayout();

@@ -1,4 +1,4 @@
-import type { Token } from "@quasify-ui/tokens";
+import type { Token } from "@stareezy-ui/tokens";
 
 /**
  * A flat map from token ID to its resolved style value.
@@ -24,7 +24,7 @@ export class RuntimeNotInitializedError extends Error {
 }
 
 /**
- * Platform-agnostic interface for the Quasify UI runtime adapter.
+ * Platform-agnostic interface for the Stareezy UI runtime adapter.
  *
  * Implementations must:
  * - Populate the `StyleRegistry` exactly once via `register()`

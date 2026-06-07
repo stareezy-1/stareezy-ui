@@ -1,8 +1,8 @@
 /**
- * create-quasify bin entry point.
+ * create-stareezy bin entry point.
  *
  * Delegates directly to the create command.
- * Usage: create-quasify [project-name] [--template next|vite|expo]
+ * Usage: create-stareezy [project-name] [--template next|vite|expo]
  */
 
 import { runCreate } from "./commands/create.js";

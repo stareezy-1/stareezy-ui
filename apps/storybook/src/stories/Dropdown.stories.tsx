@@ -4,8 +4,8 @@
 
 import type { Meta, StoryObj } from "@storybook/react";
 import React, { useState, useEffect } from "react";
-import { Dropdown } from "@quasify-ui/components";
-import type { DropdownOption } from "@quasify-ui/components";
+import { Dropdown } from "@stareezy-ui/components";
+import type { DropdownOption } from "@stareezy-ui/components";
 
 // ── Fixtures ──────────────────────────────────────────────────────────────────
 

@@ -4,8 +4,8 @@ import { DocPage, Callout } from "../../../components/DocPage";
 export const metadata: Metadata = {
   title: "Usage — Token API",
   description:
-    "Learn the Quasify UI token API: Token<T>, the t accessor, createUi, and theme-reactive props.",
-  alternates: { canonical: "https://ui.quasify.app/docs/usage" },
+    "Learn the Stareezy UI token API: Token<T>, the t accessor, createUi, and theme-reactive props.",
+  alternates: { canonical: "https://ui.stareezy.tech/docs/usage" },
 };
 
 export default function UsagePage() {
@@ -44,7 +44,7 @@ export default function UsagePage() {
           boxShadow: "0 0 40px rgba(255,106,26,0.03)",
         }}
       >
-        <code>{`import { token } from '@quasify-ui/tokens'
+        <code>{`import { token } from '@stareezy-ui/tokens'
 
 const brandPrimary = token('#FF6B35', 'brand-primary')
 brandPrimary.value // "#FF6B35"
@@ -69,8 +69,8 @@ brandPrimary.id    // "brand-primary"`}</code>
           boxShadow: "0 0 40px rgba(255,106,26,0.03)",
         }}
       >
-        <code>{`import { colors, spacing, radius } from '@quasify-ui/tokens'
-import { Box, Text } from '@quasify-ui/components'
+        <code>{`import { colors, spacing, radius } from '@stareezy-ui/tokens'
+import { Box, Text } from '@stareezy-ui/components'
 
 function Card() {
   return (
@@ -107,8 +107,8 @@ function Card() {
           boxShadow: "0 0 40px rgba(255,106,26,0.03)",
         }}
       >
-        <code>{`import { t } from '@quasify-ui/tokens'
-import { Box, Text } from '@quasify-ui/components'
+        <code>{`import { t } from '@stareezy-ui/tokens'
+import { Box, Text } from '@stareezy-ui/components'
 
 function Card() {
   return (
@@ -242,7 +242,7 @@ function Card() {
           boxShadow: "0 0 40px rgba(255,106,26,0.03)",
         }}
       >
-        <code>{`import { t, useResolveThemeToken } from '@quasify-ui/tokens'
+        <code>{`import { t, useResolveThemeToken } from '@stareezy-ui/tokens'
 
 function MyComponent() {
   const brandColor = useResolveThemeToken(t.text.importantBrand)
@@ -268,7 +268,7 @@ function MyComponent() {
           boxShadow: "0 0 40px rgba(255,106,26,0.03)",
         }}
       >
-        <code>{`import { createUi, token, themes } from '@quasify-ui/tokens'
+        <code>{`import { createUi, token, themes } from '@stareezy-ui/tokens'
 
 export const ui = createUi({
   // Register all four themes
@@ -321,7 +321,7 @@ ui.tokens.colors.celurenBlue[500].value // "#024CCE"
           boxShadow: "0 0 40px rgba(255,106,26,0.03)",
         }}
       >
-        <code>{`import { colors, spacing, radius } from '@quasify-ui/tokens'
+        <code>{`import { colors, spacing, radius } from '@stareezy-ui/tokens'
 
 colors.celurenBlue[500].value  // "#024CCE"
 spacing[4].value               // 16

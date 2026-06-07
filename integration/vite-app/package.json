@@ -8,9 +8,9 @@
   "dependencies": {
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
-    "@quasify-ui/components": "workspace:*",
-    "@quasify-ui/tokens": "workspace:*",
-    "@quasify-ui/compiler": "workspace:*"
+    "@stareezy-ui/components": "workspace:*",
+    "@stareezy-ui/tokens": "workspace:*",
+    "@stareezy-ui/compiler": "workspace:*"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.0.0",

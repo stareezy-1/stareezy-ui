@@ -4,52 +4,52 @@ import { TrackedLink } from "../components/TrackedLink";
 
 export const metadata: Metadata = {
   title:
-    "Quasify UI — Build Cross-Platform UIs with Quasar Design Tokens",
+    "Stareezy UI — Build Cross-Platform UIs with Quasar Design Tokens",
   description:
     "A fully typed, cross-platform design token system and component library for React Native and web. 31+ components, 300+ typed tokens, 5 themes, O(1) runtime.",
 };
 
 const PACKAGES = [
   {
-    name: "@quasify-ui/tokens",
+    name: "@stareezy-ui/tokens",
     icon: "◉",
     color: "#ff6a1a",
     desc: "Zero-dependency token definitions. Colors, spacing, radius, typography, motion — all typed. Includes ThemeProvider and the t accessor.",
     badge: "Core",
   },
   {
-    name: "@quasify-ui/components",
+    name: "@stareezy-ui/components",
     icon: "⬡",
     color: "#22c55e",
     desc: "31+ cross-platform components. All theme-reactive. ./server RSC-safe entry. Every component accepts BoxLayoutProps + $-prefixed breakpoint props.",
     badge: "31+ components",
   },
   {
-    name: "@quasify-ui/runtime",
+    name: "@stareezy-ui/runtime",
     icon: "⚡",
     color: "#f5a623",
     desc: "O(1) style registry. resolve(token) is a single Map.get() — no parsing, no re-computation.",
     badge: "Core",
   },
   {
-    name: "@quasify-ui/compiler",
+    name: "@stareezy-ui/compiler",
     icon: "⚙",
     color: "#dc143c",
     desc: "Babel/Vite/Metro plugin. Extracts token props at build time and emits atomic CSS — zero runtime cost. Works on Vite 4–7, Next.js 14–16, Expo 54–56.",
     badge: "Optional",
   },
   {
-    name: "@quasify-ui/core",
+    name: "@stareezy-ui/core",
     icon: "⬢",
     color: "#a78bfa",
     desc: "Utilities, hooks, and platform helpers. useDeviceLayout, platform detection, string/date/currency utils.",
     badge: "Utilities",
   },
   {
-    name: "@quasify-ui/cli",
+    name: "@stareezy-ui/cli",
     icon: "▶",
     color: "#f59e0b",
-    desc: "First-party CLI. `quasify create` scaffolds pre-wired Next.js, Vite, or Expo projects. `quasify add` installs components with dep resolution.",
+    desc: "First-party CLI. `stareezy create` scaffolds pre-wired Next.js, Vite, or Expo projects. `stareezy add` installs components with dep resolution.",
     badge: "New",
   },
 ];
@@ -104,11 +104,11 @@ const QUICK_LINKS = [
 ];
 
 const TESTIMONIALS = [
-  { name: "Sarah Chen", role: "Frontend Lead @ TechCorp", text: "Quasify's token system is the most intuitive I've ever used. The theme switching is seamless." },
+  { name: "Sarah Chen", role: "Frontend Lead @ TechCorp", text: "Stareezy's token system is the most intuitive I've ever used. The theme switching is seamless." },
   { name: "Marcus Rivera", role: "Indie Developer", text: "Built my entire SaaS landing page in one afternoon. The CLI + component library is incredible." },
   { name: "Aiko Tanaka", role: "Mobile Engineer", text: "Finally, a design system that works identically on web and React Native. No more platform hacks." },
   { name: "James Wilson", role: "Design Engineer", text: "The t accessor is genius. Theme-reactive props eliminate so much boilerplate." },
-  { name: "Priya Patel", role: "Startup CTO", text: "We migrated our entire design system to Quasify in two days. The type safety is unmatched." },
+  { name: "Priya Patel", role: "Startup CTO", text: "We migrated our entire design system to Stareezy in two days. The type safety is unmatched." },
   { name: "Alex Foster", role: "UI Developer", text: "O(1) runtime and build-time compiler? This is how a UI library should be built." },
 ];
 
@@ -146,7 +146,7 @@ const FEATURES = [
   {
     icon: "▶",
     title: "CLI + Templates",
-    desc: "One command to scaffold a pre-wired Next.js, Vite, or Expo project with Quasify configured. Add individual components with dependency resolution.",
+    desc: "One command to scaffold a pre-wired Next.js, Vite, or Expo project with Stareezy configured. Add individual components with dependency resolution.",
     color: "#f59e0b",
   },
 ];
@@ -336,7 +336,7 @@ export default function HomePage() {
               ◉ Token Explorer
             </TrackedLink>
             <a
-              href="https://github.com/quasify-ui/quasify-ui"
+              href="https://github.com/stareezy-1/stareezy-ui"
               target="_blank"
               rel="noopener noreferrer"
               className="cta-outline"
@@ -388,8 +388,8 @@ export default function HomePage() {
                 minWidth: "max-content",
               }}
             >
-              <code>{`import { createUi, t, themes } from '@quasify-ui/tokens'
-import { Box, Text, Button } from '@quasify-ui/components'
+              <code>{`import { createUi, t, themes } from '@stareezy-ui/tokens'
+import { Box, Text, Button } from '@stareezy-ui/components'
 
 const ui = createUi({
   themes: {
@@ -414,7 +414,7 @@ const ui = createUi({
         </div>
       </section>
 
-      {/* ── Quasify AI Builder ──────────────────────────────────────────── */}
+      {/* ── Stareezy AI Builder ──────────────────────────────────────────── */}
       <section
         style={{
           marginBottom: "4rem",
@@ -456,7 +456,7 @@ const ui = createUi({
                 }}
               >
                 Build with{" "}
-                <span className="gradient-text-orange">Quasify AI</span>
+                <span className="gradient-text-orange">Stareezy AI</span>
               </h2>
               <p
                 style={{
@@ -467,7 +467,7 @@ const ui = createUi({
                   lineHeight: 1.7,
                 }}
               >
-                Describe the UI you want in plain English — Quasify AI generates
+                Describe the UI you want in plain English — Stareezy AI generates
                 production-ready code using your design tokens and components.
               </p>
             </div>
@@ -522,7 +522,7 @@ const ui = createUi({
             {[
               { icon: "✦", title: "AI-Powered", desc: "Natural language to components", color: "#ff6a1a" },
               { icon: "▶", title: "Real-time Preview", desc: "See your UI as you describe it", color: "#22c55e" },
-              { icon: "⬡", title: "Export Code", desc: "Production-ready Quasify components", color: "#f5a623" },
+              { icon: "⬡", title: "Export Code", desc: "Production-ready Stareezy components", color: "#f5a623" },
               { icon: "◑", title: "Custom Themes", desc: "Auto-adapts to your theme tokens", color: "#dc143c" },
             ].map((f) => (
               <div
@@ -724,7 +724,7 @@ const ui = createUi({
               {
                 n: 1,
                 title: "Install",
-                desc: "Run `npx quasify create my-app --template next` to scaffold a new project with Quasify pre-configured.",
+                desc: "Run `npx stareezy create my-app --template next` to scaffold a new project with Stareezy pre-configured.",
                 color: "#ff6a1a",
               },
               {
@@ -1148,7 +1148,7 @@ const ui = createUi({
             lineHeight: 1.6,
           }}
         >
-          Everything you need to build with Quasify UI.
+          Everything you need to build with Stareezy UI.
         </p>
         <div
           style={{
@@ -1244,7 +1244,7 @@ const ui = createUi({
               lineHeight: 1.6,
             }}
           >
-            Install Quasify UI and be up and running in minutes. Cross-platform from day one.
+            Install Stareezy UI and be up and running in minutes. Cross-platform from day one.
           </div>
         </div>
 
@@ -1278,7 +1278,7 @@ const ui = createUi({
               }}
             >
               <span style={{ color: "#ff6a1a" }}>$</span>
-              <span>npx quasify create my-app --template next</span>
+              <span>npx stareezy create my-app --template next</span>
             </pre>
           </div>
           <TrackedLink

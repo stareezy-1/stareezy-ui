@@ -1,4 +1,4 @@
-import type { Token } from "@quasify-ui/tokens";
+import type { Token } from "@stareezy-ui/tokens";
 import type { RuntimeAdapter } from "../registry";
 import { RuntimeNotInitializedError } from "../registry";
 

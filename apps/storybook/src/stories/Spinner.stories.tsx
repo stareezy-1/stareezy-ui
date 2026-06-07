@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { Spinner } from "@quasify-ui/components";
+import { Spinner } from "@stareezy-ui/components";
 
 const meta: Meta<typeof Spinner> = {
   title: "Components/Spinner",

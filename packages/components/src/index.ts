@@ -1,4 +1,4 @@
-// @quasify-ui/components
+// @stareezy-ui/components
 // Rebuilt component library — clean, beautiful, token-driven.
 
 // ── Primitives ───────────────────────────────────────────────────────────────

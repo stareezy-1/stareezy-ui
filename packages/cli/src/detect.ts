@@ -13,7 +13,7 @@ export type PackageManager = "pnpm" | "yarn" | "npm" | "bun";
 export interface DetectedProject {
   framework: Framework;
   packageManager: PackageManager;
-  /** true when quasify.config.ts is present in the project root */
+  /** true when stareezy.config.ts is present in the project root */
   hasConfig: boolean;
   /** true when compiler/runtime wiring is detected */
   hasWiring: boolean;
@@ -78,18 +78,18 @@ function readText(filePath: string): string {
 }
 
 /**
- * Detect whether a quasify.config.ts already exists in `dir`.
+ * Detect whether a stareezy.config.ts already exists in `dir`.
  */
 export function detectConfig(dir: string): boolean {
-  return existsSync(join(dir, "quasify.config.ts"));
+  return existsSync(join(dir, "stareezy.config.ts"));
 }
 
 /**
  * Detect whether compiler/runtime wiring is present.
  *
- * For Next.js: looks for `quasifyVitePlugin` in next.config.*
- * For Vite:   looks for `quasifyVitePlugin` in vite.config.*
- * For Expo:   looks for `quasifyMetroTransformer` in metro.config.*
+ * For Next.js: looks for `stareezyVitePlugin` in next.config.*
+ * For Vite:   looks for `stareezyVitePlugin` in vite.config.*
+ * For Expo:   looks for `stareezyMetroTransformer` in metro.config.*
  */
 export function detectWiring(dir: string, framework: Framework): boolean {
   switch (framework) {
@@ -100,7 +100,7 @@ export function detectWiring(dir: string, framework: Framework): boolean {
         "next.config.ts",
       ]) {
         const text = readText(join(dir, name));
-        if (text.includes("quasifyVitePlugin")) return true;
+        if (text.includes("stareezyVitePlugin")) return true;
       }
       return false;
     }
@@ -111,14 +111,14 @@ export function detectWiring(dir: string, framework: Framework): boolean {
         "vite.config.mjs",
       ]) {
         const text = readText(join(dir, name));
-        if (text.includes("quasifyVitePlugin")) return true;
+        if (text.includes("stareezyVitePlugin")) return true;
       }
       return false;
     }
     case "expo": {
       for (const name of ["metro.config.js", "metro.config.ts"]) {
         const text = readText(join(dir, name));
-        if (text.includes("quasifyMetroTransformer")) return true;
+        if (text.includes("stareezyMetroTransformer")) return true;
       }
       return false;
     }

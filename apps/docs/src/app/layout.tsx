@@ -17,13 +17,13 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 const SITE_URL =
-  process.env["NEXT_PUBLIC_SITE_URL"] ?? "https://ui.quasify.app";
+  process.env["NEXT_PUBLIC_SITE_URL"] ?? "https://ui.stareezy.tech";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Quasify UI — Build Cross-Platform UIs with Quasar Design Tokens",
-    template: "%s | Quasify UI",
+    default: "Stareezy UI — Build Cross-Platform UIs with Quasar Design Tokens",
+    template: "%s | Stareezy UI",
   },
   description:
     "A fully typed, cross-platform design token system and component library for React Native and web. 31+ components, 300+ typed tokens, 5 themes, O(1) runtime, tree-shakeable.",
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
     "react",
     "design system",
     "UI library",
-    "quasify",
+    "stareezy",
     "quasar ui",
     "token system",
     "typed tokens",
@@ -46,16 +46,16 @@ export const metadata: Metadata = {
     "plasma orange",
     "deep space theme",
   ],
-  authors: [{ name: "Quasify", url: "https://quasify.app" }],
-  creator: "Quasify",
-  publisher: "Quasify",
+  authors: [{ name: "Stareezy", url: "https://stareezy.tech" }],
+  creator: "Stareezy",
+  publisher: "Stareezy",
   category: "technology",
   openGraph: {
     type: "website",
     locale: "en_US",
     url: SITE_URL,
-    siteName: "Quasify UI",
-    title: "Quasify UI — Build Cross-Platform UIs with Quasar Design Tokens",
+    siteName: "Stareezy UI",
+    title: "Stareezy UI — Build Cross-Platform UIs with Quasar Design Tokens",
     description:
       "A fully typed, cross-platform design token system and component library for React Native and web. 31+ components, 300+ typed tokens, 5 themes.",
     images: [
@@ -63,17 +63,17 @@ export const metadata: Metadata = {
         url: "/og-image.svg",
         width: 1200,
         height: 630,
-        alt: "Quasify UI — Cross-Platform UI Library",
+        alt: "Stareezy UI — Cross-Platform UI Library",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Quasify UI — Build Cross-Platform UIs with Quasar",
+    title: "Stareezy UI — Build Cross-Platform UIs with Quasar",
     description:
       "A fully typed, cross-platform design token system and component library for React Native and web.",
     images: ["/og-image.svg"],
-    creator: "@Quasify",
+    creator: "@Stareezy",
   },
   robots: {
     index: true,
@@ -111,7 +111,7 @@ export const metadata: Metadata = {
     "mobile-web-app-capable": "yes",
     "apple-mobile-web-app-capable": "yes",
     "apple-mobile-web-app-status-bar-style": "black-translucent",
-    "apple-mobile-web-app-title": "Quasify UI",
+    "apple-mobile-web-app-title": "Stareezy UI",
   },
 };
 
@@ -121,7 +121,7 @@ const jsonLd = {
     {
       "@type": "SoftwareApplication",
       "@id": `${SITE_URL}/#app`,
-      name: "Quasify UI",
+      name: "Stareezy UI",
       url: SITE_URL,
       description:
         "A fully typed, cross-platform design token system and component library for React Native and web.",
@@ -139,20 +139,20 @@ const jsonLd = {
       ],
       creator: {
         "@type": "Organization",
-        name: "Quasify",
-        url: "https://quasify.app",
+        name: "Stareezy",
+        url: "https://stareezy.tech",
       },
     },
     {
       "@type": "WebSite",
       "@id": `${SITE_URL}/#website`,
       url: SITE_URL,
-      name: "Quasify UI",
+      name: "Stareezy UI",
       description: "Typed design token system and component library",
       publisher: {
         "@type": "Organization",
-        name: "Quasify",
-        url: "https://quasify.app",
+        name: "Stareezy",
+        url: "https://stareezy.tech",
       },
     },
   ],

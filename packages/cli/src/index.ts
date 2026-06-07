@@ -1,10 +1,10 @@
 /**
- * Quasify CLI — main entry point.
+ * Stareezy CLI — main entry point.
  *
  * Usage:
- *   quasify create [project-name] [--template next|vite|expo]
- *   quasify init   [--yes]
- *   quasify add    <component> [component...] [--yes] [--skip-init]
+ *   stareezy create [project-name] [--template next|vite|expo]
+ *   stareezy init   [--yes]
+ *   stareezy add    <component> [component...] [--yes] [--skip-init]
  */
 
 import { runCreate } from "./commands/create.js";
@@ -47,16 +47,16 @@ function parseArgs(argv: string[]): {
 
 function printHelp(): void {
   console.log(`
-quasify — Quasify UI CLI
+stareezy — Stareezy UI CLI
 
 Usage:
-  quasify create [project-name] [--template next|vite|expo]
-  quasify init   [--yes]
-  quasify add    <component> [component...] [--yes] [--skip-init]
+  stareezy create [project-name] [--template next|vite|expo]
+  stareezy init   [--yes]
+  stareezy add    <component> [component...] [--yes] [--skip-init]
 
 Commands:
   create   Scaffold a new project from a pre-wired template
-  init     Add quasify.config.ts, compiler wiring, and ThemeProvider to the current project
+  init     Add stareezy.config.ts, compiler wiring, and ThemeProvider to the current project
   add      Install one or more components into the current project
 
 Options:
@@ -70,9 +70,9 @@ Available components:
     .join(", ")}
 
 Examples:
-  quasify create my-app --template next
-  quasify init
-  quasify add button input card
+  stareezy create my-app --template next
+  stareezy init
+  stareezy add button input card
 `);
 }
 
@@ -100,7 +100,7 @@ async function main(): Promise<void> {
     }
 
     case "init": {
-      console.log("Initialising Quasify in the current project...\n");
+      console.log("Initialising Stareezy in the current project...\n");
       const result = await runInit({ cwd, yes });
       if (
         result.skippedConfig &&

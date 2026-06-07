@@ -4,8 +4,8 @@ import { DocPage, Callout, Step } from "../../../components/DocPage";
 export const metadata: Metadata = {
   title: "Skills for Claude",
   description:
-    "Teach Claude how to build UIs with Quasify UI — install skills that give Claude deep knowledge of your design tokens, components, and theming system.",
-  alternates: { canonical: "https://ui.quasify.app/docs/claude-skills" },
+    "Teach Claude how to build UIs with Stareezy UI — install skills that give Claude deep knowledge of your design tokens, components, and theming system.",
+  alternates: { canonical: "https://ui.stareezy.tech/docs/claude-skills" },
 };
 
 const sectionHeader: React.CSSProperties = {
@@ -54,7 +54,7 @@ export default function ClaudeSkillsPage() {
   return (
     <DocPage
       title="Skills for Claude"
-      description="Give Claude AI assistants deep knowledge of the Quasify UI design system — tokens, components, themes, and best practices."
+      description="Give Claude AI assistants deep knowledge of the Stareezy UI design system — tokens, components, themes, and best practices."
       badge="AI"
       badgeColor="#a855f7"
       icon="✦"
@@ -63,7 +63,7 @@ export default function ClaudeSkillsPage() {
       <h2 className="gradient-text" style={sectionHeader}>Overview</h2>
       <p>
         Claude skills are curated instruction files that teach Claude AI
-        assistants how to build UIs with Quasify UI. When you install a skill,
+        assistants how to build UIs with Stareezy UI. When you install a skill,
         Claude gains deep knowledge of your design tokens, component APIs,
         theming capabilities, and architectural patterns — enabling it to
         generate accurate, on-brand code without hallucinations or guesswork.
@@ -73,14 +73,14 @@ export default function ClaudeSkillsPage() {
         Skills work with both{" "}
         <strong>Claude Desktop</strong> and{" "}
         <strong>Claude Code</strong>. They are framework-agnostic —
-        use them alongside any Quasify UI project.
+        use them alongside any Stareezy UI project.
       </Callout>
 
       {/* ── Available Skills ─────────────────────────────────────────────── */}
       <h2 className="gradient-text" style={sectionHeader}>Available Skills</h2>
       <p>
         Four skills are available, each focused on a specific area of the
-        Quasify UI ecosystem. Install the ones most relevant to your workflow,
+        Stareezy UI ecosystem. Install the ones most relevant to your workflow,
         or install all four for complete coverage.
       </p>
 
@@ -177,19 +177,19 @@ export default function ClaudeSkillsPage() {
       <Step n={1} title="Download the skill files">
         <p style={{ marginBottom: "0.75rem" }}>
           Clone or download the{" "}
-          <a href="https://github.com/quasify-ui/claude-skills">
-            quasify-ui/claude-skills
+          <a href="https://github.com/stareezy-1/claude-skills">
+            stareezy-ui/claude-skills
           </a>{" "}
           repository from GitHub:
         </p>
         <div style={codeBlock}>
-          <code style={codeBlockInner}>{`git clone https://github.com/quasify-ui/claude-skills.git
+          <code style={codeBlockInner}>{`git clone https://github.com/stareezy-1/claude-skills.git
 cd claude-skills
 # All skill files are in the ./skills/ directory`}</code>
         </div>
         <p style={{ fontSize: "0.875rem", color: "var(--color-text-2)" }}>
           The repository contains four <code>.md</code> files, one per skill,
-          plus a <code>quasify-ui.json</code> manifest for Claude Desktop.
+          plus a <code>stareezy-ui.json</code> manifest for Claude Desktop.
         </p>
       </Step>
 
@@ -207,10 +207,10 @@ cd claude-skills
           <code style={codeBlockInner}>{`{
   "projectSettings": {
     "skills": [
-      { "name": "quasify-tokens", "file": "./skills/tokens.md" },
-      { "name": "quasify-components", "file": "./skills/components.md" },
-      { "name": "quasify-themes", "file": "./skills/themes.md" },
-      { "name": "quasify-best-practices", "file": "./skills/best-practices.md" }
+      { "name": "stareezy-tokens", "file": "./skills/tokens.md" },
+      { "name": "stareezy-components", "file": "./skills/components.md" },
+      { "name": "stareezy-themes", "file": "./skills/themes.md" },
+      { "name": "stareezy-best-practices", "file": "./skills/best-practices.md" }
     ]
   }
 }`}</code>
@@ -243,11 +243,11 @@ cd claude-skills
           Ask Claude a question to verify the skills are loaded correctly:
         </p>
         <div style={codeBlock}>
-          <code style={codeBlockInner}>{`"What Quasify UI tokens are available for spacing?"`}</code>
+          <code style={codeBlockInner}>{`"What Stareezy UI tokens are available for spacing?"`}</code>
         </div>
         <p style={{ fontSize: "0.875rem", color: "var(--color-text-2)", marginTop: "0.5rem" }}>
           If the skills are installed, Claude will reference the skill files
-          and provide accurate token values from the Quasify system.
+          and provide accurate token values from the Stareezy system.
         </p>
       </Step>
 
@@ -255,13 +255,13 @@ cd claude-skills
       <h2 className="gradient-text" style={sectionHeader}>Usage Examples</h2>
       <p>
         Once skills are installed, you can prompt Claude with natural language
-        to generate Quasify UI code. Here are some example prompts:
+        to generate Stareezy UI code. Here are some example prompts:
       </p>
 
       <div style={{ margin: "1.5rem 0", display: "flex", flexDirection: "column", gap: "0.75rem" }}>
         {[
           {
-            prompt: "Create a card component using Quasify UI tokens for spacing and theming",
+            prompt: "Create a card component using Stareezy UI tokens for spacing and theming",
             desc: "Generates a themed card with proper padding, border radius, and shadow tokens",
             icon: "◈",
           },
@@ -277,7 +277,7 @@ cd claude-skills
           },
           {
             prompt: "Build a responsive dashboard layout using sx props and media queries",
-            desc: "Produces a responsive grid layout following Quasify best practices for server components",
+            desc: "Produces a responsive grid layout following Stareezy best practices for server components",
             icon: "◈",
           },
         ].map((item, i) => (
@@ -337,7 +337,7 @@ cd claude-skills
 
       <Callout type="tip">
         For best results, include your{" "}
-        <code style={{ fontSize: "0.82rem" }}>quasify.config.ts</code> in the
+        <code style={{ fontSize: "0.82rem" }}>stareezy.config.ts</code> in the
         conversation context. This lets Claude reference your actual token
         overrides and custom theme.
       </Callout>
@@ -360,7 +360,7 @@ description: Custom skill for my project's conventions
 
 ## Component Patterns
 - Use the \`PascalCase\` naming convention for all component files
-- Import tokens from \`@quasify-ui/tokens\`
+- Import tokens from \`@stareezy-ui/tokens\`
 - Always use the \`sx\` prop for responsive styles
 
 ## Project-Specific Tokens
@@ -375,7 +375,7 @@ const brand = {
 
       <p>
         Place your custom skill file in your project and reference it in
-        your Claude configuration alongside the official Quasify skills.
+        your Claude configuration alongside the official Stareezy skills.
         Custom skills take precedence when they cover overlapping topics.
       </p>
 
@@ -417,7 +417,7 @@ const brand = {
 
       <Callout type="info">
         See the{" "}
-        <a href="https://github.com/quasify-ui/claude-skills#creating-custom-skills">
+        <a href="https://github.com/stareezy-1/claude-skills#creating-custom-skills">
           custom skills guide
         </a>{" "}
         on GitHub for detailed documentation on frontmatter schema, file

@@ -4,13 +4,13 @@ import { DocPage, Callout } from "../../../components/DocPage";
 export const metadata: Metadata = {
   title: "Special Thanks",
   description:
-    "Kukuh Satria Putra — the UI/UX designer behind every color, spacing, radius, and typography token in Quasify UI.",
-  alternates: { canonical: "https://ui.quasify.app/docs/thanks" },
+    "Kukuh Satria Putra — the UI/UX designer behind every color, spacing, radius, and typography token in Stareezy UI.",
+  alternates: { canonical: "https://ui.stareezy.tech/docs/thanks" },
   openGraph: {
-    title: "Special Thanks — Quasify UI",
+    title: "Special Thanks — Stareezy UI",
     description:
-      "Kukuh Satria Putra — the UI/UX designer behind every color, spacing, radius, and typography token in Quasify UI.",
-    url: "https://ui.quasify.app/docs/thanks",
+      "Kukuh Satria Putra — the UI/UX designer behind every color, spacing, radius, and typography token in Stareezy UI.",
+    url: "https://ui.stareezy.tech/docs/thanks",
   },
 };
 
@@ -65,7 +65,7 @@ export default function ThanksPage() {
   return (
     <DocPage
       title="Special Thanks"
-      description="The design foundation of Quasify UI was shaped by one person."
+      description="The design foundation of Stareezy UI was shaped by one person."
       badge="Credits"
       badgeColor="#dc143c"
       icon="✦"
@@ -181,7 +181,7 @@ export default function ThanksPage() {
           >
             Every color you see, every spacing value you use, every radius and
             type scale in this library — Kukuh designed them. He translated
-            vision into a coherent token system that makes Quasify UI feel like
+            vision into a coherent token system that makes Stareezy UI feel like
             a real design language, not just a collection of components.
           </p>
         </div>
@@ -372,7 +372,7 @@ export default function ThanksPage() {
               The developer
             </div>
             <div style={{ fontSize: "0.72rem", color: "var(--color-muted)" }}>
-              Quasify UI
+              Stareezy UI
             </div>
           </div>
         </div>

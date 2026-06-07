@@ -5,19 +5,19 @@ import { DocPage, Callout, Step } from "../../../components/DocPage";
 export const metadata: Metadata = {
   title: "Quick Start",
   description:
-    "Complete guide to Quasify UI — CLI scaffolding, manual setup, theme-reactive components, responsive props, and build-time optimization.",
-  alternates: { canonical: "https://ui.quasify.app/docs/quick-start" },
+    "Complete guide to Stareezy UI — CLI scaffolding, manual setup, theme-reactive components, responsive props, and build-time optimization.",
+  alternates: { canonical: "https://ui.stareezy.tech/docs/quick-start" },
 };
 
 const steps = [
-  { step: "1", title: "CLI", desc: "npx quasify create my-app --template next|vite|expo" },
-  { step: "2", title: "Install", desc: "pnpm add @quasify-ui/tokens @quasify-ui/components" },
-  { step: "3", title: "Config", desc: "quasify.config.ts — createUi({ themes, media, shorthands })" },
+  { step: "1", title: "CLI", desc: "npx stareezy create my-app --template next|vite|expo" },
+  { step: "2", title: "Install", desc: "pnpm add @stareezy-ui/tokens @stareezy-ui/components" },
+  { step: "3", title: "Config", desc: "stareezy.config.ts — createUi({ themes, media, shorthands })" },
   { step: "4", title: "ThemeProvider", desc: 'Wrap app root with <ThemeProvider defaultTheme="aurora">' },
   { step: "5", title: "t.* props", desc: "t.backgrounds.primary, t.text.primary — theme-reactive" },
   { step: "6", title: "Responsive props", desc: "<Box p={{ base: 8, md: 16 }} $lg={{ flexDirection: 'row' }} />" },
   { step: "7", title: "Static tokens", desc: "colors.celurenBlue[500], spacing[4], radius.md" },
-  { step: "8", title: "Server Components", desc: "import { Box } from '@quasify-ui/components/server'" },
+  { step: "8", title: "Server Components", desc: "import { Box } from '@stareezy-ui/components/server'" },
 ];
 
 function StepGlow({ n, title, children }: { n: number; title: string; children: ReactNode }) {
@@ -54,7 +54,7 @@ export default function QuickStartPage() {
       badgeColor="#22c55e"
     >
       <Callout type="tip">
-        Fastest path: <code>npx quasify create my-app --template next</code>.
+        Fastest path: <code>npx stareezy create my-app --template next</code>.
         This scaffolds a pre-wired Next.js 15 project with everything set up.
         Skip to step 4 if you use the CLI.
       </Callout>
@@ -62,32 +62,32 @@ export default function QuickStartPage() {
       {/* ── 1. Scaffold with the CLI ──────────────────────────────────────── */}
       <h2 className="gradient-text">1. Scaffold with the CLI</h2>
       <p>
-        The <code>@quasify-ui/cli</code> creates a fully pre-wired project with
+        The <code>@stareezy-ui/cli</code> creates a fully pre-wired project with
         one command. Choose your template:
       </p>
 
       <StepGlow n={1} title="Create a new project">
         <pre>
           <code>{`# Next.js 15 App Router (React 19)
-npx quasify create my-app --template next
+npx stareezy create my-app --template next
 
 # Vite + React 19
-npx quasify create my-app --template vite
+npx stareezy create my-app --template vite
 
 # Expo SDK 56 (React Native 0.85)
-npx quasify create my-app --template expo`}</code>
+npx stareezy create my-app --template expo`}</code>
         </pre>
         <p style={{ marginTop: "0.75rem" }}>
           Omit <code>--template</code> to get an interactive prompt. Each
-          template ships with <code>quasify.config.ts</code>, the compiler
+          template ships with <code>stareezy.config.ts</code>, the compiler
           plugin, <code>ThemeProvider</code>, and a demo screen.
         </p>
       </StepGlow>
 
       <Callout type="info">
-        If you already have a project, use <code>npx quasify init</code> to add
+        If you already have a project, use <code>npx stareezy init</code> to add
         the config and wiring, or{" "}
-        <code>npx quasify add button input card</code> to install specific
+        <code>npx stareezy add button input card</code> to install specific
         components.
       </Callout>
 
@@ -97,31 +97,31 @@ npx quasify create my-app --template expo`}</code>
       <StepGlow n={2} title="Install packages">
         <pre>
           <code>{`# pnpm (recommended)
-pnpm add @quasify-ui/tokens @quasify-ui/components
-pnpm add -D @quasify-ui/compiler
+pnpm add @stareezy-ui/tokens @stareezy-ui/components
+pnpm add -D @stareezy-ui/compiler
 
 # yarn
-yarn add @quasify-ui/tokens @quasify-ui/components
-yarn add -D @quasify-ui/compiler
+yarn add @stareezy-ui/tokens @stareezy-ui/components
+yarn add -D @stareezy-ui/compiler
 
 # npm
-npm install @quasify-ui/tokens @quasify-ui/components
-npm install -D @quasify-ui/compiler`}</code>
+npm install @stareezy-ui/tokens @stareezy-ui/components
+npm install -D @stareezy-ui/compiler`}</code>
         </pre>
       </StepGlow>
 
       {/* ── 3. Create config ──────────────────────────────────────────────── */}
       <h2 className="gradient-text">3. Create your config</h2>
       <p>
-        Create <code>quasify.config.ts</code> at the root of your project. The
+        Create <code>stareezy.config.ts</code> at the root of your project. The
         module augmentation makes your config flow into the type system — so
         autocomplete and type errors reflect your exact setup.
       </p>
 
-      <StepGlow n={3} title="quasify.config.ts">
+      <StepGlow n={3} title="stareezy.config.ts">
         <pre>
-          <code>{`// quasify.config.ts
-import { createUi, themes } from '@quasify-ui/tokens'
+          <code>{`// stareezy.config.ts
+import { createUi, themes } from '@stareezy-ui/tokens'
 
 export const ui = createUi({
   // Five built-in themes
@@ -148,8 +148,8 @@ export const ui = createUi({
 })
 
 // Module augmentation — makes BreakpointKey + shorthands flow into BoxProps
-declare module '@quasify-ui/tokens' {
-  interface QuasifyCustomConfig extends typeof ui {}
+declare module '@stareezy-ui/tokens' {
+  interface SzrCustomConfig extends typeof ui {}
 }
 
 export default ui`}</code>
@@ -163,7 +163,7 @@ export default ui`}</code>
         <pre>
           <code>{`// Next.js: app/providers.tsx  (note: "use client" required)
 'use client'
-import { ThemeProvider } from '@quasify-ui/tokens'
+import { ThemeProvider } from '@stareezy-ui/tokens'
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return <ThemeProvider defaultTheme="aurora">{children}</ThemeProvider>
@@ -180,7 +180,7 @@ export default function RootLayout({ children }) {
 }
 
 // Vite / Expo: wrap App directly
-import { ThemeProvider } from '@quasify-ui/tokens'
+import { ThemeProvider } from '@stareezy-ui/tokens'
 function App() {
   return <ThemeProvider defaultTheme="aurora"><AppContent /></ThemeProvider>
 }`}</code>
@@ -197,8 +197,8 @@ function App() {
 
       <StepGlow n={5} title="Theme-reactive component">
         <pre>
-          <code>{`import { t } from '@quasify-ui/tokens'
-import { Box, Text, Button } from '@quasify-ui/components'
+          <code>{`import { t } from '@stareezy-ui/tokens'
+import { Box, Text, Button } from '@stareezy-ui/components'
 
 function Card() {
   return (
@@ -261,7 +261,7 @@ function Card() {
 
       <StepGlow n={7} title="Static token props">
         <pre>
-          <code>{`import { colors, spacing, radius } from '@quasify-ui/tokens'
+          <code>{`import { colors, spacing, radius } from '@stareezy-ui/tokens'
 
 // Static tokens — same value regardless of theme
 <Box bg={colors.celurenBlue[500]} p={spacing[4]} rounded={radius.md} />
@@ -285,7 +285,7 @@ const style = {
       <StepGlow n={8} title="Server Component">
         <pre>
           <code>{`// app/page.tsx — Server Component (default in Next.js App Router)
-import { Box, Stack, Text } from '@quasify-ui/components/server'
+import { Box, Stack, Text } from '@stareezy-ui/components/server'
 import { HeroActions } from './HeroActions'  // 'use client'
 
 export default async function Page() {
@@ -307,7 +307,7 @@ export default async function Page() {
 
       <StepGlow n={9} title="useThemeSwitch">
         <pre>
-          <code>{`import { useThemeSwitch } from '@quasify-ui/tokens'
+          <code>{`import { useThemeSwitch } from '@stareezy-ui/tokens'
 
 function ThemeSwitcher() {
   const { theme, setTheme, toggleTheme } = useThemeSwitch()
@@ -335,14 +335,14 @@ function ThemeSwitcher() {
       <StepGlow n={10} title="Vite / Next.js">
         <pre>
           <code>{`// vite.config.ts
-import { quasifyVitePlugin } from '@quasify-ui/compiler'
-export default { plugins: [quasifyVitePlugin()] }
+import { stareezyVitePlugin } from '@stareezy-ui/compiler'
+export default { plugins: [stareezyVitePlugin()] }
 
 // next.config.ts
-import { quasifyVitePlugin } from '@quasify-ui/compiler'
+import { stareezyVitePlugin } from '@stareezy-ui/compiler'
 export default {
   webpack(config) {
-    config.plugins.push(quasifyVitePlugin())
+    config.plugins.push(stareezyVitePlugin())
     return config
   }
 }`}</code>
@@ -356,26 +356,26 @@ const { getDefaultConfig } = require('expo/metro-config')
 const config = getDefaultConfig(__dirname)
 config.transformer = {
   ...config.transformer,
-  babelTransformerPath: require.resolve('@quasify-ui/compiler/metro'),
+  babelTransformerPath: require.resolve('@stareezy-ui/compiler/metro'),
 }
 module.exports = config`}</code>
         </pre>
       </StepGlow>
 
       <Callout type="tip">
-        The compiler reads <code>quasify.config.ts</code> from your project
+        The compiler reads <code>stareezy.config.ts</code> from your project
         root automatically — no path argument needed.
       </Callout>
 
       {/* ── 11. Add components ────────────────────────────────────────────── */}
       <h2 className="gradient-text">11. Add components to an existing project</h2>
       <p>
-        Use <code>quasify add</code> to install specific components with
+        Use <code>stareezy add</code> to install specific components with
         automatic transitive dependency resolution:
       </p>
       <pre>
-        <code>{`npx quasify add button input card
-npx quasify add drawer tooltip table pagination breadcrumb`}</code>
+        <code>{`npx stareezy add button input card
+npx stareezy add drawer tooltip table pagination breadcrumb`}</code>
       </pre>
 
       {/* ── Summary (progress tracker) ─────────────────────────────────────── */}

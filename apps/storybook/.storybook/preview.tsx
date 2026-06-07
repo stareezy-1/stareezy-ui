@@ -1,6 +1,6 @@
 import type { Preview, Decorator } from "@storybook/react";
 import React from "react";
-import { QuasifyTheme } from "./Quasify-theme";
+import { StareezyTheme } from "./Stareezy-theme";
 
 // Import ThemeProvider using relative path to avoid module resolution issues
 // ThemeProvider is a client component (has "use client") so it's safe here
@@ -54,7 +54,7 @@ const preview: Preview = {
 
   parameters: {
     docs: {
-      theme: QuasifyTheme,
+      theme: StareezyTheme,
     },
     controls: {
       matchers: {

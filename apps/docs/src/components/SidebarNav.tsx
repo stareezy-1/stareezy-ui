@@ -17,7 +17,7 @@ const NAV_SECTIONS = [
     ],
   },
   {
-    title: "Quasify AI",
+    title: "Stareezy AI",
     links: [
       { href: "/ai", label: "AI UI Builder", icon: "✦" },
     ],
@@ -40,7 +40,7 @@ const NAV_SECTIONS = [
       { href: "/docs/theming", label: "Theming", icon: "◑" },
       { href: "/docs/responsive", label: "Responsive System", icon: "⊞" },
       { href: "/docs/create-ui", label: "createUi", icon: "◎" },
-      { href: "/docs/quasify-custom-config", label: "QuasifyCustomConfig", icon: "⬢" },
+      { href: "/docs/szr-custom-config", label: "SzrCustomConfig", icon: "⬢" },
     ],
   },
   {
@@ -177,7 +177,7 @@ export function SidebarNav({ open = false, onClose }: SidebarNavProps) {
           }}
         >
           <a
-            href="https://github.com/quasify-ui/quasify-ui"
+            href="https://github.com/stareezy-1/stareezy-ui"
             target="_blank"
             rel="noopener noreferrer"
             className="sidebar-link"

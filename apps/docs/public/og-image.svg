@@ -27,7 +27,7 @@
   <circle cx="120" cy="102" r="14" fill="#14F1D8"/>
 
   <!-- Title -->
-  <text x="200" y="100" font-size="52" font-weight="900" font-family="system-ui,sans-serif" fill="url(#title-grad)">Quasify UI</text>
+  <text x="200" y="100" font-size="52" font-weight="900" font-family="system-ui,sans-serif" fill="url(#title-grad)">Stareezy UI</text>
   <text x="200" y="148" font-size="22" font-family="system-ui,sans-serif" fill="#8b949e">Typed Design Token System &amp; Component Library</text>
 
   <!-- Divider -->
@@ -57,11 +57,11 @@
   <text x="104" y="340" font-size="13" font-family="monospace" fill="#8b949e">import</text>
   <text x="152" y="340" font-size="13" font-family="monospace" fill="#e2e8f0">{ colors, spacing }</text>
   <text x="310" y="340" font-size="13" font-family="monospace" fill="#8b949e">from</text>
-  <text x="348" y="340" font-size="13" font-family="monospace" fill="#a5d6ff">'@quasify-ui/tokens'</text>
+  <text x="348" y="340" font-size="13" font-family="monospace" fill="#a5d6ff">'@stareezy-ui/tokens'</text>
   <text x="104" y="368" font-size="13" font-family="monospace" fill="#8b949e">import</text>
   <text x="152" y="368" font-size="13" font-family="monospace" fill="#e2e8f0">{ Box, Button }</text>
   <text x="290" y="368" font-size="13" font-family="monospace" fill="#8b949e">from</text>
-  <text x="328" y="368" font-size="13" font-family="monospace" fill="#a5d6ff">'@quasify-ui/components'</text>
+  <text x="328" y="368" font-size="13" font-family="monospace" fill="#a5d6ff">'@stareezy-ui/components'</text>
   <text x="104" y="410" font-size="13" font-family="monospace" fill="#e2e8f0">&lt;</text>
   <text x="116" y="410" font-size="13" font-family="monospace" fill="#7ee787">Box</text>
   <text x="148" y="410" font-size="13" font-family="monospace" fill="#79c0ff">bg</text>
@@ -90,5 +90,5 @@
   </g>
 
   <!-- URL -->
-  <text x="80" y="590" font-size="18" font-family="system-ui,sans-serif" fill="#484f58">quasify-ui.vercel.app</text>
+  <text x="80" y="590" font-size="18" font-family="system-ui,sans-serif" fill="#484f58">stareezy-ui.vercel.app</text>
 </svg>

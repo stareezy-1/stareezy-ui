@@ -4,8 +4,8 @@ import { DocPage, Callout, PropRow } from "../../../components/DocPage";
 export const metadata: Metadata = {
   title: "BoxLayoutProps",
   description:
-    "BoxLayoutProps — spacing, sizing, flex, custom shorthands, and $-prefixed breakpoint props available on every component in the Quasify UI library.",
-  alternates: { canonical: "https://ui.quasify.app/docs/box-layout-props" },
+    "BoxLayoutProps — spacing, sizing, flex, custom shorthands, and $-prefixed breakpoint props available on every component in the Stareezy UI library.",
+  alternates: { canonical: "https://ui.stareezy.tech/docs/box-layout-props" },
 };
 
 const SPACING_PROPS = [
@@ -99,7 +99,7 @@ export default function BoxLayoutPropsPage() {
       </div>
 
       <Callout type="info">
-        Every component in <code>@quasify-ui/components</code> extends{" "}
+        Every component in <code>@stareezy-ui/components</code> extends{" "}
         <code>BoxLayoutProps</code>. You can pass layout props directly to any
         component — they are forwarded to the root element automatically.
       </Callout>
@@ -117,7 +117,7 @@ export default function BoxLayoutPropsPage() {
   Avatar, Checkbox, Dropdown, Modal,
   Progress, Skeleton, Spinner, Switch, Tabs,
   Breadcrumb, Pagination, Table, Tag, Tooltip, Drawer,
-} from '@quasify-ui/components'
+} from '@stareezy-ui/components'
 
 // Spacing on any component
 <Button p={{ base: 8, md: 12 }} mb={16} />
@@ -140,7 +140,7 @@ export default function BoxLayoutPropsPage() {
       {/* ── Usage with custom shorthands ─────────────────────────────────── */}
       <h2 className="gradient-text">With custom shorthands</h2>
       <p>
-        Custom shorthands from your <code>quasify.config.ts</code> are also
+        Custom shorthands from your <code>stareezy.config.ts</code> are also
         part of <code>BoxLayoutProps</code> after module augmentation. They
         accept both plain values and responsive objects.
       </p>
@@ -296,8 +296,8 @@ export default function BoxLayoutPropsPage() {
             boxShadow: "0 0 40px rgba(255,106,26,0.03)",
           }}
         >
-          <code>{`import { extractBoxLayoutProps, Box } from '@quasify-ui/components'
-import type { BoxLayoutProps } from '@quasify-ui/components'
+          <code>{`import { extractBoxLayoutProps, Box } from '@stareezy-ui/components'
+import type { BoxLayoutProps } from '@stareezy-ui/components'
 
 interface MyCardProps extends BoxLayoutProps {
   title: string

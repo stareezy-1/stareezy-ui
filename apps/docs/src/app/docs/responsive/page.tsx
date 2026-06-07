@@ -5,7 +5,7 @@ export const metadata: Metadata = {
   title: "Responsive System",
   description:
     "Config-driven responsive breakpoints with createUi({ media, shorthands }), BreakpointKey autocomplete, responsive object syntax, and $-prefixed breakpoint props.",
-  alternates: { canonical: "https://ui.quasify.app/docs/responsive" },
+  alternates: { canonical: "https://ui.stareezy.tech/docs/responsive" },
 };
 
 export default function ResponsivePage() {
@@ -19,8 +19,8 @@ export default function ResponsivePage() {
     >
       <h2 className="gradient-text">Overview</h2>
       <p>
-        Quasify UI&apos;s responsive system is driven by your{" "}
-        <code>quasify.config.ts</code>. Declare breakpoints once in{" "}
+        Stareezy UI&apos;s responsive system is driven by your{" "}
+        <code>stareezy.config.ts</code>. Declare breakpoints once in{" "}
         <code>createUi({"{ media }"})</code> and TypeScript automatically
         derives the valid breakpoint keys — so autocomplete and type errors work
         everywhere without extra setup.
@@ -44,8 +44,8 @@ export default function ResponsivePage() {
           border: "1px solid var(--color-border)",
         }}
       >
-        <code>{`// quasify.config.ts
-import { createUi, themes } from '@quasify-ui/tokens'
+        <code>{`// stareezy.config.ts
+import { createUi, themes } from '@stareezy-ui/tokens'
 
 export const ui = createUi({
   themes: { aurora: themes.aurora, light: themes.light },
@@ -73,8 +73,8 @@ export const ui = createUi({
 
 // Module augmentation — makes breakpoints and shorthands flow into the type system
 type AppConfig = typeof ui
-declare module '@quasify-ui/tokens' {
-  interface QuasifyCustomConfig extends AppConfig {}
+declare module '@stareezy-ui/tokens' {
+  interface SzrCustomConfig extends AppConfig {}
 }
 
 export default ui`}</code>
@@ -100,7 +100,7 @@ export default ui`}</code>
           border: "1px solid var(--color-border)",
         }}
       >
-        <code>{`// After augmenting QuasifyCustomConfig with the config above,
+        <code>{`// After augmenting SzrCustomConfig with the config above,
 // BreakpointKey = "base" | "sm" | "md" | "lg" | "xl" | "2xl"
 
 // ✅ Valid — these keys match the declared breakpoints
@@ -130,7 +130,7 @@ export default ui`}</code>
           border: "1px solid var(--color-border)",
         }}
       >
-        <code>{`import { Box, Button, Card } from '@quasify-ui/components'
+        <code>{`import { Box, Button, Card } from '@stareezy-ui/components'
 
 // Responsive padding
 <Box p={{ base: 8, md: 16, lg: 24 }} />
@@ -275,7 +275,7 @@ export default ui`}</code>
       {/* ── All components accept responsive props ───────────────────────── */}
       <h2 className="gradient-text">All components accept responsive props</h2>
       <p>
-        Every component in <code>@quasify-ui/components</code> extends{" "}
+        Every component in <code>@stareezy-ui/components</code> extends{" "}
         <code>BoxLayoutProps</code>, so responsive layout props work on all of
         them — not just <code>Box</code>.
       </p>
@@ -285,7 +285,7 @@ export default ui`}</code>
           border: "1px solid var(--color-border)",
         }}
       >
-        <code>{`import { Button, Input, Card, Badge } from '@quasify-ui/components'
+        <code>{`import { Button, Input, Card, Badge } from '@stareezy-ui/components'
 
 <Button
   p={{ base: 8, md: 12 }}
@@ -312,7 +312,7 @@ export default ui`}</code>
       {/* ── Default breakpoints ──────────────────────────────────────────── */}
       <h2 className="gradient-text">Default breakpoints</h2>
       <p>
-        If you do not augment <code>QuasifyCustomConfig</code> with a{" "}
+        If you do not augment <code>SzrCustomConfig</code> with a{" "}
         <code>media</code> configuration, the following defaults apply:
       </p>
       <div style={{ overflowX: "auto" }}>

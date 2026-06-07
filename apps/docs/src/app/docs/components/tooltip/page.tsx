@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   title: "Tooltip",
   description:
     "Cross-platform Tooltip component with placement options, delay control, focus trapping, and full keyboard accessibility.",
-  alternates: { canonical: "https://ui.quasify.app/docs/components/tooltip" },
+  alternates: { canonical: "https://ui.stareezy.tech/docs/components/tooltip" },
 };
 
 export default function TooltipPage() {
@@ -20,7 +20,7 @@ export default function TooltipPage() {
     >
       <h2 className="gradient-text">Import</h2>
       <pre>
-        <code>{`import { Tooltip } from '@quasify-ui/components'`}</code>
+        <code>{`import { Tooltip } from '@stareezy-ui/components'`}</code>
       </pre>
 
       <h2 className="gradient-text">Basic usage</h2>

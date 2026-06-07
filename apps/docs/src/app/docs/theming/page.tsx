@@ -5,7 +5,7 @@ export const metadata: Metadata = {
   title: "Theming",
   description:
     "Five built-in themes (light, dark, aurora, steins-gate, quasar), ThemeProvider, useThemeSwitch, the t accessor, and theme-reactive components.",
-  alternates: { canonical: "https://ui.quasify.app/docs/theming" },
+  alternates: { canonical: "https://ui.stareezy.tech/docs/theming" },
 };
 
 const THEMES = [
@@ -135,7 +135,7 @@ export default function ThemingPage() {
       {/* ── Theme-reactive components ─────────────────────────────────────── */}
       <h2 className="gradient-text">Every component is Theme_Reactive</h2>
       <p>
-        Every component in <code>@quasify-ui/components</code> resolves its
+        Every component in <code>@stareezy-ui/components</code> resolves its
         colors through <code>useThemedColors()</code> at render time. There are
         no hardcoded color literals in any component — all colors come from the
         Active_Theme via the Theme_Accessor.
@@ -160,7 +160,7 @@ setTheme('steins-gate')  // → electric blue brand`}</code>
       {/* ── Five built-in themes ─────────────────────────────────────────── */}
       <h2 className="gradient-text">Five built-in themes</h2>
       <p>
-        Quasify UI ships five themes. Each maps the same semantic color slots
+        Stareezy UI ships five themes. Each maps the same semantic color slots
         to different primitive values.
       </p>
 
@@ -367,7 +367,7 @@ setTheme('steins-gate')  // → electric blue brand`}</code>
         values via context.
       </p>
       <pre>
-        <code>{`import { ThemeProvider } from '@quasify-ui/tokens'
+        <code>{`import { ThemeProvider } from '@stareezy-ui/tokens'
 
 <ThemeProvider theme="aurora">...</ThemeProvider>
 <ThemeProvider theme="dark">...</ThemeProvider>
@@ -397,7 +397,7 @@ setTheme('steins-gate')  // → electric blue brand`}</code>
         theme&apos;s value at render time.
       </p>
       <pre>
-        <code>{`import { t } from '@quasify-ui/tokens'
+        <code>{`import { t } from '@stareezy-ui/tokens'
 
 // Same component, correct colors in every theme:
 <Box bg={t.backgrounds.primary} borderColor={t.border.primaryBrand}>
@@ -475,7 +475,7 @@ setTheme('steins-gate')  // → electric blue brand`}</code>
       <h2>useThemeSwitch</h2>
       <p>Switch themes from anywhere in the tree without prop drilling:</p>
       <pre>
-        <code>{`import { useThemeSwitch } from '@quasify-ui/tokens'
+        <code>{`import { useThemeSwitch } from '@stareezy-ui/tokens'
 
 function ThemeSwitcher() {
   const { theme, setTheme, toggleTheme, isDark } = useThemeSwitch()
@@ -499,7 +499,7 @@ function ThemeSwitcher() {
         <code>Token&lt;string&gt;</code>:
       </p>
       <pre>
-        <code>{`import { useTheme } from '@quasify-ui/tokens'
+        <code>{`import { useTheme } from '@stareezy-ui/tokens'
 
 function MyComponent() {
   const theme = useTheme()
@@ -536,7 +536,7 @@ function MyComponent() {
       {/* ── Custom themes via createUi ───────────────────────────────────── */}
       <h2 className="gradient-text">Custom themes via createUi</h2>
       <pre>
-        <code>{`import { createUi, themes, token } from '@quasify-ui/tokens'
+        <code>{`import { createUi, themes, token } from '@stareezy-ui/tokens'
 
 const ui = createUi({
   themes: {

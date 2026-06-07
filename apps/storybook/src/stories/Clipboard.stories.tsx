@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { Clipboard } from "@quasify-ui/components";
+import { Clipboard } from "@stareezy-ui/components";
 
 const meta: Meta<typeof Clipboard> = {
   title: "Components/Clipboard",
@@ -18,7 +18,7 @@ export default meta;
 type Story = StoryObj<typeof Clipboard>;
 
 export const Default: Story = {
-  args: { value: "npm install @quasify-ui/components" },
+  args: { value: "npm install @stareezy-ui/components" },
 };
 
 export const LongValue: Story = {
@@ -44,7 +44,7 @@ export const HideValue: Story = {
 export const WithBoxProps: Story = {
   name: "With BoxProps (p, rounded, bg)",
   args: {
-    value: "pnpm add @quasify-ui/tokens",
+    value: "pnpm add @stareezy-ui/tokens",
     p: 12,
     rounded: 12,
     bg: "#f0f9ff",

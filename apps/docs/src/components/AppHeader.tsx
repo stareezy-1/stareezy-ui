@@ -8,7 +8,7 @@ import { trackEvent } from "../lib/analytics";
 
 const STORYBOOK_URL =
   process.env["NEXT_PUBLIC_STORYBOOK_URL"] ??
-  "https://storybook.quasify.app/";
+  "https://storybook.stareezy.tech/";
 
 const SECTIONS = [
   {
@@ -76,7 +76,7 @@ export function AppHeader({
       role="banner"
     >
       {/* Logo */}
-      <Link href="/" className="app-header-logo" aria-label="Quasify UI home">
+      <Link href="/" className="app-header-logo" aria-label="Stareezy UI home">
         <div
           className="app-header-logo-icon"
           aria-hidden="true"
@@ -87,7 +87,7 @@ export function AppHeader({
         >
           Q
         </div>
-        <span className="app-header-logo-text">Quasify</span>
+        <span className="app-header-logo-text">Stareezy</span>
         <span className="app-header-version" suppressHydrationWarning>
           v1.1.0
         </span>
@@ -126,7 +126,7 @@ export function AppHeader({
         <ThemeToggle />
 
         <a
-          href="https://github.com/quasify-ui/quasify-ui"
+          href="https://github.com/stareezy-1/stareezy-ui"
           target="_blank"
           rel="noopener noreferrer"
           className="app-header-action-btn"

@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { Resizer } from "@quasify-ui/components";
+import { Resizer } from "@stareezy-ui/components";
 
 const meta: Meta<typeof Resizer> = {
   title: "Components/Resizer",

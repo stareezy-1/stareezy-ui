@@ -4,9 +4,9 @@ import { DocPage, Callout, Step } from "../../../components/DocPage";
 export const metadata: Metadata = {
   title: "CDN Usage",
   description:
-    "Use Quasify UI directly from a CDN — no build step required. Drop a script tag and start using tokens and components in any HTML page.",
+    "Use Stareezy UI directly from a CDN — no build step required. Drop a script tag and start using tokens and components in any HTML page.",
   keywords: [
-    "Quasify ui cdn",
+    "Stareezy ui cdn",
     "script tag",
     "no build step",
     "jsdelivr",
@@ -14,56 +14,56 @@ export const metadata: Metadata = {
     "iife",
     "browser",
   ],
-  alternates: { canonical: "https://ui.quasify.app/docs/cdn" },
+  alternates: { canonical: "https://ui.stareezy.tech/docs/cdn" },
   openGraph: {
-    title: "CDN Usage — Quasify UI",
+    title: "CDN Usage — Stareezy UI",
     description:
-      "Use Quasify UI directly from a CDN with a single script tag — no bundler required.",
-    url: "https://ui.quasify.app/docs/cdn",
+      "Use Stareezy UI directly from a CDN with a single script tag — no bundler required.",
+    url: "https://ui.stareezy.tech/docs/cdn",
   },
 };
 
 const CDN_BUNDLES = [
   {
-    pkg: "@quasify-ui/tokens",
-    file: "Quasify-tokens.global.js",
-    global: "QuasifyTokens",
+    pkg: "@stareezy-ui/tokens",
+    file: "Stareezy-tokens.global.js",
+    global: "StareezyTokens",
     size: "~25 KB",
     desc: "All design tokens — colors, spacing, radius, typography, etc.",
     color: "#024CCE",
     bg: "#E6EDFA",
   },
   {
-    pkg: "@quasify-ui/components",
-    file: "Quasify-ui.global.js",
-    global: "QuasifyUI",
+    pkg: "@stareezy-ui/components",
+    file: "Stareezy-ui.global.js",
+    global: "StareezyUI",
     size: "~118 KB",
     desc: "Full component library — includes all tokens, runtime, and stylesheet.",
     color: "#4D8D01",
     bg: "#F3FFE3",
   },
   {
-    pkg: "@quasify-ui/runtime",
-    file: "Quasify-runtime.global.js",
-    global: "QuasifyRuntime",
+    pkg: "@stareezy-ui/runtime",
+    file: "Stareezy-runtime.global.js",
+    global: "StareezyRuntime",
     size: "~3 KB",
     desc: "O(1) style registry and web adapter — use if you need the runtime without components.",
     color: "#0C9182",
     bg: "#E7FDFA",
   },
   {
-    pkg: "@quasify-ui/stylesheet",
-    file: "Quasify-stylesheet.global.js",
-    global: "QuasifyStylesheet",
+    pkg: "@stareezy-ui/stylesheet",
+    file: "Stareezy-stylesheet.global.js",
+    global: "StareezyStylesheet",
     size: "~1.5 KB",
     desc: "Atomic CSS sheet management — low-level, rarely needed standalone.",
     color: "#C98B25",
     bg: "#FEF4E2",
   },
   {
-    pkg: "@quasify-ui/core",
-    file: "Quasify-core.global.js",
-    global: "QuasifyCore",
+    pkg: "@stareezy-ui/core",
+    file: "Stareezy-core.global.js",
+    global: "StareezyCore",
     size: "~5 KB",
     desc: "Utilities and platform helpers — use if you need core without components.",
     color: "#5D2555",
@@ -75,14 +75,14 @@ export default function CdnPage() {
   return (
     <DocPage
       title="CDN Usage"
-      description="Use Quasify UI directly from a CDN — no bundler, no build step, just a script tag."
+      description="Use Stareezy UI directly from a CDN — no bundler, no build step, just a script tag."
       badge="Installation"
       icon="↗"
       badgeColor="#f5a623"
     >
       <h2 className="gradient-text">Overview</h2>
       <p>
-        Every Quasify UI package ships a minified IIFE bundle in{" "}
+        Every Stareezy UI package ships a minified IIFE bundle in{" "}
         <code>dist/cdn/</code>. These are served automatically by jsDelivr and
         unpkg once the package is published to npm. Each bundle exposes a global
         variable on <code>window</code> — no module system required.
@@ -191,12 +191,12 @@ export default function CdnPage() {
   <script src="https://cdn.jsdelivr.net/npm/react@18/umd/react.production.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.production.min.js"></script>
 
-  <!-- 2. Quasify tokens -->
-  <script src="https://cdn.jsdelivr.net/npm/@quasify-ui/tokens/dist/cdn/Quasify-tokens.global.js"></script>
+  <!-- 2. Stareezy tokens -->
+  <script src="https://cdn.jsdelivr.net/npm/@stareezy-ui/tokens/dist/cdn/Stareezy-tokens.global.js"></script>
 </head>
 <body>
   <script>
-    const { colors, spacing, radius } = QuasifyTokens;
+    const { colors, spacing, radius } = StareezyTokens;
 
     console.log(colors.celurenBlue[500].value); // "#024CCE"
     console.log(spacing[4].value);              // 16
@@ -220,14 +220,14 @@ export default function CdnPage() {
   <script src="https://cdn.jsdelivr.net/npm/react@18/umd/react.production.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.production.min.js"></script>
 
-  <!-- 2. Quasify UI (includes tokens, runtime, stylesheet) -->
-  <script src="https://cdn.jsdelivr.net/npm/@quasify-ui/components/dist/cdn/Quasify-ui.global.js"></script>
+  <!-- 2. Stareezy UI (includes tokens, runtime, stylesheet) -->
+  <script src="https://cdn.jsdelivr.net/npm/@stareezy-ui/components/dist/cdn/Stareezy-ui.global.js"></script>
 </head>
 <body>
   <div id="root"></div>
   <script>
-    const { Box, Text, Button, ThemeProvider } = QuasifyUI;
-    const { colors, spacing } = QuasifyUI; // tokens are re-exported
+    const { Box, Text, Button, ThemeProvider } = StareezyUI;
+    const { colors, spacing } = StareezyUI; // tokens are re-exported
 
     const e = React.createElement;
 
@@ -244,7 +244,7 @@ export default function CdnPage() {
       </pre>
 
       <Callout type="tip">
-        The <code>QuasifyUI</code> global re-exports everything from tokens,
+        The <code>StareezyUI</code> global re-exports everything from tokens,
         runtime, and components — so you only need the one script tag for the
         full library.
       </Callout>
@@ -289,7 +289,7 @@ export default function CdnPage() {
               lineHeight: 1.7,
             }}
           >
-            React must be on the page before any Quasify script. Use the UMD builds
+            React must be on the page before any Stareezy script. Use the UMD builds
             from jsDelivr or unpkg:
             <pre
               style={{
@@ -338,7 +338,7 @@ export default function CdnPage() {
               marginBottom: "0.5rem",
             }}
           >
-            Load the Quasify bundle
+            Load the Stareezy bundle
           </div>
           <div
             style={{
@@ -355,10 +355,10 @@ export default function CdnPage() {
               }}
             >
               <code>{`<!-- Tokens only — 25 KB, zero component overhead -->
-<script src="https://cdn.jsdelivr.net/npm/@quasify-ui/tokens/dist/cdn/Quasify-tokens.global.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@stareezy-ui/tokens/dist/cdn/Stareezy-tokens.global.js"></script>
 
 <!-- Full library — 118 KB, includes all components -->
-<script src="https://cdn.jsdelivr.net/npm/@quasify-ui/components/dist/cdn/Quasify-ui.global.js"></script>`}</code>
+<script src="https://cdn.jsdelivr.net/npm/@stareezy-ui/components/dist/cdn/Stareezy-ui.global.js"></script>`}</code>
             </pre>
           </div>
         </div>
@@ -411,8 +411,8 @@ export default function CdnPage() {
               }}
             >
               <code>{`<!-- Pinned to 0.2.3 -->
-<script src="https://cdn.jsdelivr.net/npm/@quasify-ui/tokens@0.2.3/dist/cdn/Quasify-tokens.global.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@quasify-ui/components@0.2.3/dist/cdn/Quasify-ui.global.js"></script>`}</code>
+<script src="https://cdn.jsdelivr.net/npm/@stareezy-ui/tokens@0.2.3/dist/cdn/Stareezy-tokens.global.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@stareezy-ui/components@0.2.3/dist/cdn/Stareezy-ui.global.js"></script>`}</code>
             </pre>
           </div>
         </div>
@@ -465,11 +465,11 @@ export default function CdnPage() {
               }}
             >
               <code>{`// Tokens
-const { colors, spacing, radius, typography, shadow, timing } = QuasifyTokens;
+const { colors, spacing, radius, typography, shadow, timing } = StareezyTokens;
 
 // Components + tokens (from the full bundle)
-const { Box, Text, Button, Input, Badge, Card, ThemeProvider } = QuasifyUI;
-const { colors, spacing } = QuasifyUI;`}</code>
+const { Box, Text, Button, Input, Badge, Card, ThemeProvider } = StareezyUI;
+const { colors, spacing } = StareezyUI;`}</code>
             </pre>
           </div>
         </div>
@@ -487,10 +487,10 @@ const { colors, spacing } = QuasifyUI;`}</code>
         <tbody>
           <tr>
             <td>
-              <code>Quasify-tokens.global.js</code>
+              <code>Stareezy-tokens.global.js</code>
             </td>
             <td>
-              <code style={{ color: "#f5a623" }}>QuasifyTokens</code>
+              <code style={{ color: "#f5a623" }}>StareezyTokens</code>
             </td>
             <td>
               colors, spacing, radius, typography, shadow, timing, motion,
@@ -499,40 +499,40 @@ const { colors, spacing } = QuasifyUI;`}</code>
           </tr>
           <tr>
             <td>
-              <code>Quasify-ui.global.js</code>
+              <code>Stareezy-ui.global.js</code>
             </td>
             <td>
-              <code style={{ color: "#f5a623" }}>QuasifyUI</code>
+              <code style={{ color: "#f5a623" }}>StareezyUI</code>
             </td>
             <td>
-              Everything in QuasifyTokens + all components (Box, Text, Button,
+              Everything in StareezyTokens + all components (Box, Text, Button,
               Input, …)
             </td>
           </tr>
           <tr>
             <td>
-              <code>Quasify-runtime.global.js</code>
+              <code>Stareezy-runtime.global.js</code>
             </td>
             <td>
-              <code style={{ color: "#f5a623" }}>QuasifyRuntime</code>
+              <code style={{ color: "#f5a623" }}>StareezyRuntime</code>
             </td>
             <td>styleRegistry, resolve, webAdapter</td>
           </tr>
           <tr>
             <td>
-              <code>Quasify-stylesheet.global.js</code>
+              <code>Stareezy-stylesheet.global.js</code>
             </td>
             <td>
-              <code style={{ color: "#f5a623" }}>QuasifyStylesheet</code>
+              <code style={{ color: "#f5a623" }}>StareezyStylesheet</code>
             </td>
             <td>injectSheet, flushSheet</td>
           </tr>
           <tr>
             <td>
-              <code>Quasify-core.global.js</code>
+              <code>Stareezy-core.global.js</code>
             </td>
             <td>
-              <code style={{ color: "#f5a623" }}>QuasifyCore</code>
+              <code style={{ color: "#f5a623" }}>StareezyCore</code>
             </td>
             <td>platform helpers, useDeviceLayout, spacing utilities</td>
           </tr>
@@ -553,13 +553,13 @@ const { colors, spacing } = QuasifyUI;`}</code>
         <code>{`<script src="https://cdn.jsdelivr.net/npm/@babel/standalone/babel.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/react@18/umd/react.production.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.production.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@quasify-ui/components/dist/cdn/Quasify-ui.global.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@stareezy-ui/components/dist/cdn/Stareezy-ui.global.js"></script>
 
 <div id="root"></div>
 
 <script type="text/babel">
-  const { Box, Text, Button, ThemeProvider } = QuasifyUI;
-  const { colors, spacing, radius } = QuasifyUI;
+  const { Box, Text, Button, ThemeProvider } = StareezyUI;
+  const { colors, spacing, radius } = StareezyUI;
 
   function App() {
     return (
@@ -595,10 +595,10 @@ const { colors, spacing } = QuasifyUI;`}</code>
         }}
       >
         <code>{`<script src="https://cdn.jsdelivr.net/npm/react@18/umd/react.production.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@quasify-ui/tokens/dist/cdn/Quasify-tokens.global.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@stareezy-ui/tokens/dist/cdn/Stareezy-tokens.global.js"></script>
 
 <script>
-  const { colors, spacing, radius } = QuasifyTokens;
+  const { colors, spacing, radius } = StareezyTokens;
 
   // Apply token values to any DOM element
   document.querySelector(".hero").style.backgroundColor = colors.celurenBlue[500].value;
@@ -625,10 +625,10 @@ const { colors, spacing } = QuasifyUI;`}</code>
         }}
       >
         <code>{`<!-- jsDelivr (recommended — global CDN, SRI support) -->
-https://cdn.jsdelivr.net/npm/@quasify-ui/tokens@{version}/dist/cdn/Quasify-tokens.global.js
+https://cdn.jsdelivr.net/npm/@stareezy-ui/tokens@{version}/dist/cdn/Stareezy-tokens.global.js
 
 <!-- unpkg -->
-https://unpkg.com/@quasify-ui/tokens@{version}/dist/cdn/Quasify-tokens.global.js`}</code>
+https://unpkg.com/@stareezy-ui/tokens@{version}/dist/cdn/Stareezy-tokens.global.js`}</code>
       </pre>
 
       <Callout type="tip">
@@ -643,7 +643,7 @@ https://unpkg.com/@quasify-ui/tokens@{version}/dist/cdn/Quasify-tokens.global.js
         hashes. Use them in production to protect against CDN compromise:
         <pre style={{ marginTop: "0.5rem" }}>
           <code>{`<script
-  src="https://cdn.jsdelivr.net/npm/@quasify-ui/tokens@0.2.3/dist/cdn/Quasify-tokens.global.js"
+  src="https://cdn.jsdelivr.net/npm/@stareezy-ui/tokens@0.2.3/dist/cdn/Stareezy-tokens.global.js"
   integrity="sha256-..."
   crossorigin="anonymous"
 ></script>`}</code>

@@ -1,9 +1,9 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
-import { quasifyVitePlugin } from "@quasify-ui/compiler";
+import { stareezyVitePlugin } from "@stareezy-ui/compiler";
 
 export default defineConfig({
-  plugins: [react(), quasifyVitePlugin()],
+  plugins: [react(), stareezyVitePlugin()],
   build: {
     rollupOptions: {
       // Keep external packages out of the integration bundle so the build

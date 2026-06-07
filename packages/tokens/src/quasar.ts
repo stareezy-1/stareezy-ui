@@ -1,5 +1,5 @@
 /**
- * Quasar token group for Quasify UI.
+ * Quasar token group for Stareezy UI.
  *
  * Palette drawn from the Quasar theme in the quasar app — inspired by the
  * astronomical phenomenon: a supermassive black hole with a blazing accretion

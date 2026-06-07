@@ -5,8 +5,8 @@
 
 import React, { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
-import { Drawer, Button, EButtonType } from "@quasify-ui/components";
-import type { DrawerAnchor } from "@quasify-ui/components";
+import { Drawer, Button, EButtonType } from "@stareezy-ui/components";
+import type { DrawerAnchor } from "@stareezy-ui/components";
 
 const meta: Meta<typeof Drawer> = {
   title: "Components/Drawer",

@@ -1,8 +1,8 @@
-# @quasify-ui/components
+# @stareezy-ui/components
 
-17+ cross-platform UI components for React Native and web, built on the Quasify UI token system.
+17+ cross-platform UI components for React Native and web, built on the Stareezy UI token system.
 
-[![npm](https://img.shields.io/npm/v/@quasify-ui/components)](https://www.npmjs.com/package/@quasify-ui/components)
+[![npm](https://img.shields.io/npm/v/@stareezy-ui/components)](https://www.npmjs.com/package/@stareezy-ui/components)
 
 ---
 
@@ -11,17 +11,17 @@
 ### Web (React / Next.js / Vite)
 
 ```bash
-npm add @quasify-ui/tokens @quasify-ui/components @quasify-ui/runtime
+npm add @stareezy-ui/tokens @stareezy-ui/components @stareezy-ui/runtime
 # or
-pnpm add @quasify-ui/tokens @quasify-ui/components @quasify-ui/runtime
+pnpm add @stareezy-ui/tokens @stareezy-ui/components @stareezy-ui/runtime
 # or
-yarn add @quasify-ui/tokens @quasify-ui/components @quasify-ui/runtime
+yarn add @stareezy-ui/tokens @stareezy-ui/components @stareezy-ui/runtime
 ```
 
 ### React Native (Expo / bare workflow)
 
 ```bash
-yarn add @quasify-ui/tokens @quasify-ui/components @quasify-ui/runtime
+yarn add @stareezy-ui/tokens @stareezy-ui/components @stareezy-ui/runtime
 ```
 
 #### Optional peer dependency — Slider component only
@@ -68,17 +68,17 @@ module.exports = config;
 
 #### Babel config
 
-Add the Quasify babel plugin to your `babel.config.js`. Keep it before any Tamagui plugin:
+Add the Stareezy babel plugin to your `babel.config.js`. Keep it before any Tamagui plugin:
 
 ```js
-const { quasifyBabelPlugin } = require("@quasify-ui/compiler/babel");
+const { stareezyBabelPlugin } = require("@stareezy-ui/compiler/babel");
 
 module.exports = function (api) {
   api.cache(true);
   return {
     presets: ["babel-preset-expo"],
     plugins: [
-      quasifyBabelPlugin(),
+      stareezyBabelPlugin(),
       // ... other plugins
       // keep @tamagui/babel-plugin last if you use Tamagui
     ],
@@ -89,7 +89,7 @@ module.exports = function (api) {
 The compiler package also needs to be installed:
 
 ```bash
-yarn add -D @quasify-ui/compiler
+yarn add -D @stareezy-ui/compiler
 ```
 
 ---
@@ -99,8 +99,8 @@ yarn add -D @quasify-ui/compiler
 ### Primitives
 
 ```tsx
-import { Box, Text, HStack, VStack } from '@quasify-ui/components'
-import { colors, spacing, radius } from '@quasify-ui/tokens'
+import { Box, Text, HStack, VStack } from '@stareezy-ui/components'
+import { colors, spacing, radius } from '@stareezy-ui/tokens'
 
 // Box — foundational layout primitive
 <Box
@@ -131,7 +131,7 @@ import { colors, spacing, radius } from '@quasify-ui/tokens'
 ### Button
 
 ```tsx
-import { Button } from '@quasify-ui/components'
+import { Button } from '@stareezy-ui/components'
 
 <Button variant="primary"   size="md" text="Submit" onPress={() => {}} />
 <Button variant="secondary" size="md" text="Cancel" />

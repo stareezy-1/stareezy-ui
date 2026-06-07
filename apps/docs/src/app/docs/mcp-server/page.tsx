@@ -4,8 +4,8 @@ import { DocPage, Callout, Step } from "../../../components/DocPage";
 export const metadata: Metadata = {
   title: "MCP Server",
   description:
-    "Quasify UI MCP Server — connect Claude, Cursor, and other AI tools to your design tokens and components via the Model Context Protocol.",
-  alternates: { canonical: "https://ui.quasify.app/docs/mcp-server" },
+    "Stareezy UI MCP Server — connect Claude, Cursor, and other AI tools to your design tokens and components via the Model Context Protocol.",
+  alternates: { canonical: "https://ui.stareezy.tech/docs/mcp-server" },
 };
 
 const sectionHeader: React.CSSProperties = {
@@ -38,7 +38,7 @@ export default function McpServerPage() {
   return (
     <DocPage
       title="MCP Server"
-      description="Connect Claude, Cursor, and other AI tools to your Quasify UI design tokens and components through the Model Context Protocol."
+      description="Connect Claude, Cursor, and other AI tools to your Stareezy UI design tokens and components through the Model Context Protocol."
       badge="Integration"
       badgeColor="#ff6a1a"
       icon="⚡"
@@ -48,7 +48,7 @@ export default function McpServerPage() {
       <p>
         The Model Context Protocol (MCP) is an open standard that lets AI
         assistants securely access tools and data in your development
-        environment. The <strong>Quasify UI MCP Server</strong> bridges this
+        environment. The <strong>Stareezy UI MCP Server</strong> bridges this
         protocol with your design system, enabling AI tools to read your design
         tokens, inspect component APIs, and generate production-ready code that
         respects your theme — all without leaving the chat.
@@ -67,7 +67,7 @@ export default function McpServerPage() {
       <Step n={1} title="Install the MCP server package">
         <p>Run the server package directly with npx — no global install needed:</p>
         <div style={codeBlock}>
-          <code style={codeBlockInner}>{`npx @quasify-ui/mcp`}</code>
+          <code style={codeBlockInner}>{`npx @stareezy-ui/mcp`}</code>
         </div>
         <p>
           This starts the MCP server on <code>stdio</code>, ready to accept
@@ -98,7 +98,7 @@ export default function McpServerPage() {
       </Step>
 
       <Callout type="tip">
-        The MCP server respects your <code>quasify.config.ts</code> — any
+        The MCP server respects your <code>stareezy.config.ts</code> — any
         custom tokens, media queries, or shorthands you&apos;ve defined are
         immediately available to the AI.
       </Callout>
@@ -131,7 +131,7 @@ export default function McpServerPage() {
           },
           {
             title: "Code Generation",
-            desc: "Generate production-ready Quasify UI code that respects your design system. Copy, paste, and ship.",
+            desc: "Generate production-ready Stareezy UI code that respects your design system. Copy, paste, and ship.",
             icon: "⚙",
           },
         ].map((feature) => (
@@ -178,11 +178,11 @@ export default function McpServerPage() {
       <div style={codeBlock}>
         <code style={codeBlockInner}>{`{
   "mcpServers": {
-    "quasify-ui": {
+    "stareezy-ui": {
       "command": "npx",
-      "args": ["-y", "@quasify-ui/mcp"],
+      "args": ["-y", "@stareezy-ui/mcp"],
       "env": {
-        "QUASIFY_PROJECT_PATH": "/path/to/your/project"
+        "STAREEZY_PROJECT_PATH": "/path/to/your/project"
       }
     }
   }
@@ -190,20 +190,20 @@ export default function McpServerPage() {
       </div>
 
       <p>
-        Set <code>QUASIFY_PROJECT_PATH</code> to the root of your Quasify UI
+        Set <code>STAREEZY_PROJECT_PATH</code> to the root of your Stareezy UI
         project. If omitted, the server uses the current working directory.
       </p>
 
       <Callout type="warning">
-        The <code>QUASIFY_PROJECT_PATH</code> should point to a directory
-        containing a <code>quasify.config.ts</code> file. The server reads your
+        The <code>STAREEZY_PROJECT_PATH</code> should point to a directory
+        containing a <code>stareezy.config.ts</code> file. The server reads your
         theme configuration from this file.
       </Callout>
 
       {/* ── Claude Desktop Setup ─────────────────────────────────────────── */}
       <h2 className="gradient-text" style={sectionHeader}>Claude Desktop Setup</h2>
       <p>
-        Claude Desktop natively supports MCP servers. Add the Quasify UI MCP
+        Claude Desktop natively supports MCP servers. Add the Stareezy UI MCP
         server to your Claude Desktop configuration file:
       </p>
 
@@ -215,11 +215,11 @@ export default function McpServerPage() {
       <div style={codeBlock}>
         <code style={codeBlockInner}>{`{
   "mcpServers": {
-    "quasify-ui": {
+    "stareezy-ui": {
       "command": "npx",
-      "args": ["-y", "@quasify-ui/mcp"],
+      "args": ["-y", "@stareezy-ui/mcp"],
       "env": {
-        "QUASIFY_PROJECT_PATH": "/Users/you/projects/my-app"
+        "STAREEZY_PROJECT_PATH": "/Users/you/projects/my-app"
       }
     }
   }
@@ -228,12 +228,12 @@ export default function McpServerPage() {
 
       <p>
         After saving the file, restart Claude Desktop. You&apos;ll see a hammer
-        icon in the input area — click it to see the available Quasify UI
+        icon in the input area — click it to see the available Stareezy UI
         tools, or just start asking questions about your design system.
       </p>
 
       <Callout type="tip">
-        You can configure multiple MCP servers in Claude Desktop. The Quasify
+        You can configure multiple MCP servers in Claude Desktop. The Stareezy
         UI server works alongside other MCP tools like file system access or
         database querying.
       </Callout>
@@ -248,11 +248,11 @@ export default function McpServerPage() {
       <div style={codeBlock}>
         <code style={codeBlockInner}>{`{
   "mcpServers": {
-    "quasify-ui": {
+    "stareezy-ui": {
       "command": "npx",
-      "args": ["-y", "@quasify-ui/mcp"],
+      "args": ["-y", "@stareezy-ui/mcp"],
       "env": {
-        "QUASIFY_PROJECT_PATH": "."
+        "STAREEZY_PROJECT_PATH": "."
       }
     }
   }
@@ -284,7 +284,7 @@ export default function McpServerPage() {
             {[
               ["get_tokens", "Retrieve all design tokens from your theme"],
               ["get_token", "Retrieve a specific token by path"],
-              ["get_components", "List all available Quasify UI components"],
+              ["get_components", "List all available Stareezy UI components"],
               ["get_component", "Get API and usage for a specific component"],
               ["generate_code", "Generate component code using theme tokens"],
               ["analyze_theme", "Analyze a theme for contrast and coverage"],

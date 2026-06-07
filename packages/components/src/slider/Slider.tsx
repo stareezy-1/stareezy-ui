@@ -224,7 +224,7 @@ export const Slider: SzrFC<SliderProps> = ({
     // package not installed — render nothing and warn once
     if (__DEV__) {
       console.warn(
-        "[Quasify-ui] Slider: install @react-native-community/slider to use the Slider component on React Native.",
+        "[stareezy-ui] Slider: install @react-native-community/slider to use the Slider component on React Native.",
       );
     }
   }

@@ -28,7 +28,7 @@ export default function SxPage() {
         }}
       >
         <p>
-          Every component in <code>@quasify-ui/components</code> — including{" "}
+          Every component in <code>@stareezy-ui/components</code> — including{" "}
           <code>Box</code> itself — accepts an <code>sx</code> prop. It works like
           Tamagui or Chakra&apos;s <code>sx</code>: pass any style prop you&apos;d
           put directly on <code>Box</code> and it gets applied on top of the
@@ -54,17 +54,17 @@ export default function SxPage() {
           boxShadow: "0 0 40px rgba(255,106,26,0.03)",
         }}
       >
-        <code>{`import { Box, Button, Card } from "@quasify-ui/components";
+        <code>{`import { Box, Button, Card } from "@stareezy-ui/components";
 
 // Plain values
 <Box sx={{ mt: 16, p: 20, bg: "#f5f5f5" }} />
 
 // Token references — use .value accessor
-import { colors, radius, spacing } from "@quasify-ui/tokens";
+import { colors, radius, spacing } from "@stareezy-ui/tokens";
 <Card sx={{ rounded: radius.xl, bg: colors.celurenBlue[25] }} />
 
 // ThemeToken references — resolve to current theme at render time
-import { createUi } from "@quasify-ui/tokens";
+import { createUi } from "@stareezy-ui/tokens";
 const ui = createUi({ ... });
 <Box sx={{ bg: ui.t.backgrounds.primary, color: ui.t.text.primary }} />`}</code>
       </pre>
@@ -127,7 +127,7 @@ const ui = createUi({ ... });
         <code>{`import {
   Box, Button, Card, Input, Badge, Spinner,
   Tabs, Table, Modal, Drawer, Toast,
-} from "@quasify-ui/components";
+} from "@stareezy-ui/components";
 
 <Button text="Save" sx={{ alignSelf: "flex-end", mt: 24 }} />
 <Card sx={{ maxWidth: 480, mx: "auto" }}>…</Card>
@@ -172,7 +172,7 @@ const ui = createUi({ ... });
           boxShadow: "0 0 40px rgba(255,106,26,0.03)",
         }}
       >
-        <code>{`import type { SxProp } from "@quasify-ui/components";
+        <code>{`import type { SxProp } from "@stareezy-ui/components";
 
 // Everything you can pass to Box as a style prop also works in sx:
 type SxProp = {

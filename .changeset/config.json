@@ -8,8 +8,8 @@
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
   "ignore": [
-    "@quasify-ui/docs",
-    "@quasify-ui/storybook",
-    "@quasify-ui/playground"
+    "@stareezy-ui/docs",
+    "@stareezy-ui/storybook",
+    "@stareezy-ui/playground"
   ]
 }

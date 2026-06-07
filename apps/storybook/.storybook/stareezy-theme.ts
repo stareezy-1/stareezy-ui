@@ -1,18 +1,18 @@
 import { create } from "@storybook/theming/create";
 
 /**
- * Storybook custom theme derived from Quasify UI design tokens.
+ * Storybook custom theme derived from Stareezy UI design tokens.
  * Uses the same brand colors, fonts, and radius values as the design system.
  */
-export const QuasifyTheme = create({
+export const StareezyTheme = create({
   base: "light",
 
   // Brand
-  brandTitle: "Quasify UI",
-  brandUrl: "https://ui.quasify.app",
+  brandTitle: "Stareezy UI",
+  brandUrl: "https://ui.stareezy.tech",
   brandTarget: "_blank",
 
-  // Colors — mapped from Quasify UI token values
+  // Colors — mapped from Stareezy UI token values
   colorPrimary: "#024CCE", // celurenBlue-500
   colorSecondary: "#1B5ED3", // celurenBlue-400
 
@@ -45,11 +45,11 @@ export const QuasifyTheme = create({
   fontCode: '"JetBrains Mono", "Fira Code", monospace',
 });
 
-export const QuasifyDarkTheme = create({
+export const StareezyDarkTheme = create({
   base: "dark",
 
-  brandTitle: "Quasify UI",
-  brandUrl: "https://ui.quasify.app",
+  brandTitle: "Stareezy UI",
+  brandUrl: "https://ui.stareezy.tech",
   brandTarget: "_blank",
 
   colorPrimary: "#4E82DD", // celurenBlue-300

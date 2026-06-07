@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import React from "react";
-import { Card } from "@quasify-ui/components";
+import { Card } from "@stareezy-ui/components";
 
 const meta: Meta<typeof Card> = {
   title: "Components/Card",

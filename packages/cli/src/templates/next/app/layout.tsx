@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "{{PROJECT_NAME}}",
-  description: "Built with Quasify UI",
+  description: "Built with Stareezy UI",
 };
 
 export default function RootLayout({

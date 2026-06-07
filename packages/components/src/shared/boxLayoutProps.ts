@@ -8,8 +8,8 @@
  * Requirements: 5.1
  */
 
-import { getUiConfig } from "@quasify-ui/tokens";
-import type { QuasifyShorthands } from "@quasify-ui/tokens";
+import { getUiConfig } from "@stareezy-ui/tokens";
+import type { SzrShorthands } from "@stareezy-ui/tokens";
 import type { BoxProps } from "../primitives/Box";
 import type { BreakpointKey, Responsive } from "../primitives/breakpoints";
 import type { SxProp } from "./sx";
@@ -31,7 +31,7 @@ export type { SxProp } from "./sx";
 // ---------------------------------------------------------------------------
 
 /**
- * Custom shorthand props derived from QuasifyCustomConfig["shorthands"].
+ * Custom shorthand props derived from SzrCustomConfig["shorthands"].
  *
  * - No augmentation (shorthands key is a wide `string` index) → `{}` (no extra props)
  * - Augmented with literal keys → each key accepts a plain value OR a responsive object
@@ -39,11 +39,11 @@ export type { SxProp } from "./sx";
  * This mirrors CustomShorthandProps in Box.tsx so every component that extends
  * BoxLayoutProps automatically gains the app's custom shorthand props (bg, br, etc.).
  */
-type LayoutShorthandProps = string extends keyof QuasifyShorthands
+type LayoutShorthandProps = string extends keyof SzrShorthands
   ? // eslint-disable-next-line @typescript-eslint/ban-types
     {}
   : {
-      [K in keyof QuasifyShorthands]?: Responsive<string | number>;
+      [K in keyof SzrShorthands]?: Responsive<string | number>;
     };
 
 /**
@@ -109,7 +109,7 @@ type LayoutBreakpointProps = {
  * - Custom shorthand props from `createUi({ shorthands })` — e.g. `bg`, `br`
  * - $-prefixed breakpoint group props from `createUi({ media })` — e.g. `$md`, `$lg`
  *
- * Every component in @quasify-ui/components extends this type, so responsive
+ * Every component in @stareezy-ui/components extends this type, so responsive
  * layout and shorthand props work on Button, Input, Card, and all others.
  */
 export type BoxLayoutProps = Pick<
@@ -219,7 +219,7 @@ const BOX_LAYOUT_PROP_KEYS: ReadonlySet<string> = new Set<string>([
  * 1. It is one of the explicit BoxLayoutProps keys (spacing/sizing/flex)
  * 2. It starts with `$` (breakpoint-as-prop group, e.g. `$md`)
  * 3. It is a key in the configured custom shorthands from `getUiConfig().shorthands`
- *    (e.g. `bg`, `br` when declared in quasify.config.ts)
+ *    (e.g. `bg`, `br` when declared in stareezy.config.ts)
  *
  * Everything else goes to `rest`.
  *

@@ -1,5 +1,5 @@
 /**
- * Theme-reactive token references for Quasify UI.
+ * Theme-reactive token references for Stareezy UI.
  *
  * A `ThemeToken` is a lightweight reference to a semantic color slot that
  * resolves to the CURRENT theme's value at render time. When the theme
@@ -9,14 +9,14 @@
  * ## Usage
  *
  * ```tsx
- * import { t } from '@quasify-ui/tokens'
+ * import { t } from '@stareezy-ui/tokens'
  *
  * // In any component that accepts Token props (Box, Button, etc.)
  * <Box bg={t.backgrounds.primary} color={t.text.primary} />
  * <Box borderColor={t.border.primaryBrand} />
  *
  * // Or resolve manually in a component
- * import { useResolveThemeToken } from '@quasify-ui/tokens'
+ * import { useResolveThemeToken } from '@stareezy-ui/tokens'
  * const color = useResolveThemeToken(t.text.importantBrand) // "#4a9eff" in steins-gate
  * ```
  *
@@ -105,7 +105,7 @@ function buildThemeTokenMap<T extends Record<string, Record<string, unknown>>>(
  *
  * @example
  * ```tsx
- * import { t } from '@quasify-ui/tokens'
+ * import { t } from '@stareezy-ui/tokens'
  *
  * <Box bg={t.backgrounds.primary} color={t.text.primary} />
  * <Box borderColor={t.border.primaryBrand} rounded={8} />

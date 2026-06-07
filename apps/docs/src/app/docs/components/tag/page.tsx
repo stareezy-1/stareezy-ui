@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   title: "Tag",
   description:
     "Compact Tag / chip component with removable support, color variants, size options, and icon slots.",
-  alternates: { canonical: "https://ui.quasify.app/docs/components/tag" },
+  alternates: { canonical: "https://ui.stareezy.tech/docs/components/tag" },
 };
 
 export default function TagPage() {
@@ -20,7 +20,7 @@ export default function TagPage() {
     >
       <h2 className="gradient-text">Import</h2>
       <pre>
-        <code>{`import { Tag } from '@quasify-ui/components'`}</code>
+        <code>{`import { Tag } from '@stareezy-ui/components'`}</code>
       </pre>
 
       <h2 className="gradient-text">Basic usage</h2>

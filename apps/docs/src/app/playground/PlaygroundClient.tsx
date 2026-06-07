@@ -310,7 +310,7 @@ export default function PlaygroundClient() {
                           marginBottom: 4,
                         }}
                       >
-                        Hello, Quasify UI
+                        Hello, Stareezy UI
                       </div>
                       <div
                         style={{
@@ -478,7 +478,7 @@ export default function PlaygroundClient() {
               fontWeight: 500,
             }}
           >
-            ◉ Quasify UI Playground
+            ◉ Stareezy UI Playground
           </span>
           <span style={{ fontSize: "0.68rem", color: "rgba(255,255,255,0.6)" }}>
             {code.split("\n").length} lines

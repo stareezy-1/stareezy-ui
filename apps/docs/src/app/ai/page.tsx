@@ -48,7 +48,7 @@ function defaultConfig(pattern: ComponentPattern): ComponentConfig {
       ctaText: "Learn More", ctaSecondary: "Get Started", dark: true, spacing: "spacious", textSize: "medium", layout: "grid", showCode: false, accent: "#ff6a1a",
     },
     navbar: {
-      pattern: "navbar", title: "Quasify", subtitle: "Navigation",
+      pattern: "navbar", title: "Stareezy", subtitle: "Navigation",
       ctaText: "Sign Up", ctaSecondary: "Log In", dark: true, spacing: "compact", textSize: "medium", layout: "split", showCode: false, accent: "#ff6a1a",
     },
     modal: {
@@ -66,8 +66,8 @@ function generateCode(config: ComponentConfig): string {
   const bg = dark ? "t.backgrounds.primaryBlack" : "t.backgrounds.primary";
 
   const snippets: Record<ComponentPattern, string> = {
-    hero: `import { Box, Text, Button } from '@quasify-ui/components'
-import { t } from '@quasify-ui/tokens'
+    hero: `import { Box, Text, Button } from '@stareezy-ui/components'
+import { t } from '@stareezy-ui/tokens'
 
 export function HeroSection() {
   return (
@@ -100,8 +100,8 @@ export function HeroSection() {
     </Box>
   )
 }`,
-    dashboard: `import { Box, Text, Card } from '@quasify-ui/components'
-import { t } from '@quasify-ui/tokens'
+    dashboard: `import { Box, Text, Card } from '@stareezy-ui/components'
+import { t } from '@stareezy-ui/tokens'
 
 const STATS = [
   { label: 'Users', value: '12.5K', change: '+12%' },
@@ -131,8 +131,8 @@ export function Dashboard() {
     </Box>
   )
 }`,
-    form: `import { Box, Text, Input, Button, Checkbox } from '@quasify-ui/components'
-import { t } from '@quasify-ui/tokens'
+    form: `import { Box, Text, Input, Button, Checkbox } from '@stareezy-ui/components'
+import { t } from '@stareezy-ui/tokens'
 
 export function SignInForm() {
   return (
@@ -152,8 +152,8 @@ export function SignInForm() {
     </Box>
   )
 }`,
-    "card-grid": `import { Box, Text, Card } from '@quasify-ui/components'
-import { t } from '@quasify-ui/tokens'
+    "card-grid": `import { Box, Text, Card } from '@stareezy-ui/components'
+import { t } from '@stareezy-ui/tokens'
 
 const ITEMS = [
   { title: 'Design Tokens', desc: '300+ typed tokens', color: '#ff6a1a' },
@@ -182,8 +182,8 @@ export function CardGrid() {
     </Box>
   )
 }`,
-    navbar: `import { Box, Text, Button } from '@quasify-ui/components'
-import { t } from '@quasify-ui/tokens'
+    navbar: `import { Box, Text, Button } from '@stareezy-ui/components'
+import { t } from '@stareezy-ui/tokens'
 import { useState } from 'react'
 
 export function AppNavbar() {
@@ -211,8 +211,8 @@ export function AppNavbar() {
     </Box>
   )
 }`,
-    modal: `import { Box, Text, Button } from '@quasify-ui/components'
-import { t } from '@quasify-ui/tokens'
+    modal: `import { Box, Text, Button } from '@stareezy-ui/components'
+import { t } from '@stareezy-ui/tokens'
 import { useState } from 'react'
 
 export function ConfirmModal() {
@@ -248,7 +248,7 @@ function generateViteProject(config: ComponentConfig): Record<string, string> {
     "src/main.tsx": `import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App'
-import { ThemeProvider } from '@quasify-ui/tokens'
+import { ThemeProvider } from '@stareezy-ui/tokens'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
@@ -258,7 +258,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
   </React.StrictMode>,
 )`,
     "package.json": JSON.stringify({
-      name: "quasify-app",
+      name: "stareezy-app",
       private: true,
       version: "0.0.0",
       type: "module",
@@ -266,8 +266,8 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       dependencies: {
         react: "^18.2.0",
         "react-dom": "^18.2.0",
-        "@quasify-ui/components": "^0.1.0",
-        "@quasify-ui/tokens": "^0.1.0",
+        "@stareezy-ui/components": "^0.1.0",
+        "@stareezy-ui/tokens": "^0.1.0",
       },
       devDependencies: {
         "@types/react": "^18.2.0",
@@ -279,17 +279,17 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     }, null, 2),
     "vite.config.ts": `import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
-import { quasifyPlugin } from '@quasify-ui/vite-plugin'
+import { stareezyPlugin } from '@stareezy-ui/vite-plugin'
 
 export default defineConfig({
-  plugins: [react(), quasifyPlugin()],
+  plugins: [react(), stareezyPlugin()],
 })`,
     "index.html": `<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Quasify App</title>
+    <title>Stareezy App</title>
   </head>
   <body>
     <div id="root"></div>
@@ -677,7 +677,7 @@ export default function AIPage() {
               AI
             </div>
             <h1 style={{ fontSize: "0.95rem", fontWeight: 800, color: "var(--color-text)", margin: 0, letterSpacing: "-0.02em" }}>
-              Quasify AI
+              Stareezy AI
             </h1>
             <span className="pill-tag orange" style={{ fontSize: "0.55rem", padding: "1px 6px" }}>Interactive</span>
           </div>

@@ -1,4 +1,4 @@
-import { createUi } from "@quasify-ui/tokens";
+import { createUi } from "@stareezy-ui/tokens";
 
 const ui = createUi({
   media: {
@@ -34,6 +34,6 @@ export default ui;
 
 type CustomUi = typeof ui;
 
-declare module "@quasify-ui/tokens" {
-  interface QuasifyCustomConfig extends CustomUi {}
+declare module "@stareezy-ui/tokens" {
+  interface SzrCustomConfig extends CustomUi {}
 }

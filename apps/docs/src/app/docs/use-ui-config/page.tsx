@@ -4,8 +4,8 @@ import { DocPage, Callout, PropRow } from "../../../components/DocPage";
 export const metadata: Metadata = {
   title: "useUiConfig",
   description:
-    "Access the active Quasify UI configuration reactively from any component.",
-  alternates: { canonical: "https://ui.quasify.app/docs/use-ui-config" },
+    "Access the active Stareezy UI configuration reactively from any component.",
+  alternates: { canonical: "https://ui.stareezy.tech/docs/use-ui-config" },
 };
 
 export default function UseUiConfigPage() {
@@ -50,7 +50,7 @@ export default function UseUiConfigPage() {
           boxShadow: "0 0 40px rgba(255,106,26,0.03)",
         }}
       >
-        <code>{`import { useUiConfig } from '@quasify-ui/tokens'
+        <code>{`import { useUiConfig } from '@stareezy-ui/tokens'
 
 function MyComponent() {
   const ui = useUiConfig()
@@ -89,8 +89,8 @@ function MyComponent() {
         }}
       >
         <code>{`// app/layout.tsx (Next.js)
-import { UiConfigProvider, ThemeProvider } from '@quasify-ui/tokens'
-import { ui } from '../quasify.config'
+import { UiConfigProvider, ThemeProvider } from '@stareezy-ui/tokens'
+import { ui } from '../stareezy.config'
 
 export default function RootLayout({ children }) {
   return (
@@ -112,7 +112,7 @@ export default function RootLayout({ children }) {
           boxShadow: "0 0 40px rgba(255,106,26,0.03)",
         }}
       >
-        <code>{`import { useUiConfig } from '@quasify-ui/tokens'
+        <code>{`import { useUiConfig } from '@stareezy-ui/tokens'
 
 function ThemedCard() {
   const ui = useUiConfig()
@@ -137,7 +137,7 @@ function ThemedCard() {
           boxShadow: "0 0 40px rgba(255,106,26,0.03)",
         }}
       >
-        <code>{`import { useUiConfig } from '@quasify-ui/tokens'
+        <code>{`import { useUiConfig } from '@stareezy-ui/tokens'
 
 function ResponsiveGrid({ children }) {
   const ui = useUiConfig()
@@ -161,12 +161,12 @@ function ResponsiveGrid({ children }) {
           boxShadow: "0 0 40px rgba(255,106,26,0.03)",
         }}
       >
-        <code>{`import { useUiConfig } from '@quasify-ui/tokens'
+        <code>{`import { useUiConfig } from '@stareezy-ui/tokens'
 
 function BrandButton() {
   const ui = useUiConfig()
 
-  // Fully typed if you used module augmentation in quasify.config.ts
+  // Fully typed if you used module augmentation in stareezy.config.ts
   const primary = ui.tokens.brand.primary.value   // "#FF6B35"
   const secondary = ui.tokens.brand.secondary.value // "#004E89"
 
@@ -210,7 +210,7 @@ const ui = useUiConfig()  // dev warning in console, but works
         <Callout type="warning">
           If <code>createUi()</code> has never been called and there&apos;s no{" "}
           <code>UiConfigProvider</code>, <code>useUiConfig()</code> will throw.
-          Always import your <code>quasify.config.ts</code> before rendering any
+          Always import your <code>stareezy.config.ts</code> before rendering any
           components.
         </Callout>
       </div>

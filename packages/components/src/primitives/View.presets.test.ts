@@ -1,7 +1,7 @@
 /**
  * Property tests for View.presets.ts
  *
- * Feature: portfolio-Quasify-ui-migration
+ * Feature: portfolio-Stareezy-ui-migration
  * Property 3: Enum completeness — EViewType
  * Validates: Requirements 2.1
  */
@@ -12,7 +12,7 @@ import { EViewType } from "./View.types";
 import { VIEW_PRESETS } from "./View.presets";
 
 describe("VIEW_PRESETS", () => {
-  // Feature: portfolio-Quasify-ui-migration, Property 3: Enum completeness
+  // Feature: portfolio-Stareezy-ui-migration, Property 3: Enum completeness
   it("has a defined entry for every EViewType value", () => {
     // Validates: Requirements 2.1
     fc.assert(

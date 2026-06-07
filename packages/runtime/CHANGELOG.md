@@ -1,4 +1,4 @@
-# @quasify-ui/runtime
+# @stareezy-ui/runtime
 
 ## 1.1.1
 
@@ -15,7 +15,7 @@
 
 - feat(components,stylesheet): sx prop, responsive stylesheet, SzrFC compat fix
 
-  ## @quasify-ui/components — minor
+  ## @stareezy-ui/components — minor
 
   ### sx prop (all 34 components + Box)
 
@@ -46,7 +46,7 @@
     - React Native style keys (elevation, tintColor, textAlignVertical, etc.)
     - Index signature escape hatch for any other raw style key
   - resolveSxWeb / resolveSxNative — full responsive resolver, reads from
-    **Quasify_breakpoints** (same channel as Box), handles $-group syntax
+    **Stareezy_breakpoints** (same channel as Box), handles $-group syntax
 
   ### componentSheet utility
 
@@ -72,7 +72,7 @@
   - Resolve dist/index.d.ts missing after rebuild — all TS17001 duplicate attribute
     errors fixed (sxStyle merged into existing style objects, not added as second prop)
 
-  ## @quasify-ui/stylesheet — minor
+  ## @stareezy-ui/stylesheet — minor
 
   - injectResponsive(className, value, cssProperties) — responsive @media injection
   - injectComponentStyle(className, propEntries) — batch version
@@ -82,15 +82,15 @@
   - buildBreakpointEntries — convert responsive map to sorted { minWidth, value } entries
   - resolveResponsive(value, windowWidth) — React Native helper
   - isResponsiveValue(value) — type guard
-  - getBreakpoints() — reads from **Quasify_breakpoints** global channel
+  - getBreakpoints() — reads from **Stareezy_breakpoints** global channel
   - buildScopeClass(uid) — builds szr-<uid> scope class
   - #sz-responsive dedicated style tag with per-breakpoint deduplication
 
 ### Patch Changes
 
 - Updated dependencies
-  - @quasify-ui/stylesheet@1.1.0
-  - @quasify-ui/tokens@1.1.0
+  - @stareezy-ui/stylesheet@1.1.0
+  - @stareezy-ui/tokens@1.1.0
 
 ## 1.0.1
 
@@ -114,7 +114,7 @@
   - `getBreakpoints()` — returns the breakpoint map synced from `createUi({ media })`
   - `buildScopeClass(uid)` — builds a `szr-<uid>` scope class name
 
-  Responsive rules are written to a new dedicated `#sz-responsive` style tag and deduplicated per class+property+breakpoint. Breakpoints are read from `globalThis.__Quasify_breakpoints__` — the same channel `createUi({ media })` writes — so stylesheet rules always stay in sync with Box's responsive props.
+  Responsive rules are written to a new dedicated `#sz-responsive` style tag and deduplicated per class+property+breakpoint. Breakpoints are read from `globalThis.__stareezy_breakpoints__` — the same channel `createUi({ media })` writes — so stylesheet rules always stay in sync with Box's responsive props.
 
   ## components — sx prop + React cross-version compatibility
 
@@ -162,13 +162,13 @@
 
   ## cli — upstream scaffolder integration
 
-  `quasify create` now delegates to the official framework scaffolders instead of copying a static template:
+  `stareezy create` now delegates to the official framework scaffolders instead of copying a static template:
 
   - `next` → `npx create-next-app@latest <name> --typescript --app --no-tailwind`
   - `vite` → `npx create-vite@latest <name> --template react-ts`
   - `expo` → `npx create-expo-app@latest <name> --template blank-typescript`
 
-  After the upstream scaffolder completes, `@quasify-ui/*` packages are installed and `quasify init` runs automatically to layer on `quasify.config.ts`, compiler wiring, and ThemeProvider. Package manager (`pnpm`/`yarn`/`bun`/`npm`) is detected from the caller's lockfile.
+  After the upstream scaffolder completes, `@stareezy-ui/*` packages are installed and `stareezy init` runs automatically to layer on `stareezy.config.ts`, compiler wiring, and ThemeProvider. Package manager (`pnpm`/`yarn`/`bun`/`npm`) is detected from the caller's lockfile.
 
   ## compiler — Vite plugin production-only
 
@@ -177,7 +177,7 @@
   ```ts
   // vite.config.ts
   export default defineConfig(({ command }) => ({
-    plugins: [...(command === "build" ? [quasifyVitePlugin()] : []), react()],
+    plugins: [...(command === "build" ? [stareezyVitePlugin()] : []), react()],
   }));
   ```
 
@@ -188,8 +188,8 @@
   Downgraded `@types/react` devDep from `^19.0.0` to `^18.3.0` to match the rest of the monorepo and prevent the dual-version type conflict described above.
 
 - Updated dependencies
-  - @quasify-ui/stylesheet@1.0.1
-  - @quasify-ui/tokens@1.0.1
+  - @stareezy-ui/stylesheet@1.0.1
+  - @stareezy-ui/tokens@1.0.1
 
 ## 1.0.0
 
@@ -197,22 +197,22 @@
 
 - # v1.0.0 — Stabilization & CLI Release
 
-  ## @quasify-ui/tokens
+  ## @stareezy-ui/tokens
 
   - `createUi({ media, shorthands })` now preserves literal media keys via `TMedia` generic — drives `ConfigBreakpointKey` inference
-  - Added `quasifyCustomConfig` module-augmentation interface with `media` and `shorthands` fields
-  - Added `DefaultBreakpointKey`, `ConfigBreakpointKey`, `MediaConfig`, `ShorthandConfig`, `quasifyShorthands` exports
-  - Added `applyRuntimeBreakpoints(resolved)` — writes to `globalThis.__Quasify_breakpoints__` without importing components/runtime
+  - Added `stareezyCustomConfig` module-augmentation interface with `media` and `shorthands` fields
+  - Added `DefaultBreakpointKey`, `ConfigBreakpointKey`, `MediaConfig`, `ShorthandConfig`, `stareezyShorthands` exports
+  - Added `applyRuntimeBreakpoints(resolved)` — writes to `globalThis.__stareezy_breakpoints__` without importing components/runtime
   - `createUi` now auto-syncs `media` into the runtime breakpoint store on call; leaves defaults untouched when `media` is absent
   - Added `react: "^18 || ^19"` as optional peerDependency
 
-  ## @quasify-ui/components
+  ## @stareezy-ui/components
 
   ### Config-driven responsive type system
 
-  - `BreakpointKey` now re-exports `ConfigBreakpointKey` from tokens — derives from `quasifyCustomConfig["media"]` augmentation
+  - `BreakpointKey` now re-exports `ConfigBreakpointKey` from tokens — derives from `stareezyCustomConfig["media"]` augmentation
   - `Responsive<T>` and all runtime helpers iterate resolved `BreakpointConfig` keys (not a hardcoded list)
-  - `configureBreakpoints`/`getBreakpoints` read from `globalThis.__Quasify_breakpoints__` on first access
+  - `configureBreakpoints`/`getBreakpoints` read from `globalThis.__stareezy_breakpoints__` on first access
   - `CustomShorthandProps` values wrapped in `Responsive<T>` — `<Box br={{ base: 4, md: 8 }} />` is now valid
   - Added `BreakpointPropKey`, `BoxStylePropsPartial`, `BreakpointProps` — `$sm`, `$md`, `$lg`... props on `BoxProps`
   - `resolveWebProps`: `$`-group pass runs after responsive-object pass; `$`-group wins on same-breakpoint collision
@@ -266,16 +266,16 @@
   - `react`/`react-dom`: `"^18 || ^19"`, `react-native`: `">=0.81 <0.87"` across all packages
   - `peerDependenciesMeta` optional flags added
 
-  ## @quasify-ui/compiler
+  ## @stareezy-ui/compiler
 
   - Vite plugin and Metro transformer error paths now report transform stage + source location (`stage failed at file:line:col`)
   - `vite`: `">=4.0.0 <8"` peerDependency (covers Vite 4–7)
 
-  ## @quasify-ui/cli (new package)
+  ## @stareezy-ui/cli (new package)
 
-  - `quasify create <name> --template next|vite|expo` — scaffold pre-wired projects
-  - `quasify init` — idempotent wiring (quasify.config.ts, compiler, ThemeProvider)
-  - `quasify add <component...>` — transitive dep resolution via registry, installs missing `@quasify-ui/*` packages
+  - `stareezy create <name> --template next|vite|expo` — scaffold pre-wired projects
+  - `stareezy init` — idempotent wiring (stareezy.config.ts, compiler, ThemeProvider)
+  - `stareezy add <component...>` — transitive dep resolution via registry, installs missing `@stareezy-ui/*` packages
   - Templates: Next.js 15 + React 19, Vite 7 + React 19, Expo SDK 56 + RN 0.85
   - Component registry: 20 components with `componentDeps` + `packageDeps` graph
   - Framework/package-manager detection via lockfile + package.json heuristics
@@ -291,7 +291,7 @@
 
   ## Documentation
 
-  - `apps/docs`: 13 new pages — Responsive System, QuasifyCustomConfig, BoxLayoutProps, Server Components, CLI, Compatibility, API Reference, + 6 new component references
+  - `apps/docs`: 13 new pages — Responsive System, SzrCustomConfig, BoxLayoutProps, Server Components, CLI, Compatibility, API Reference, + 6 new component references
   - `theming/page.tsx` — expanded to cover all 5 themes, theme-reactivity, semantic slot table
   - `SidebarNav.tsx` — all new pages wired into navigation
   - `README.md` — fully rewritten to reflect v0.4
@@ -299,15 +299,15 @@
 ### Patch Changes
 
 - Updated dependencies
-  - @quasify-ui/stylesheet@1.0.0
-  - @quasify-ui/tokens@1.0.0
+  - @stareezy-ui/stylesheet@1.0.0
+  - @stareezy-ui/tokens@1.0.0
 
 ## 0.3.2
 
 ### Patch Changes
 
 - Updated dependencies
-  - @quasify-ui/tokens@0.4.2
+  - @stareezy-ui/tokens@0.4.2
 
 ## 0.3.1
 
@@ -315,8 +315,8 @@
 
 - fix custom shorthands&media not working & update cli templates
 - Updated dependencies
-  - @quasify-ui/stylesheet@0.3.1
-  - @quasify-ui/tokens@0.4.1
+  - @stareezy-ui/stylesheet@0.3.1
+  - @stareezy-ui/tokens@0.4.1
 
 ## 0.3.0
 
@@ -324,22 +324,22 @@
 
 - # v0.4 — Stabilization & CLI Release
 
-  ## @quasify-ui/tokens
+  ## @stareezy-ui/tokens
 
   - `createUi({ media, shorthands })` now preserves literal media keys via `TMedia` generic — drives `ConfigBreakpointKey` inference
-  - Added `quasifyCustomConfig` module-augmentation interface with `media` and `shorthands` fields
-  - Added `DefaultBreakpointKey`, `ConfigBreakpointKey`, `MediaConfig`, `ShorthandConfig`, `quasifyShorthands` exports
-  - Added `applyRuntimeBreakpoints(resolved)` — writes to `globalThis.__Quasify_breakpoints__` without importing components/runtime
+  - Added `stareezyCustomConfig` module-augmentation interface with `media` and `shorthands` fields
+  - Added `DefaultBreakpointKey`, `ConfigBreakpointKey`, `MediaConfig`, `ShorthandConfig`, `stareezyShorthands` exports
+  - Added `applyRuntimeBreakpoints(resolved)` — writes to `globalThis.__stareezy_breakpoints__` without importing components/runtime
   - `createUi` now auto-syncs `media` into the runtime breakpoint store on call; leaves defaults untouched when `media` is absent
   - Added `react: "^18 || ^19"` as optional peerDependency
 
-  ## @quasify-ui/components
+  ## @stareezy-ui/components
 
   ### Config-driven responsive type system
 
-  - `BreakpointKey` now re-exports `ConfigBreakpointKey` from tokens — derives from `quasifyCustomConfig["media"]` augmentation
+  - `BreakpointKey` now re-exports `ConfigBreakpointKey` from tokens — derives from `stareezyCustomConfig["media"]` augmentation
   - `Responsive<T>` and all runtime helpers iterate resolved `BreakpointConfig` keys (not a hardcoded list)
-  - `configureBreakpoints`/`getBreakpoints` read from `globalThis.__Quasify_breakpoints__` on first access
+  - `configureBreakpoints`/`getBreakpoints` read from `globalThis.__stareezy_breakpoints__` on first access
   - `CustomShorthandProps` values wrapped in `Responsive<T>` — `<Box br={{ base: 4, md: 8 }} />` is now valid
   - Added `BreakpointPropKey`, `BoxStylePropsPartial`, `BreakpointProps` — `$sm`, `$md`, `$lg`... props on `BoxProps`
   - `resolveWebProps`: `$`-group pass runs after responsive-object pass; `$`-group wins on same-breakpoint collision
@@ -393,16 +393,16 @@
   - `react`/`react-dom`: `"^18 || ^19"`, `react-native`: `">=0.81 <0.87"` across all packages
   - `peerDependenciesMeta` optional flags added
 
-  ## @quasify-ui/compiler
+  ## @stareezy-ui/compiler
 
   - Vite plugin and Metro transformer error paths now report transform stage + source location (`stage failed at file:line:col`)
   - `vite`: `">=4.0.0 <8"` peerDependency (covers Vite 4–7)
 
-  ## @quasify-ui/cli (new package)
+  ## @stareezy-ui/cli (new package)
 
-  - `quasify create <name> --template next|vite|expo` — scaffold pre-wired projects
-  - `quasify init` — idempotent wiring (quasify.config.ts, compiler, ThemeProvider)
-  - `quasify add <component...>` — transitive dep resolution via registry, installs missing `@quasify-ui/*` packages
+  - `stareezy create <name> --template next|vite|expo` — scaffold pre-wired projects
+  - `stareezy init` — idempotent wiring (stareezy.config.ts, compiler, ThemeProvider)
+  - `stareezy add <component...>` — transitive dep resolution via registry, installs missing `@stareezy-ui/*` packages
   - Templates: Next.js 15 + React 19, Vite 7 + React 19, Expo SDK 56 + RN 0.85
   - Component registry: 20 components with `componentDeps` + `packageDeps` graph
   - Framework/package-manager detection via lockfile + package.json heuristics
@@ -418,7 +418,7 @@
 
   ## Documentation
 
-  - `apps/docs`: 13 new pages — Responsive System, QuasifyCustomConfig, BoxLayoutProps, Server Components, CLI, Compatibility, API Reference, + 6 new component references
+  - `apps/docs`: 13 new pages — Responsive System, SzrCustomConfig, BoxLayoutProps, Server Components, CLI, Compatibility, API Reference, + 6 new component references
   - `theming/page.tsx` — expanded to cover all 5 themes, theme-reactivity, semantic slot table
   - `SidebarNav.tsx` — all new pages wired into navigation
   - `README.md` — fully rewritten to reflect v0.4
@@ -426,15 +426,15 @@
 ### Patch Changes
 
 - Updated dependencies
-  - @quasify-ui/tokens@0.4.0
-  - @quasify-ui/stylesheet@0.3.0
+  - @stareezy-ui/tokens@0.4.0
+  - @stareezy-ui/stylesheet@0.3.0
 
 ## 0.2.6
 
 ### Patch Changes
 
 - Updated dependencies
-  - @quasify-ui/tokens@0.3.0
+  - @stareezy-ui/tokens@0.3.0
 
 ## 0.2.5
 
@@ -442,15 +442,15 @@
 
 - update changelog
 - Updated dependencies
-  - @quasify-ui/stylesheet@0.2.4
-  - @quasify-ui/tokens@0.2.6
+  - @stareezy-ui/stylesheet@0.2.4
+  - @stareezy-ui/tokens@0.2.6
 
 ## 0.2.4
 
 ### Patch Changes
 
 - Updated dependencies
-  - @quasify-ui/tokens@0.2.4
+  - @stareezy-ui/tokens@0.2.4
 
 ## 0.2.3
 
@@ -458,8 +458,8 @@
 
 - Ensure CDN bundles are included in published packages
 - Updated dependencies
-  - @quasify-ui/stylesheet@0.2.3
-  - @quasify-ui/tokens@0.2.3
+  - @stareezy-ui/stylesheet@0.2.3
+  - @stareezy-ui/tokens@0.2.3
 
 ## 0.2.2
 
@@ -467,24 +467,24 @@
 
 - # create a patch changeset (describe: "Add CDN IIFE bundles")
 - Updated dependencies
-  - @quasify-ui/stylesheet@0.2.2
-  - @quasify-ui/tokens@0.2.2
+  - @stareezy-ui/stylesheet@0.2.2
+  - @stareezy-ui/tokens@0.2.2
 
 ## 0.1.0
 
 ### Minor Changes
 
-- ffc8daa: Initial release of Quasify UI — typed design token system and component library for React Native and web.
+- ffc8daa: Initial release of Stareezy UI — typed design token system and component library for React Native and web.
 
-  - `@quasify-ui/tokens`: Token factory, color/spacing/radius/typography/shadow/timing tokens, theme system, `createUi`
-  - `@quasify-ui/core`: Utilities and hooks
-  - `@quasify-ui/runtime`: O(1) style registry with web and React Native adapters
-  - `@quasify-ui/stylesheet`: Atomic CSS sheet management and CSS variable injection
-  - `@quasify-ui/compiler`: Babel/Vite build-time transform plugin for token extraction
-  - `@quasify-ui/components`: 17+ cross-platform components built on the token system
+  - `@stareezy-ui/tokens`: Token factory, color/spacing/radius/typography/shadow/timing tokens, theme system, `createUi`
+  - `@stareezy-ui/core`: Utilities and hooks
+  - `@stareezy-ui/runtime`: O(1) style registry with web and React Native adapters
+  - `@stareezy-ui/stylesheet`: Atomic CSS sheet management and CSS variable injection
+  - `@stareezy-ui/compiler`: Babel/Vite build-time transform plugin for token extraction
+  - `@stareezy-ui/components`: 17+ cross-platform components built on the token system
 
 ### Patch Changes
 
 - Updated dependencies [ffc8daa]
-  - @quasify-ui/tokens@0.1.0
-  - @quasify-ui/stylesheet@0.1.0
+  - @stareezy-ui/tokens@0.1.0
+  - @stareezy-ui/stylesheet@0.1.0

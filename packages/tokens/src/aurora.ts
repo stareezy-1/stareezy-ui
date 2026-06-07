@@ -1,5 +1,5 @@
 /**
- * Aurora token group for Quasify UI.
+ * Aurora token group for Stareezy UI.
  *
  * Inspired by the aurora-pdf design language: deep-space backgrounds,
  * aurora green (#00ff88) as the primary brand color, and nebula purple

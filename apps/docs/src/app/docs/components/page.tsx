@@ -473,13 +473,13 @@ export default function ComponentsPage() {
   return (
     <DocPage
       title="Component API"
-      description="31+ beautiful, cross-platform components built on the Quasify UI token system. Every component accepts BoxProps for layout and spacing."
+      description="31+ beautiful, cross-platform components built on the Stareezy UI token system. Every component accepts BoxProps for layout and spacing."
       badge="Reference"
       icon="⬡"
       badgeColor="#ff6a1a"
     >
       <Callout type="info">
-        All components are exported from <code>@quasify-ui/components</code>{" "}
+        All components are exported from <code>@stareezy-ui/components</code>{" "}
         and work on both web and React Native with the same API. Every component
         extends <code>BoxProps</code> — pass token shorthand props directly to
         the root container.
@@ -491,7 +491,7 @@ export default function ComponentsPage() {
         Every component accepts these token-typed shorthand props on its root
         container. Values can be raw numbers, strings, or{" "}
         <code>Token&lt;T&gt;</code> objects from{" "}
-        <code>@quasify-ui/tokens</code>.
+        <code>@stareezy-ui/tokens</code>.
       </p>
       <div
         style={{
@@ -754,8 +754,8 @@ export default function ComponentsPage() {
   Skeleton, Slider, Spinner, Switch, Tabs,
   Card, Badge, Tooltip, Drawer, Toast,
   NavBar, FileDropZone, ProgressPanel,
-} from '@quasify-ui/components'
-import { colors, spacing, radius, t } from '@quasify-ui/tokens'
+} from '@stareezy-ui/components'
+import { colors, spacing, radius, t } from '@stareezy-ui/tokens'
 
 // Use BoxProps on every component
 <Button type="Primary" text="Click" p={8} rounded={8} />

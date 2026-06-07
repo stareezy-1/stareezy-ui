@@ -11,7 +11,7 @@
  * Requirements: 11.1, 11.2, 11.4
  */
 
-import { spacing, radius, typography } from "@quasify-ui/tokens";
+import { spacing, radius, typography } from "@stareezy-ui/tokens";
 
 // ---------------------------------------------------------------------------
 // Interaction state opacities

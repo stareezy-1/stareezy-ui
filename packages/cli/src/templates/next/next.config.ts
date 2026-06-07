@@ -1,10 +1,10 @@
 import type { NextConfig } from "next";
-import { quasifyVitePlugin } from "@quasify-ui/compiler";
+import { stareezyVitePlugin } from "@stareezy-ui/compiler";
 
 const nextConfig: NextConfig = {
   webpack(config) {
     config.plugins = config.plugins || [];
-    config.plugins.push(quasifyVitePlugin());
+    config.plugins.push(stareezyVitePlugin());
     return config;
   },
 };

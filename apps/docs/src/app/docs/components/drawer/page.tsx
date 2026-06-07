@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   title: "Drawer",
   description:
     "Cross-platform side-panel Drawer with placement options, focus trapping, backdrop, smooth animation, and full accessibility.",
-  alternates: { canonical: "https://ui.quasify.app/docs/components/drawer" },
+  alternates: { canonical: "https://ui.stareezy.tech/docs/components/drawer" },
 };
 
 export default function DrawerPage() {
@@ -20,7 +20,7 @@ export default function DrawerPage() {
     >
       <h2 className="gradient-text">Import</h2>
       <pre>
-        <code>{`import { Drawer } from '@quasify-ui/components'`}</code>
+        <code>{`import { Drawer } from '@stareezy-ui/components'`}</code>
       </pre>
 
       <h2 className="gradient-text">Basic usage</h2>

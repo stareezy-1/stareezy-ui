@@ -1,5 +1,5 @@
 /**
- * Box / View — foundational layout primitive for Quasify UI.
+ * Box / View — foundational layout primitive for Stareezy UI.
  *
  * Cross-platform: renders a <div> on web and a <View> on React Native.
  *
@@ -11,13 +11,13 @@
  */
 
 import React, { useId, useEffect, useRef } from "react";
-import type { Token } from "@quasify-ui/tokens";
-import { getUiConfig, useTheme } from "@quasify-ui/tokens";
-import type { ThemeToken } from "@quasify-ui/tokens";
-import { isThemeToken, resolveThemeTokenFromTheme } from "@quasify-ui/tokens";
-import type { ResolvedTheme, QuasifyShorthands } from "@quasify-ui/tokens";
-import { getRuntime } from "@quasify-ui/runtime";
-import type { RuntimeAdapter } from "@quasify-ui/runtime";
+import type { Token } from "@stareezy-ui/tokens";
+import { getUiConfig, useTheme } from "@stareezy-ui/tokens";
+import type { ThemeToken } from "@stareezy-ui/tokens";
+import { isThemeToken, resolveThemeTokenFromTheme } from "@stareezy-ui/tokens";
+import type { ResolvedTheme, SzrShorthands } from "@stareezy-ui/tokens";
+import { getRuntime } from "@stareezy-ui/runtime";
+import type { RuntimeAdapter } from "@stareezy-ui/runtime";
 import {
   isResponsive,
   resolveResponsiveValue,
@@ -148,25 +148,25 @@ function resolveTokenOrValue(value: unknown, theme: ResolvedTheme): unknown {
 }
 
 // ---------------------------------------------------------------------------
-// Custom shorthand props — picked up from QuasifyCustomConfig module augmentation
+// Custom shorthand props — picked up from SzrCustomConfig module augmentation
 // ---------------------------------------------------------------------------
 
 /**
- * Extracts only the known shorthand keys from QuasifyShorthands as optional props,
+ * Extracts only the known shorthand keys from SzrShorthands as optional props,
  * each wrapped in Responsive<T> so callers can pass per-breakpoint values.
  *
  * Uses `string extends keyof S` to avoid creating an index signature when
- * QuasifyShorthands falls back to Record<string, string> (no augmentation).
+ * SzrShorthands falls back to Record<string, string> (no augmentation).
  *
  * - No augmentation → `{}` (no extra props, no index signature) — Req 2.4
  * - Augmented → each key accepts a plain value OR a responsive object — Reqs 2.1–2.3
  */
-type CustomShorthandProps = string extends keyof QuasifyShorthands
+type CustomShorthandProps = string extends keyof SzrShorthands
   ? // No augmentation — don't add any extra props (avoids index signature)
     // eslint-disable-next-line @typescript-eslint/ban-types
     {}
   : {
-      [K in keyof QuasifyShorthands]?: Responsive<TokenOrValue<string | number>>;
+      [K in keyof SzrShorthands]?: Responsive<TokenOrValue<string | number>>;
     };
 
 // ---------------------------------------------------------------------------

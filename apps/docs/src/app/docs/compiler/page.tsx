@@ -4,8 +4,8 @@ import { DocPage, Callout } from "../../../components/DocPage";
 export const metadata: Metadata = {
   title: "Compiler",
   description:
-    "Build-time Babel/Vite/Metro plugin that extracts token props and emits atomic CSS. Reads quasify.config.ts automatically.",
-  alternates: { canonical: "https://ui.quasify.app/docs/compiler" },
+    "Build-time Babel/Vite/Metro plugin that extracts token props and emits atomic CSS. Reads stareezy.config.ts automatically.",
+  alternates: { canonical: "https://ui.stareezy.tech/docs/compiler" },
 };
 
 const PROP_MAPPINGS = [
@@ -25,7 +25,7 @@ export default function CompilerPage() {
   return (
     <DocPage
       title="Compiler"
-      description="Build-time Babel/Vite/Metro plugin — extracts token props, emits atomic CSS, reads quasify.config.ts automatically."
+      description="Build-time Babel/Vite/Metro plugin — extracts token props, emits atomic CSS, reads stareezy.config.ts automatically."
       badge="Advanced"
       icon="⚙"
       badgeColor="#f5a623"
@@ -159,10 +159,10 @@ export default function CompilerPage() {
         <code>Token&lt;T&gt;</code> objects.
       </Callout>
 
-      {/* ── quasify.config.ts auto-read ──────────────────────────────────── */}
-      <h2 className="gradient-text">quasify.config.ts — automatic shorthand pickup</h2>
+      {/* ── stareezy.config.ts auto-read ──────────────────────────────────── */}
+      <h2 className="gradient-text">stareezy.config.ts — automatic shorthand pickup</h2>
       <p>
-        The compiler reads your <code>quasify.config.ts</code> at build time
+        The compiler reads your <code>stareezy.config.ts</code> at build time
         and merges your custom shorthands into its prop mappings. You{" "}
         <strong>do not</strong> need to pass the config path to the plugin — it
         finds the file automatically by searching <code>process.cwd()</code>{" "}
@@ -173,7 +173,7 @@ export default function CompilerPage() {
         config. That&apos;s it.
       </p>
       <pre>
-        <code>{`// quasify.config.ts — define shorthands here
+        <code>{`// stareezy.config.ts — define shorthands here
 export const ui = createUi({
   shorthands: {
     bg:  'backgroundColor',
@@ -183,9 +183,9 @@ export const ui = createUi({
 })
 
 // babel.config.js — just add the plugin, no config path needed
-const { quasifyBabelPlugin } = require('@quasify-ui/compiler')
+const { stareezyBabelPlugin } = require('@stareezy-ui/compiler')
 module.exports = {
-  plugins: [quasifyBabelPlugin()],  // ← reads quasify.config.ts automatically
+  plugins: [stareezyBabelPlugin()],  // ← reads stareezy.config.ts automatically
 }
 
 // Now the compiler expands your shorthands at build time:
@@ -210,21 +210,21 @@ module.exports = {
       </h2>
       <p>
         Add the plugin to <code>vite.config.ts</code>. It reads{" "}
-        <code>quasify.config.ts</code> from your project root automatically —
+        <code>stareezy.config.ts</code> from your project root automatically —
         no path needed.
       </p>
       <pre>
         <code>{`// vite.config.ts
-import { quasifyVitePlugin } from '@quasify-ui/compiler'
+import { stareezyVitePlugin } from '@stareezy-ui/compiler'
 
 export default {
   plugins: [
-    quasifyVitePlugin(),  // reads quasify.config.ts automatically
+    stareezyVitePlugin(),  // reads stareezy.config.ts automatically
   ],
 }
 
 // Add this import once in your entry file to include the generated CSS:
-import 'virtual:quasify-ui/styles'`}</code>
+import 'virtual:stareezy-ui/styles'`}</code>
       </pre>
 
       {/* ── Babel ─────────────────────────────────────────────────────────── */}
@@ -244,16 +244,16 @@ import 'virtual:quasify-ui/styles'`}</code>
       </h2>
       <p>
         Add the plugin to <code>babel.config.js</code>. Same deal — reads{" "}
-        <code>quasify.config.ts</code> automatically.
+        <code>stareezy.config.ts</code> automatically.
       </p>
       <pre>
         <code>{`// babel.config.js
-const { quasifyBabelPlugin } = require('@quasify-ui/compiler')
+const { stareezyBabelPlugin } = require('@stareezy-ui/compiler')
 
 module.exports = {
   presets: ['babel-preset-expo'],  // or your preset
   plugins: [
-    quasifyBabelPlugin(),  // reads quasify.config.ts automatically
+    stareezyBabelPlugin(),  // reads stareezy.config.ts automatically
   ],
 }`}</code>
       </pre>
@@ -276,7 +276,7 @@ module.exports = {
       <p>
         For React Native projects using Metro, point{" "}
         <code>babelTransformerPath</code> at the Metro transformer. It reads{" "}
-        <code>quasify.config.ts</code> automatically — same as the other
+        <code>stareezy.config.ts</code> automatically — same as the other
         plugins.
       </p>
       <pre>
@@ -287,15 +287,15 @@ const config = getDefaultConfig(__dirname)
 
 config.transformer = {
   ...config.transformer,
-  // reads quasify.config.ts automatically
-  babelTransformerPath: require.resolve('@quasify-ui/compiler/metro'),
+  // reads stareezy.config.ts automatically
+  babelTransformerPath: require.resolve('@stareezy-ui/compiler/metro'),
 }
 
 module.exports = config`}</code>
       </pre>
 
       <Callout type="tip">
-        The Metro transformer reads <code>quasify.config.ts</code>{" "}
+        The Metro transformer reads <code>stareezy.config.ts</code>{" "}
         automatically — same as the Vite and Babel plugins. Your custom
         shorthands are expanded at build time on all three platforms.
       </Callout>
@@ -304,7 +304,7 @@ module.exports = config`}</code>
       <h2 className="gradient-text">Built-in prop mappings</h2>
       <p>
         These are the default mappings. Custom shorthands from{" "}
-        <code>quasify.config.ts</code> are merged on top.
+        <code>stareezy.config.ts</code> are merged on top.
       </p>
       <table>
         <thead>

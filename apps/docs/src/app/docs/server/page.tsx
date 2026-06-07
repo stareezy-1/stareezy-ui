@@ -4,8 +4,8 @@ import { DocPage, Callout, Step } from "../../../components/DocPage";
 export const metadata: Metadata = {
   title: "React Server Components",
   description:
-    "Use Quasify UI layout primitives in Next.js App Router Server Components via the ./server entry — no use client boundary required.",
-  alternates: { canonical: "https://ui.quasify.app/docs/server" },
+    "Use Stareezy UI layout primitives in Next.js App Router Server Components via the ./server entry — no use client boundary required.",
+  alternates: { canonical: "https://ui.stareezy.tech/docs/server" },
 };
 
 export default function ServerPage() {
@@ -21,7 +21,7 @@ export default function ServerPage() {
       <p>
         Next.js App Router renders Server Components (RSC) by default. React
         hooks, context, and <code>&quot;use client&quot;</code> are not allowed
-        in Server Components. Quasify UI ships a dedicated{" "}
+        in Server Components. Stareezy UI ships a dedicated{" "}
         <code>&quot;./server&quot;</code> entry that exports hook-free layout
         primitives safe for use in RSC.
       </p>
@@ -68,7 +68,7 @@ export default function ServerPage() {
       </div>
       <pre>
         <code>{`// Import from the server entry — safe in any Server Component
-import { Box, View, Stack, Text, Divider } from '@quasify-ui/components/server'`}</code>
+import { Box, View, Stack, Text, Divider } from '@stareezy-ui/components/server'`}</code>
       </pre>
 
       {/* ── Client entry unchanged ───────────────────────────────────────── */}
@@ -80,7 +80,7 @@ import { Box, View, Stack, Text, Divider } from '@quasify-ui/components/server'`
       </p>
       <pre>
         <code>{`// Default client entry — use inside Client Components
-import { Button, Input, Modal, Tabs, Dropdown } from '@quasify-ui/components'`}</code>
+import { Button, Input, Modal, Tabs, Dropdown } from '@stareezy-ui/components'`}</code>
       </pre>
 
       {/* ── Next.js App Router example ───────────────────────────────────── */}
@@ -93,7 +93,7 @@ import { Button, Input, Modal, Tabs, Dropdown } from '@quasify-ui/components'`}<
       <Step n={1} title="Server Component page (no use client needed)">
         <pre>
           <code>{`// app/page.tsx — Server Component (default in App Router)
-import { Box, Stack, Text } from '@quasify-ui/components/server'
+import { Box, Stack, Text } from '@stareezy-ui/components/server'
 import { HeroActions } from './HeroActions'  // Client Component below
 
 export default function HomePage() {
@@ -124,7 +124,7 @@ export default function HomePage() {
           <code>{`// app/HeroActions.tsx — Client Component
 'use client'
 
-import { Button, Modal } from '@quasify-ui/components'
+import { Button, Modal } from '@stareezy-ui/components'
 import { useState } from 'react'
 
 export function HeroActions() {
@@ -148,10 +148,10 @@ export function HeroActions() {
       <Step n={3} title="Layout with server primitives and client nav">
         <pre>
           <code>{`// app/layout.tsx
-import { Box, Stack } from '@quasify-ui/components/server'
-import { ThemeProvider } from '@quasify-ui/tokens'
+import { Box, Stack } from '@stareezy-ui/components/server'
+import { ThemeProvider } from '@stareezy-ui/tokens'
 import { NavBar } from '@/components/NavBar'  // 'use client'
-import './quasify.config'
+import './stareezy.config'
 
 export default function RootLayout({
   children,
@@ -190,7 +190,7 @@ export default function RootLayout({
       <pre>
         <code>{`// ✅ Good — boundary is at the interactive leaf
 // Server Component:
-import { Box, Stack, Text } from '@quasify-ui/components/server'
+import { Box, Stack, Text } from '@stareezy-ui/components/server'
 import { LikeButton } from './LikeButton'  // 'use client'
 
 export default function Post({ post }) {
@@ -205,7 +205,7 @@ export default function Post({ post }) {
 
 // ❌ Avoid — marking the whole page as client
 'use client'
-import { Box, Stack, Text } from '@quasify-ui/components'  // ← not needed
+import { Box, Stack, Text } from '@stareezy-ui/components'  // ← not needed
 ...`}</code>
       </pre>
 
@@ -229,7 +229,7 @@ import { Box, Stack, Text } from '@quasify-ui/components'  // ← not needed
       {/* ── ThemeProvider in App Router ──────────────────────────────────── */}
       <h2 className="gradient-text">ThemeProvider in App Router</h2>
       <p>
-        <code>ThemeProvider</code> from <code>@quasify-ui/tokens</code> is a{" "}
+        <code>ThemeProvider</code> from <code>@stareezy-ui/tokens</code> is a{" "}
         <code>&quot;use client&quot;</code> component because it manages theme
         state. Wrap it in a client component shell when used in the root layout:
       </p>
@@ -246,7 +246,7 @@ import { Box, Stack, Text } from '@quasify-ui/components'  // ← not needed
           <code>{`// app/Providers.tsx
 'use client'
 
-import { ThemeProvider } from '@quasify-ui/tokens'
+import { ThemeProvider } from '@stareezy-ui/tokens'
 import type { ReactNode } from 'react'
 
 export function Providers({ children }: { children: ReactNode }) {
@@ -255,7 +255,7 @@ export function Providers({ children }: { children: ReactNode }) {
 
 // app/layout.tsx — import Providers, keep layout a Server Component
 import { Providers } from './Providers'
-import { Box } from '@quasify-ui/components/server'
+import { Box } from '@stareezy-ui/components/server'
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (

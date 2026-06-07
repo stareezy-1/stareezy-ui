@@ -9,8 +9,8 @@
  */
 
 import React from "react";
-import { isThemeToken, THEME_TOKEN_BRAND } from "@quasify-ui/tokens";
-import type { ThemeToken } from "@quasify-ui/tokens";
+import { isThemeToken, THEME_TOKEN_BRAND } from "@stareezy-ui/tokens";
+import type { ThemeToken } from "@stareezy-ui/tokens";
 
 // ---------------------------------------------------------------------------
 // Value resolver (same pattern as Box.server.tsx)

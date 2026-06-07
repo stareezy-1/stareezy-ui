@@ -2,7 +2,7 @@
 /**
  * check-peer-ranges.mjs
  *
- * Static check that asserts all @quasify-ui/* packages declare the correct
+ * Static check that asserts all @stareezy-ui/* packages declare the correct
  * ranged peerDependencies for the Compatibility_Matrix (Req 7.6).
  *
  * Rules:

@@ -1,15 +1,15 @@
-# @quasify-ui/tokens
+# @stareezy-ui/tokens
 
-The design token foundation for Quasify UI. Zero dependencies — works in any JavaScript environment.
+The design token foundation for Stareezy UI. Zero dependencies — works in any JavaScript environment.
 
-[![npm](https://img.shields.io/npm/v/@quasify-ui/tokens)](https://www.npmjs.com/package/@quasify-ui/tokens)
+[![npm](https://img.shields.io/npm/v/@stareezy-ui/tokens)](https://www.npmjs.com/package/@stareezy-ui/tokens)
 
 ## Install
 
 ```bash
-pnpm add @quasify-ui/tokens
+pnpm add @stareezy-ui/tokens
 # or
-npm install @quasify-ui/tokens
+npm install @stareezy-ui/tokens
 ```
 
 ## Usage
@@ -19,7 +19,7 @@ npm install @quasify-ui/tokens
 Every design value is a typed `Token<T>` object:
 
 ```ts
-import { colors, spacing, radius, typography } from "@quasify-ui/tokens";
+import { colors, spacing, radius, typography } from "@stareezy-ui/tokens";
 
 colors.celurenBlue[500].id; // "celurenBlue-500"
 colors.celurenBlue[500].value; // "#024CCE"
@@ -31,7 +31,7 @@ radius.md.value; // 8
 ### Theme system
 
 ```tsx
-import { ThemeProvider, useTheme, useThemeSwitch } from "@quasify-ui/tokens";
+import { ThemeProvider, useTheme, useThemeSwitch } from "@stareezy-ui/tokens";
 
 // Wrap your app
 <ThemeProvider theme="light">
@@ -54,7 +54,7 @@ function ThemeToggle() {
 ### Custom configuration
 
 ```ts
-import { createUi, token } from "@quasify-ui/tokens";
+import { createUi, token } from "@stareezy-ui/tokens";
 
 const ui = createUi({
   tokens: {
@@ -89,7 +89,7 @@ ui.tokens.brand.primary.value; // "#FF6B35"
 ## Serialization
 
 ```ts
-import { serializeToken, deserializeToken } from "@quasify-ui/tokens";
+import { serializeToken, deserializeToken } from "@stareezy-ui/tokens";
 
 const json = serializeToken(colors.celurenBlue[500]);
 const token = deserializeToken(json); // structurally equal to original

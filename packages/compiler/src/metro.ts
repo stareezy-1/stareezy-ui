@@ -1,16 +1,16 @@
 /**
- * Metro transformer for @quasify-ui/compiler.
+ * Metro transformer for @stareezy-ui/compiler.
  *
- * Wraps the Quasify UI JSX token transform as a Metro (React Native bundler)
- * custom transformer. Reads shorthands from quasify.config.ts automatically.
+ * Wraps the Stareezy UI JSX token transform as a Metro (React Native bundler)
+ * custom transformer. Reads shorthands from stareezy.config.ts automatically.
  *
  * Usage in metro.config.js:
  * ```js
- * const { quasifyMetroTransformer } = require('@quasify-ui/compiler')
+ * const { stareezyMetroTransformer } = require('@stareezy-ui/compiler')
  *
  * module.exports = {
  *   transformer: {
- *     babelTransformerPath: require.resolve('@quasify-ui/compiler/metro'),
+ *     babelTransformerPath: require.resolve('@stareezy-ui/compiler/metro'),
  *   },
  * }
  * ```
@@ -18,14 +18,14 @@
  * Or with a custom transformer path:
  * ```js
  * // metro.transformer.js
- * const { quasifyMetroTransformer } = require('@quasify-ui/compiler')
- * module.exports = quasifyMetroTransformer()
+ * const { stareezyMetroTransformer } = require('@stareezy-ui/compiler')
+ * module.exports = stareezyMetroTransformer()
  * ```
  */
 
 import { transform as szrTransform } from "./transform";
 import { type CompilerConfig } from "./config";
-import { loadQuasifyConfig } from "./loadConfig";
+import { loadStareezyConfig } from "./loadConfig";
 
 export interface MetroTransformOptions {
   filename: string;
@@ -39,14 +39,14 @@ export interface MetroTransformResult {
 }
 
 /**
- * Creates a Metro-compatible transformer that applies the Quasify UI
+ * Creates a Metro-compatible transformer that applies the Stareezy UI
  * token transform before delegating to the default Babel transformer.
  *
  * @param config - Optional partial CompilerConfig to override defaults.
  */
-export function quasifyMetroTransformer(config?: Partial<CompilerConfig>) {
-  // Merge shorthands from quasify.config.ts
-  const szrConfig = loadQuasifyConfig();
+export function stareezyMetroTransformer(config?: Partial<CompilerConfig>) {
+  // Merge shorthands from stareezy.config.ts
+  const szrConfig = loadStareezyConfig();
   const mergedConfig: Partial<CompilerConfig> = {
     ...config,
     propMappings: {
@@ -83,7 +83,7 @@ export function quasifyMetroTransformer(config?: Partial<CompilerConfig>) {
               }`
             : "";
         throw new Error(
-          `[Quasify-ui] ${stage} stage failed at ${filename}${loc}: ${
+          `[stareezy-ui] ${stage} stage failed at ${filename}${loc}: ${
             inner?.message ?? String(err)
           }`,
         );
@@ -98,7 +98,7 @@ export function quasifyMetroTransformer(config?: Partial<CompilerConfig>) {
  *
  * metro.config.js:
  * ```js
- * config.transformer.babelTransformerPath = require.resolve('@quasify-ui/compiler/metro')
+ * config.transformer.babelTransformerPath = require.resolve('@stareezy-ui/compiler/metro')
  * ```
  */
-export { quasifyMetroTransformer as default };
+export { stareezyMetroTransformer as default };

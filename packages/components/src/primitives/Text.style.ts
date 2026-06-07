@@ -1,4 +1,4 @@
-import { colors, spacing, typography } from "@quasify-ui/tokens";
+import { colors, spacing, typography } from "@stareezy-ui/tokens";
 import { ETextType, TextStylePreset } from "./Text.props";
 
 const DEFAULT_COLOR = colors.raisinBlack[800].value;

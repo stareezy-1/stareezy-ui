@@ -4,8 +4,8 @@ import { DocPage, Callout, Step } from "../../../components/DocPage";
 export const metadata: Metadata = {
   title: "Installation",
   description:
-    "Install Quasify UI in your React Native or web project. Scaffold with the CLI or wire manually — get running in minutes.",
-  alternates: { canonical: "https://ui.quasify.app/docs/installation" },
+    "Install Stareezy UI in your React Native or web project. Scaffold with the CLI or wire manually — get running in minutes.",
+  alternates: { canonical: "https://ui.stareezy.tech/docs/installation" },
 };
 
 export default function InstallationPage() {
@@ -31,15 +31,15 @@ export default function InstallationPage() {
 
       <Callout type="tip">
         The fastest path is the CLI:{" "}
-        <code>npx quasify create my-app --template next</code>. It scaffolds a
-        fully wired project with <code>quasify.config.ts</code>, the compiler
+        <code>npx stareezy create my-app --template next</code>. It scaffolds a
+        fully wired project with <code>stareezy.config.ts</code>, the compiler
         plugin, and <code>ThemeProvider</code> already set up.
       </Callout>
 
       {/* ── CLI (recommended) ─────────────────────────────────────────────── */}
       <h2 className="gradient-text-orange" style={{ marginTop: "2rem" }}>Option A — CLI (recommended)</h2>
       <p>
-        The <code>@quasify-ui/cli</code> scaffolds a pre-wired starter project
+        The <code>@stareezy-ui/cli</code> scaffolds a pre-wired starter project
         for Next.js, Vite, or Expo. No manual wiring — everything is ready to
         run.
       </p>
@@ -96,7 +96,7 @@ export default function InstallationPage() {
           overflow: "hidden",
         }}>
           <pre style={{ margin: 0, borderRadius: 0, border: "none" }}>
-            <code>{`npx @quasify-ui/cli create my-app --template next
+            <code>{`npx @stareezy-ui/cli create my-app --template next
 cd my-app
 npm install
 npm run dev`}</code>
@@ -111,7 +111,7 @@ npm run dev`}</code>
           overflow: "hidden",
         }}>
           <pre style={{ margin: 0, borderRadius: 0, border: "none" }}>
-            <code>{`yarn create quasify my-app --template next
+            <code>{`yarn create stareezy my-app --template next
 cd my-app
 yarn install
 yarn dev`}</code>
@@ -126,7 +126,7 @@ yarn dev`}</code>
           overflow: "hidden",
         }}>
           <pre style={{ margin: 0, borderRadius: 0, border: "none" }}>
-            <code>{`pnpm create quasify my-app --template next
+            <code>{`pnpm create stareezy my-app --template next
 cd my-app
 pnpm install
 pnpm dev`}</code>
@@ -136,7 +136,7 @@ pnpm dev`}</code>
 
       <h3>Next.js 15 (App Router)</h3>
       <pre style={{ boxShadow: "var(--shadow-md)", border: "1px solid var(--color-border)" }}>
-        <code>{`npx quasify create my-app --template next
+        <code>{`npx stareezy create my-app --template next
 cd my-app
 pnpm install
 pnpm dev`}</code>
@@ -144,7 +144,7 @@ pnpm dev`}</code>
 
       <h3>Vite + React 19</h3>
       <pre style={{ boxShadow: "var(--shadow-md)", border: "1px solid var(--color-border)" }}>
-        <code>{`npx quasify create my-app --template vite
+        <code>{`npx stareezy create my-app --template vite
 cd my-app
 npm install
 npm run dev`}</code>
@@ -152,7 +152,7 @@ npm run dev`}</code>
 
       <h3>Expo SDK 56</h3>
       <pre style={{ boxShadow: "var(--shadow-md)", border: "1px solid var(--color-border)" }}>
-        <code>{`npx quasify create my-app --template expo
+        <code>{`npx stareezy create my-app --template expo
 cd my-app
 yarn install
 expo start`}</code>
@@ -171,7 +171,7 @@ expo start`}</code>
         </div>
         <ul style={{ margin: 0, padding: 0, listStyle: "none" }}>
           {[
-            "<code>quasify.config.ts</code> with <code>media</code> breakpoints and <code>shorthands</code> pre-configured",
+            "<code>stareezy.config.ts</code> with <code>media</code> breakpoints and <code>shorthands</code> pre-configured",
             "Compiler wiring (Vite plugin for Next.js/Vite, Metro transformer for Expo)",
             "<code>ThemeProvider</code> wrapping the app root",
             "A curated set of components ready to use",
@@ -185,7 +185,7 @@ expo start`}</code>
       </div>
 
       <Callout type="info">
-        If you already have a project, run <code>npx quasify init</code> to add
+        If you already have a project, run <code>npx stareezy init</code> to add
         just the wiring. It is idempotent — safe to run multiple times.
       </Callout>
 
@@ -277,27 +277,27 @@ expo start`}</code>
         </div>
         <pre style={{ margin: 0, borderRadius: 0, border: "none" }}>
           <code>{`# Tokens only (zero dependencies)
-pnpm add @quasify-ui/tokens
+pnpm add @stareezy-ui/tokens
 
 # Full component library
-pnpm add @quasify-ui/tokens @quasify-ui/components @quasify-ui/runtime
+pnpm add @stareezy-ui/tokens @stareezy-ui/components @stareezy-ui/runtime
 
 # Build-time compiler (Vite, Babel, or Metro)
-pnpm add -D @quasify-ui/compiler`}</code>
+pnpm add -D @stareezy-ui/compiler`}</code>
         </pre>
       </div>
 
       <h2>Setup</h2>
 
-      <Step n={1} title="Create quasify.config.ts">
+      <Step n={1} title="Create stareezy.config.ts">
         <p style={{ marginBottom: "0.75rem" }}>
           Create a config file at your project root. This is read by the compiler
           automatically and registers your themes, tokens, breakpoints, and
           shorthands.
         </p>
         <pre style={{ boxShadow: "var(--shadow-md)", border: "1px solid var(--color-border)" }}>
-          <code>{`// quasify.config.ts
-import { createUi, themes } from '@quasify-ui/tokens'
+          <code>{`// stareezy.config.ts
+import { createUi, themes } from '@stareezy-ui/tokens'
 
 export const ui = createUi({
   themes: {
@@ -313,8 +313,8 @@ export const ui = createUi({
   } as const,
 })
 
-declare module '@quasify-ui/tokens' {
-  interface QuasifyCustomConfig extends typeof ui {}
+declare module '@stareezy-ui/tokens' {
+  interface SzrCustomConfig extends typeof ui {}
 }
 
 export default ui`}</code>
@@ -326,12 +326,12 @@ export default ui`}</code>
           <strong>Next.js</strong> — in <code>next.config.ts</code>:
         </p>
         <pre style={{ boxShadow: "var(--shadow-md)", border: "1px solid var(--color-border)" }}>
-          <code>{`import { quasifyVitePlugin } from '@quasify-ui/compiler'
+          <code>{`import { stareezyVitePlugin } from '@stareezy-ui/compiler'
 import type { NextConfig } from 'next'
 
 const nextConfig: NextConfig = {
   webpack(config) {
-    config.plugins.push(quasifyVitePlugin())
+    config.plugins.push(stareezyVitePlugin())
     return config
   },
 }
@@ -341,8 +341,8 @@ export default nextConfig`}</code>
           <strong>Vite</strong> — in <code>vite.config.ts</code>:
         </p>
         <pre style={{ boxShadow: "var(--shadow-md)", border: "1px solid var(--color-border)" }}>
-          <code>{`import { quasifyVitePlugin } from '@quasify-ui/compiler'
-export default { plugins: [quasifyVitePlugin()] }`}</code>
+          <code>{`import { stareezyVitePlugin } from '@stareezy-ui/compiler'
+export default { plugins: [stareezyVitePlugin()] }`}</code>
         </pre>
         <p style={{ marginTop: "0.75rem", marginBottom: "0.5rem" }}>
           <strong>Expo / Metro</strong> — in <code>metro.config.js</code>:
@@ -352,7 +352,7 @@ export default { plugins: [quasifyVitePlugin()] }`}</code>
 const config = getDefaultConfig(__dirname)
 config.transformer = {
   ...config.transformer,
-  babelTransformerPath: require.resolve('@quasify-ui/compiler/metro'),
+  babelTransformerPath: require.resolve('@stareezy-ui/compiler/metro'),
 }
 module.exports = config`}</code>
         </pre>
@@ -374,8 +374,8 @@ module.exports = config`}</code>
             </span>
           </div>
           <pre style={{ boxShadow: "var(--shadow-md)", border: "1px solid var(--color-border)" }}>
-            <code>{`import './quasify.config'  // must be first import
-import { ThemeProvider } from '@quasify-ui/tokens'
+            <code>{`import './stareezy.config'  // must be first import
+import { ThemeProvider } from '@stareezy-ui/tokens'
 
 export default function App({ children }) {
   return (
@@ -412,13 +412,13 @@ export default function App({ children }) {
           </span>
         </div>
         <pre style={{ boxShadow: "var(--shadow-md)", border: "1px solid var(--color-border)" }}>
-          <code>{`import { t } from '@quasify-ui/tokens'
-import { Box, Text, Button } from '@quasify-ui/components'
+          <code>{`import { t } from '@stareezy-ui/tokens'
+import { Box, Text, Button } from '@stareezy-ui/components'
 
 function Test() {
   return (
     <Box bg={t.backgrounds.secondary} p={16} rounded={8}>
-      <Text type="M-heading-bold" text="Quasify UI is working!" />
+      <Text type="M-heading-bold" text="Stareezy UI is working!" />
       <Button type="Primary" text="Click me" />
     </Box>
   )

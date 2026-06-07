@@ -1,5 +1,5 @@
 /**
- * sx.ts — sx prop type and style resolution for Quasify UI components.
+ * sx.ts — sx prop type and style resolution for Stareezy UI components.
  *
  * sx injects styles directly onto the component's own root element.
  * No wrapper elements are ever created — not for static values, not for
@@ -224,7 +224,7 @@ function resolveToken(val: unknown): unknown {
 
 function getSortedBreakpoints(): Array<[string, number]> {
   const global = globalThis as Record<string, unknown>;
-  const channel = global["__Quasify_breakpoints__"];
+  const channel = global["__stareezy_breakpoints__"];
   const map: Record<string, number> =
     channel !== null && typeof channel === "object" && !Array.isArray(channel)
       ? {

@@ -1,5 +1,5 @@
 /**
- * Token variant system for Quasify UI.
+ * Token variant system for Stareezy UI.
  *
  * Provides a `TokenVariant<T>` type for dark/light token switching,
  * a `TokenVariantError` for invalid theme lookups, and a `getVariant()`
@@ -53,7 +53,7 @@ export class TokenVariantError extends Error {
  *
  * @example
  * ```ts
- * import { getVariant, auroraVariants } from '@quasify-ui/tokens'
+ * import { getVariant, auroraVariants } from '@stareezy-ui/tokens'
  * const darkAurora = getVariant(auroraVariants, 'dark')
  * ```
  */

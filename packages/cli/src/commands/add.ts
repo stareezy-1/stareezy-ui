@@ -1,11 +1,11 @@
 /**
- * add command — install named Quasify-ui components into an existing project.
+ * add command — install named Stareezy-ui components into an existing project.
  *
  * Steps:
  *  1. Detect framework + package manager
  *  2. Resolve transitive component dependency closure via registry
  *  3. Install ALL packages from the framework template's package.json.tpl
- *  4. Ensure @quasify-ui/* packages from the registry are present
+ *  4. Ensure @stareezy-ui/* packages from the registry are present
  *  5. Offer init when config / wiring / ThemeProvider is missing
  *  6. Write component stubs
  *
@@ -192,7 +192,7 @@ function writeComponentStubs(componentName: string, cwd: string): void {
   mkdirSync(dir, { recursive: true });
   writeFileSync(
     join(dir, `${cap}.tsx`),
-    `export { ${cap} } from "@quasify-ui/components";\n`,
+    `export { ${cap} } from "@stareezy-ui/components";\n`,
     "utf8",
   );
   writeFileSync(
@@ -275,16 +275,16 @@ export async function runAdd(options: AddOptions): Promise<void> {
     }
   }
 
-  // 4. Ensure @quasify-ui/* packages from the component registry
+  // 4. Ensure @stareezy-ui/* packages from the component registry
   const requiredPkgs = collectPackageDeps(resolved);
   const missingPkgs = getMissingPackageDeps(requiredPkgs, cwd);
   if (missingPkgs.length > 0) {
     console.log(
-      `\nInstalling @quasify-ui/* packages: ${missingPkgs.join(", ")}`,
+      `\nInstalling @stareezy-ui/* packages: ${missingPkgs.join(", ")}`,
     );
     installPackages(missingPkgs, project.packageManager, cwd, false);
   } else {
-    console.log("  ✓ All @quasify-ui/* packages already present");
+    console.log("  ✓ All @stareezy-ui/* packages already present");
   }
 
   // 5. Offer init when config / wiring / ThemeProvider is missing
@@ -293,19 +293,19 @@ export async function runAdd(options: AddOptions): Promise<void> {
     (!project.hasConfig || !project.hasWiring || !project.hasThemeProvider)
   ) {
     const missing: string[] = [];
-    if (!project.hasConfig) missing.push("quasify.config.ts");
+    if (!project.hasConfig) missing.push("stareezy.config.ts");
     if (!project.hasWiring) missing.push("compiler wiring");
     if (!project.hasThemeProvider) missing.push("ThemeProvider");
-    console.log(`\n⚠ Missing Quasify-ui setup: ${missing.join(", ")}`);
+    console.log(`\n⚠ Missing Stareezy-ui setup: ${missing.join(", ")}`);
 
     const shouldInit =
       options.yes ||
-      (await confirm("Run `quasify init` to create the missing setup?", true));
+      (await confirm("Run `stareezy init` to create the missing setup?", true));
     if (shouldInit) {
       console.log("\nRunning init...");
       await runInit({ cwd, yes: options.yes });
     } else {
-      console.log("Skipping init. You can run `quasify init` later.");
+      console.log("Skipping init. You can run `stareezy init` later.");
     }
   }
 

@@ -5,7 +5,7 @@
 
 import React, { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
-import { Pagination } from "@quasify-ui/components";
+import { Pagination } from "@stareezy-ui/components";
 
 const meta: Meta<typeof Pagination> = {
   title: "Components/Pagination",

@@ -4,8 +4,8 @@ import { DocPage, Callout } from "../../../components/DocPage";
 export const metadata: Metadata = {
   title: "API Reference",
   description:
-    "Per-package API reference for all @quasify-ui/* packages — exported types, functions, hooks, and components.",
-  alternates: { canonical: "https://ui.quasify.app/docs/api" },
+    "Per-package API reference for all @stareezy-ui/* packages — exported types, functions, hooks, and components.",
+  alternates: { canonical: "https://ui.stareezy.tech/docs/api" },
 };
 
 interface ApiEntry {
@@ -91,7 +91,7 @@ const TOKENS_EXPORTS: ApiEntry[] = [
     desc: "A theme-reactive token reference — resolves at render time via the Theme_Accessor.",
   },
   {
-    name: "QuasifyCustomConfig",
+    name: "SzrCustomConfig",
     kind: "type",
     desc: "Module-augmentation interface. Extend with typeof ui to inject custom media/shorthands into the type system.",
   },
@@ -103,7 +103,7 @@ const TOKENS_EXPORTS: ApiEntry[] = [
   {
     name: "DefaultBreakpointKey",
     kind: "type",
-    desc: '"base" | "sm" | "md" | "lg" | "xl" | "2xl" — the fallback when QuasifyCustomConfig is unaugmented.',
+    desc: '"base" | "sm" | "md" | "lg" | "xl" | "2xl" — the fallback when SzrCustomConfig is unaugmented.',
   },
   {
     name: "Responsive<T>",
@@ -314,17 +314,17 @@ const SERVER_EXPORTS: ApiEntry[] = [
 
 const COMPILER_EXPORTS: ApiEntry[] = [
   {
-    name: "quasifyVitePlugin(options?)",
+    name: "stareezyVitePlugin(options?)",
     kind: "function",
-    desc: "Vite plugin — emits the virtual:quasify-ui/styles module. Reads quasify.config.ts automatically.",
+    desc: "Vite plugin — emits the virtual:stareezy-ui/styles module. Reads stareezy.config.ts automatically.",
   },
   {
-    name: "quasifyBabelPlugin(options?)",
+    name: "stareezyBabelPlugin(options?)",
     kind: "function",
     desc: "Babel plugin — transforms token prop values to atomic CSS class names at build time.",
   },
   {
-    name: "quasifyMetroTransformer",
+    name: "stareezyMetroTransformer",
     kind: "constant",
     desc: "Metro transformer for React Native / Expo. Point babelTransformerPath at this module.",
   },
@@ -339,7 +339,7 @@ const CLI_EXPORTS: ApiEntry[] = [
   {
     name: "init",
     kind: "function",
-    desc: "Add quasify.config.ts, compiler wiring, and ThemeProvider to an existing project (idempotent).",
+    desc: "Add stareezy.config.ts, compiler wiring, and ThemeProvider to an existing project (idempotent).",
   },
   {
     name: "add <component...>",
@@ -411,7 +411,7 @@ export default function ApiPage() {
   return (
     <DocPage
       title="API Reference"
-      description="Exported symbols from every @quasify-ui/* package — types, functions, hooks, and components."
+      description="Exported symbols from every @stareezy-ui/* package — types, functions, hooks, and components."
       badge="Reference"
       icon="◉"
       badgeColor="#ff6a1a"
@@ -422,85 +422,85 @@ export default function ApiPage() {
         — no separate <code>@types/*</code> packages are needed.
       </Callout>
 
-      {/* ── @quasify-ui/tokens ─────────────────────────────────────────── */}
-      <h2 className="gradient-text">@quasify-ui/tokens</h2>
+      {/* ── @stareezy-ui/tokens ─────────────────────────────────────────── */}
+      <h2 className="gradient-text">@stareezy-ui/tokens</h2>
       <p>
         Zero-dependency token definitions and the <code>createUi()</code>{" "}
         configuration factory. This package builds first in the dependency
         chain.
       </p>
       <pre style={{ border: "1px solid var(--color-border)" }}>
-        <code>{`import { createUi, t, token, colors, spacing, radius, themes } from '@quasify-ui/tokens'`}</code>
+        <code>{`import { createUi, t, token, colors, spacing, radius, themes } from '@stareezy-ui/tokens'`}</code>
       </pre>
       <ApiTable entries={TOKENS_EXPORTS} />
 
-      {/* ── @quasify-ui/components ─────────────────────────────────────── */}
-      <h2 className="gradient-text">@quasify-ui/components</h2>
+      {/* ── @stareezy-ui/components ─────────────────────────────────────── */}
+      <h2 className="gradient-text">@stareezy-ui/components</h2>
       <p>
         31 cross-platform UI components (26 existing + 6 new in v0.4) plus
         layout primitives and shared types.
       </p>
       <pre style={{ border: "1px solid var(--color-border)" }}>
-        <code>{`import { Box, Button, Input, Modal, Breadcrumb, Drawer } from '@quasify-ui/components'
+        <code>{`import { Box, Button, Input, Modal, Breadcrumb, Drawer } from '@stareezy-ui/components'
 // RSC-safe primitives:
-import { Box, Stack, Text } from '@quasify-ui/components/server'`}</code>
+import { Box, Stack, Text } from '@stareezy-ui/components/server'`}</code>
       </pre>
       <ApiTable entries={COMPONENTS_EXPORTS} />
 
-      {/* ── @quasify-ui/components/server ──────────────────────────────── */}
-      <h2 className="gradient-text">@quasify-ui/components/server</h2>
+      {/* ── @stareezy-ui/components/server ──────────────────────────────── */}
+      <h2 className="gradient-text">@stareezy-ui/components/server</h2>
       <p>
         Hook-free, RSC-safe primitives. Safe to use in Next.js App Router Server
         Components without a <code>&quot;use client&quot;</code> boundary.
       </p>
       <ApiTable entries={SERVER_EXPORTS} />
 
-      {/* ── @quasify-ui/compiler ───────────────────────────────────────── */}
-      <h2 className="gradient-text">@quasify-ui/compiler</h2>
+      {/* ── @stareezy-ui/compiler ───────────────────────────────────────── */}
+      <h2 className="gradient-text">@stareezy-ui/compiler</h2>
       <p>
         Build-time transforms for Vite, Babel, and Metro. Reads{" "}
-        <code>quasify.config.ts</code> automatically.
+        <code>stareezy.config.ts</code> automatically.
       </p>
       <pre style={{ border: "1px solid var(--color-border)" }}>
-        <code>{`import { quasifyVitePlugin } from '@quasify-ui/compiler'
-const { quasifyBabelPlugin } = require('@quasify-ui/compiler')
-// Metro: require.resolve('@quasify-ui/compiler/metro')`}</code>
+        <code>{`import { stareezyVitePlugin } from '@stareezy-ui/compiler'
+const { stareezyBabelPlugin } = require('@stareezy-ui/compiler')
+// Metro: require.resolve('@stareezy-ui/compiler/metro')`}</code>
       </pre>
       <ApiTable entries={COMPILER_EXPORTS} />
 
-      {/* ── @quasify-ui/cli ────────────────────────────────────────────── */}
-      <h2 className="gradient-text">@quasify-ui/cli</h2>
+      {/* ── @stareezy-ui/cli ────────────────────────────────────────────── */}
+      <h2 className="gradient-text">@stareezy-ui/cli</h2>
       <p>
-        First-party scaffolding CLI. Invoke via <code>npx Quasify</code> or
-        install globally as <code>@quasify-ui/cli</code>.
+        First-party scaffolding CLI. Invoke via <code>npx Stareezy</code> or
+        install globally as <code>@stareezy-ui/cli</code>.
       </p>
       <pre style={{ border: "1px solid var(--color-border)" }}>
-        <code>{`npx quasify create my-app --template next
-npx quasify init
-npx quasify add button input card`}</code>
+        <code>{`npx stareezy create my-app --template next
+npx stareezy init
+npx stareezy add button input card`}</code>
       </pre>
       <ApiTable entries={CLI_EXPORTS} />
 
-      {/* ── @quasify-ui/runtime ────────────────────────────────────────── */}
-      <h2 className="gradient-text">@quasify-ui/runtime</h2>
+      {/* ── @stareezy-ui/runtime ────────────────────────────────────────── */}
+      <h2 className="gradient-text">@stareezy-ui/runtime</h2>
       <p>
         O(1) style registry with web and React Native adapters. Used internally
         by the Components_Package — not typically imported directly.
       </p>
       <pre style={{ border: "1px solid var(--color-border)" }}>
-        <code>{`import { configureBreakpoints, getBreakpoints, applyRuntimeBreakpoints } from '@quasify-ui/runtime'`}</code>
+        <code>{`import { configureBreakpoints, getBreakpoints, applyRuntimeBreakpoints } from '@stareezy-ui/runtime'`}</code>
       </pre>
 
-      {/* ── @quasify-ui/core ───────────────────────────────────────────── */}
-      <h2 className="gradient-text">@quasify-ui/core</h2>
+      {/* ── @stareezy-ui/core ───────────────────────────────────────────── */}
+      <h2 className="gradient-text">@stareezy-ui/core</h2>
       <p>
         Utilities, platform helpers, and hooks shared across packages. Used
         internally — only import from this package if you are building on top of
-        Quasify-ui internals.
+        Stareezy-ui internals.
       </p>
 
-      {/* ── @quasify-ui/stylesheet ─────────────────────────────────────── */}
-      <h2 className="gradient-text">@quasify-ui/stylesheet</h2>
+      {/* ── @stareezy-ui/stylesheet ─────────────────────────────────────── */}
+      <h2 className="gradient-text">@stareezy-ui/stylesheet</h2>
       <p>
         Atomic CSS sheet management using <code>@stitches/core</code> under the
         hood. Used internally by the runtime. Not imported directly in

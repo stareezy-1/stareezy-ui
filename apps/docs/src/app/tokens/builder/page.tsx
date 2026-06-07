@@ -80,7 +80,7 @@ function isLight(hex: string): boolean {
 }
 
 function generateCSS(colors: Colors): string {
-  return `/* Quasify UI — Custom Theme */
+  return `/* Stareezy UI — Custom Theme */
 [data-theme="custom"] {
   --color-bg: ${colors["bg.primary"]};
   --color-surface: ${colors["bg.surface"]};
@@ -408,7 +408,7 @@ export default function ThemeBuilderPage() {
                 </div>
                 <div style={{ flex: 1 }}>
                   <div style={{ fontWeight: 700, fontSize: "0.9rem", color: "var(--color-text)" }}>
-                    Quasify UI
+                    Stareezy UI
                   </div>
                   <div style={{ fontSize: "0.72rem", color: "var(--color-text-2)" }}>
                     {colors["text.secondary"] || "#b09080"} · {colors["text.muted"] || "#6a5048"}

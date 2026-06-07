@@ -9,9 +9,9 @@
     "expo": "~55.0.0",
     "react": "18.3.0",
     "react-native": "0.76.0",
-    "@quasify-ui/components": "workspace:*",
-    "@quasify-ui/tokens": "workspace:*",
-    "@quasify-ui/compiler": "workspace:*"
+    "@stareezy-ui/components": "workspace:*",
+    "@stareezy-ui/tokens": "workspace:*",
+    "@stareezy-ui/compiler": "workspace:*"
   },
   "devDependencies": {
     "@types/react": "~18.3.0",

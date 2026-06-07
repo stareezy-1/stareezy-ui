@@ -4,7 +4,7 @@
  */
 
 import React from "react";
-import { colors } from "@quasify-ui/tokens";
+import { colors } from "@stareezy-ui/tokens";
 import { isWeb } from "../shared/platform";
 import { Box } from "../primitives/Box";
 import type { BoxProps, StyleProp } from "../primitives/Box";

@@ -1,7 +1,7 @@
 {
-  "name": "@quasify-ui/tokens",
+  "name": "@stareezy-ui/tokens",
   "version": "1.1.0",
-  "description": "Quasify UI design token definitions — zero dependencies",
+  "description": "Stareezy UI design token definitions — zero dependencies",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
@@ -20,13 +20,13 @@
   "keywords": [
     "design-tokens",
     "tokens",
-    "Quasify-ui",
+    "Stareezy-ui",
     "react-native",
     "web"
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/quasify-ui/quasify-ui.git",
+    "url": "https://github.com/stareezy-1/stareezy-ui.git",
     "directory": "packages/tokens"
   },
   "scripts": {

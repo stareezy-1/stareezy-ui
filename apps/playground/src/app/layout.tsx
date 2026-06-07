@@ -3,9 +3,9 @@ import type { ReactNode } from "react";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Quasify UI Playground",
+  title: "Stareezy UI Playground",
   description:
-    "Live code playground for Quasify UI — edit JSX and see rendered output instantly.",
+    "Live code playground for Stareezy UI — edit JSX and see rendered output instantly.",
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {

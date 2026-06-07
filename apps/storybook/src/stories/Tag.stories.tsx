@@ -5,7 +5,7 @@
 
 import React from "react";
 import type { Meta, StoryObj } from "@storybook/react";
-import { Tag, ETagVariant } from "@quasify-ui/components";
+import { Tag, ETagVariant } from "@stareezy-ui/components";
 
 const meta: Meta<typeof Tag> = {
   title: "Components/Tag",

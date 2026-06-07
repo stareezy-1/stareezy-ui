@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { CommandPalette } from "@quasify-ui/components";
-import type { CommandItem } from "@quasify-ui/components";
+import { CommandPalette } from "@stareezy-ui/components";
+import type { CommandItem } from "@stareezy-ui/components";
 
 const SAMPLE_ITEMS: CommandItem[] = [
   { id: "1", label: "Go to Installation", onSelect: () => {} },
