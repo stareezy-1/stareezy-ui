@@ -1,5 +1,13 @@
 # @stareezy-ui/compiler
 
+## 1.1.3
+
+### Patch Changes
+
+- Fix sx resolution, $media prefix, layout props on all components, and config shorthands
+- Updated dependencies
+  - @stareezy-ui/tokens@1.1.2
+
 ## 1.1.2
 
 ### Patch Changes

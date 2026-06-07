@@ -8,10 +8,19 @@
  * Web:    static values → merged into inline style object
  *         responsive/$ values → emitted as @media rules into a scoped <style>
  * Native: responsive values resolved against current windowWidth
+ *
+ * Fix summary (v1.1.1):
+ * - Config shorthands (w→width, h→height, br→borderRadius, etc.) now resolved
+ *   at runtime from getUiConfig().shorthands — no longer hardcoded.
+ * - BP_KEYS is now dynamic — reads from the same breakpoint channel as Box,
+ *   so custom breakpoints (3xl, etc.) work in responsive objects.
+ * - All BoxProps keys (display, position, overflow, …) pass through correctly
+ *   in both static and responsive contexts.
  */
 
 import type React from "react";
 import type { BoxProps } from "../primitives/Box";
+import { getUiConfig } from "@stareezy-ui/tokens";
 
 // ---------------------------------------------------------------------------
 // SxProp
@@ -56,7 +65,8 @@ type SxStyleKeys = Exclude<
  * sx prop — accepts any Box style prop plus raw CSSProperties / RN style keys.
  * Applied directly on the component's own root element. sx wins on collision.
  *
- * - All Box shorthands: p, px, py, bg, color, rounded, flex, gap, …
+ * - All Box shorthands + config shorthands: p, px, py, bg, w, h, br, fz, …
+ * - All Box layout/visual props: display, position, overflow, opacity, …
  * - Responsive objects: { base: 8, md: 16 }
  * - $-breakpoint groups: $md={{ flexDirection: "row" }}
  * - Token / ThemeToken references
@@ -125,15 +135,18 @@ export type SxProp = Pick<BoxProps, SxStyleKeys> & {
   shadowOpacity?: number;
   shadowRadius?: number;
   elevation?: number;
-  // Escape hatch — any other style key
+  // Escape hatch — any other style key (config shorthands, raw CSS props, etc.)
   [key: string]: unknown;
 };
 
 // ---------------------------------------------------------------------------
-// Prop → CSS property map (shorthands only — raw keys pass through as-is)
+// Built-in shorthand → CSS property maps
+// These are the hardcoded Box shorthands. Config shorthands are merged in at
+// runtime via getEffectiveShorthandMaps().
 // ---------------------------------------------------------------------------
 
-const SHORTHAND_MAP: Record<string, string | [string, string]> = {
+/** Built-in shorthand → camelCase CSS property (for inline style objects) */
+const BUILTIN_SHORTHAND_MAP: Record<string, string | [string, string]> = {
   bg: "backgroundColor",
   p: "padding",
   px: ["paddingLeft", "paddingRight"],
@@ -155,8 +168,8 @@ const SHORTHAND_MAP: Record<string, string | [string, string]> = {
   color: "color",
 };
 
-// Shorthand → CSS kebab for @media emission
-const SHORTHAND_KEBAB: Record<string, string | [string, string]> = {
+/** Built-in shorthand → kebab-case CSS property (for @media rule strings) */
+const BUILTIN_SHORTHAND_KEBAB: Record<string, string | [string, string]> = {
   bg: "background-color",
   p: "padding",
   px: ["padding-left", "padding-right"],
@@ -178,6 +191,92 @@ const SHORTHAND_KEBAB: Record<string, string | [string, string]> = {
   color: "color",
 };
 
+// ---------------------------------------------------------------------------
+// Runtime shorthand resolution — merges config shorthands into built-ins
+// ---------------------------------------------------------------------------
+
+/**
+ * Convert a camelCase CSS property name to kebab-case.
+ * e.g. "backgroundColor" → "background-color", "borderRadius" → "border-radius"
+ */
+function camelToKebab(s: string): string {
+  return s
+    .replace(/^Webkit/, "-webkit-")
+    .replace(/^Moz/, "-moz-")
+    .replace(/^Ms/, "-ms-")
+    .replace(/([A-Z])/g, (c) => `-${c.toLowerCase()}`);
+}
+
+/**
+ * Map a config shorthand value to its web CSS property.
+ * Config shorthands use camelCase CSS property names (e.g. "backgroundColor").
+ * We need both the camelCase version (for inline style) and kebab (for @media).
+ *
+ * Special cases from stareezy.config.ts shorthands:
+ *   paddingHorizontal → [paddingLeft, paddingRight]
+ *   paddingVertical   → [paddingTop, paddingBottom]
+ *   marginHorizontal  → [marginLeft, marginRight]
+ *   marginVertical    → [marginTop, marginBottom]
+ */
+const EXPAND_PAIRS: Record<string, [string, string]> = {
+  paddingHorizontal: ["paddingLeft", "paddingRight"],
+  paddingVertical: ["paddingTop", "paddingBottom"],
+  marginHorizontal: ["marginLeft", "marginRight"],
+  marginVertical: ["marginTop", "marginBottom"],
+};
+
+function getConfigShorthandCamel(cssProp: string): string | [string, string] {
+  if (EXPAND_PAIRS[cssProp]) return EXPAND_PAIRS[cssProp];
+  return cssProp; // already camelCase
+}
+
+function getConfigShorthandKebab(cssProp: string): string | [string, string] {
+  if (EXPAND_PAIRS[cssProp]) {
+    const [a, b] = EXPAND_PAIRS[cssProp];
+    return [camelToKebab(a), camelToKebab(b)];
+  }
+  return camelToKebab(cssProp);
+}
+
+/** Lazily built effective shorthand maps (built-in + config). */
+let _effectiveCamelMap: Record<string, string | [string, string]> | null = null;
+let _effectiveKebabMap: Record<string, string | [string, string]> | null = null;
+
+function getEffectiveShorthandMaps(): {
+  camel: Record<string, string | [string, string]>;
+  kebab: Record<string, string | [string, string]>;
+} {
+  if (_effectiveCamelMap && _effectiveKebabMap) {
+    return { camel: _effectiveCamelMap, kebab: _effectiveKebabMap };
+  }
+
+  const configShorthands = getUiConfig()?.shorthands ?? {};
+  const camel: Record<string, string | [string, string]> = {
+    ...BUILTIN_SHORTHAND_MAP,
+  };
+  const kebab: Record<string, string | [string, string]> = {
+    ...BUILTIN_SHORTHAND_KEBAB,
+  };
+
+  for (const [alias, cssProp] of Object.entries(configShorthands)) {
+    // Don't overwrite built-ins — they have their own (possibly multi-target) mappings
+    if (!(alias in camel)) {
+      camel[alias] = getConfigShorthandCamel(cssProp);
+    }
+    if (!(alias in kebab)) {
+      kebab[alias] = getConfigShorthandKebab(cssProp);
+    }
+  }
+
+  _effectiveCamelMap = camel;
+  _effectiveKebabMap = kebab;
+  return { camel, kebab };
+}
+
+// ---------------------------------------------------------------------------
+// Unitless CSS properties
+// ---------------------------------------------------------------------------
+
 const UNITLESS = new Set([
   "opacity",
   "flex",
@@ -194,18 +293,14 @@ const UNITLESS = new Set([
   "strokeWidth",
 ]);
 
-function camelToKebab(s: string): string {
-  return s
-    .replace(/^Webkit/, "-webkit-")
-    .replace(/^Moz/, "-moz-")
-    .replace(/^Ms/, "-ms-")
-    .replace(/([A-Z])/g, (c) => `-${c.toLowerCase()}`);
-}
-
 function toCssVal(prop: string, val: unknown): string {
   if (typeof val === "number" && !UNITLESS.has(prop)) return `${val}px`;
   return String(val);
 }
+
+// ---------------------------------------------------------------------------
+// Token resolution
+// ---------------------------------------------------------------------------
 
 function resolveToken(val: unknown): unknown {
   if (
@@ -219,24 +314,50 @@ function resolveToken(val: unknown): unknown {
 }
 
 // ---------------------------------------------------------------------------
-// getBreakpoints — reads from the same global channel as Box
+// Breakpoint helpers — dynamic, reads from the same global channel as Box
 // ---------------------------------------------------------------------------
 
 function getSortedBreakpoints(): Array<[string, number]> {
   const global = globalThis as Record<string, unknown>;
   const channel = global["__stareezy_breakpoints__"];
+  const defaults: Record<string, number> = {
+    sm: 480,
+    md: 768,
+    lg: 1024,
+    xl: 1280,
+    "2xl": 1536,
+  };
   const map: Record<string, number> =
     channel !== null && typeof channel === "object" && !Array.isArray(channel)
-      ? {
-          sm: 480,
-          md: 768,
-          lg: 1024,
-          xl: 1280,
-          "2xl": 1536,
-          ...(channel as Record<string, number>),
-        }
-      : { sm: 480, md: 768, lg: 1024, xl: 1280, "2xl": 1536 };
+      ? { ...defaults, ...(channel as Record<string, number>) }
+      : defaults;
   return Object.entries(map).sort(([, a], [, b]) => a - b);
+}
+
+/**
+ * Returns a Set of all known breakpoint keys (including "base" and config keys).
+ * Used by isResponsiveLike to recognise responsive objects correctly.
+ */
+function getBreakpointKeySet(): Set<string> {
+  const bps = getSortedBreakpoints();
+  return new Set(["base", ...bps.map(([k]) => k)]);
+}
+
+// ---------------------------------------------------------------------------
+// isResponsiveLike — detects responsive objects { base?, sm?, md?, … }
+// Uses dynamic breakpoint keys so custom keys (3xl, etc.) are recognised.
+// ---------------------------------------------------------------------------
+
+function isResponsiveLike(val: unknown): val is Record<string, unknown> {
+  if (val === null || typeof val !== "object" || Array.isArray(val))
+    return false;
+  const obj = val as Record<string, unknown>;
+  if (obj["__token"]) return false;
+  // Distinguish from shadowOffset { width, height }
+  if ("width" in obj && "height" in obj && Object.keys(obj).length === 2)
+    return false;
+  const bpKeys = getBreakpointKeySet();
+  return Object.keys(obj).some((k) => bpKeys.has(k) || k.startsWith("$"));
 }
 
 // ---------------------------------------------------------------------------
@@ -258,26 +379,56 @@ function resolveResponsiveForWidth<T>(
 }
 
 // ---------------------------------------------------------------------------
-// isResponsiveLike — object with breakpoint keys (not a Token, not shadowOffset)
-// ---------------------------------------------------------------------------
-
-const BP_KEYS = new Set(["base", "sm", "md", "lg", "xl", "2xl"]);
-
-function isResponsiveLike(val: unknown): val is Record<string, unknown> {
-  if (val === null || typeof val !== "object" || Array.isArray(val))
-    return false;
-  const obj = val as Record<string, unknown>;
-  if (obj["__token"]) return false;
-  if ("width" in obj && "height" in obj) return false;
-  const keys = Object.keys(obj);
-  return keys.some((k) => BP_KEYS.has(k) || k.startsWith("$"));
-}
-
-// ---------------------------------------------------------------------------
-// applySxProp — write one shorthand/raw prop into inlineStyle + cssRules
+// Core emitters
 // ---------------------------------------------------------------------------
 
 type StyleOut = Record<string, unknown>;
+
+/**
+ * Emit a CSS declaration into decls[] using the effective shorthand map.
+ * Falls back to camelToKebab passthrough for raw CSS properties.
+ */
+function emitWebDecl(key: string, val: unknown, decls: string[]): void {
+  const { kebab } = getEffectiveShorthandMaps();
+  const kebabDef = kebab[key];
+  if (kebabDef) {
+    if (Array.isArray(kebabDef)) {
+      for (const k of kebabDef) decls.push(`${k}:${toCssVal(k, val)}`);
+    } else {
+      decls.push(`${kebabDef}:${toCssVal(kebabDef, val)}`);
+    }
+  } else {
+    // Raw CSS property (display, position, overflow, …) — camelToKebab passthrough
+    const k = camelToKebab(key);
+    decls.push(`${k}:${toCssVal(key, val)}`);
+  }
+}
+
+/**
+ * Apply a single prop into the inline style object using the effective shorthand map.
+ * Falls back to raw CSS passthrough for unknown keys.
+ */
+function applyInlineShorthand(key: string, val: unknown, out: StyleOut): void {
+  const { camel } = getEffectiveShorthandMaps();
+  const cssDef = camel[key];
+  if (cssDef) {
+    if (Array.isArray(cssDef)) {
+      for (const k of cssDef) {
+        out[k] = typeof val === "number" && !UNITLESS.has(k) ? `${val}px` : val;
+      }
+    } else {
+      out[cssDef] =
+        typeof val === "number" && !UNITLESS.has(cssDef) ? `${val}px` : val;
+    }
+  } else {
+    // Raw CSS property passthrough — key is already camelCase (e.g. "display")
+    out[key] = typeof val === "number" && !UNITLESS.has(key) ? `${val}px` : val;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// applySxPropWeb — resolve one prop into inlineStyle + cssRules
+// ---------------------------------------------------------------------------
 
 function applySxPropWeb(
   key: string,
@@ -286,8 +437,8 @@ function applySxPropWeb(
   inlineStyle: StyleOut,
   cssRules: string[],
 ): void {
+  // ── $-breakpoint group: $md={{ p: 16, color: "red" }} ─────────────────────
   if (key.startsWith("$")) {
-    // $-breakpoint group: $md={{ p: 16, color: "red" }}
     const bpName = key.slice(1);
     const bps = getSortedBreakpoints();
     const threshold = bps.find(([k]) => k === bpName)?.[1];
@@ -310,15 +461,17 @@ function applySxPropWeb(
 
   const resolved = resolveToken(val);
 
+  // ── Responsive object: { base: 8, md: 16, sm: "inline-flex" } ─────────────
   if (isResponsiveLike(resolved)) {
-    // Responsive object: { base: 8, md: 16 }
     const map = resolved as Record<string, unknown>;
     const bps = getSortedBreakpoints();
 
+    // base value → inline style
     if (map["base"] !== undefined) {
       const base = resolveToken(map["base"]);
       applyInlineShorthand(key, base, inlineStyle);
     }
+    // per-breakpoint values → @media rules
     for (const [bpName, threshold] of bps) {
       if (map[bpName] === undefined) continue;
       const bpVal = resolveToken(map[bpName]);
@@ -335,43 +488,12 @@ function applySxPropWeb(
     return;
   }
 
-  // Plain value
+  // ── Plain value ────────────────────────────────────────────────────────────
   applyInlineShorthand(key, resolved, inlineStyle);
 }
 
-function emitWebDecl(key: string, val: unknown, decls: string[]): void {
-  const kebabDef = SHORTHAND_KEBAB[key];
-  if (kebabDef) {
-    if (Array.isArray(kebabDef)) {
-      for (const k of kebabDef) decls.push(`${k}:${toCssVal(k, val)}`);
-    } else {
-      decls.push(`${kebabDef}:${toCssVal(kebabDef, val)}`);
-    }
-  } else {
-    const kebab = camelToKebab(key);
-    decls.push(`${kebab}:${toCssVal(key, val)}`);
-  }
-}
-
-function applyInlineShorthand(key: string, val: unknown, out: StyleOut): void {
-  const cssDef = SHORTHAND_MAP[key];
-  if (cssDef) {
-    if (Array.isArray(cssDef)) {
-      for (const k of cssDef) {
-        out[k] = typeof val === "number" && !UNITLESS.has(k) ? `${val}px` : val;
-      }
-    } else {
-      out[cssDef] =
-        typeof val === "number" && !UNITLESS.has(cssDef) ? `${val}px` : val;
-    }
-  } else {
-    // Pass raw CSS property through
-    out[key] = typeof val === "number" && !UNITLESS.has(key) ? `${val}px` : val;
-  }
-}
-
 // ---------------------------------------------------------------------------
-// resolveSxWeb — returns { inlineStyle, cssRules } for the current sx value
+// resolveSxWeb
 // ---------------------------------------------------------------------------
 
 export function resolveSxWeb(
@@ -383,9 +505,12 @@ export function resolveSxWeb(
   const inlineStyle: StyleOut = {};
   const cssRules: string[] = [];
 
-  // Shorthands that expand into multiple longhands (p→padding overrides paddingLeft etc.)
-  // Process non-shorthand keys first, then shorthand keys so shorthands win on collision.
-  const SHORTHAND_KEYS = new Set(Object.keys(SHORTHAND_MAP));
+  // Two-pass: longhands first, then shorthands, then $-groups.
+  // This ensures shorthands (p, m, bg, w, …) win over conflicting longhands
+  // when both are present: sx={{ p: 16, paddingLeft: 8 }} → p wins.
+  const { camel } = getEffectiveShorthandMaps();
+  const SHORTHAND_KEYS = new Set(Object.keys(camel));
+
   const entries = Object.entries(sx);
   const nonShorthands = entries.filter(
     ([k]) => !SHORTHAND_KEYS.has(k) && !k.startsWith("$"),
@@ -408,8 +533,31 @@ export function resolveSxWeb(
 }
 
 // ---------------------------------------------------------------------------
-// resolveSxNative — returns flat RN style for the current sx value
+// resolveSxNative
 // ---------------------------------------------------------------------------
+
+/**
+ * Apply a prop into a React Native style object.
+ * Uses effective shorthand map (built-in + config).
+ */
+function applyNativeShorthand(key: string, val: unknown, out: StyleOut): void {
+  const { camel } = getEffectiveShorthandMaps();
+
+  // Built-in + config camel map covers web CSS property names.
+  // For RN we need to map px→[paddingLeft,paddingRight], etc.
+  // The camel map already has the right RN-compatible names for most keys.
+  const mapped = camel[key];
+  if (mapped) {
+    if (Array.isArray(mapped)) {
+      for (const k of mapped) out[k] = val;
+    } else {
+      out[mapped] = val;
+    }
+  } else {
+    // Raw prop passthrough (flexDirection, alignItems, etc.)
+    out[key] = val;
+  }
+}
 
 export function resolveSxNative(
   sx: SxProp | undefined,
@@ -418,9 +566,9 @@ export function resolveSxNative(
   if (!sx) return {};
 
   const out: StyleOut = {};
+  const { camel } = getEffectiveShorthandMaps();
+  const SHORTHAND_KEYS = new Set(Object.keys(camel));
 
-  // Process non-shorthand keys first, then shorthand keys so shorthands win on collision.
-  const SHORTHAND_KEYS = new Set(Object.keys(SHORTHAND_MAP));
   const entries = Object.entries(sx).filter(([k]) => !k.startsWith("$"));
   const nonShorthands = entries.filter(([k]) => !SHORTHAND_KEYS.has(k));
   const shorthands = entries.filter(([k]) => SHORTHAND_KEYS.has(k));
@@ -445,7 +593,7 @@ export function resolveSxNative(
     applyNativeShorthand(key, resolved, out);
   }
 
-  // Handle $-breakpoint groups on native (apply when windowWidth >= threshold)
+  // $-breakpoint groups on native
   const bps = getSortedBreakpoints();
   for (const [bpName, threshold] of bps) {
     if (windowWidth < threshold) continue;
@@ -463,44 +611,8 @@ export function resolveSxNative(
   return out;
 }
 
-function applyNativeShorthand(key: string, val: unknown, out: StyleOut): void {
-  // Map web shorthands to their RN equivalents
-  const rnMap: Record<string, string | [string, string]> = {
-    bg: "backgroundColor",
-    p: "padding",
-    px: ["paddingLeft", "paddingRight"],
-    py: ["paddingTop", "paddingBottom"],
-    pt: "paddingTop",
-    pb: "paddingBottom",
-    pl: "paddingLeft",
-    pr: "paddingRight",
-    m: "margin",
-    mx: ["marginLeft", "marginRight"],
-    my: ["marginTop", "marginBottom"],
-    mt: "marginTop",
-    mb: "marginBottom",
-    ml: "marginLeft",
-    mr: "marginRight",
-    rounded: "borderRadius",
-    borderWidth: "borderWidth",
-    borderColor: "borderColor",
-    color: "color",
-  };
-  const mapped = rnMap[key];
-  if (mapped) {
-    if (Array.isArray(mapped)) {
-      for (const k of mapped) out[k] = val;
-    } else {
-      out[mapped] = val;
-    }
-  } else {
-    out[key] = val;
-  }
-}
-
 // ---------------------------------------------------------------------------
-// useSxStyle — React hook: resolves sx to { style, scopeClass, responsiveCss }
-// for use in web components that build their own <style> tag for responsive sx.
+// useSxStyle — React hook
 // ---------------------------------------------------------------------------
 
 export function useSxStyle(
@@ -523,7 +635,7 @@ export function useSxStyle(
 }
 
 // ---------------------------------------------------------------------------
-// Legacy exports kept for backward compatibility
+// Legacy exports
 // ---------------------------------------------------------------------------
 
 export function resolveSxToStyle(
@@ -546,7 +658,6 @@ export function splitSx(sx: SxProp | undefined): {
   staticStyle: Record<string, unknown>;
   dynamicSx: SxProp | undefined;
 } {
-  // No longer splits — everything resolves inline. Keep for compat.
   return { staticStyle: resolveSxToStyle(sx), dynamicSx: undefined };
 }
 

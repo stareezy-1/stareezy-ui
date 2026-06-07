@@ -53,7 +53,10 @@ export const Toast: SzrFC<ToastProps> = (props) => {
       <div
         role="alert"
         aria-live="polite"
-        className={toastClasses.base}
+        className={
+          [toastClasses.base, sxClassName].filter(Boolean).join(" ") ||
+          undefined
+        }
         style={{
           backgroundColor: toastBaseStyle.backgroundColor,
           borderColor: variantStyle.borderColor,

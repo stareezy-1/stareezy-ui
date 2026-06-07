@@ -65,7 +65,10 @@ export const CommandPalette: SzrFC<CommandPaletteProps> = (props) => {
         if (e.target === e.currentTarget) onClose();
       }}
     >
-      <div style={{ ...containerStyle, ...sxStyle }}>
+      <div
+        className={sxClassName || undefined}
+        style={{ ...containerStyle, ...sxStyle }}
+      >
         <input
           autoFocus
           style={inputStyle}

@@ -127,6 +127,7 @@ export const Pagination: SzrFC<PaginationProps> = (props) => {
     <nav
       role="navigation"
       aria-label={accessibilityLabel}
+      className={sxClassName || undefined}
       style={{ ...webNav, ...sxStyle } as React.CSSProperties}
       data-testid={testID}
     >

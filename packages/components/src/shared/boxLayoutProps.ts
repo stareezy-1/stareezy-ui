@@ -54,45 +54,11 @@ type LayoutBreakpointPropKey = `$${Exclude<BreakpointKey, "base">}`;
 
 /**
  * Partial style group props for the $-prefixed breakpoint-as-prop syntax.
- * Each key accepts a partial set of Box style props scoped to that breakpoint.
+ * Accepts the full SxProp so any style can be set per breakpoint:
+ * <Button $md={{ backgroundColor: "red", p: 16, fontSize: 18 }} />
  */
 type LayoutBreakpointProps = {
-  [K in LayoutBreakpointPropKey]?: Partial<
-    Pick<
-      BoxProps,
-      | "p"
-      | "px"
-      | "py"
-      | "pt"
-      | "pb"
-      | "pl"
-      | "pr"
-      | "m"
-      | "mx"
-      | "my"
-      | "mt"
-      | "mb"
-      | "ml"
-      | "mr"
-      | "width"
-      | "height"
-      | "minWidth"
-      | "maxWidth"
-      | "minHeight"
-      | "maxHeight"
-      | "flex"
-      | "flexDirection"
-      | "flexGrow"
-      | "flexShrink"
-      | "flexBasis"
-      | "alignItems"
-      | "alignSelf"
-      | "justifyContent"
-      | "gap"
-      | "rowGap"
-      | "columnGap"
-    >
-  >;
+  [K in LayoutBreakpointPropKey]?: SxProp;
 };
 
 // ---------------------------------------------------------------------------

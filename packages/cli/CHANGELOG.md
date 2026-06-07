@@ -1,5 +1,11 @@
 # @stareezy-ui/cli
 
+## 1.1.3
+
+### Patch Changes
+
+- Fix sx resolution, $media prefix, layout props on all components, and config shorthands
+
 ## 1.1.2
 
 ### Patch Changes

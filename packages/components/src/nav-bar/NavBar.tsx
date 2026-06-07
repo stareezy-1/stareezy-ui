@@ -26,6 +26,7 @@ export const NavBar: SzrFC<NavBarProps> = (props) => {
   const headerEl = (
     <header
       role="banner"
+      className={sxClassName || undefined}
       style={{
         position: "sticky",
         top: 0,

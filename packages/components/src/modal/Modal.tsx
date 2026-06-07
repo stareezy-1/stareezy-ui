@@ -216,6 +216,7 @@ export const Modal: SzrFC<ModalProps> = (props) => {
           role="dialog"
           aria-modal="true"
           aria-labelledby={title ? "szr-modal-title" : undefined}
+          className={sxClassName || undefined}
           style={{
             position: "relative",
             display: "flex",

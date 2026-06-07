@@ -100,6 +100,7 @@ export const Tag: SzrFC<TagProps> = (props) => {
       role={onDismiss ? "group" : undefined}
       aria-label={accessibilityLabel ?? label}
       data-testid={testID}
+      className={sxClassName || undefined}
       style={{
         ...webTagBase,
         ...webVariantBorder[variant],

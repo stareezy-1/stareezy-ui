@@ -38,6 +38,7 @@ export const ProgressPanel: SzrFC<ProgressPanelProps> = (props) => {
   if (isWeb) {
     const webContent = (
       <div
+        className={sxClassName || undefined}
         style={{
           ...containerStyle,
           ...(style as React.CSSProperties),

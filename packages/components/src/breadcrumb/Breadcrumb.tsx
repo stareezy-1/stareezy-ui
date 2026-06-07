@@ -64,6 +64,7 @@ export const Breadcrumb: SzrFC<BreadcrumbProps> = (props) => {
       role="navigation"
       aria-label={accessibilityLabel}
       style={{ ...webNav, ...sxStyle } as React.CSSProperties}
+      className={sxClassName || undefined}
       data-testid={testID}
     >
       <ol style={webOl}>

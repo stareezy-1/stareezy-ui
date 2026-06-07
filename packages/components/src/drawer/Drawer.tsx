@@ -200,6 +200,7 @@ export const Drawer: SzrFC<DrawerProps> = (props) => {
           role="dialog"
           aria-modal="true"
           aria-label={title ?? "Drawer"}
+          className={sxClassName || undefined}
           style={{ ...panelStyle, ...sxStyle } as React.CSSProperties}
           data-testid={testID}
         >

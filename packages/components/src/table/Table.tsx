@@ -66,6 +66,7 @@ export const Table: SzrFC<TableProps> = (props) => {
         border: `1px solid ${themed.borderDefault}`,
         ...sxStyle,
       }}
+      className={sxClassName || undefined}
       data-testid={testID}
     >
       <table

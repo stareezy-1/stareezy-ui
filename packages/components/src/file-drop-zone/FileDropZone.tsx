@@ -59,6 +59,7 @@ export const FileDropZone: SzrFC<FileDropZoneProps> = (props) => {
 
   const dropZoneEl = (
     <div
+      className={sxClassName || undefined}
       style={{
         ...baseStyle,
         ...stateStyle,

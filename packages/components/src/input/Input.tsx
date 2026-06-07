@@ -194,6 +194,7 @@ export const Input: SzrFC<IInputProps> = (props) => {
 
     const webContent = (
       <div
+        className={sxClassName || undefined}
         style={{
           display: "flex",
           flexDirection: "column",

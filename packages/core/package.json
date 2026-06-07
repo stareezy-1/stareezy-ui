@@ -1,6 +1,6 @@
 {
   "name": "@stareezy-ui/core",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Stareezy UI shared types, platform utilities, hooks",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
