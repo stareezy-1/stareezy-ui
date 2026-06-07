@@ -1,5 +1,11 @@
 # @stareezy-ui/cli
 
+## 1.1.2
+
+### Patch Changes
+
+- add new docs & fix sx props logic
+
 ## 1.1.0
 
 ### Minor Changes

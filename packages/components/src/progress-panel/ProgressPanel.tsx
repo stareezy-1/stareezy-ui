@@ -25,7 +25,6 @@ export const ProgressPanel: SzrFC<ProgressPanelProps> = (props) => {
   const { layout, sxProps, rest } = extractBoxLayoutProps(props);
   const sx = sxProps as import("../shared/sx").SxProp;
   const { sxStyle, sxClassName, sxCss } = useSx(sx);
-  const hasLayoutProps = Object.keys(layout).length > 0;
   const { steps, currentStep, style } = rest as ProgressPanelProps;
   const themed = useThemedColors();
 
@@ -138,9 +137,14 @@ export const ProgressPanel: SzrFC<ProgressPanelProps> = (props) => {
         })}
       </div>
     );
-    if (hasLayoutProps) return <Box {...layout}>{webContent}</Box>;
-    if (hasLayoutProps) return <Box {...layout}>{sxCss && isWeb && <SxStyleTag css={sxCss} scopeClass={sxClassName} />}{webContent}</Box>;
-    if (sxCss && isWeb) return <>{/* @ts-ignore */}<SxStyleTag css={sxCss} scopeClass={sxClassName} />{webContent}</>;
+    if (sxCss && isWeb)
+      return (
+        <>
+          {/* @ts-ignore */}
+          <SxStyleTag css={sxCss} scopeClass={sxClassName} />
+          {webContent}
+        </>
+      );
     return webContent;
   }
 
@@ -183,7 +187,6 @@ export const ProgressPanel: SzrFC<ProgressPanelProps> = (props) => {
       })}
     </View>
   );
-  if (hasLayoutProps) return <Box {...layout}>{nativeContent}</Box>;
   return nativeContent;
 };
 

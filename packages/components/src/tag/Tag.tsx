@@ -10,7 +10,6 @@
 import React from "react";
 import { useThemedColors } from "../shared/useThemedColors";
 import { isWeb } from "../shared/platform";
-import { Box } from "../primitives/Box";
 import type { BoxLayoutProps } from "../shared/boxLayoutProps";
 import { extractBoxLayoutProps } from "../shared/boxLayoutProps";
 import { ETagVariant } from "./Tag.types";
@@ -80,10 +79,9 @@ function resolveTagColors(
 // ---------------------------------------------------------------------------
 
 export const Tag: SzrFC<TagProps> = (props) => {
-  const { layout, sxProps, rest } = extractBoxLayoutProps(props);
+  const { sxProps, rest } = extractBoxLayoutProps(props);
   const sx = sxProps as import("../shared/sx").SxProp;
   const { sxStyle, sxClassName, sxCss } = useSx(sx);
-  const hasLayoutProps = Object.keys(layout).length > 0;
 
   const {
     label,
@@ -172,14 +170,6 @@ export const Tag: SzrFC<TagProps> = (props) => {
     })()
   );
 
-  if (hasLayoutProps) {
-    return (
-      <Box {...layout}>
-        {sxCss && isWeb && <SxStyleTag css={sxCss} scopeClass={sxClassName} />}
-        {tagElement}
-      </Box>
-    );
-  }
   if (sxCss && isWeb)
     return (
       <>

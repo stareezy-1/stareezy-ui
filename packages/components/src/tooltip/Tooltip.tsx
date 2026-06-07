@@ -86,7 +86,6 @@ export const Tooltip: SzrFC<TooltipProps> = (props) => {
   const { layout, sxProps, rest } = extractBoxLayoutProps(props);
   const sx = sxProps as import("../shared/sx").SxProp;
   const { sxStyle, sxClassName, sxCss } = useSx(sx);
-  const hasLayoutProps = Object.keys(layout).length > 0;
 
   const { content, children, placement = "top", testID } = rest as TooltipProps;
 
@@ -116,9 +115,6 @@ export const Tooltip: SzrFC<TooltipProps> = (props) => {
       </View>
     );
 
-    if (hasLayoutProps) {
-      return <Box {...layout}>{element}</Box>;
-    }
     return element;
   }
 
@@ -193,14 +189,6 @@ export const Tooltip: SzrFC<TooltipProps> = (props) => {
     </span>
   );
 
-  if (hasLayoutProps) {
-    return (
-      <Box {...layout}>
-        {sxCss && <SxStyleTag css={sxCss} scopeClass={sxClassName} />}
-        {tooltipElement}
-      </Box>
-    );
-  }
   if (sxCss)
     return (
       <>

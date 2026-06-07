@@ -15,7 +15,6 @@ import { flattenStyle } from "../shared/flattenStyle";
 import { isWeb } from "../shared/platform";
 import { View } from "../primitives/View";
 import type { StyleProp } from "../primitives/Box";
-import { Box } from "../primitives/Box";
 import { TouchableOpacity } from "../primitives/TouchableOpacity";
 import type { BoxLayoutProps } from "../shared/boxLayoutProps";
 import { extractBoxLayoutProps } from "../shared/boxLayoutProps";
@@ -282,10 +281,13 @@ function buildNativeContainerStyle(
 // ---------------------------------------------------------------------------
 
 export const Button: SzrFC<ButtonProps> = (props) => {
-  const { layout, sxProps, rest: buttonRest } = extractBoxLayoutProps(props);
-  const hasLayoutProps = Object.keys(layout).length > 0;
+  const {
+    layout: _layout,
+    sxProps,
+    rest: buttonRest,
+  } = extractBoxLayoutProps(props);
 
-  // Resolve sx directly into styles — no Box wrapper created for sx.
+  // Resolve sx + layout props directly into styles on the button element itself.
   const sx = sxProps as import("../shared/sx").SxProp;
   const { sxStyle, sxClassName, sxCss } = useSx(sx);
 
@@ -325,10 +327,7 @@ export const Button: SzrFC<ButtonProps> = (props) => {
 
   const a11yLabel = accessibilityLabel ?? testID;
   const isIconOnly = !!icon && !text && !children;
-  const callerFlat = {
-    ...flattenStyle(style),
-    ...sxStyle,
-  } as Record<string, unknown>;
+  const callerFlat = flattenStyle(style) as Record<string, unknown>;
 
   // ── Label content ──────────────────────────────────────────────────────────
   const labelContent = children ?? (
@@ -536,15 +535,7 @@ export const Button: SzrFC<ButtonProps> = (props) => {
     );
   }
 
-  // Wrap with Box only for layout props (outer positioning).
-  if (hasLayoutProps) {
-    return (
-      <Box {...layout}>
-        {sxCss && isWeb && <SxStyleTag css={sxCss} scopeClass={sxClassName} />}
-        {buttonElement}
-      </Box>
-    );
-  }
+  // Render SxStyleTag for responsive CSS rules (no Box wrapper needed).
   if (sxCss && isWeb)
     return (
       <>

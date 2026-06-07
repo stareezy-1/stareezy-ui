@@ -121,10 +121,9 @@ export interface DrawerProps extends BoxLayoutProps {
 // ---------------------------------------------------------------------------
 
 export const Drawer: SzrFC<DrawerProps> = (props) => {
-  const { layout, sxProps, rest } = extractBoxLayoutProps(props);
+  const { sxProps, rest } = extractBoxLayoutProps(props);
   const sx = sxProps as import("../shared/sx").SxProp;
   const { sxStyle, sxClassName, sxCss } = useSx(sx);
-  const hasLayoutProps = Object.keys(layout).length > 0;
 
   const {
     open,
@@ -243,14 +242,6 @@ export const Drawer: SzrFC<DrawerProps> = (props) => {
       </>
     );
 
-    if (hasLayoutProps) {
-      return (
-        <Box {...layout}>
-          {sxCss && <SxStyleTag css={sxCss} scopeClass={sxClassName} />}
-          {drawerElement}
-        </Box>
-      );
-    }
     if (sxCss)
       return (
         <>
@@ -353,9 +344,6 @@ export const Drawer: SzrFC<DrawerProps> = (props) => {
     </Modal>
   );
 
-  if (hasLayoutProps) {
-    return <Box {...layout}>{nativeElement}</Box>;
-  }
   return nativeElement;
 };
 

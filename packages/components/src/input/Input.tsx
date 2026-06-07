@@ -8,7 +8,6 @@ import { spacing } from "@stareezy-ui/tokens";
 import { useThemedColors } from "../shared/useThemedColors";
 import { ELabelsType, EHintTextType } from "../shared/types";
 import { isWeb } from "../shared/platform";
-import { View, Box } from "../primitives/Box";
 import { TouchableOpacity } from "../primitives/TouchableOpacity";
 import { flattenStyle } from "../shared/flattenStyle";
 import { Text, ETextType } from "../primitives/Text";
@@ -84,10 +83,9 @@ export interface IInputProps extends BoxLayoutProps {
 }
 
 export const Input: SzrFC<IInputProps> = (props) => {
-  const { layout, sxProps, rest: inputRest } = extractBoxLayoutProps(props);
+  const { sxProps, rest: inputRest } = extractBoxLayoutProps(props);
   const sx = sxProps as import("../shared/sx").SxProp;
   const { sxStyle, sxClassName, sxCss } = useSx(sx);
-  const hasLayoutProps = Object.keys(layout).length > 0;
 
   // Cast rest back to the component-specific props — extractBoxLayoutProps strips
   // layout keys at runtime; this cast is sound.
@@ -374,16 +372,23 @@ export const Input: SzrFC<IInputProps> = (props) => {
         )}
       </div>
     );
-    if (hasLayoutProps) return <Box {...layout}>{webContent}</Box>;
-    if (hasLayoutProps) return <Box {...layout}>{sxCss && isWeb && <SxStyleTag css={sxCss} scopeClass={sxClassName} />}{webContent}</Box>;
-    if (sxCss && isWeb) return <>{/* @ts-ignore */}<SxStyleTag css={sxCss} scopeClass={sxClassName} />{webContent}</>;
+
+    if (sxCss && isWeb)
+      return (
+        <>
+          {/* @ts-ignore */}
+          <SxStyleTag css={sxCss} scopeClass={sxClassName} />
+          {webContent}
+        </>
+      );
     return webContent;
   }
 
   // React Native
   // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const { TextInput } = require("react-native") as {
+  const { TextInput, View } = require("react-native") as {
     TextInput: React.ComponentType<Record<string, unknown>>;
+    View: React.ComponentType<Record<string, unknown>>;
   };
 
   const nativeContent = (
@@ -495,7 +500,6 @@ export const Input: SzrFC<IInputProps> = (props) => {
       )}
     </View>
   );
-  if (hasLayoutProps) return <Box {...layout}>{nativeContent}</Box>;
   return nativeContent;
 };
 

@@ -1,5 +1,13 @@
 # @stareezy-ui/compiler
 
+## 1.1.2
+
+### Patch Changes
+
+- add new docs & fix sx props logic
+- Updated dependencies
+  - @stareezy-ui/tokens@1.1.1
+
 ## 1.1.0
 
 ### Minor Changes

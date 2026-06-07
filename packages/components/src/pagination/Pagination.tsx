@@ -88,7 +88,6 @@ export const Pagination: SzrFC<PaginationProps> = (props) => {
   const { layout, sxProps, rest } = extractBoxLayoutProps(props);
   const sx = sxProps as import("../shared/sx").SxProp;
   const { sxStyle, sxClassName, sxCss } = useSx(sx);
-  const hasLayoutProps = Object.keys(layout).length > 0;
 
   const {
     page,
@@ -267,14 +266,6 @@ export const Pagination: SzrFC<PaginationProps> = (props) => {
     })()
   );
 
-  if (hasLayoutProps) {
-    return (
-      <Box {...layout}>
-        {sxCss && isWeb && <SxStyleTag css={sxCss} scopeClass={sxClassName} />}
-        {paginationElement}
-      </Box>
-    );
-  }
   if (sxCss && isWeb)
     return (
       <>

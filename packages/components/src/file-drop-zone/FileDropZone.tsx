@@ -3,7 +3,6 @@ import React, { useRef, useState } from "react";
 import { isWeb } from "../shared/platform";
 import { useThemedColors } from "../shared/useThemedColors";
 import { Text, ETextType } from "../primitives/Text";
-import { Box } from "../primitives/Box";
 import {
   makeFileDropZoneBaseStyle,
   makeFileDropZoneStateStyles,
@@ -26,10 +25,9 @@ export interface FileDropZoneProps extends BoxLayoutProps {
 }
 
 export const FileDropZone: SzrFC<FileDropZoneProps> = (props) => {
-  const { layout, sxProps, rest } = extractBoxLayoutProps(props);
+  const { sxProps, rest } = extractBoxLayoutProps(props);
   const sx = sxProps as import("../shared/sx").SxProp;
   const { sxStyle, sxClassName, sxCss } = useSx(sx);
-  const hasLayoutProps = Object.keys(layout).length > 0;
   const {
     onFiles,
     accept,
@@ -117,13 +115,6 @@ export const FileDropZone: SzrFC<FileDropZoneProps> = (props) => {
     </div>
   );
 
-  if (hasLayoutProps)
-    return (
-      <Box {...layout}>
-        {sxCss && <SxStyleTag css={sxCss} scopeClass={sxClassName} />}
-        {dropZoneEl}
-      </Box>
-    );
   if (sxCss)
     return (
       <>

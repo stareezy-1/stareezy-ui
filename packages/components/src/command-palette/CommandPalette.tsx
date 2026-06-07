@@ -3,7 +3,6 @@ import React, { useState, useEffect } from "react";
 import { isWeb } from "../shared/platform";
 import { useThemedColors } from "../shared/useThemedColors";
 import { Text, ETextType } from "../primitives/Text";
-import { Box } from "../primitives/Box";
 import {
   makeCommandPaletteOverlayStyle,
   makeCommandPaletteContainerStyle,
@@ -26,10 +25,9 @@ export interface CommandPaletteProps extends BoxLayoutProps {
 }
 
 export const CommandPalette: SzrFC<CommandPaletteProps> = (props) => {
-  const { layout, sxProps, rest } = extractBoxLayoutProps(props);
+  const { sxProps, rest } = extractBoxLayoutProps(props);
   const sx = sxProps as import("../shared/sx").SxProp;
   const { sxStyle, sxClassName, sxCss } = useSx(sx);
-  const hasLayoutProps = Object.keys(layout).length > 0;
   const {
     items,
     onClose,
@@ -120,13 +118,6 @@ export const CommandPalette: SzrFC<CommandPaletteProps> = (props) => {
     </div>
   );
 
-  if (hasLayoutProps)
-    return (
-      <Box {...layout}>
-        {sxCss && <SxStyleTag css={sxCss} scopeClass={sxClassName} />}
-        {paletteEl}
-      </Box>
-    );
   if (sxCss)
     return (
       <>

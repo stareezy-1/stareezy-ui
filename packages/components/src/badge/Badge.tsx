@@ -2,7 +2,6 @@ import React from "react";
 import { isWeb } from "../shared/platform";
 import { useThemedColors } from "../shared/useThemedColors";
 import { Text, ETextType } from "../primitives/Text";
-import { Box } from "../primitives/Box";
 import {
   badgeBaseStyle,
   makeBadgeVariantStyles,
@@ -23,10 +22,9 @@ export interface BadgeProps extends BoxLayoutProps {
 }
 
 export const Badge: SzrFC<BadgeProps> = (props) => {
-  const { layout, sxProps, rest } = extractBoxLayoutProps(props);
+  const { sxProps, rest } = extractBoxLayoutProps(props);
   const sx = sxProps as import("../shared/sx").SxProp;
   const { sxStyle, sxClassName, sxCss } = useSx(sx);
-  const hasLayoutProps = Object.keys(layout).length > 0;
   const { label, variant = "default", style } = rest as BadgeProps;
 
   const themed = useThemedColors();
@@ -56,7 +54,6 @@ export const Badge: SzrFC<BadgeProps> = (props) => {
       </span>
     );
   } else {
-    // React Native
     // eslint-disable-next-line @typescript-eslint/no-require-imports
     const { View } = require("react-native") as {
       View: React.ComponentType<Record<string, unknown>>;
@@ -79,7 +76,6 @@ export const Badge: SzrFC<BadgeProps> = (props) => {
     );
   }
 
-  if (hasLayoutProps) return <Box {...layout}>{content}</Box>;
   if (sxCss && isWeb)
     return (
       <>

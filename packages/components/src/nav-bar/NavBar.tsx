@@ -1,7 +1,6 @@
 import React from "react";
 import { isWeb } from "../shared/platform";
 import { useThemedColors } from "../shared/useThemedColors";
-import { Box } from "../primitives/Box";
 import {
   navBarGeometry,
   navBarLogoStyle,
@@ -16,10 +15,9 @@ import { useSx, SxStyleTag } from "../shared/useSx";
 export type { NavBarProps } from "./NavBar.types";
 
 export const NavBar: SzrFC<NavBarProps> = (props) => {
-  const { layout, sxProps, rest } = extractBoxLayoutProps(props);
+  const { sxProps, rest } = extractBoxLayoutProps(props);
   const sx = sxProps as import("../shared/sx").SxProp;
   const { sxStyle, sxClassName, sxCss } = useSx(sx);
-  const hasLayoutProps = Object.keys(layout).length > 0;
   const { logo, links, actions, scrolled = false, style } = rest as NavBarProps;
   const themed = useThemedColors();
 
@@ -56,13 +54,6 @@ export const NavBar: SzrFC<NavBarProps> = (props) => {
     </header>
   );
 
-  if (hasLayoutProps)
-    return (
-      <Box {...layout}>
-        {sxCss && <SxStyleTag css={sxCss} scopeClass={sxClassName} />}
-        {headerEl}
-      </Box>
-    );
   if (sxCss)
     return (
       <>
