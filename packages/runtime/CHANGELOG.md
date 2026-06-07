@@ -1,5 +1,14 @@
 # @stareezy-ui/runtime
 
+## 1.1.1
+
+### Patch Changes
+
+- add new docs & fix sx props logic
+- Updated dependencies
+  - @stareezy-ui/stylesheet@1.1.1
+  - @stareezy-ui/tokens@1.1.1
+
 ## 1.1.0
 
 ### Minor Changes

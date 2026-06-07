@@ -3,7 +3,6 @@ import React, { useEffect } from "react";
 import { isWeb } from "../shared/platform";
 import { useThemedColors } from "../shared/useThemedColors";
 import { Text, ETextType } from "../primitives/Text";
-import { Box } from "../primitives/Box";
 import {
   makeToastBaseStyle,
   makeToastVariantStyles,
@@ -26,10 +25,9 @@ export interface ToastProps extends BoxLayoutProps {
 }
 
 export const Toast: SzrFC<ToastProps> = (props) => {
-  const { layout, sxProps, rest } = extractBoxLayoutProps(props);
+  const { sxProps, rest } = extractBoxLayoutProps(props);
   const sx = sxProps as import("../shared/sx").SxProp;
   const { sxStyle, sxClassName, sxCss } = useSx(sx);
-  const hasLayoutProps = Object.keys(layout).length > 0;
   const {
     variant,
     message,
@@ -64,11 +62,7 @@ export const Toast: SzrFC<ToastProps> = (props) => {
         }}
       >
         <span
-          style={{
-            color: variantStyle.iconColor,
-            fontSize: 16,
-            flexShrink: 0,
-          }}
+          style={{ color: variantStyle.iconColor, fontSize: 16, flexShrink: 0 }}
         >
           {variantStyle.icon}
         </span>
@@ -99,19 +93,23 @@ export const Toast: SzrFC<ToastProps> = (props) => {
         )}
       </div>
     );
-    if (hasLayoutProps) return <Box {...layout}>{webContent}</Box>;
-    if (hasLayoutProps) return <Box {...layout}>{sxCss && isWeb && <SxStyleTag css={sxCss} scopeClass={sxClassName} />}{webContent}</Box>;
-    if (sxCss && isWeb) return <>{/* @ts-ignore */}<SxStyleTag css={sxCss} scopeClass={sxClassName} />{webContent}</>;
+    if (sxCss)
+      return (
+        <>
+          {/* @ts-ignore */}
+          <SxStyleTag css={sxCss} scopeClass={sxClassName} />
+          {webContent}
+        </>
+      );
     return webContent;
   }
 
-  // React Native
   // eslint-disable-next-line @typescript-eslint/no-require-imports
   const { View, TouchableOpacity } = require("react-native") as {
     View: React.ComponentType<Record<string, unknown>>;
     TouchableOpacity: React.ComponentType<Record<string, unknown>>;
   };
-  const nativeContent = (
+  return (
     <View
       style={{
         flexDirection: "row",
@@ -134,8 +132,6 @@ export const Toast: SzrFC<ToastProps> = (props) => {
       )}
     </View>
   );
-  if (hasLayoutProps) return <Box {...layout}>{nativeContent}</Box>;
-  return nativeContent;
 };
 
 Toast.displayName = "Toast";

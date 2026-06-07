@@ -13,7 +13,6 @@ import { isWeb } from "../shared/platform";
 import { flattenStyle } from "../shared/flattenStyle";
 import { TEXT_PRESETS } from "./Text.style";
 import { EFontStyle, ITextProps, TextStylePreset } from "./Text.props";
-import { Box } from "./Box";
 import { extractBoxLayoutProps } from "../shared/boxLayoutProps";
 import type { SzrFC } from "../shared/types";
 import { useSx, SxStyleTag } from "../shared/useSx";
@@ -46,10 +45,9 @@ const DEFAULT_PRESET: TextStylePreset = {
 // ---------------------------------------------------------------------------
 
 export const Text: SzrFC<ITextProps> = (props) => {
-  const { layout, sxProps, rest } = extractBoxLayoutProps(props);
+  const { layout: _layout, sxProps, rest } = extractBoxLayoutProps(props);
   const sx = sxProps as import("../shared/sx").SxProp;
   const { sxStyle, sxClassName, sxCss } = useSx(sx);
-  const hasLayoutProps = Object.keys(layout).length > 0;
 
   const {
     text = "",
@@ -108,7 +106,6 @@ export const Text: SzrFC<ITextProps> = (props) => {
       ...(isItalic ? { fontStyle: "italic" } : {}),
       ...(isUnderline ? { textDecorationLine: "underline" } : {}),
       ...flattenStyle(style),
-
       ...(flattenStyle(style).lineHeight !== undefined
         ? { lineHeight: `${flattenStyle(style).lineHeight}px` }
         : {}),
@@ -116,6 +113,8 @@ export const Text: SzrFC<ITextProps> = (props) => {
         ? { letterSpacing: `${flattenStyle(style).letterSpacing}em` }
         : {}),
       ...sxStyle,
+      // Direct color prop always wins over sx.color — re-apply after sxStyle spread
+      ...(colorOverride !== undefined ? { color: colorOverride } : {}),
     };
 
     const spanEl = (
@@ -131,13 +130,6 @@ export const Text: SzrFC<ITextProps> = (props) => {
       </span>
     );
 
-    if (hasLayoutProps)
-      return (
-        <Box {...layout}>
-          {sxCss && <SxStyleTag css={sxCss} scopeClass={sxClassName} />}
-          {spanEl}
-        </Box>
-      );
     if (sxCss)
       return (
         <>
@@ -170,6 +162,8 @@ export const Text: SzrFC<ITextProps> = (props) => {
     ...(isUnderline ? { textDecorationLine: "underline" } : {}),
     ...flattenStyle(style),
     ...sxStyle,
+    // Direct color prop always wins over sx.color
+    ...(colorOverride !== undefined ? { color: colorOverride } : {}),
   };
 
   const rnProps: Record<string, unknown> = {
@@ -184,7 +178,14 @@ export const Text: SzrFC<ITextProps> = (props) => {
   if (ellipsizeMode !== undefined) rnProps["ellipsizeMode"] = ellipsizeMode;
 
   const rnEl = <RNText {...rnProps} />;
-  if (hasLayoutProps) return <Box {...layout}>{rnEl}</Box>;
+  if (sxCss && isWeb)
+    return (
+      <>
+        {/* @ts-ignore */}
+        <SxStyleTag css={sxCss} scopeClass={sxClassName} />
+        {rnEl}
+      </>
+    );
   return rnEl;
 };
 

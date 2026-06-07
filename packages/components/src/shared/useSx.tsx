@@ -20,7 +20,7 @@
  *   return <View style={[myStyle, sxStyle]} />;
  */
 
-import { useId, useEffect, useRef } from "react";
+import React, { useId } from "react";
 import { resolveSxWeb, resolveSxNative } from "./sx";
 import type { SxProp } from "./sx";
 import { isWeb } from "./platform";
@@ -29,28 +29,22 @@ import { isWeb } from "./platform";
 // SxStyleTag — injects responsive sx CSS into the document head (web only)
 // ---------------------------------------------------------------------------
 
-/** Inject a <style> tag for responsive sx rules and clean up on unmount. */
+/** Inject a <style> tag for responsive sx rules inline in the render tree (SSR-safe). */
 export function SxStyleTag({
   css,
   scopeClass,
 }: {
   css: string;
   scopeClass: string;
-}): null {
-  const styleRef = useRef<HTMLStyleElement | null>(null);
-  useEffect(() => {
-    if (!css || typeof document === "undefined") return;
-    const el = document.createElement("style");
-    el.setAttribute("data-szx", scopeClass);
-    el.textContent = css;
-    document.head.appendChild(el);
-    styleRef.current = el;
-    return () => {
-      styleRef.current?.parentNode?.removeChild(styleRef.current);
-      styleRef.current = null;
-    };
-  }, [css, scopeClass]);
-  return null;
+}): React.ReactElement | null {
+  if (!css) return null;
+  return (
+    <style
+      data-szx={scopeClass}
+      // eslint-disable-next-line react/no-danger
+      dangerouslySetInnerHTML={{ __html: css }}
+    />
+  );
 }
 
 // ---------------------------------------------------------------------------

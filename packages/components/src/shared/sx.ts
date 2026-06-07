@@ -383,7 +383,23 @@ export function resolveSxWeb(
   const inlineStyle: StyleOut = {};
   const cssRules: string[] = [];
 
-  for (const [key, val] of Object.entries(sx)) {
+  // Shorthands that expand into multiple longhands (p→padding overrides paddingLeft etc.)
+  // Process non-shorthand keys first, then shorthand keys so shorthands win on collision.
+  const SHORTHAND_KEYS = new Set(Object.keys(SHORTHAND_MAP));
+  const entries = Object.entries(sx);
+  const nonShorthands = entries.filter(
+    ([k]) => !SHORTHAND_KEYS.has(k) && !k.startsWith("$"),
+  );
+  const shorthands = entries.filter(
+    ([k]) => SHORTHAND_KEYS.has(k) && !k.startsWith("$"),
+  );
+  const breakpointGroups = entries.filter(([k]) => k.startsWith("$"));
+
+  for (const [key, val] of [
+    ...nonShorthands,
+    ...shorthands,
+    ...breakpointGroups,
+  ]) {
     if (val === undefined || val === null) continue;
     applySxPropWeb(key, val, scopeClass, inlineStyle, cssRules);
   }
@@ -403,8 +419,14 @@ export function resolveSxNative(
 
   const out: StyleOut = {};
 
-  for (const [key, val] of Object.entries(sx)) {
-    if (val === undefined || val === null || key.startsWith("$")) continue;
+  // Process non-shorthand keys first, then shorthand keys so shorthands win on collision.
+  const SHORTHAND_KEYS = new Set(Object.keys(SHORTHAND_MAP));
+  const entries = Object.entries(sx).filter(([k]) => !k.startsWith("$"));
+  const nonShorthands = entries.filter(([k]) => !SHORTHAND_KEYS.has(k));
+  const shorthands = entries.filter(([k]) => SHORTHAND_KEYS.has(k));
+
+  for (const [key, val] of [...nonShorthands, ...shorthands]) {
+    if (val === undefined || val === null) continue;
 
     const resolved = resolveToken(val);
 

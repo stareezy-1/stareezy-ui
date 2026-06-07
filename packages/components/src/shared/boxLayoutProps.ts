@@ -233,22 +233,30 @@ export function extractBoxLayoutProps<P extends object>(
   rest: Omit<P, keyof BoxLayoutProps>;
 } {
   const configShorthands = getUiConfig()?.shorthands ?? {};
+  // layout is kept for backward compat but is always empty now —
+  // layout props are merged into sxProps so they resolve directly on the
+  // component's own element via useSx, with no Box wrapper needed.
   const layout: Partial<BoxLayoutProps> = {};
-  let sxProps: Partial<BoxLayoutProps> = {};
+  const sxProps: Record<string, unknown> = {};
   const rest: Record<string, unknown> = {};
 
+  // Collect sx contents first so direct layout props can override them
+  const rawSx = (props as Record<string, unknown>)["sx"];
+  if (rawSx && typeof rawSx === "object") {
+    Object.assign(sxProps, rawSx);
+  }
+
   for (const key of Object.keys(props as Record<string, unknown>)) {
+    if (key === "sx") continue;
     const value = (props as Record<string, unknown>)[key];
-    if (key === "sx") {
-      // Spread sx contents into sxProps — they'll be passed to the Box wrapper
-      // alongside the regular layout props so Box resolves them all at once.
-      sxProps = (value as Partial<BoxLayoutProps>) ?? {};
-    } else if (
+    if (
       BOX_LAYOUT_PROP_KEYS.has(key) ||
       key.startsWith("$") ||
       Object.prototype.hasOwnProperty.call(configShorthands, key)
     ) {
-      (layout as Record<string, unknown>)[key] = value;
+      // Merge layout props directly into sxProps so useSx resolves them
+      // onto the component's own element — no outer Box wrapper created.
+      sxProps[key] = value;
     } else {
       rest[key] = value;
     }
@@ -256,7 +264,7 @@ export function extractBoxLayoutProps<P extends object>(
 
   return {
     layout,
-    sxProps,
+    sxProps: sxProps as Partial<BoxLayoutProps>,
     rest: rest as Omit<P, keyof BoxLayoutProps>,
   };
 }

@@ -2,7 +2,6 @@ import React from "react";
 import { isWeb } from "../shared/platform";
 import { useThemedColors } from "../shared/useThemedColors";
 import { Text, ETextType } from "../primitives/Text";
-import { Box } from "../primitives/Box";
 import {
   cardBaseStyle,
   makeCardVariantStyles,
@@ -27,10 +26,9 @@ export interface CardProps extends Pick<BoxProps, "style">, BoxLayoutProps {
 }
 
 export const Card: SzrFC<CardProps> = (props) => {
-  const { layout, sxProps, rest } = extractBoxLayoutProps(props);
+  const { sxProps, rest } = extractBoxLayoutProps(props);
   const sx = sxProps as import("../shared/sx").SxProp;
   const { sxStyle, sxClassName, sxCss } = useSx(sx);
-  const hasLayoutProps = Object.keys(layout).length > 0;
   const {
     variant = "border",
     glowColor = "green",
@@ -70,16 +68,6 @@ export const Card: SzrFC<CardProps> = (props) => {
         {children}
       </div>
     );
-    if (hasLayoutProps) return <Box {...layout}>{webContent}</Box>;
-    if (hasLayoutProps)
-      return (
-        <Box {...layout}>
-          {sxCss && isWeb && (
-            <SxStyleTag css={sxCss} scopeClass={sxClassName} />
-          )}
-          {webContent}
-        </Box>
-      );
     if (sxCss && isWeb)
       return (
         <>
@@ -113,7 +101,14 @@ export const Card: SzrFC<CardProps> = (props) => {
       {children}
     </View>
   );
-  if (hasLayoutProps) return <Box {...layout}>{nativeContent}</Box>;
+  if (sxCss && isWeb)
+    return (
+      <>
+        {/* @ts-ignore */}
+        <SxStyleTag css={sxCss} scopeClass={sxClassName} />
+        {nativeContent}
+      </>
+    );
   return nativeContent;
 };
 
