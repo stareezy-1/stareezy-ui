@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 
 const SITE_URL =
-  process.env["NEXT_PUBLIC_SITE_URL"] ?? "https://ui.stareezy.tech";
+  process.env["NEXT_PUBLIC_SITE_URL"] ?? "https://ui.quasify.app";
 
 export default function robots(): MetadataRoute.Robots {
   return {

@@ -1,5 +1,5 @@
 /**
- * @stareezy-ui/components — server entry
+ * @quasify-ui/components — server entry
  *
  * Server-safe React Server Component (RSC) primitives.
  * Safe to import in Next.js App Router server components.

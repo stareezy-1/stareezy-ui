@@ -5,11 +5,11 @@ export type DocsTheme = "aurora" | "dark" | "light" | "steins-gate" | "quasar";
 const STORAGE_KEY = "szr-docs-theme";
 
 export function useDocsTheme() {
-  const [theme, setThemeState] = useState<DocsTheme>("aurora");
+  const [theme, setThemeState] = useState<DocsTheme>("quasar");
 
   useEffect(() => {
     const stored = localStorage.getItem(STORAGE_KEY) as DocsTheme | null;
-    const initial = stored ?? "aurora";
+    const initial = stored ?? "quasar";
     setThemeState(initial);
     document.documentElement.setAttribute("data-theme", initial);
   }, []);

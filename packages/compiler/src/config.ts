@@ -1,10 +1,10 @@
 /**
- * Compiler configuration for @stareezy-ui/compiler.
+ * Compiler configuration for @quasify-ui/compiler.
  * Defines prop-to-CSS-property mappings and build output options.
  */
 
 /**
- * Configuration interface for the Stareezy UI compiler.
+ * Configuration interface for the Quasify UI compiler.
  *
  * - `propMappings`: Maps JSX prop names to one or more CSS property names.
  *   A single string maps to one CSS property; an array maps to multiple.

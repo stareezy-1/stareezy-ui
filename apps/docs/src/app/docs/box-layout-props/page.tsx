@@ -4,8 +4,8 @@ import { DocPage, Callout, PropRow } from "../../../components/DocPage";
 export const metadata: Metadata = {
   title: "BoxLayoutProps",
   description:
-    "BoxLayoutProps — spacing, sizing, flex, custom shorthands, and $-prefixed breakpoint props available on every component in the Stareezy UI library.",
-  alternates: { canonical: "https://ui.stareezy.tech/docs/box-layout-props" },
+    "BoxLayoutProps — spacing, sizing, flex, custom shorthands, and $-prefixed breakpoint props available on every component in the Quasify UI library.",
+  alternates: { canonical: "https://ui.quasify.app/docs/box-layout-props" },
 };
 
 const SPACING_PROPS = [
@@ -63,44 +63,61 @@ export default function BoxLayoutPropsPage() {
       description="The shared layout prop type extended by every component — spacing, sizing, flex, custom shorthands, and $-prefixed breakpoint groups."
       badge="API Reference"
       icon="⬡"
-      badgeColor="#0C9182"
+      badgeColor="#ff6a1a"
     >
-      <h2>What is BoxLayoutProps?</h2>
-      <p>
-        <code>BoxLayoutProps</code> is a TypeScript type that bundles all
-        layout-related props:
-      </p>
-      <ul>
-        <li>Responsive spacing props (padding, margin)</li>
-        <li>Responsive sizing props (width, height)</li>
-        <li>Responsive flex props (flex, flexDirection, alignItems, gap, …)</li>
-        <li>
-          Custom shorthands declared in your{" "}
-          <code>createUi({"{ shorthands }"})</code> config, each wrapped in{" "}
-          <code>Responsive&lt;T&gt;</code>
-        </li>
-        <li>
-          <code>$</code>-prefixed breakpoint props (<code>$sm</code>,{" "}
-          <code>$md</code>, …) derived from your{" "}
-          <code>createUi({"{ media }"})</code> config
-        </li>
-      </ul>
+      <h2 className="gradient-text">What is BoxLayoutProps?</h2>
+      <div
+        style={{
+          background: "var(--color-surface)",
+          border: "1px solid var(--color-border-2)",
+          borderLeft: "4px solid #ff6a1a",
+          borderRadius: "0 12px 12px 0",
+          padding: "1rem 1.25rem",
+          marginBottom: "1.5rem",
+          boxShadow: "0 0 40px rgba(255,106,26,0.03)",
+        }}
+      >
+        <p>
+          <code>BoxLayoutProps</code> is a TypeScript type that bundles all
+          layout-related props:
+        </p>
+        <ul>
+          <li>Responsive spacing props (padding, margin)</li>
+          <li>Responsive sizing props (width, height)</li>
+          <li>Responsive flex props (flex, flexDirection, alignItems, gap, …)</li>
+          <li>
+            Custom shorthands declared in your{" "}
+            <code>createUi({"{ shorthands }"})</code> config, each wrapped in{" "}
+            <code>Responsive&lt;T&gt;</code>
+          </li>
+          <li>
+            <code>$</code>-prefixed breakpoint props (<code>$sm</code>,{" "}
+            <code>$md</code>, …) derived from your{" "}
+            <code>createUi({"{ media }"})</code> config
+          </li>
+        </ul>
+      </div>
 
       <Callout type="info">
-        Every component in <code>@stareezy-ui/components</code> extends{" "}
+        Every component in <code>@quasify-ui/components</code> extends{" "}
         <code>BoxLayoutProps</code>. You can pass layout props directly to any
         component — they are forwarded to the root element automatically.
       </Callout>
 
       {/* ── All components accept these props ────────────────────────────── */}
-      <h2>Every component accepts these props</h2>
-      <pre>
+      <h2 className="gradient-text">Every component accepts these props</h2>
+      <pre
+        style={{
+          border: "1px solid var(--color-border)",
+          boxShadow: "0 0 40px rgba(255,106,26,0.03)",
+        }}
+      >
         <code>{`import {
   Button, Input, Card, Badge, Accordion,
   Avatar, Checkbox, Dropdown, Modal,
   Progress, Skeleton, Spinner, Switch, Tabs,
   Breadcrumb, Pagination, Table, Tag, Tooltip, Drawer,
-} from '@stareezy-ui/components'
+} from '@quasify-ui/components'
 
 // Spacing on any component
 <Button p={{ base: 8, md: 12 }} mb={16} />
@@ -121,13 +138,18 @@ export default function BoxLayoutPropsPage() {
       </pre>
 
       {/* ── Usage with custom shorthands ─────────────────────────────────── */}
-      <h2>With custom shorthands</h2>
+      <h2 className="gradient-text">With custom shorthands</h2>
       <p>
-        Custom shorthands from your <code>stareezy.config.ts</code> are also
+        Custom shorthands from your <code>quasify.config.ts</code> are also
         part of <code>BoxLayoutProps</code> after module augmentation. They
         accept both plain values and responsive objects.
       </p>
-      <pre>
+      <pre
+        style={{
+          border: "1px solid var(--color-border)",
+          boxShadow: "0 0 40px rgba(255,106,26,0.03)",
+        }}
+      >
         <code>{`// With shorthands: { br: 'borderRadius', w: 'width', h: 'height' } as const
 
 <Button
@@ -141,11 +163,11 @@ export default function BoxLayoutPropsPage() {
       </pre>
 
       {/* ── Spacing props ─────────────────────────────────────────────────── */}
-      <h2>Spacing props</h2>
+      <h2 className="gradient-text">Spacing props</h2>
       <div style={{ overflowX: "auto" }}>
         <table>
           <thead>
-            <tr>
+            <tr style={{ borderTop: "2px solid #ff6a1a" }}>
               <th>Prop</th>
               <th>CSS/RN property</th>
               <th>Type</th>
@@ -155,7 +177,7 @@ export default function BoxLayoutPropsPage() {
             {SPACING_PROPS.map(([prop, css, type]) => (
               <tr key={prop}>
                 <td>
-                  <code>{prop}</code>
+                  <code style={{ color: "#ff6a1a" }}>{prop}</code>
                 </td>
                 <td>
                   <code
@@ -178,11 +200,11 @@ export default function BoxLayoutPropsPage() {
       </div>
 
       {/* ── Sizing props ─────────────────────────────────────────────────── */}
-      <h2>Sizing props</h2>
+      <h2 className="gradient-text">Sizing props</h2>
       <div style={{ overflowX: "auto" }}>
         <table>
           <thead>
-            <tr>
+            <tr style={{ borderTop: "2px solid #ff6a1a" }}>
               <th>Prop</th>
               <th>CSS/RN property</th>
               <th>Type</th>
@@ -192,7 +214,7 @@ export default function BoxLayoutPropsPage() {
             {SIZING_PROPS.map(([prop, css, type]) => (
               <tr key={prop}>
                 <td>
-                  <code>{prop}</code>
+                  <code style={{ color: "#ff6a1a" }}>{prop}</code>
                 </td>
                 <td>
                   <code
@@ -215,11 +237,11 @@ export default function BoxLayoutPropsPage() {
       </div>
 
       {/* ── Flex props ───────────────────────────────────────────────────── */}
-      <h2>Flex props</h2>
+      <h2 className="gradient-text">Flex props</h2>
       <div style={{ overflowX: "auto" }}>
         <table>
           <thead>
-            <tr>
+            <tr style={{ borderTop: "2px solid #ff6a1a" }}>
               <th>Prop</th>
               <th>CSS/RN property</th>
               <th>Type</th>
@@ -229,7 +251,7 @@ export default function BoxLayoutPropsPage() {
             {FLEX_PROPS.map(([prop, css, type]) => (
               <tr key={prop}>
                 <td>
-                  <code>{prop}</code>
+                  <code style={{ color: "#ff6a1a" }}>{prop}</code>
                 </td>
                 <td>
                   <code
@@ -252,15 +274,30 @@ export default function BoxLayoutPropsPage() {
       </div>
 
       {/* ── extractBoxLayoutProps ─────────────────────────────────────────── */}
-      <h2>extractBoxLayoutProps utility</h2>
+      <h2 className="gradient-text">extractBoxLayoutProps utility</h2>
       <p>
         When building custom components that should accept{" "}
         <code>BoxLayoutProps</code>, use <code>extractBoxLayoutProps</code> to
         split layout props from component-specific props:
       </p>
-      <pre>
-        <code>{`import { extractBoxLayoutProps, Box } from '@stareezy-ui/components'
-import type { BoxLayoutProps } from '@stareezy-ui/components'
+      <div
+        style={{
+          background: "var(--color-surface)",
+          border: "1px solid var(--color-border-2)",
+          borderRadius: 12,
+          padding: "0.25rem 0",
+          backdropFilter: "blur(8px)",
+          boxShadow: "0 0 40px rgba(255,106,26,0.06)",
+        }}
+      >
+        <pre
+          style={{
+            border: "1px solid var(--color-border)",
+            boxShadow: "0 0 40px rgba(255,106,26,0.03)",
+          }}
+        >
+          <code>{`import { extractBoxLayoutProps, Box } from '@quasify-ui/components'
+import type { BoxLayoutProps } from '@quasify-ui/components'
 
 interface MyCardProps extends BoxLayoutProps {
   title: string
@@ -282,7 +319,8 @@ function MyCard({ title, children, ...props }: MyCardProps) {
 <MyCard title="Hello" p={{ base: 12, md: 20 }} mb={16}>
   Content here
 </MyCard>`}</code>
-      </pre>
+        </pre>
+      </div>
 
       <Callout type="tip">
         All built-in components already call <code>extractBoxLayoutProps</code>{" "}

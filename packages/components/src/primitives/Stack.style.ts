@@ -5,7 +5,7 @@
  * Web uses display:'flex' (not flex:1).
  */
 
-import { spacing } from "@stareezy-ui/tokens";
+import { spacing } from "@quasify-ui/tokens";
 
 // ---------------------------------------------------------------------------
 // Enums

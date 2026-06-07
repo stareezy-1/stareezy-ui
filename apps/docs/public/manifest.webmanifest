@@ -1,6 +1,6 @@
 {
-  "name": "Stareezy UI — Typed Design Token System",
-  "short_name": "Stareezy UI",
+  "name": "Quasify UI — Typed Design Token System",
+  "short_name": "Quasify UI",
   "description": "A fully typed, cross-platform design token system and component library for React Native and web.",
   "start_url": "/",
   "display": "standalone",
@@ -33,7 +33,7 @@
     {
       "name": "Installation",
       "url": "/docs/installation",
-      "description": "Get started with Stareezy UI"
+      "description": "Get started with Quasify UI"
     },
     {
       "name": "Components",

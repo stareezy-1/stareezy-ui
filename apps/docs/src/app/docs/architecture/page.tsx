@@ -4,8 +4,8 @@ import { DocPage, Callout } from "../../../components/DocPage";
 export const metadata: Metadata = {
   title: "Architecture",
   description:
-    "Stareezy UI monorepo architecture — packages, token flow, and design decisions.",
-  alternates: { canonical: "https://ui.stareezy.tech/docs/architecture" },
+    "Quasify UI monorepo architecture — packages, token flow, and design decisions.",
+  alternates: { canonical: "https://ui.quasify.app/docs/architecture" },
 };
 
 const PACKAGES = [
@@ -37,13 +37,13 @@ const PACKAGES = [
     name: "compiler",
     color: "#5D2555",
     deps: "tokens (build-time only)",
-    desc: "Babel/Vite/Metro plugin. Reads stareezy.config.ts, extracts Token props at build time, emits atomic CSS. ThemeToken props are not extracted — they resolve at runtime.",
+    desc: "Babel/Vite/Metro plugin. Reads quasify.config.ts, extracts Token props at build time, emits atomic CSS. ThemeToken props are not extracted — they resolve at runtime.",
   },
   {
     name: "components",
     color: "#535A5E",
     deps: "tokens, core, runtime",
-    desc: "17+ cross-platform components. Box accepts Token<T>, ThemeToken, and plain values. Custom shorthands from SzrCustomConfig are typed via module augmentation.",
+    desc: "17+ cross-platform components. Box accepts Token<T>, ThemeToken, and plain values. Custom shorthands from QuasifyCustomConfig are typed via module augmentation.",
   },
 ];
 
@@ -51,14 +51,14 @@ export default function ArchitecturePage() {
   return (
     <DocPage
       title="Architecture"
-      description="How Stareezy UI is organized as a monorepo with strict dependency boundaries."
+      description="How Quasify UI is organized as a monorepo with strict dependency boundaries."
       badge="Reference"
       icon="⬢"
-      badgeColor="#535A5E"
+      badgeColor="#6a5048"
     >
-      <h2>Package structure</h2>
+      <h2 className="gradient-text">Package structure</h2>
       <pre>
-        <code>{`stareezy-ui/
+        <code>{`quasify-ui/
 ├── packages/
 │   ├── tokens/       # Token definitions, theme system, t accessor, createUi
 │   ├── core/         # Utilities, hooks, platform helpers
@@ -72,7 +72,7 @@ export default function ArchitecturePage() {
     └── playground/   # Live code editor`}</code>
       </pre>
 
-      <h2>Build order</h2>
+      <h2 className="gradient-text">Build order</h2>
       <p>
         Packages must be built in dependency order. The{" "}
         <code>pnpm run build</code> script handles this automatically:
@@ -81,7 +81,7 @@ export default function ArchitecturePage() {
         <code>{`tokens → core / stylesheet → runtime → compiler → components`}</code>
       </pre>
 
-      <h2>Package responsibilities</h2>
+      <h2 className="gradient-text">Package responsibilities</h2>
       <div
         style={{
           display: "flex",
@@ -96,8 +96,12 @@ export default function ArchitecturePage() {
             style={{
               display: "flex",
               gap: "1rem",
-              background: "var(--color-surface)",
+              background: "rgba(255, 255, 255, 0.03)",
+              backdropFilter: "blur(12px)",
+              WebkitBackdropFilter: "blur(12px)",
               border: "1px solid var(--color-border-2)",
+              borderLeft:
+                "2px solid color-mix(in srgb, var(--brand-primary) 30%, transparent)",
               borderRadius: 12,
               padding: "1rem 1.25rem",
               alignItems: "flex-start",
@@ -108,15 +112,15 @@ export default function ArchitecturePage() {
                 style={{
                   fontSize: "0.82rem",
                   fontWeight: 700,
-                  color: pkg.color,
+                  color: "var(--brand-500)",
                 }}
               >
-                @stareezy-ui/{pkg.name}
+                @quasify-ui/{pkg.name}
               </code>
               <div
                 style={{
                   fontSize: "0.68rem",
-                  color: "var(--color-muted)",
+                  color: "color-mix(in srgb, var(--brand-500) 60%, transparent)",
                   fontFamily: "var(--font-mono)",
                   marginTop: 2,
                 }}
@@ -138,7 +142,7 @@ export default function ArchitecturePage() {
         ))}
       </div>
 
-      <h2>Token flow</h2>
+      <h2 className="gradient-text">Token flow</h2>
       <div
         style={{
           display: "flex",
@@ -191,6 +195,8 @@ export default function ArchitecturePage() {
                 fontWeight: 800,
                 fontSize: "0.8rem",
                 flexShrink: 0,
+                boxShadow:
+                  "0 0 8px 2px color-mix(in srgb, var(--brand-500) 40%, transparent)",
               }}
             >
               {step.n}
@@ -215,42 +221,42 @@ export default function ArchitecturePage() {
         ))}
       </div>
 
-      <h2>Two token types</h2>
+      <h2 className="gradient-text">Two token types</h2>
       <p>
-        There are two distinct token types in Stareezy UI — understanding the
+        There are two distinct token types in Quasify UI — understanding the
         difference is key:
       </p>
       <pre>
         <code>{`// Token<T> — static, always the same value
-import { colors } from '@stareezy-ui/tokens'
+import { colors } from '@quasify-ui/tokens'
 colors.celurenBlue[500]
 // { __token: true, id: "celurenBlue-500", value: "#024CCE" }
 // → Extracted by compiler, resolved to CSS class at build time
 
 // ThemeToken — dynamic, resolves to current theme's value at render time
-import { t } from '@stareezy-ui/tokens'
+import { t } from '@quasify-ui/tokens'
 t.text.primary
 // { __themeToken: true, path: "text.primary" }
 // → NOT extracted by compiler, resolved via useTheme() at render time
 // → aurora: "#f0f0f8", dark: "#f0f6fc", steins-gate: "#e8dcc8"`}</code>
       </pre>
 
-      <h2>Module augmentation</h2>
+      <h2 className="gradient-text">Module augmentation</h2>
       <p>
         Custom shorthands from <code>createUi()</code> flow into{" "}
         <code>BoxProps</code> via TypeScript module augmentation:
       </p>
       <pre>
-        <code>{`// stareezy.config.ts
-declare module '@stareezy-ui/tokens' {
-  interface SzrCustomConfig extends typeof ui {}
+        <code>{`// quasify.config.ts
+declare module '@quasify-ui/tokens' {
+  interface QuasifyCustomConfig extends typeof ui {}
 }
 
 // Now BoxProps includes your shorthands:
 <Box br={12} f={1} />  // ✅ typed — br → borderRadius, f → flex`}</code>
       </pre>
 
-      <h2>Atomic CSS strategy</h2>
+      <h2 className="gradient-text">Atomic CSS strategy</h2>
       <p>
         Each token maps to exactly one CSS class. Theme switching requires zero
         JavaScript re-renders on web:
@@ -270,7 +276,7 @@ declare module '@stareezy-ui/tokens' {
         JavaScript environment including Node.js scripts and CDN bundles.
       </Callout>
 
-      <h2>Tree shaking</h2>
+      <h2 className="gradient-text">Tree shaking</h2>
       <p>
         Every token category lives in its own file. Importing{" "}
         <code>colors</code> does not pull in <code>spacing</code>,{" "}

@@ -1,4 +1,4 @@
-// @stareezy-ui/core
+// @quasify-ui/core
 // Shared types, platform utilities, hooks.
 
 export * from "./guards";

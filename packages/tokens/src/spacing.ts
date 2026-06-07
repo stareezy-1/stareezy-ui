@@ -1,5 +1,5 @@
 /**
- * Spacing tokens for Stareezy UI.
+ * Spacing tokens for Quasify UI.
  *
  * All values are raw pixel numbers (no convertSpacing — that is a React Native
  * utility in packages/core; the token store holds the raw values).

@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import React from "react";
-import { Badge } from "@stareezy-ui/components";
-import type { BadgeVariant } from "@stareezy-ui/components";
+import { Badge } from "@quasify-ui/components";
+import type { BadgeVariant } from "@quasify-ui/components";
 
 const meta: Meta<typeof Badge> = {
   title: "Components/Badge",

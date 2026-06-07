@@ -2,7 +2,7 @@
 
 const STORYBOOK_URL =
   process.env["NEXT_PUBLIC_STORYBOOK_URL"] ??
-  "https://stareezy-ui-storybook.vercel.app/";
+  "https://Quasify-ui-storybook.vercel.app/";
 
 export function StorybookCard() {
   return (

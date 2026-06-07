@@ -1,5 +1,5 @@
 /**
- * Breakpoints for the Stareezy UI responsive system.
+ * Breakpoints for the Quasify UI responsive system.
  *
  * Default values match common device widths (mobile-first).
  * Override by calling `configureBreakpoints()` once at app startup,
@@ -10,14 +10,14 @@
  *   <Box display={{ base: "none", md: "flex" }} />
  */
 
-import type { ConfigBreakpointKey } from "@stareezy-ui/tokens";
+import type { ConfigBreakpointKey } from "@quasify-ui/tokens";
 
 // ---------------------------------------------------------------------------
 // Breakpoint keys
 // ---------------------------------------------------------------------------
 
 /**
- * Re-exported from @stareezy-ui/tokens so that this derives directly from
+ * Re-exported from @quasify-ui/tokens so that this derives directly from
  * the consuming app's createUi({ media }) configuration via module augmentation.
  * When no augmentation is present, falls back to the default union.
  */
@@ -51,7 +51,7 @@ function ensureInitialized(): void {
   if (_initialized) return;
   _initialized = true;
   const global = globalThis as Record<string, unknown>;
-  const fromChannel = global["__stareezy_breakpoints__"];
+  const fromChannel = global["__Quasify_breakpoints__"];
   if (
     fromChannel !== null &&
     typeof fromChannel === "object" &&

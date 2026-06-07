@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import { DocPage, Callout, PropRow } from "../../../../components/DocPage";
+import { BreadcrumbPreview } from "../ComponentPreview";
 
 export const metadata: Metadata = {
   title: "Breadcrumb",
   description:
     "Cross-platform Breadcrumb navigation component with separator customization, overflow handling, and full accessibility support.",
   alternates: {
-    canonical: "https://ui.stareezy.tech/docs/components/breadcrumb",
+    canonical: "https://ui.quasify.app/docs/components/breadcrumb",
   },
 };
 
@@ -17,15 +18,24 @@ export default function BreadcrumbPage() {
       description="Hierarchical navigation trail with customizable separators and full ARIA support."
       badge="Component"
       icon="◂"
-      badgeColor="#024CCE"
+      badgeColor="#ff6a1a"
     >
-      <h2>Import</h2>
-      <pre>
-        <code>{`import { Breadcrumb } from '@stareezy-ui/components'`}</code>
+      <h2 className="gradient-text">Import</h2>
+      <pre
+        style={{
+          border: "1px solid var(--color-border)",
+        }}
+      >
+        <code>{`import { Breadcrumb } from '@quasify-ui/components'`}</code>
       </pre>
 
-      <h2>Basic usage</h2>
-      <pre>
+      <h2 className="gradient-text">Basic usage</h2>
+      <BreadcrumbPreview />
+      <pre
+        style={{
+          border: "1px solid var(--color-border)",
+        }}
+      >
         <code>{`<Breadcrumb
   items={[
     { label: 'Home', href: '/' },
@@ -35,8 +45,12 @@ export default function BreadcrumbPage() {
 />`}</code>
       </pre>
 
-      <h2>Custom separator</h2>
-      <pre>
+      <h2 className="gradient-text">Custom separator</h2>
+      <pre
+        style={{
+          border: "1px solid var(--color-border)",
+        }}
+      >
         <code>{`<Breadcrumb
   items={[
     { label: 'Home', href: '/' },
@@ -48,8 +62,12 @@ export default function BreadcrumbPage() {
 />`}</code>
       </pre>
 
-      <h2>With icons</h2>
-      <pre>
+      <h2 className="gradient-text">With icons</h2>
+      <pre
+        style={{
+          border: "1px solid var(--color-border)",
+        }}
+      >
         <code>{`<Breadcrumb
   items={[
     { label: 'Home', href: '/', icon: <HomeIcon /> },
@@ -59,8 +77,12 @@ export default function BreadcrumbPage() {
 />`}</code>
       </pre>
 
-      <h2>With BoxLayoutProps</h2>
-      <pre>
+      <h2 className="gradient-text">With BoxLayoutProps</h2>
+      <pre
+        style={{
+          border: "1px solid var(--color-border)",
+        }}
+      >
         <code>{`<Breadcrumb
   items={items}
   mb={16}
@@ -68,7 +90,7 @@ export default function BreadcrumbPage() {
 />`}</code>
       </pre>
 
-      <h2>Props</h2>
+      <h2 className="gradient-text">Props</h2>
       <table>
         <thead>
           <tr>
@@ -97,8 +119,12 @@ export default function BreadcrumbPage() {
         </tbody>
       </table>
 
-      <h2>BreadcrumbItem type</h2>
-      <pre>
+      <h2 className="gradient-text">BreadcrumbItem type</h2>
+      <pre
+        style={{
+          border: "1px solid var(--color-border)",
+        }}
+      >
         <code>{`interface BreadcrumbItem {
   label: string
   href?: string       // if omitted, renders as current-page text (no link)
@@ -106,7 +132,7 @@ export default function BreadcrumbPage() {
 }`}</code>
       </pre>
 
-      <h2>Accessibility</h2>
+      <h2 className="gradient-text">Accessibility</h2>
       <Callout type="info">
         Breadcrumb renders a <code>&lt;nav&gt;</code> element with{" "}
         <code>aria-label=&quot;Breadcrumb&quot;</code> and an ordered list. The
@@ -114,7 +140,11 @@ export default function BreadcrumbPage() {
         Separator elements are hidden from assistive technologies with{" "}
         <code>aria-hidden=&quot;true&quot;</code>.
       </Callout>
-      <pre>
+      <pre
+        style={{
+          border: "1px solid var(--color-border)",
+        }}
+      >
         <code>{`<!-- Rendered HTML -->
 <nav aria-label="Breadcrumb">
   <ol>
@@ -127,12 +157,12 @@ export default function BreadcrumbPage() {
 </nav>`}</code>
       </pre>
 
-      <h2>Themes</h2>
+      <h2 className="gradient-text">Themes</h2>
       <p>
         Breadcrumb is Theme_Reactive — all colors (link color, separator color,
         current-page color) are resolved through <code>useThemedColors()</code>{" "}
-        at render time. It renders correctly in all five built-in themes: light,
-        dark, aurora, steins-gate, and quasar.
+        at render time. It renders correctly in all five built-in themes: quasar,
+        light, dark, aurora, and steins-gate.
       </p>
     </DocPage>
   );

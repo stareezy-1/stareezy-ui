@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * Stareezy UI Playground
+ * Quasify UI Playground
  *
  * Uses Sandpack for real live code execution in an iframe.
  * The Run button actually compiles and renders the code.

@@ -1,5 +1,5 @@
 /**
- * Color tokens for Stareezy UI.
+ * Color tokens for Quasify UI.
  *
  * All values are wrapped with the `token()` factory so every color carries
  * a stable `id` and a typed `value`.  The objects are declared `as const`

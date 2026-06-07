@@ -1,10 +1,10 @@
 /**
- * stareezy CLI — main entry point.
+ * Quasify CLI — main entry point.
  *
  * Usage:
- *   stareezy create [project-name] [--template next|vite|expo]
- *   stareezy init   [--yes]
- *   stareezy add    <component> [component...] [--yes] [--skip-init]
+ *   quasify create [project-name] [--template next|vite|expo]
+ *   quasify init   [--yes]
+ *   quasify add    <component> [component...] [--yes] [--skip-init]
  */
 
 import { runCreate } from "./commands/create.js";
@@ -47,22 +47,22 @@ function parseArgs(argv: string[]): {
 
 function printHelp(): void {
   console.log(`
-stareezy — Stareezy UI CLI
+quasify — Quasify UI CLI
 
 Usage:
-  stareezy create [project-name] [--template next|vite|expo]
-  stareezy init   [--yes]
-  stareezy add    <component> [component...] [--yes] [--skip-init]
+  quasify create [project-name] [--template next|vite|expo]
+  quasify init   [--yes]
+  quasify add    <component> [component...] [--yes] [--skip-init]
 
 Commands:
   create   Scaffold a new project from a pre-wired template
-  init     Add stareezy.config.ts, compiler wiring, and ThemeProvider to the current project
+  init     Add quasify.config.ts, compiler wiring, and ThemeProvider to the current project
   add      Install one or more components into the current project
 
 Options:
   --template   Template to use with create (next | vite | expo)
   --yes        Answer yes to all prompts
-  --skip-init  Skip the init offer when running add
+  --skip-init  Skip the init offer when adding components
 
 Available components:
   ${getAllComponents()
@@ -70,9 +70,9 @@ Available components:
     .join(", ")}
 
 Examples:
-  stareezy create my-app --template next
-  stareezy init
-  stareezy add button input card
+  quasify create my-app --template next
+  quasify init
+  quasify add button input card
 `);
 }
 
@@ -100,7 +100,7 @@ async function main(): Promise<void> {
     }
 
     case "init": {
-      console.log("Initialising stareezy in the current project...\n");
+      console.log("Initialising Quasify in the current project...\n");
       const result = await runInit({ cwd, yes });
       if (
         result.skippedConfig &&

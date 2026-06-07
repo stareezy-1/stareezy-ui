@@ -2,16 +2,16 @@ import { defineConfig } from "tsup";
 import { reactGlobalPlugin } from "./cdn-react-global-plugin";
 
 export default defineConfig({
-  entry: { "stareezy-core": "src/index.ts" },
+  entry: { "Quasify-core": "src/index.ts" },
   format: ["iife"],
-  globalName: "StareezyCore",
+  globalName: "QuasifyCore",
   minify: true,
   clean: false,
   sourcemap: true,
   outDir: "dist/cdn",
   tsconfig: "tsconfig.json",
-  // Bundle @stareezy-ui/tokens into the IIFE so it's self-contained.
+  // Bundle @quasify-ui/tokens into the IIFE so it's self-contained.
   // React is mapped to window.React via plugin.
-  noExternal: ["@stareezy-ui/tokens"],
+  noExternal: ["@quasify-ui/tokens"],
   esbuildPlugins: [reactGlobalPlugin()],
 });

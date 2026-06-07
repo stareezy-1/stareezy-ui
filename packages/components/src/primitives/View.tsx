@@ -1,5 +1,5 @@
 /**
- * View — cross-platform View primitive for Stareezy UI.
+ * View — cross-platform View primitive for Quasify UI.
  *
  * Mirrors React Native's ViewProps interface exactly, while rendering
  * correctly on both web (as a <div>) and React Native (as a <View>).

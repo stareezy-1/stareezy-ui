@@ -9,9 +9,9 @@
     "next": "^16.0.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "@stareezy-ui/components": "workspace:*",
-    "@stareezy-ui/tokens": "workspace:*",
-    "@stareezy-ui/compiler": "workspace:*"
+    "@quasify-ui/components": "workspace:*",
+    "@quasify-ui/tokens": "workspace:*",
+    "@quasify-ui/compiler": "workspace:*"
   },
   "devDependencies": {
     "@types/react": "^19.0.0",

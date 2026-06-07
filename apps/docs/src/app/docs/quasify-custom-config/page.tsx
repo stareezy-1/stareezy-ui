@@ -2,25 +2,25 @@ import type { Metadata } from "next";
 import { DocPage, Callout, Step } from "../../../components/DocPage";
 
 export const metadata: Metadata = {
-  title: "SzrCustomConfig",
+  title: "QuasifyCustomConfig",
   description:
-    "Module augmentation guide for SzrCustomConfig — how to declare custom media breakpoints and shorthands so they flow into the Stareezy UI type system.",
-  alternates: { canonical: "https://ui.stareezy.tech/docs/szr-custom-config" },
+    "Module augmentation guide for QuasifyCustomConfig — how to declare custom media breakpoints and shorthands so they flow into the Quasify UI type system.",
+  alternates: { canonical: "https://ui.quasify.app/docs/quasify-custom-config" },
 };
 
-export default function SzrCustomConfigPage() {
+export default function QuasifyCustomConfigPage() {
   return (
     <DocPage
-      title="SzrCustomConfig"
-      description="Module augmentation pattern that feeds your createUi configuration into the Stareezy UI type system — enabling typed breakpoints and custom shorthand props everywhere."
+      title="QuasifyCustomConfig"
+      description="Module augmentation pattern that feeds your createUi configuration into the Quasify UI type system — enabling typed breakpoints and custom shorthand props everywhere."
       badge="API Reference"
       icon="⬢"
       badgeColor="#5D2555"
     >
-      <h2>What is SzrCustomConfig?</h2>
+      <h2>What is QuasifyCustomConfig?</h2>
       <p>
-        <code>SzrCustomConfig</code> is a TypeScript interface exported from{" "}
-        <code>@stareezy-ui/tokens</code> that acts as a bridge between your{" "}
+        <code>QuasifyCustomConfig</code> is a TypeScript interface exported from{" "}
+        <code>@quasify-ui/tokens</code> that acts as a bridge between your{" "}
         <code>createUi()</code> configuration and the rest of the type system.
         By augmenting it with <code>typeof ui</code>, you inject your custom
         breakpoints and shorthands into <code>BreakpointKey</code>,{" "}
@@ -34,14 +34,14 @@ export default function SzrCustomConfigPage() {
       </Callout>
 
       {/* ── How to augment ───────────────────────────────────────────────── */}
-      <h2>How to augment SzrCustomConfig</h2>
+      <h2>How to augment QuasifyCustomConfig</h2>
       <p>
         Add the <code>declare module</code> block after calling{" "}
-        <code>createUi()</code> in your <code>stareezy.config.ts</code>:
+        <code>createUi()</code> in your <code>quasify.config.ts</code>:
       </p>
       <pre>
-        <code>{`// stareezy.config.ts
-import { createUi, themes } from '@stareezy-ui/tokens'
+        <code>{`// quasify.config.ts
+import { createUi, themes } from '@quasify-ui/tokens'
 
 export const ui = createUi({
   themes: {
@@ -68,12 +68,12 @@ export const ui = createUi({
 })
 
 // ── Module augmentation ──────────────────────────────────────────────
-// Extend SzrCustomConfig with the full type of your ui config.
+// Extend QuasifyCustomConfig with the full type of your ui config.
 // This single declaration makes your media keys and shorthands
 // available everywhere in the type system.
 type AppConfig = typeof ui
-declare module '@stareezy-ui/tokens' {
-  interface SzrCustomConfig extends AppConfig {}
+declare module '@quasify-ui/tokens' {
+  interface QuasifyCustomConfig extends AppConfig {}
 }
 
 export default ui`}</code>
@@ -210,7 +210,7 @@ export default ui`}</code>
       <h2>Minimal config (no augmentation needed)</h2>
       <p>
         If you do not call <code>createUi()</code> or do not augment{" "}
-        <code>SzrCustomConfig</code>, the defaults apply:
+        <code>QuasifyCustomConfig</code>, the defaults apply:
       </p>
       <ul>
         <li>
@@ -232,8 +232,8 @@ export default ui`}</code>
         The <code>declare module</code> block must be in a <em>module</em> — a
         file that has at least one <code>import</code> or <code>export</code>{" "}
         statement. The recommended location is your{" "}
-        <code>stareezy.config.ts</code>, which satisfies this requirement
-        because it already imports from <code>@stareezy-ui/tokens</code>.
+        <code>quasify.config.ts</code>, which satisfies this requirement
+        because it already imports from <code>@quasify-ui/tokens</code>.
       </p>
       <p>
         TypeScript picks up the augmentation automatically as long as the file
@@ -242,7 +242,7 @@ export default ui`}</code>
       </p>
 
       <Callout type="tip">
-        The compiler also reads <code>stareezy.config.ts</code> at build time to
+        The compiler also reads <code>quasify.config.ts</code> at build time to
         pick up your custom shorthands. Keeping the augmentation in the same
         file means there is exactly one source of truth for your configuration.
       </Callout>

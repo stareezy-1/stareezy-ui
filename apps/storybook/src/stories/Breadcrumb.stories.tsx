@@ -4,8 +4,8 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react";
-import { Breadcrumb } from "@stareezy-ui/components";
-import type { BreadcrumbItem } from "@stareezy-ui/components";
+import { Breadcrumb } from "@quasify-ui/components";
+import type { BreadcrumbItem } from "@quasify-ui/components";
 
 const ITEMS: BreadcrumbItem[] = [
   { label: "Home", href: "#" },

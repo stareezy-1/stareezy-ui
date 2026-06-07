@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * createUi — the Stareezy UI configuration factory.
+ * createUi — the Quasify UI configuration factory.
  *
  * Inspired by Tamagui's `createTamagui`, this function lets you:
  *   - Register custom token groups (merged with built-in tokens)
@@ -13,7 +13,7 @@
  *
  * @example
  * ```ts
- * import { createUi, token } from '@stareezy-ui/tokens'
+ * import { createUi, token } from '@quasify-ui/tokens'
  *
  * const ui = createUi({
  *   tokens: {
@@ -269,7 +269,7 @@ export type UiConfig<
   breakpoints: UiBreakpointConfig;
   /**
    * The media config as passed to createUi, with literal keys preserved.
-   * Used for module augmentation via `SzrCustomConfig extends typeof ui`.
+   * Used for module augmentation via `quasifyCustomConfig extends typeof ui`.
    */
   media: TMedia;
   /** The default theme name or override object. */
@@ -333,19 +333,19 @@ export type UiConfig<
 
 /**
  * Writes the resolved breakpoint map to the shared global channel
- * (`globalThis.__stareezy_breakpoints__`) so the runtime/components packages
- * can read them without importing `@stareezy-ui/tokens` (which would create a
+ * (`globalThis.__Quasify_breakpoints__`) so the runtime/components packages
+ * can read them without importing `@quasify-ui/tokens` (which would create a
  * dependency cycle).
  *
  * This function is intentionally side-effect-only and dependency-free.
  * It is the single write path to the breakpoint channel; `configureBreakpoints`
- * in `@stareezy-ui/components` reads from this same key on first access.
+ * in `@quasify-ui/components` reads from this same key on first access.
  */
 export function applyRuntimeBreakpoints(
   resolved: Record<string, number>,
 ): void {
   if (typeof globalThis !== "undefined") {
-    (globalThis as Record<string, unknown>)["__stareezy_breakpoints__"] =
+    (globalThis as Record<string, unknown>)["__Quasify_breakpoints__"] =
       resolved;
   }
 }
@@ -372,7 +372,7 @@ export function getUiConfig(): UiConfig<CustomTokenGroups, MediaConfig> | null {
 // ---------------------------------------------------------------------------
 
 /**
- * Creates and registers the Stareezy UI configuration.
+ * Creates and registers the Quasify UI configuration.
  *
  * Call once at app startup (e.g. in your root `_app.tsx` or `App.tsx`).
  * The returned config object provides typed access to all tokens, breakpoints,
@@ -486,8 +486,8 @@ export function createUi<
     tokens: mergedTokens,
     breakpoints: resolvedBreakpoints,
     // Preserve the literal-keyed media map for module augmentation:
-    // `declare module '@stareezy-ui/tokens' { interface SzrCustomConfig extends typeof ui {} }`
-    // surfaces TMedia through SzrCustomConfig["media"], driving ConfigBreakpointKey.
+    // `declare module '@quasify-ui/tokens' { interface QuasifyCustomConfig extends typeof ui {} }`
+    // surfaces TMedia through QuasifyCustomConfig["media"], driving ConfigBreakpointKey.
     media: (mediaOverrides ?? {}) as TMedia,
     defaultTheme,
     shorthands: customShorthands,

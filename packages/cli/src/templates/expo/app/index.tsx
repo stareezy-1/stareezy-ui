@@ -1,6 +1,6 @@
 import { SafeAreaView, StyleSheet } from "react-native";
-import { Box, Button, Text } from "@stareezy-ui/components";
-import { t } from "@stareezy-ui/tokens";
+import { Box, Button, Text } from "@quasify-ui/components";
+import { t } from "@quasify-ui/tokens";
 
 export default function HomeScreen() {
   return (
@@ -14,7 +14,7 @@ export default function HomeScreen() {
         />
         <Text
           type="M-paragraph-regular"
-          text="Powered by Stareezy UI — cross-platform design tokens for React Native and web."
+          text="Powered by Quasify UI — cross-platform design tokens for React Native and web."
           color={t.text.secondary.value}
           style={styles.subtitle}
         />
@@ -23,7 +23,7 @@ export default function HomeScreen() {
           <Button
             type="Primary"
             text="Get Started"
-            onPress={() => console.log("Hello from Stareezy UI!")}
+            onPress={() => console.log("Hello from Quasify UI!")}
             fullWidth
           />
           <Button

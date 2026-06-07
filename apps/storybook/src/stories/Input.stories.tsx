@@ -10,7 +10,7 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react";
-import { Input, EInputType, EInputSize } from "@stareezy-ui/components";
+import { Input, EInputType, EInputSize } from "@quasify-ui/components";
 
 const meta: Meta<typeof Input> = {
   title: "Components/Input",

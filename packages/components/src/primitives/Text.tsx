@@ -1,5 +1,5 @@
 /**
- * Text — foundational text primitive for Stareezy UI.
+ * Text — foundational text primitive for Quasify UI.
  *
  * lineHeight is stored as an ABSOLUTE pixel value in all presets.
  * It is applied directly on both web (as "Npx") and React Native (as a number).
@@ -7,7 +7,7 @@
  */
 
 import React from "react";
-import { colors, typography } from "@stareezy-ui/tokens";
+import { colors, typography } from "@quasify-ui/tokens";
 import { useThemedColors } from "../shared/useThemedColors";
 import { isWeb } from "../shared/platform";
 import { flattenStyle } from "../shared/flattenStyle";

@@ -87,7 +87,7 @@ jobs:
       # -----------------------------------------------------------------------
       # Integration project build (Task 8 — projects are now committed)
       # For Vite matrix rows we override the vite dep to the pinned major.
-      # Integration projects are workspace members — their @stareezy-ui/*
+      # Integration projects are workspace members — their @quasify-ui/*
       # deps are resolved from the monorepo build, so no separate install
       # lock file is needed; we use pnpm with --no-frozen-lockfile.
       # -----------------------------------------------------------------------

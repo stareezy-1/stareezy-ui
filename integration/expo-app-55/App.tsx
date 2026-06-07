@@ -1,12 +1,12 @@
 // Integration test app for Expo SDK 55 / React Native 0.76.
 // Validates that:
-//   1. stareezyMetroTransformer is wired via metro.config.js.
-//   2. @stareezy-ui/components imports and TypeScript-compiles cleanly.
+//   1. quasifyMetroTransformer is wired via metro.config.js.
+//   2. @quasify-ui/components imports and TypeScript-compiles cleanly.
 //   3. Token-valued props (e.g. p={16}) are accepted by the type system.
 
 import React from "react";
 import { SafeAreaView, Text, StyleSheet } from "react-native";
-import { Box } from "@stareezy-ui/components";
+import { Box } from "@quasify-ui/components";
 
 export default function App() {
   return (
@@ -14,7 +14,7 @@ export default function App() {
       {/* Token-valued spacing prop — exercises the Metro transformer path */}
       <Box p={16}>
         <Text style={styles.heading}>
-          stareezy-ui × Expo SDK 55 integration
+          Quasify-ui × Expo SDK 55 integration
         </Text>
         <Text style={styles.body}>
           Box component with token-valued props rendered successfully.

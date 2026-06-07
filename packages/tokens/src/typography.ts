@@ -1,5 +1,5 @@
 /**
- * Typography tokens for Stareezy UI.
+ * Typography tokens for Quasify UI.
  *
  * Extended with Inter and Plus Jakarta Sans — modern, beautiful system fonts
  * that render crisply on both web and native.

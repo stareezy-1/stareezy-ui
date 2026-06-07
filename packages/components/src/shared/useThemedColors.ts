@@ -8,8 +8,8 @@
  * apply colors via inline styles or RN StyleSheet must read from this hook.
  */
 
-import { useTheme } from "@stareezy-ui/tokens";
-import { colors, glow } from "@stareezy-ui/tokens";
+import { useTheme } from "@quasify-ui/tokens";
+import { colors, glow } from "@quasify-ui/tokens";
 
 /**
  * Returns a flat object of the most-used color values, resolved from the
@@ -117,4 +117,4 @@ export function useThemedColors() {
  * const color = theme.text.importantBrand.value // "#4a9eff" in steins-gate
  * ```
  */
-export { useTheme as useThemeTokens } from "@stareezy-ui/tokens";
+export { useTheme as useThemeTokens } from "@quasify-ui/tokens";

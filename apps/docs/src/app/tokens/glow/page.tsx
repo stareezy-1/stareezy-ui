@@ -48,7 +48,7 @@ export default function GlowTokensPage() {
 
       <h2>Usage</h2>
       <pre>
-        <code>{`import { glow } from '@stareezy-ui/tokens'
+        <code>{`import { glow } from '@quasify-ui/tokens'
 
 // Use as box-shadow
 const style = {

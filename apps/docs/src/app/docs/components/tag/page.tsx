@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import { DocPage, Callout, PropRow } from "../../../../components/DocPage";
+import { TagPreview } from "../ComponentPreview";
 
 export const metadata: Metadata = {
   title: "Tag",
   description:
     "Compact Tag / chip component with removable support, color variants, size options, and icon slots.",
-  alternates: { canonical: "https://ui.stareezy.tech/docs/components/tag" },
+  alternates: { canonical: "https://ui.quasify.app/docs/components/tag" },
 };
 
 export default function TagPage() {
@@ -15,21 +16,22 @@ export default function TagPage() {
       description="Compact label chip with variants, removable support, icon slots, and theme-reactive colors."
       badge="Component"
       icon="◈"
-      badgeColor="#8b5cf6"
+      badgeColor="#a855f7"
     >
-      <h2>Import</h2>
+      <h2 className="gradient-text">Import</h2>
       <pre>
-        <code>{`import { Tag } from '@stareezy-ui/components'`}</code>
+        <code>{`import { Tag } from '@quasify-ui/components'`}</code>
       </pre>
 
-      <h2>Basic usage</h2>
+      <h2 className="gradient-text">Basic usage</h2>
+      <TagPreview />
       <pre>
         <code>{`<Tag>React</Tag>
 <Tag>TypeScript</Tag>
 <Tag>Design System</Tag>`}</code>
       </pre>
 
-      <h2>Variants</h2>
+      <h2 className="gradient-text">Variants</h2>
       <pre>
         <code>{`<Tag variant="neutral">Neutral</Tag>  // default
 <Tag variant="primary">Primary</Tag>
@@ -39,14 +41,14 @@ export default function TagPage() {
 <Tag variant="outline">Outline</Tag>`}</code>
       </pre>
 
-      <h2>Sizes</h2>
+      <h2 className="gradient-text">Sizes</h2>
       <pre>
         <code>{`<Tag size="sm">Small</Tag>
 <Tag size="md">Medium</Tag>  // default
 <Tag size="lg">Large</Tag>`}</code>
       </pre>
 
-      <h2>Removable</h2>
+      <h2 className="gradient-text">Removable</h2>
       <pre>
         <code>{`const [tags, setTags] = useState(['React', 'TypeScript', 'Design'])
 
@@ -61,19 +63,19 @@ export default function TagPage() {
 ))}`}</code>
       </pre>
 
-      <h2>With icon</h2>
+      <h2 className="gradient-text">With icon</h2>
       <pre>
         <code>{`<Tag icon={<StarIcon />}>Featured</Tag>
 <Tag icon={<CheckIcon />} variant="success">Verified</Tag>`}</code>
       </pre>
 
-      <h2>With BoxLayoutProps</h2>
+      <h2 className="gradient-text">With BoxLayoutProps</h2>
       <pre>
         <code>{`<Tag mr={4} mb={4}>React</Tag>
 <Tag px={{ base: 8, md: 12 }}>TypeScript</Tag>`}</code>
       </pre>
 
-      <h2>Props</h2>
+      <h2 className="gradient-text">Props</h2>
       <table>
         <thead>
           <tr>
@@ -122,7 +124,7 @@ export default function TagPage() {
         </tbody>
       </table>
 
-      <h2>Accessibility</h2>
+      <h2 className="gradient-text">Accessibility</h2>
       <Callout type="info">
         When <code>onPress</code> is provided, Tag renders with{" "}
         <code>role=&quot;button&quot;</code> and is keyboard-focusable. When{" "}
@@ -131,12 +133,12 @@ export default function TagPage() {
         render with <code>role=&quot;status&quot;</code> by default.
       </Callout>
 
-      <h2>Themes</h2>
+      <h2 className="gradient-text">Themes</h2>
       <p>
         Tag is Theme_Reactive — background, text color, and border colors are
         all derived from the Active_Theme at render time. Each variant maps to
-        semantic color slots that adapt across light, dark, aurora, steins-gate,
-        and quasar themes.
+        semantic color slots that adapt across quasar, light, dark, aurora, and
+        steins-gate themes.
       </p>
     </DocPage>
   );

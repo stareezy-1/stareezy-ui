@@ -1,5 +1,5 @@
 /**
- * Babel plugin wrapper for @stareezy-ui/compiler.
+ * Babel plugin wrapper for @quasify-ui/compiler.
  *
  * Exposes the JSX token transform as a standard Babel plugin using the
  * visitor pattern. The plugin processes `JSXAttribute` nodes directly on
@@ -11,7 +11,7 @@
 import * as t from "@babel/types";
 import { resolveConfig, type CompilerConfig } from "./config";
 import { TokenCompilerError } from "./transform";
-import { loadSzrConfig } from "./loadConfig";
+import { loadQuasifyConfig } from "./loadConfig";
 
 // ---------------------------------------------------------------------------
 // Helpers (duplicated from transform.ts to operate on Babel's live AST nodes
@@ -60,19 +60,19 @@ function generateClassName(id: string): string {
  *
  * Usage in babel.config.js:
  * ```js
- * const { stareezyBabelPlugin } = require('@stareezy-ui/compiler');
- * module.exports = { plugins: [stareezyBabelPlugin()] };
+ * const { quasifyBabelPlugin } = require('@quasify-ui/compiler');
+ * module.exports = { plugins: [quasifyBabelPlugin()] };
  * ```
  *
  * @param config - Optional partial `CompilerConfig` to override defaults.
  */
-export function stareezyBabelPlugin(config?: Partial<CompilerConfig>): {
+export function quasifyBabelPlugin(config?: Partial<CompilerConfig>): {
   visitor: {
     JSXAttribute(path: { node: t.JSXAttribute }): void;
   };
 } {
-  // Merge shorthands from stareezy.config.ts if present
-  const szrConfig = loadSzrConfig();
+  // Merge shorthands from quasify.config.ts if present
+  const szrConfig = loadQuasifyConfig();
   const mergedPartial: Partial<CompilerConfig> = {
     ...config,
     propMappings: {

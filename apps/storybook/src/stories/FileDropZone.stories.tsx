@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import React from "react";
-import { FileDropZone } from "@stareezy-ui/components";
+import { FileDropZone } from "@quasify-ui/components";
 
 const meta: Meta<typeof FileDropZone> = {
   title: "Components/FileDropZone",

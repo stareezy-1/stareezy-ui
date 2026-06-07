@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { CircularProgress } from "@stareezy-ui/components";
+import { CircularProgress } from "@quasify-ui/components";
 
 const meta: Meta<typeof CircularProgress> = {
   title: "Components/CircularProgress",

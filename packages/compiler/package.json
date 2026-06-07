@@ -1,7 +1,7 @@
 {
-  "name": "@stareezy-ui/compiler",
-  "version": "1.1.2",
-  "description": "Stareezy UI compiler — Babel/Vite/Metro plugin for build-time token extraction and atomic CSS generation",
+  "name": "@quasify-ui/compiler",
+  "version": "1.1.0",
+  "description": "Quasify UI compiler — Babel/Vite/Metro plugin for build-time token extraction and atomic CSS generation",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
@@ -29,7 +29,7 @@
   ],
   "license": "MIT",
   "keywords": [
-    "stareezy-ui",
+    "Quasify-ui",
     "compiler",
     "babel-plugin",
     "vite-plugin",
@@ -37,7 +37,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/stareezy-1/stareezy-ui.git",
+    "url": "https://github.com/quasify-ui/quasify-ui.git",
     "directory": "packages/compiler"
   },
   "scripts": {
@@ -49,7 +49,7 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
-    "@stareezy-ui/tokens": "workspace:*"
+    "@quasify-ui/tokens": "workspace:*"
   },
   "peerDependencies": {
     "vite": ">=4.0.0 <8"

@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Playground — Stareezy UI",
-  description: "Live code playground for Stareezy UI components and tokens.",
+  title: "Playground — Quasify UI",
+  description: "Live code playground for Quasify UI components and tokens.",
 };
 
 // Re-export the playground page component

@@ -17,6 +17,19 @@ const NAV_SECTIONS = [
     ],
   },
   {
+    title: "Quasify AI",
+    links: [
+      { href: "/ai", label: "AI UI Builder", icon: "✦" },
+    ],
+  },
+  {
+    title: "Integrations",
+    links: [
+      { href: "/docs/mcp-server", label: "MCP Server", icon: "⚡" },
+      { href: "/docs/claude-skills", label: "Skills for Claude", icon: "✦" },
+    ],
+  },
+  {
     title: "CLI",
     links: [{ href: "/docs/cli", label: "CLI", icon: "▶" }],
   },
@@ -27,7 +40,7 @@ const NAV_SECTIONS = [
       { href: "/docs/theming", label: "Theming", icon: "◑" },
       { href: "/docs/responsive", label: "Responsive System", icon: "⊞" },
       { href: "/docs/create-ui", label: "createUi", icon: "◎" },
-      { href: "/docs/szr-custom-config", label: "SzrCustomConfig", icon: "⬢" },
+      { href: "/docs/quasify-custom-config", label: "QuasifyCustomConfig", icon: "⬢" },
     ],
   },
   {
@@ -57,6 +70,7 @@ const NAV_SECTIONS = [
     title: "Tokens",
     links: [
       { href: "/tokens", label: "Token Explorer", icon: "◉" },
+      { href: "/tokens/builder", label: "Theme Builder", icon: "✦" },
       { href: "/tokens/aurora", label: "Aurora", icon: "◉" },
       { href: "/tokens/steins-gate", label: "Steins;Gate", icon: "⌬" },
       { href: "/tokens/quasar", label: "Quasar", icon: "⊛" },
@@ -163,7 +177,7 @@ export function SidebarNav({ open = false, onClose }: SidebarNavProps) {
           }}
         >
           <a
-            href="https://github.com/stareezy-1/stareezy-ui"
+            href="https://github.com/quasify-ui/quasify-ui"
             target="_blank"
             rel="noopener noreferrer"
             className="sidebar-link"

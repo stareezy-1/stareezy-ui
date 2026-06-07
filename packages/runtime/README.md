@@ -1,22 +1,22 @@
-# @stareezy-ui/runtime
+# @quasify-ui/runtime
 
-O(1) style registry and platform adapters for Stareezy UI. Resolves token references to CSS class names (web) or StyleSheet IDs (React Native) in constant time.
+O(1) style registry and platform adapters for Quasify UI. Resolves token references to CSS class names (web) or StyleSheet IDs (React Native) in constant time.
 
-[![npm](https://img.shields.io/npm/v/@stareezy-ui/runtime)](https://www.npmjs.com/package/@stareezy-ui/runtime)
+[![npm](https://img.shields.io/npm/v/@quasify-ui/runtime)](https://www.npmjs.com/package/@quasify-ui/runtime)
 
 ## Install
 
 ```bash
-pnpm add @stareezy-ui/tokens @stareezy-ui/runtime
+pnpm add @quasify-ui/tokens @quasify-ui/runtime
 ```
 
 ## Usage
 
-The runtime is used internally by `@stareezy-ui/components`. You only need it directly if you're building custom components.
+The runtime is used internally by `@quasify-ui/components`. You only need it directly if you're building custom components.
 
 ```ts
-import { createWebRuntime } from "@stareezy-ui/runtime";
-import { colors, spacing } from "@stareezy-ui/tokens";
+import { createWebRuntime } from "@quasify-ui/runtime";
+import { colors, spacing } from "@quasify-ui/tokens";
 
 const runtime = createWebRuntime();
 
@@ -31,7 +31,7 @@ const className = runtime.resolve(colors.celurenBlue[500]);
 ### React Native
 
 ```ts
-import { createNativeRuntime } from "@stareezy-ui/runtime";
+import { createNativeRuntime } from "@quasify-ui/runtime";
 
 const runtime = createNativeRuntime();
 runtime.register([colors.celurenBlue[500]]);

@@ -14,7 +14,7 @@
     "skipLibCheck": true,
     "outDir": "dist",
     "paths": {
-      "@stareezy-ui/tokens": ["../tokens/src/index.ts"]
+      "@quasify-ui/tokens": ["../tokens/src/index.ts"]
     }
   },
   "include": ["src/**/*"],

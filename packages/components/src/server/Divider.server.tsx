@@ -8,8 +8,8 @@
  */
 
 import React from "react";
-import { isThemeToken } from "@stareezy-ui/tokens";
-import type { ThemeToken } from "@stareezy-ui/tokens";
+import { isThemeToken } from "@quasify-ui/tokens";
+import type { ThemeToken } from "@quasify-ui/tokens";
 
 // ---------------------------------------------------------------------------
 // Value resolver

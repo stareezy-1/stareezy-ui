@@ -85,7 +85,7 @@ export default function AuroraTokensPage() {
 
       <h2>Usage</h2>
       <pre>
-        <code>{`import { aurora } from '@stareezy-ui/tokens'
+        <code>{`import { aurora } from '@quasify-ui/tokens'
 
 // Access token values
 aurora.auroraGreen.value  // "#00ff88"
@@ -172,7 +172,7 @@ const ui = createUi({
         <code>light</code> variant provides accessible light-mode equivalents.
       </p>
       <pre>
-        <code>{`import { auroraVariants, getVariant } from '@stareezy-ui/tokens'
+        <code>{`import { auroraVariants, getVariant } from '@quasify-ui/tokens'
 
 const darkTokens = getVariant(auroraVariants, 'dark')
 const lightTokens = getVariant(auroraVariants, 'light')

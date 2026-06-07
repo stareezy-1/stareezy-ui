@@ -1,12 +1,12 @@
 /**
- * create command — scaffold a stareezy-ui starter using the official CLI of
+ * create command — scaffold a Quasify-ui starter using the official CLI of
  * each framework (create-next-app / create-vite / create-expo-app), then
- * layer on the stareezy config, compiler wiring and ThemeProvider.
+ * layer on the Quasify config, compiler wiring and ThemeProvider.
  *
  * Strategy:
  *   1. Run the upstream scaffolder (honours their defaults / prompts)
- *   2. Immediately run `stareezy init` in the created directory to inject
- *      stareezy.config.ts, compiler wiring, and ThemeProvider
+ *   2. Immediately run `quasify init` in the created directory to inject
+ *      quasify.config.ts, compiler wiring, and ThemeProvider
  *
  * Uses only Node.js built-ins. No external deps.
  */
@@ -120,15 +120,15 @@ function buildScaffoldCmd(
 }
 
 // ---------------------------------------------------------------------------
-// stareezy packages installer
+// Quasify packages installer
 // ---------------------------------------------------------------------------
 
-const STAREEZY_DEPS = [
-  "@stareezy-ui/tokens",
-  "@stareezy-ui/components",
-  "@stareezy-ui/runtime",
+const Quasify_DEPS = [
+  "@quasify-ui/tokens",
+  "@quasify-ui/components",
+  "@quasify-ui/runtime",
 ];
-const STAREEZY_DEV_DEPS = ["@stareezy-ui/compiler"];
+const Quasify_DEV_DEPS = ["@quasify-ui/compiler"];
 
 function buildInstallCmd(pkgs: string[], pm: string, dev: boolean): string {
   const flag = dev ? (pm === "npm" ? "--save-dev" : "-D") : "";
@@ -145,10 +145,10 @@ function buildInstallCmd(pkgs: string[], pm: string, dev: boolean): string {
   }
 }
 
-function installStareezyPackages(targetDir: string, pm: string): void {
-  console.log("\n  Installing @stareezy-ui/* packages...");
+function installQuasifyPackages(targetDir: string, pm: string): void {
+  console.log("\n  Installing @quasify-ui/* packages...");
 
-  const depCmd = buildInstallCmd(STAREEZY_DEPS, pm, false);
+  const depCmd = buildInstallCmd(Quasify_DEPS, pm, false);
   console.log(`  Running: ${depCmd}`);
   try {
     execSync(depCmd, { cwd: targetDir, stdio: "inherit" });
@@ -158,7 +158,7 @@ function installStareezyPackages(targetDir: string, pm: string): void {
     );
   }
 
-  const devCmd = buildInstallCmd(STAREEZY_DEV_DEPS, pm, true);
+  const devCmd = buildInstallCmd(Quasify_DEV_DEPS, pm, true);
   console.log(`  Running: ${devCmd}`);
   try {
     execSync(devCmd, { cwd: targetDir, stdio: "inherit" });
@@ -249,11 +249,11 @@ export async function runCreate(options: CreateOptions = {}): Promise<void> {
     process.exit(1);
   }
 
-  // 6. Install stareezy packages into the new project
-  installStareezyPackages(targetDir, pm);
+  // 6. Install Quasify packages into the new project
+  installQuasifyPackages(targetDir, pm);
 
-  // 7. Layer on stareezy: config, compiler wiring, ThemeProvider
-  console.log("\n  Wiring stareezy-ui...");
+  // 7. Layer on Quasify: config, compiler wiring, ThemeProvider
+  console.log("\n  Wiring Quasify-ui...");
   await runInit({ cwd: targetDir, yes: true });
 
   // 8. Done — print next steps
@@ -288,7 +288,7 @@ export async function runCreate(options: CreateOptions = {}): Promise<void> {
   }
 
   console.log(
-    "\nstareezy.config.ts is ready — edit it to customise your\n" +
+    "\nquasify.config.ts is ready — edit it to customise your\n" +
       "media breakpoints and prop shorthands.\n",
   );
 }

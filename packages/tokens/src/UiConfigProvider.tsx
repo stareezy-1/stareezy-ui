@@ -92,11 +92,11 @@ export function useUiConfig(): UiConfig<CustomTokenGroups> {
     (globalThis as Record<string, unknown>)["process"] !== "production"
   ) {
     console.warn(
-      "[stareezy-ui] useUiConfig() called outside a UiConfigProvider. Falling back to getUiConfig() singleton.",
+      "[Quasify-ui] useUiConfig() called outside a UiConfigProvider. Falling back to getUiConfig() singleton.",
     );
   }
   if (!singleton) {
-    throw new Error("[stareezy-ui] createUi() has not been called.");
+    throw new Error("[Quasify-ui] createUi() has not been called.");
   }
   return singleton;
 }

@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import React from "react";
-import { ProgressPanel } from "@stareezy-ui/components";
-import type { ProgressStep } from "@stareezy-ui/components";
+import { ProgressPanel } from "@quasify-ui/components";
+import type { ProgressStep } from "@quasify-ui/components";
 
 const STEPS_0: ProgressStep[] = [
   { id: "1", label: "Upload file", status: "pending" },

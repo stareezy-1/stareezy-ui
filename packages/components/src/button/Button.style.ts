@@ -1,14 +1,14 @@
 /**
  * Button.style.ts — all visual styles for the Button component.
  *
- * Uses token values from @stareezy-ui/tokens directly.
+ * Uses token values from @quasify-ui/tokens directly.
  * Enums are imported from Button.types.ts to avoid circular dependencies.
  *
  * Web styles use display:'flex' — never flex:1.
  * No inline styles in Button.tsx — import everything from here.
  */
 
-import { spacing, radius, ss } from "@stareezy-ui/tokens";
+import { spacing, radius, ss } from "@quasify-ui/tokens";
 import { INTERACTION, FOCUS_RING, BORDER } from "../shared/visualSpec";
 import { registerClasses, registerKeyframes } from "../shared/componentSheet";
 import { EButtonType, EButtonSize } from "./Button.types";

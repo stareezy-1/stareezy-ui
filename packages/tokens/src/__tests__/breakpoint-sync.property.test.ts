@@ -21,7 +21,7 @@ import { createUi } from "../createUi";
 describe("Property 2 — Breakpoint-sync invariant", () => {
   beforeEach(() => {
     // Reset the global channel before each test so tests are independent
-    (globalThis as Record<string, unknown>)["__stareezy_breakpoints__"] =
+    (globalThis as Record<string, unknown>)["__Quasify_breakpoints__"] =
       undefined;
   });
 
@@ -36,13 +36,13 @@ describe("Property 2 — Breakpoint-sync invariant", () => {
         }),
         (media) => {
           // Reset channel before each run
-          (globalThis as Record<string, unknown>)["__stareezy_breakpoints__"] =
+          (globalThis as Record<string, unknown>)["__Quasify_breakpoints__"] =
             undefined;
 
           createUi({ media });
 
           const stored = (globalThis as Record<string, unknown>)[
-            "__stareezy_breakpoints__"
+            "__Quasify_breakpoints__"
           ] as Record<string, number> | undefined;
 
           if (!stored) return false;
@@ -72,13 +72,13 @@ describe("Property 2 — Breakpoint-sync invariant", () => {
           )
           .map(([a, b, c]) => ({ tabletSm: a, tabletLg: b, desktop: c })),
         (media) => {
-          (globalThis as Record<string, unknown>)["__stareezy_breakpoints__"] =
+          (globalThis as Record<string, unknown>)["__Quasify_breakpoints__"] =
             undefined;
 
           createUi({ media });
 
           const stored = (globalThis as Record<string, unknown>)[
-            "__stareezy_breakpoints__"
+            "__Quasify_breakpoints__"
           ] as Record<string, number> | undefined;
 
           if (!stored) return false;
@@ -103,13 +103,13 @@ describe("Property 2 — Breakpoint-sync invariant", () => {
           widescreen: fc.integer({ min: 1600, max: 2400 }),
         }),
         (media) => {
-          (globalThis as Record<string, unknown>)["__stareezy_breakpoints__"] =
+          (globalThis as Record<string, unknown>)["__Quasify_breakpoints__"] =
             undefined;
 
           createUi({ media });
 
           const stored = (globalThis as Record<string, unknown>)[
-            "__stareezy_breakpoints__"
+            "__Quasify_breakpoints__"
           ] as Record<string, number> | undefined;
 
           if (!stored) return false;
@@ -133,13 +133,13 @@ describe("Property 2 — Breakpoint-sync invariant", () => {
     fc.assert(
       fc.property(fc.constant(undefined as undefined), () => {
         // Start with no channel value
-        (globalThis as Record<string, unknown>)["__stareezy_breakpoints__"] =
+        (globalThis as Record<string, unknown>)["__Quasify_breakpoints__"] =
           undefined;
 
         createUi({});
 
         const stored = (globalThis as Record<string, unknown>)[
-          "__stareezy_breakpoints__"
+          "__Quasify_breakpoints__"
         ];
         // Channel must remain undefined — createUi({}) must not push defaults
         return stored === undefined;
@@ -158,20 +158,20 @@ describe("Property 2 — Breakpoint-sync invariant", () => {
           wide: fc.integer({ min: 601, max: 1200 }),
         }),
         (media) => {
-          (globalThis as Record<string, unknown>)["__stareezy_breakpoints__"] =
+          (globalThis as Record<string, unknown>)["__Quasify_breakpoints__"] =
             undefined;
 
           createUi({ media });
           const storedAfterFirst = {
             ...((globalThis as Record<string, unknown>)[
-              "__stareezy_breakpoints__"
+              "__Quasify_breakpoints__"
             ] as Record<string, number>),
           };
 
           createUi({ media });
           const storedAfterSecond = {
             ...((globalThis as Record<string, unknown>)[
-              "__stareezy_breakpoints__"
+              "__Quasify_breakpoints__"
             ] as Record<string, number>),
           };
 

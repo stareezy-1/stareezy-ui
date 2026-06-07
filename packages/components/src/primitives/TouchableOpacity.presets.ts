@@ -1,14 +1,14 @@
 /**
  * TouchableOpacity.presets.ts — preset style maps for ETouchableType values.
  *
- * All values are sourced from @stareezy-ui/tokens. No hardcoded literals
+ * All values are sourced from @quasify-ui/tokens. No hardcoded literals
  * are used where a token exists.
  *
  * ETouchableType.Card shares the exact same object reference as
  * BOX_PRESETS[EBoxType.Card] to guarantee visual consistency (Requirement 4.4).
  */
 
-import { radius, spacing } from "@stareezy-ui/tokens";
+import { radius, spacing } from "@quasify-ui/tokens";
 import { ETouchableType } from "./TouchableOpacity.types";
 import { BOX_PRESETS } from "./Box.presets";
 import { EBoxType } from "./Box.types";

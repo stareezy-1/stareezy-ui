@@ -5,8 +5,8 @@
 
 import React from "react";
 import type { Meta, StoryObj } from "@storybook/react";
-import { Tabs } from "@stareezy-ui/components";
-import type { TabItem } from "@stareezy-ui/components";
+import { Tabs } from "@quasify-ui/components";
+import type { TabItem } from "@quasify-ui/components";
 
 const content = (text: string) => (
   <p style={{ margin: 0, fontSize: 14 }}>{text}</p>

@@ -1,5 +1,5 @@
 /**
- * init command — idempotently create stareezy.config.ts, compiler/runtime
+ * init command — idempotently create quasify.config.ts, compiler/runtime
  * wiring, and ThemeProvider wrapper in an existing project.
  *
  * Uses only Node.js built-ins. No external deps.
@@ -21,7 +21,7 @@ import {
 // Template strings
 // ---------------------------------------------------------------------------
 
-const STAREEZY_CONFIG_TS = `import { createUi } from "@stareezy-ui/tokens";
+const Quasify_CONFIG_TS = `import { createUi } from "@quasify-ui/tokens";
 
 const ui = createUi({
   media: {
@@ -57,17 +57,17 @@ export default ui;
 
 type CustomUi = typeof ui;
 
-declare module "@stareezy-ui/tokens" {
-  interface SzrCustomConfig extends CustomUi {}
+declare module "@quasify-ui/tokens" {
+  interface QuasifyCustomConfig extends CustomUi {}
 }
 `;
 
 function nextConfigWiring(existingContent: string): string {
-  if (existingContent.includes("stareezyVitePlugin")) return existingContent;
+  if (existingContent.includes("quasifyVitePlugin")) return existingContent;
 
-  const importLine = `import { stareezyVitePlugin } from "@stareezy-ui/compiler";\n`;
+  const importLine = `import { quasifyVitePlugin } from "@quasify-ui/compiler";\n`;
   const pluginSnippet = `
-  // Stareezy UI — inject virtual styles module
+  // Quasify UI — inject virtual styles module
   experimental: {
     turbo: {
       resolveExtensions: [".tsx", ".ts", ".jsx", ".js"],
@@ -75,7 +75,7 @@ function nextConfigWiring(existingContent: string): string {
   },
   webpack(config) {
     config.plugins = config.plugins || [];
-    config.plugins.push(stareezyVitePlugin());
+    config.plugins.push(quasifyVitePlugin());
     return config;
   },`;
 
@@ -104,22 +104,22 @@ function nextConfigWiring(existingContent: string): string {
   return (
     importLine +
     existingContent +
-    `\n// TODO: add stareezyVitePlugin() to your Next.js config webpack plugins.\n`
+    `\n// TODO: add quasifyVitePlugin() to your Next.js config webpack plugins.\n`
   );
 }
 
 function viteConfigWiring(): string {
   return `import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
-import { stareezyVitePlugin } from "@stareezy-ui/compiler";
+import { quasifyVitePlugin } from "@quasify-ui/compiler";
 
 export default defineConfig(({ command }) => ({
   plugins: [
-    // Only run the stareezy compiler during production builds.
+    // Only run the Quasify compiler during production builds.
     // @babel/traverse has CJS/ESM interop issues in Vite's dev transform
     // pipeline; Box's inline responsive style injection handles dev-time
     // styling without the compiler.
-    ...(command === "build" ? [stareezyVitePlugin()] : []),
+    ...(command === "build" ? [quasifyVitePlugin()] : []),
     react(),
   ],
 }));
@@ -128,13 +128,13 @@ export default defineConfig(({ command }) => ({
 
 function expoMetroConfig(): string {
   return `const { getDefaultConfig } = require("expo/metro-config");
-const { stareezyMetroTransformer } = require("@stareezy-ui/compiler/metro");
+const { quasifyMetroTransformer } = require("@quasify-ui/compiler/metro");
 
 const config = getDefaultConfig(__dirname);
 
 config.transformer = {
   ...config.transformer,
-  babelTransformerPath: stareezyMetroTransformer,
+  babelTransformerPath: quasifyMetroTransformer,
 };
 
 module.exports = config;
@@ -143,7 +143,7 @@ module.exports = config;
 
 function nextThemeProviderWrapper(): string {
   return `"use client";
-import { ThemeProvider } from "@stareezy-ui/tokens";
+import { ThemeProvider } from "@quasify-ui/tokens";
 import { type ReactNode } from "react";
 
 export function Providers({ children }: { children: ReactNode }) {
@@ -153,7 +153,7 @@ export function Providers({ children }: { children: ReactNode }) {
 }
 
 function viteThemeProviderWrapper(): string {
-  return `import { ThemeProvider } from "@stareezy-ui/tokens";
+  return `import { ThemeProvider } from "@quasify-ui/tokens";
 import { type ReactNode } from "react";
 
 export function Providers({ children }: { children: ReactNode }) {
@@ -163,7 +163,7 @@ export function Providers({ children }: { children: ReactNode }) {
 }
 
 function expoThemeProviderWrapper(): string {
-  return `import { ThemeProvider } from "@stareezy-ui/tokens";
+  return `import { ThemeProvider } from "@quasify-ui/tokens";
 import { type ReactNode } from "react";
 
 export function Providers({ children }: { children: ReactNode }) {
@@ -193,7 +193,7 @@ export interface InitResult {
 }
 
 /**
- * Idempotent init: install @stareezy-ui/* packages, create stareezy.config.ts,
+ * Idempotent init: install @quasify-ui/* packages, create quasify.config.ts,
  * compiler wiring, and ThemeProvider in the project at `cwd`, skipping each
  * step when already present.
  */
@@ -211,16 +211,16 @@ export async function runInit(options: InitOptions = {}): Promise<InitResult> {
     skippedThemeProvider: false,
   };
 
-  // 0. Install required @stareezy-ui/* packages if missing
+  // 0. Install required @quasify-ui/* packages if missing
   installPackagesIfMissing(cwd, pm);
 
-  // 1. stareezy.config.ts
+  // 1. quasify.config.ts
   if (detectConfig(cwd)) {
-    console.log("  ✓ stareezy.config.ts already exists — skipping");
+    console.log("  ✓ quasify.config.ts already exists — skipping");
     result.skippedConfig = true;
   } else {
-    writeFileSync(join(cwd, "stareezy.config.ts"), STAREEZY_CONFIG_TS, "utf8");
-    console.log("  + created stareezy.config.ts");
+    writeFileSync(join(cwd, "quasify.config.ts"), Quasify_CONFIG_TS, "utf8");
+    console.log("  + created quasify.config.ts");
     result.createdConfig = true;
   }
 
@@ -250,11 +250,11 @@ export async function runInit(options: InitOptions = {}): Promise<InitResult> {
 // ---------------------------------------------------------------------------
 
 const REQUIRED_PACKAGES = [
-  "@stareezy-ui/tokens",
-  "@stareezy-ui/components",
-  "@stareezy-ui/runtime",
+  "@quasify-ui/tokens",
+  "@quasify-ui/components",
+  "@quasify-ui/runtime",
 ];
-const REQUIRED_DEV_PACKAGES = ["@stareezy-ui/compiler"];
+const REQUIRED_DEV_PACKAGES = ["@quasify-ui/compiler"];
 
 function getInstalledPackages(cwd: string): Set<string> {
   const pkgPath = join(cwd, "package.json");
@@ -330,7 +330,7 @@ function installPackagesIfMissing(cwd: string, pm: string): void {
   }
 
   if (missingDeps.length === 0 && missingDev.length === 0) {
-    console.log("  ✓ @stareezy-ui/* packages already present");
+    console.log("  ✓ @quasify-ui/* packages already present");
   }
 }
 
@@ -353,19 +353,19 @@ function writeWiring(cwd: string, framework: Framework): void {
           const patched = nextConfigWiring(existing);
           if (patched !== existing) {
             writeFileSync(configPath, patched, "utf8");
-            console.log(`  + patched ${name} with stareezyVitePlugin`);
+            console.log(`  + patched ${name} with quasifyVitePlugin`);
           }
           return;
         }
       }
       // No next.config found — create a minimal one
       const minimal = `/** @type {import('next').NextConfig} */
-import { stareezyVitePlugin } from "@stareezy-ui/compiler";
+import { quasifyVitePlugin } from "@quasify-ui/compiler";
 
 const nextConfig = {
   webpack(config) {
     config.plugins = config.plugins || [];
-    config.plugins.push(stareezyVitePlugin());
+    config.plugins.push(quasifyVitePlugin());
     return config;
   },
 };
@@ -373,7 +373,7 @@ const nextConfig = {
 export default nextConfig;
 `;
       writeFileSync(join(cwd, "next.config.mjs"), minimal, "utf8");
-      console.log("  + created next.config.mjs with stareezyVitePlugin");
+      console.log("  + created next.config.mjs with quasifyVitePlugin");
       break;
     }
 
@@ -387,13 +387,13 @@ export default nextConfig;
         const configPath = join(cwd, name);
         if (existsSync(configPath)) {
           const existing = readFileSync(configPath, "utf8");
-          if (!existing.includes("stareezyVitePlugin")) {
+          if (!existing.includes("quasifyVitePlugin")) {
             // Rewrite the whole config to use the production-only pattern.
             // This is safer than naively patching because create-vite's
             // generated config uses defineConfig({}), not defineConfig(fn).
             writeFileSync(configPath, viteConfigWiring(), "utf8");
             console.log(
-              `  + patched ${name} with stareezyVitePlugin (build-only)`,
+              `  + patched ${name} with quasifyVitePlugin (build-only)`,
             );
           }
           return;
@@ -401,7 +401,7 @@ export default nextConfig;
       }
       // No vite.config found — create one
       writeFileSync(join(cwd, "vite.config.ts"), viteConfigWiring(), "utf8");
-      console.log("  + created vite.config.ts with stareezyVitePlugin");
+      console.log("  + created vite.config.ts with quasifyVitePlugin");
       break;
     }
 
@@ -410,7 +410,7 @@ export default nextConfig;
       if (!existsSync(metroPath)) {
         writeFileSync(metroPath, expoMetroConfig(), "utf8");
         console.log(
-          "  + created metro.config.js with stareezyMetroTransformer",
+          "  + created metro.config.js with quasifyMetroTransformer",
         );
       }
       break;

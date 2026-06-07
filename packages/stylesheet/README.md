@@ -1,21 +1,21 @@
-# @stareezy-ui/stylesheet
+# @quasify-ui/stylesheet
 
-Atomic CSS sheet management with responsive / media-query injection for Stareezy UI web builds.
+Atomic CSS sheet management with responsive / media-query injection for Quasify UI web builds.
 
-[![npm](https://img.shields.io/npm/v/@stareezy-ui/stylesheet)](https://www.npmjs.com/package/@stareezy-ui/stylesheet)
+[![npm](https://img.shields.io/npm/v/@quasify-ui/stylesheet)](https://www.npmjs.com/package/@quasify-ui/stylesheet)
 
 ## Install
 
 ```bash
-pnpm add @stareezy-ui/stylesheet
+pnpm add @quasify-ui/stylesheet
 ```
 
 ## Usage
 
-Used internally by `@stareezy-ui/runtime`. You only need this directly for custom runtime adapters or for injecting styles outside of `Box`.
+Used internally by `@quasify-ui/runtime`. You only need this directly for custom runtime adapters or for injecting styles outside of `Box`.
 
 ```ts
-import { AtomicStyleSheet } from "@stareezy-ui/stylesheet";
+import { AtomicStyleSheet } from "@quasify-ui/stylesheet";
 
 const sheet = new AtomicStyleSheet();
 
@@ -63,7 +63,7 @@ import {
   buildComponentCss,
   tokenIdToClassName,
   buildScopeClass,
-} from "@stareezy-ui/stylesheet";
+} from "@quasify-ui/stylesheet";
 
 // Read the current breakpoint map (synced from createUi({ media }))
 getBreakpoints(); // { sm: 480, md: 768, lg: 1024, xl: 1280, "2xl": 1536 }

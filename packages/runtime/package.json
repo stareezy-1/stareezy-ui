@@ -1,7 +1,7 @@
 {
-  "name": "@stareezy-ui/runtime",
-  "version": "1.1.1",
-  "description": "Stareezy UI runtime — O(1) token-to-style lookup and platform adapters",
+  "name": "@quasify-ui/runtime",
+  "version": "1.1.0",
+  "description": "Quasify UI runtime — O(1) token-to-style lookup and platform adapters",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
@@ -18,13 +18,13 @@
   ],
   "license": "MIT",
   "keywords": [
-    "stareezy-ui",
+    "Quasify-ui",
     "runtime",
     "style-registry"
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/stareezy-1/stareezy-ui.git",
+    "url": "https://github.com/quasify-ui/quasify-ui.git",
     "directory": "packages/runtime"
   },
   "scripts": {
@@ -37,8 +37,8 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
-    "@stareezy-ui/tokens": "workspace:*",
-    "@stareezy-ui/stylesheet": "workspace:*"
+    "@quasify-ui/tokens": "workspace:*",
+    "@quasify-ui/stylesheet": "workspace:*"
   },
   "devDependencies": {
     "tsup": "^8.0.0",

@@ -1,30 +1,30 @@
-# Stareezy UI
+# Quasify UI
 
-<img width="1536" height="1024" alt="Stareezy UI — Typed Design Token System" src="https://github.com/user-attachments/assets/5fb5ee25-cef6-451a-af4a-2f92de479655" />
+<img width="1536" height="1024" alt="Quasify UI — Typed Design Token System" src="https://github.com/user-attachments/assets/5fb5ee25-cef6-451a-af4a-2f92de479655" />
 
 **The typed design token system for React Native and web — one token API, every platform.**
 
-[![CI](https://github.com/stareezy-1/stareezy-ui/actions/workflows/ci.yml/badge.svg)](https://github.com/stareezy-1/stareezy-ui/actions/workflows/ci.yml)
-[![npm](https://img.shields.io/npm/v/@stareezy-ui/tokens)](https://www.npmjs.com/package/@stareezy-ui/tokens)
-[![npm downloads](https://img.shields.io/npm/dm/@stareezy-ui/tokens)](https://www.npmjs.com/package/@stareezy-ui/tokens)
+[![CI](https://github.com/quasify-ui/quasify-ui/actions/workflows/ci.yml/badge.svg)](https://github.com/quasify-ui/quasify-ui/actions/workflows/ci.yml)
+[![npm](https://img.shields.io/npm/v/@quasify-ui/tokens)](https://www.npmjs.com/package/@quasify-ui/tokens)
+[![npm downloads](https://img.shields.io/npm/dm/@quasify-ui/tokens)](https://www.npmjs.com/package/@quasify-ui/tokens)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue)](https://www.typescriptlang.org/)
-[![tree-shakeable](https://img.shields.io/badge/tree--shakeable-yes-brightgreen)](https://bundlephobia.com/package/@stareezy-ui/tokens)
+[![tree-shakeable](https://img.shields.io/badge/tree--shakeable-yes-brightgreen)](https://bundlephobia.com/package/@quasify-ui/tokens)
 
 ---
 
-## What is Stareezy UI?
+## What is Quasify UI?
 
-Stareezy UI is a **fully typed, object-based design token system and cross-platform component library** for React Native and web. Every design value — color, spacing, radius, typography, shadow, motion — is a typed `Token<T>` object. Theme switching is pure CSS variables — zero JavaScript re-renders.
+Quasify UI is a **fully typed, object-based design token system and cross-platform component library** for React Native and web. Every design value — color, spacing, radius, typography, shadow, motion — is a typed `Token<T>` object. Theme switching is pure CSS variables — zero JavaScript re-renders.
 
 ```tsx
-import { colors, spacing, t } from "@stareezy-ui/tokens";
-import { Box, Text, Button } from "@stareezy-ui/components";
+import { colors, spacing, t } from "@quasify-ui/tokens";
+import { Box, Text, Button } from "@quasify-ui/components";
 
 // Full TypeScript autocomplete. Same code on web and React Native.
 // t.* props resolve to the current theme's value at render time.
 <Box bg={t.backgrounds.secondary} p={spacing[4]} rounded={8}>
-  <Text type="M-heading-bold" text="Hello, Stareezy UI" />
+  <Text type="M-heading-bold" text="Hello, Quasify UI" />
   <Button type="Primary" text="Get Started" />
 </Box>;
 ```
@@ -35,16 +35,16 @@ import { Box, Text, Button } from "@stareezy-ui/components";
 
 ```bash
 # Next.js 15 App Router
-npx stareezy create my-app --template next
+npx quasify create my-app --template next
 
 # Vite + React 19
-npx stareezy create my-app --template vite
+npx quasify create my-app --template vite
 
 # Expo SDK 56 (React Native 0.85 + React 19)
-npx stareezy create my-app --template expo
+npx quasify create my-app --template expo
 ```
 
-Each template ships pre-wired with `stareezy.config.ts`, compiler/runtime setup, and `ThemeProvider`. No manual wiring needed.
+Each template ships pre-wired with `quasify.config.ts`, compiler/runtime setup, and `ThemeProvider`. No manual wiring needed.
 
 ---
 
@@ -86,7 +86,7 @@ Hook-free primitives safe for Next.js App Router Server Components:
 
 ```tsx
 // In a Server Component — no "use client" needed
-import { Box, Stack, Text, Divider } from "@stareezy-ui/components/server";
+import { Box, Stack, Text, Divider } from "@quasify-ui/components/server";
 ```
 
 ### 6 new components
@@ -101,14 +101,14 @@ Every existing component now resolves colors from the active theme at render tim
 
 Added the **Quasar** theme (deep violet, pulsar orange accent). All five themes: `light`, `dark`, `aurora`, `steins-gate`, `quasar`.
 
-### @stareezy-ui/cli
+### @quasify-ui/cli
 
 First-party CLI with `create`, `add`, and `init` commands:
 
 ```bash
-npx stareezy create my-app --template next   # scaffold pre-wired project
-npx stareezy init                             # add wiring to existing project
-npx stareezy add button input card drawer    # add components with dep resolution
+npx quasify create my-app --template next   # scaffold pre-wired project
+npx quasify init                             # add wiring to existing project
+npx quasify add button input card drawer    # add components with dep resolution
 ```
 
 ---
@@ -117,13 +117,13 @@ npx stareezy add button input card drawer    # add components with dep resolutio
 
 | Package                                            | Description                                                         | Size                                                                                                                  |
 | -------------------------------------------------- | ------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
-| [`@stareezy-ui/tokens`](./packages/tokens)         | Token definitions, theme system, `createUi` — **zero dependencies** | [![npm](https://img.shields.io/npm/v/@stareezy-ui/tokens)](https://www.npmjs.com/package/@stareezy-ui/tokens)         |
-| [`@stareezy-ui/components`](./packages/components) | 31+ cross-platform UI components                                    | [![npm](https://img.shields.io/npm/v/@stareezy-ui/components)](https://www.npmjs.com/package/@stareezy-ui/components) |
-| [`@stareezy-ui/cli`](./packages/cli)               | Scaffolding CLI — `create`, `add`, `init`                           | [![npm](https://img.shields.io/npm/v/@stareezy-ui/cli)](https://www.npmjs.com/package/@stareezy-ui/cli)               |
-| [`@stareezy-ui/runtime`](./packages/runtime)       | O(1) style registry, web + RN adapters                              | [![npm](https://img.shields.io/npm/v/@stareezy-ui/runtime)](https://www.npmjs.com/package/@stareezy-ui/runtime)       |
-| [`@stareezy-ui/compiler`](./packages/compiler)     | Babel/Vite/Metro build-time transform                               | [![npm](https://img.shields.io/npm/v/@stareezy-ui/compiler)](https://www.npmjs.com/package/@stareezy-ui/compiler)     |
-| [`@stareezy-ui/core`](./packages/core)             | Utilities, hooks, platform helpers                                  | [![npm](https://img.shields.io/npm/v/@stareezy-ui/core)](https://www.npmjs.com/package/@stareezy-ui/core)             |
-| [`@stareezy-ui/stylesheet`](./packages/stylesheet) | Atomic CSS sheet management                                         | [![npm](https://img.shields.io/npm/v/@stareezy-ui/stylesheet)](https://www.npmjs.com/package/@stareezy-ui/stylesheet) |
+| [`@quasify-ui/tokens`](./packages/tokens)         | Token definitions, theme system, `createUi` — **zero dependencies** | [![npm](https://img.shields.io/npm/v/@quasify-ui/tokens)](https://www.npmjs.com/package/@quasify-ui/tokens)         |
+| [`@quasify-ui/components`](./packages/components) | 31+ cross-platform UI components                                    | [![npm](https://img.shields.io/npm/v/@quasify-ui/components)](https://www.npmjs.com/package/@quasify-ui/components) |
+| [`@quasify-ui/cli`](./packages/cli)               | Scaffolding CLI — `create`, `add`, `init`                           | [![npm](https://img.shields.io/npm/v/@quasify-ui/cli)](https://www.npmjs.com/package/@quasify-ui/cli)               |
+| [`@quasify-ui/runtime`](./packages/runtime)       | O(1) style registry, web + RN adapters                              | [![npm](https://img.shields.io/npm/v/@quasify-ui/runtime)](https://www.npmjs.com/package/@quasify-ui/runtime)       |
+| [`@quasify-ui/compiler`](./packages/compiler)     | Babel/Vite/Metro build-time transform                               | [![npm](https://img.shields.io/npm/v/@quasify-ui/compiler)](https://www.npmjs.com/package/@quasify-ui/compiler)     |
+| [`@quasify-ui/core`](./packages/core)             | Utilities, hooks, platform helpers                                  | [![npm](https://img.shields.io/npm/v/@quasify-ui/core)](https://www.npmjs.com/package/@quasify-ui/core)             |
+| [`@quasify-ui/stylesheet`](./packages/stylesheet) | Atomic CSS sheet management                                         | [![npm](https://img.shields.io/npm/v/@quasify-ui/stylesheet)](https://www.npmjs.com/package/@quasify-ui/stylesheet) |
 
 ---
 
@@ -132,7 +132,7 @@ npx stareezy add button input card drawer    # add components with dep resolutio
 ### CLI (fastest)
 
 ```bash
-npx stareezy create my-app --template next
+npx quasify create my-app --template next
 cd my-app
 pnpm install
 pnpm dev
@@ -141,14 +141,14 @@ pnpm dev
 ### Manual — Web (React 19 / Next.js 15 / Vite 7)
 
 ```bash
-pnpm add @stareezy-ui/tokens @stareezy-ui/components @stareezy-ui/runtime
-pnpm add -D @stareezy-ui/compiler
+pnpm add @quasify-ui/tokens @quasify-ui/components @quasify-ui/runtime
+pnpm add -D @quasify-ui/compiler
 ```
 
-**stareezy.config.ts** (project root):
+**quasify.config.ts** (project root):
 
 ```ts
-import { createUi, themes } from "@stareezy-ui/tokens";
+import { createUi, themes } from "@quasify-ui/tokens";
 
 const ui = createUi({
   themes: { aurora: themes.aurora, dark: themes.dark, light: themes.light },
@@ -158,8 +158,8 @@ const ui = createUi({
   } as const,
 });
 
-declare module "@stareezy-ui/tokens" {
-  interface SzrCustomConfig extends typeof ui {}
+declare module "@quasify-ui/tokens" {
+  interface QuasifyCustomConfig extends typeof ui {}
 }
 export default ui;
 ```
@@ -167,14 +167,14 @@ export default ui;
 **vite.config.ts** (or in `next.config.ts` webpack config):
 
 ```ts
-import { stareezyVitePlugin } from "@stareezy-ui/compiler";
-export default { plugins: [stareezyVitePlugin()] };
+import { quasifyVitePlugin } from "@quasify-ui/compiler";
+export default { plugins: [quasifyVitePlugin()] };
 ```
 
 **App root**:
 
 ```tsx
-import { ThemeProvider } from "@stareezy-ui/tokens";
+import { ThemeProvider } from "@quasify-ui/tokens";
 export default function App({ children }) {
   return <ThemeProvider defaultTheme="aurora">{children}</ThemeProvider>;
 }
@@ -183,8 +183,8 @@ export default function App({ children }) {
 ### Manual — React Native / Expo SDK 56
 
 ```bash
-yarn add @stareezy-ui/tokens @stareezy-ui/components @stareezy-ui/runtime
-yarn add -D @stareezy-ui/compiler
+yarn add @quasify-ui/tokens @quasify-ui/components @quasify-ui/runtime
+yarn add -D @quasify-ui/compiler
 ```
 
 **metro.config.js**:
@@ -194,7 +194,7 @@ const { getDefaultConfig } = require("expo/metro-config");
 const config = getDefaultConfig(__dirname);
 config.transformer = {
   ...config.transformer,
-  babelTransformerPath: require.resolve("@stareezy-ui/compiler/metro"),
+  babelTransformerPath: require.resolve("@quasify-ui/compiler/metro"),
 };
 module.exports = config;
 ```
@@ -211,7 +211,7 @@ module.exports = config;
 | Next.js      | 14, 15, 16         |
 | Vite         | 4, 5, 6, 7         |
 
-All `@stareezy-ui/*` packages declare ranged `peerDependencies` — no hard-pinned major versions.
+All `@quasify-ui/*` packages declare ranged `peerDependencies` — no hard-pinned major versions.
 
 ---
 
@@ -220,7 +220,7 @@ All `@stareezy-ui/*` packages declare ranged `peerDependencies` — no hard-pinn
 Every design value is a typed `Token<T>` object:
 
 ```ts
-import { colors, spacing, radius, t } from "@stareezy-ui/tokens";
+import { colors, spacing, radius, t } from "@quasify-ui/tokens";
 
 colors.celurenBlue[500].value; // "#024CCE"
 spacing[4].value; // 16
@@ -234,7 +234,7 @@ t.backgrounds.primary; // → brand color in current theme
 ### createUi — configure once
 
 ```ts
-import { createUi, themes, token } from "@stareezy-ui/tokens";
+import { createUi, themes, token } from "@quasify-ui/tokens";
 
 const ui = createUi({
   themes: {
@@ -249,8 +249,8 @@ const ui = createUi({
 });
 
 // Type augmentation — makes your config flow into BoxProps everywhere
-declare module "@stareezy-ui/tokens" {
-  interface SzrCustomConfig extends typeof ui {}
+declare module "@quasify-ui/tokens" {
+  interface QuasifyCustomConfig extends typeof ui {}
 }
 ```
 
@@ -293,7 +293,7 @@ All components accept `BoxLayoutProps` — responsive spacing/sizing/flex props 
 Five built-in themes — switch with a single call, zero re-renders:
 
 ```tsx
-import { ThemeProvider, useThemeSwitch } from "@stareezy-ui/tokens";
+import { ThemeProvider, useThemeSwitch } from "@quasify-ui/tokens";
 
 // Available: "light" | "dark" | "aurora" | "steins-gate" | "quasar"
 <ThemeProvider defaultTheme="aurora">
@@ -319,18 +319,18 @@ All components are **Theme_Reactive** — no hardcoded colors anywhere in the li
 ## Architecture
 
 ```
-@stareezy-ui/tokens       ← zero deps — token definitions, 5 themes, createUi, SzrCustomConfig
+@quasify-ui/tokens       ← zero deps — token definitions, 5 themes, createUi, QuasifyCustomConfig
          ↓
-@stareezy-ui/core         ← utilities, hooks, platform detection
-@stareezy-ui/stylesheet   ← atomic CSS injection, :root variable management
+@quasify-ui/core         ← utilities, hooks, platform detection
+@quasify-ui/stylesheet   ← atomic CSS injection, :root variable management
          ↓
-@stareezy-ui/runtime      ← O(1) style registry, web + RN adapters
+@quasify-ui/runtime      ← O(1) style registry, web + RN adapters
          ↓
-@stareezy-ui/compiler     ← Babel/Vite/Metro build-time transform (devDependency only)
+@quasify-ui/compiler     ← Babel/Vite/Metro build-time transform (devDependency only)
          ↓
-@stareezy-ui/components   ← 31+ cross-platform UI components (. and ./server entries)
+@quasify-ui/components   ← 31+ cross-platform UI components (. and ./server entries)
          ↓
-@stareezy-ui/cli          ← create / add / init scaffolding tool
+@quasify-ui/cli          ← create / add / init scaffolding tool
 ```
 
 ---
@@ -342,14 +342,14 @@ pnpm install                          # install all deps
 pnpm run build                        # build all packages in dependency order
 pnpm test                             # run all tests
 pnpm typecheck                        # type-check all packages
-pnpm --filter @stareezy-ui/docs dev   # start docs dev server
-pnpm --filter @stareezy-ui/storybook storybook  # start Storybook
+pnpm --filter @quasify-ui/docs dev   # start docs dev server
+pnpm --filter @quasify-ui/storybook storybook  # start Storybook
 pnpm check:peers                      # verify peerDependency ranges
 pnpm size                             # check bundle size budgets
 
 # Build a single package
-pnpm --filter @stareezy-ui/tokens build
-pnpm --filter @stareezy-ui/cli build
+pnpm --filter @quasify-ui/tokens build
+pnpm --filter @quasify-ui/cli build
 ```
 
 ### Release
@@ -392,4 +392,4 @@ Six consolidated correctness properties (fast-check, ≥100 iterations each):
 
 ## License
 
-MIT © [Stareezy UI](https://github.com/stareezy-1)
+MIT © [Quasify UI](https://github.com/Quasify-1)

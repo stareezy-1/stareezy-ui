@@ -1,5 +1,5 @@
 /**
- * JSX AST transform for @stareezy-ui/compiler.
+ * JSX AST transform for @quasify-ui/compiler.
  *
  * Traverses JSX source, detects props whose values are Token objects
  * (identified by `__token: true`), replaces them with generated atomic

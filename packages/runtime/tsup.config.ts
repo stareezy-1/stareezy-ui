@@ -9,8 +9,8 @@ export default defineConfig({
   external: [
     "react",
     "react-native",
-    "@stareezy-ui/tokens",
-    "@stareezy-ui/stylesheet",
+    "@quasify-ui/tokens",
+    "@quasify-ui/stylesheet",
   ],
   tsconfig: "tsconfig.json",
 });

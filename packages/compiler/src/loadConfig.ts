@@ -1,21 +1,21 @@
 /**
- * loadSzrConfig — reads the user's stareezy.config.ts / stareezy.config.js
+ * loadQuasifyConfig — reads the user's quasify.config.ts / quasify.config.js
  * at build time and extracts shorthands + boxPropsComponents for the compiler.
  *
  * The config file is resolved relative to the project root (process.cwd()).
  * It must export a `ui` object produced by `createUi()`.
  *
  * Supported filenames (in resolution order):
- *   stareezy.config.ts
- *   stareezy.config.js
- *   stareezy.config.mjs
- *   stareezy.config.cjs
+ *   quasify.config.ts
+ *   quasify.config.js
+ *   quasify.config.mjs
+ *   quasify.config.cjs
  */
 
 import path from "path";
 import fs from "fs";
 
-export interface SzrBuildConfig {
+export interface QuasifyBuildConfig {
   /** Shorthand → CSS property mappings extracted from createUi({ shorthands }) */
   shorthands: Record<string, string | string[]>;
   /** Component names that accept BoxProps (for compiler scoping) */
@@ -23,21 +23,21 @@ export interface SzrBuildConfig {
 }
 
 const CONFIG_FILENAMES = [
-  "stareezy.config.ts",
-  "stareezy.config.js",
-  "stareezy.config.mjs",
-  "stareezy.config.cjs",
+  "quasify.config.ts",
+  "quasify.config.js",
+  "quasify.config.mjs",
+  "quasify.config.cjs",
 ];
 
 /**
- * Attempts to load and parse the user's stareezy.config.* file.
+ * Attempts to load and parse the user's quasify.config.* file.
  * Returns null if no config file is found.
  *
  * Uses a best-effort require/import — if the file uses TypeScript syntax
  * and ts-node / tsx is not available, falls back to parsing the shorthands
  * statically from the source text.
  */
-export function loadSzrConfig(cwd = process.cwd()): SzrBuildConfig | null {
+export function loadQuasifyConfig(cwd = process.cwd()): QuasifyBuildConfig | null {
   for (const filename of CONFIG_FILENAMES) {
     const fullPath = path.join(cwd, filename);
     if (!fs.existsSync(fullPath)) continue;

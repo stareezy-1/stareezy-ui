@@ -1,12 +1,12 @@
 [
   {
-    "name": "@stareezy-ui/components (ESM)",
+    "name": "@quasify-ui/components (ESM)",
     "path": "packages/components/dist/index.mjs",
     "limit": "150 kB",
     "gzip": true
   },
   {
-    "name": "@stareezy-ui/compiler (ESM)",
+    "name": "@quasify-ui/compiler (ESM)",
     "path": "packages/compiler/dist/index.mjs",
     "limit": "80 kB",
     "gzip": true

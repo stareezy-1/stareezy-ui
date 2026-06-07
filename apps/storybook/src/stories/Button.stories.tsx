@@ -6,7 +6,7 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react";
-import { Button, EButtonType, EButtonSize } from "@stareezy-ui/components";
+import { Button, EButtonType, EButtonSize } from "@quasify-ui/components";
 
 const meta: Meta<typeof Button> = {
   title: "Components/Button",

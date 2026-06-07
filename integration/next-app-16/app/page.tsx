@@ -1,14 +1,14 @@
 // Integration test page for Next.js 16 App Router.
-// Validates that stareezy-ui server-safe primitives compile and render
+// Validates that Quasify-ui server-safe primitives compile and render
 // under Next.js 16 with token-valued and responsive-style props.
 
-import { Box } from "@stareezy-ui/components/server";
+import { Box } from "@quasify-ui/components/server";
 
 export default function Page() {
   return (
     <Box p={16} display="flex" flexDirection="column" gap={8}>
       <Box p={16} style={{ background: "white", borderRadius: 8 }}>
-        <h1>stareezy-ui × Next.js 16 integration</h1>
+        <h1>Quasify-ui × Next.js 16 integration</h1>
         <p>Box server component rendered successfully.</p>
       </Box>
     </Box>

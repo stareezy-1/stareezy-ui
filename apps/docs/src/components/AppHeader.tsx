@@ -8,7 +8,7 @@ import { trackEvent } from "../lib/analytics";
 
 const STORYBOOK_URL =
   process.env["NEXT_PUBLIC_STORYBOOK_URL"] ??
-  "https://storybook.stareezy.tech/";
+  "https://storybook.quasify.app/";
 
 const SECTIONS = [
   {
@@ -18,6 +18,13 @@ const SECTIONS = [
     external: false,
     match: (p: string) =>
       p === "/" || p.startsWith("/docs") || p.startsWith("/tokens"),
+  },
+  {
+    href: "/ai",
+    label: "AI",
+    icon: "✦",
+    external: false,
+    match: (p: string) => p.startsWith("/ai"),
   },
   {
     href: "/playground",
@@ -69,11 +76,18 @@ export function AppHeader({
       role="banner"
     >
       {/* Logo */}
-      <Link href="/" className="app-header-logo" aria-label="Stareezy UI home">
-        <div className="app-header-logo-icon" aria-hidden="true">
-          S
+      <Link href="/" className="app-header-logo" aria-label="Quasify UI home">
+        <div
+          className="app-header-logo-icon"
+          aria-hidden="true"
+          style={{
+            background: "linear-gradient(135deg, #ff6a1a, #dc143c)",
+            boxShadow: "0 2px 8px rgba(255,106,26,0.3)",
+          }}
+        >
+          Q
         </div>
-        <span className="app-header-logo-text">Stareezy UI</span>
+        <span className="app-header-logo-text">Quasify</span>
         <span className="app-header-version" suppressHydrationWarning>
           v1.1.0
         </span>
@@ -112,7 +126,7 @@ export function AppHeader({
         <ThemeToggle />
 
         <a
-          href="https://github.com/stareezy-1/stareezy-ui"
+          href="https://github.com/quasify-ui/quasify-ui"
           target="_blank"
           rel="noopener noreferrer"
           className="app-header-action-btn"

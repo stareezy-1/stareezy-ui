@@ -1,5 +1,5 @@
 /**
- * Button — cross-platform button component for Stareezy UI.
+ * Button — cross-platform button component for Quasify UI.
  *
  * All visual styles live in Button.style.ts — no inline styles here.
  * Enums live in Button.types.ts to avoid circular imports with Button.style.ts.
@@ -8,7 +8,7 @@
  */
 
 import React from "react";
-import { spacing } from "@stareezy-ui/tokens";
+import { spacing } from "@quasify-ui/tokens";
 import { Text, ETextType } from "../primitives/Text";
 import { useThemedColors } from "../shared/useThemedColors";
 import { flattenStyle } from "../shared/flattenStyle";

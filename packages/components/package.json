@@ -1,7 +1,7 @@
 {
-  "name": "@stareezy-ui/components",
-  "version": "1.1.2",
-  "description": "Stareezy UI component library — 17+ cross-platform React Native and web components",
+  "name": "@quasify-ui/components",
+  "version": "1.1.0",
+  "description": "Quasify UI component library — 17+ cross-platform React Native and web components",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
@@ -23,7 +23,7 @@
   ],
   "license": "MIT",
   "keywords": [
-    "stareezy-ui",
+    "Quasify-ui",
     "components",
     "react-native",
     "web",
@@ -31,7 +31,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/stareezy-1/stareezy-ui.git",
+    "url": "https://github.com/quasify-ui/quasify-ui.git",
     "directory": "packages/components"
   },
   "scripts": {
@@ -44,9 +44,9 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
-    "@stareezy-ui/tokens": "workspace:*",
-    "@stareezy-ui/core": "workspace:*",
-    "@stareezy-ui/runtime": "workspace:*"
+    "@quasify-ui/tokens": "workspace:*",
+    "@quasify-ui/core": "workspace:*",
+    "@quasify-ui/runtime": "workspace:*"
   },
   "peerDependencies": {
     "react": "^18 || ^19",

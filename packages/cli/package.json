@@ -1,12 +1,12 @@
 {
-  "name": "@stareezy-ui/cli",
-  "version": "1.1.2",
-  "description": "Stareezy UI CLI — scaffold projects and add components",
+  "name": "@quasify-ui/cli",
+  "version": "1.1.0",
+  "description": "Quasify UI CLI — scaffold projects and add components",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "bin": {
-    "stareezy": "./dist/index.js",
-    "create-stareezy": "./dist/create.js"
+    "quasify": "./dist/index.js",
+    "create-Quasify": "./dist/create.js"
   },
   "files": [
     "dist/",
@@ -14,14 +14,14 @@
   ],
   "license": "MIT",
   "keywords": [
-    "stareezy-ui",
+    "Quasify-ui",
     "cli",
     "scaffolding",
     "components"
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/stareezy-1/stareezy-ui.git",
+    "url": "https://github.com/quasify-ui/quasify-ui.git",
     "directory": "packages/cli"
   },
   "scripts": {

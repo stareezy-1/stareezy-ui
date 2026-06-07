@@ -1,14 +1,14 @@
 /**
  * Property tests for ETextType presets in Text.tsx
  *
- * Feature: portfolio-stareezy-ui-migration
+ * Feature: portfolio-Quasify-ui-migration
  * Property 3: Enum completeness — ETextType new values
  * Validates: Requirements 7.1, 7.16
  */
 
 import { describe, it, expect } from "vitest";
 import * as fc from "fast-check";
-import { colors } from "@stareezy-ui/tokens";
+import { colors } from "@quasify-ui/tokens";
 import { ETextType } from "./Text.props";
 import { TEXT_PRESETS as PRESETS } from "./Text.style";
 
@@ -31,7 +31,7 @@ const NEW_TEXT_TYPES = [
 ] as const;
 
 describe("PRESETS — new portfolio ETextType values", () => {
-  // Feature: portfolio-stareezy-ui-migration, Property 3: Enum completeness
+  // Feature: portfolio-Quasify-ui-migration, Property 3: Enum completeness
   it("has a defined entry for every new ETextType value", () => {
     // Validates: Requirements 7.1, 7.16
     fc.assert(

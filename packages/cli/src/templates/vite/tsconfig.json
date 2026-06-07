@@ -17,5 +17,5 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true
   },
-  "include": ["src", "stareezy.config.ts"]
+  "include": ["src", "quasify.config.ts"]
 }

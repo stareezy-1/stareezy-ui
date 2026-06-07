@@ -214,7 +214,7 @@ export default function SteinsGateTokensPage() {
 
       <h2>Usage</h2>
       <pre>
-        <code>{`import { steinsGate } from '@stareezy-ui/tokens'
+        <code>{`import { steinsGate } from '@quasify-ui/tokens'
 
 // Access token values
 steinsGate.ibmBlue.value       // "#4a9eff"
@@ -300,7 +300,7 @@ const ui = createUi({
         lab) and light (daytime parchment) variants via <code>getVariant</code>.
       </p>
       <pre>
-        <code>{`import { steinsGateVariants, getVariant } from '@stareezy-ui/tokens'
+        <code>{`import { steinsGateVariants, getVariant } from '@quasify-ui/tokens'
 
 const darkTokens  = getVariant(steinsGateVariants, 'dark')
 const lightTokens = getVariant(steinsGateVariants, 'light')

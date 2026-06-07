@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import React from "react";
-import { Toast } from "@stareezy-ui/components";
-import type { ToastVariant } from "@stareezy-ui/components";
+import { Toast } from "@quasify-ui/components";
+import type { ToastVariant } from "@quasify-ui/components";
 
 const meta: Meta<typeof Toast> = {
   title: "Components/Toast",

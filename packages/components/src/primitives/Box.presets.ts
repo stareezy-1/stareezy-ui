@@ -1,11 +1,11 @@
 /**
  * Box.presets.ts — preset style maps for EBoxType values.
  *
- * All values are sourced from @stareezy-ui/tokens. No hardcoded literals
+ * All values are sourced from @quasify-ui/tokens. No hardcoded literals
  * are used where a token exists.
  */
 
-import { colors, radius, spacing, shadow } from "@stareezy-ui/tokens";
+import { colors, radius, spacing, shadow } from "@quasify-ui/tokens";
 import { EBoxType } from "./Box.types";
 
 export const BOX_PRESETS: Record<EBoxType, Record<string, unknown>> = {

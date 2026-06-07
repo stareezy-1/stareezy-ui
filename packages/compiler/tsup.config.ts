@@ -7,7 +7,7 @@ export default defineConfig({
   clean: true,
   sourcemap: true,
   external: [
-    "@stareezy-ui/tokens",
+    "@quasify-ui/tokens",
     "@babel/parser",
     "@babel/traverse",
     "@babel/generator",

@@ -160,7 +160,7 @@ export function PwaInstallBanner() {
                   lineHeight: 1.2,
                 }}
               >
-                Install Stareezy UI Docs
+                Install Quasify UI Docs
               </h2>
               <p
                 style={{
@@ -169,7 +169,7 @@ export function PwaInstallBanner() {
                   margin: "4px 0 0",
                 }}
               >
-                ui.stareezy.tech
+                ui.quasify.app
               </p>
             </div>
           </div>

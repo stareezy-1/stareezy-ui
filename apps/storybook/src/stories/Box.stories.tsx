@@ -10,8 +10,8 @@
 
 import React from "react";
 import type { Meta, StoryObj } from "@storybook/react";
-import { Box } from "@stareezy-ui/components";
-import { colors, spacing, radius } from "@stareezy-ui/tokens";
+import { Box } from "@quasify-ui/components";
+import { colors, spacing, radius } from "@quasify-ui/tokens";
 
 const meta: Meta<typeof Box> = {
   title: "Components/Box",

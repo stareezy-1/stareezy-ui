@@ -1,4 +1,4 @@
-// @stareezy-ui/runtime
+// @quasify-ui/runtime
 // Style registry and platform adapters for O(1) token-to-style resolution.
 
 export type { StyleRegistry, RuntimeAdapter } from "./registry";
@@ -11,7 +11,7 @@ import { createWebRuntime } from "./adapters/web";
 import { createNativeRuntime } from "./adapters/native";
 import type { RuntimeAdapter } from "./registry";
 
-// Platform detection — same pattern used in @stareezy-ui/components
+// Platform detection — same pattern used in @quasify-ui/components
 const isWeb = typeof document !== "undefined";
 
 let _runtimeInstance: RuntimeAdapter | null = null;

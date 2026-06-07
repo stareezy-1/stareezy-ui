@@ -1,7 +1,7 @@
 {
-  "name": "@stareezy-ui/playground",
+  "name": "@quasify-ui/playground",
   "version": "0.0.1",
-  "description": "Stareezy UI live code playground — Sandpack-powered interactive editor",
+  "description": "Quasify UI live code playground — Sandpack-powered interactive editor",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -11,8 +11,8 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@stareezy-ui/tokens": "workspace:*",
-    "@stareezy-ui/components": "workspace:*",
+    "@quasify-ui/tokens": "workspace:*",
+    "@quasify-ui/components": "workspace:*",
     "@codesandbox/sandpack-react": "^2.13.0",
     "next": "^14.2.0",
     "react": "^18.3.0",

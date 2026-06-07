@@ -1,9 +1,9 @@
 import { defineConfig } from "tsup";
 
 export default defineConfig({
-  entry: { "stareezy-stylesheet": "src/index.ts" },
+  entry: { "Quasify-stylesheet": "src/index.ts" },
   format: ["iife"],
-  globalName: "StareezyStylesheet",
+  globalName: "QuasifyStylesheet",
   minify: true,
   clean: false,
   sourcemap: true,

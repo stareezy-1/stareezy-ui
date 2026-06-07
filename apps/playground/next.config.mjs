@@ -10,16 +10,16 @@ const nextConfig = {
   webpack(config) {
     config.resolve.alias = {
       ...config.resolve.alias,
-      "@stareezy-ui/tokens": path.resolve(root, "packages/tokens/src/index.ts"),
-      "@stareezy-ui/components": path.resolve(
+      "@quasify-ui/tokens": path.resolve(root, "packages/tokens/src/index.ts"),
+      "@quasify-ui/components": path.resolve(
         root,
         "packages/components/src/index.ts",
       ),
-      "@stareezy-ui/runtime": path.resolve(
+      "@quasify-ui/runtime": path.resolve(
         root,
         "packages/runtime/src/index.ts",
       ),
-      "@stareezy-ui/core": path.resolve(root, "packages/core/src/index.ts"),
+      "@quasify-ui/core": path.resolve(root, "packages/core/src/index.ts"),
     };
     return config;
   },

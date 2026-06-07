@@ -5,11 +5,11 @@ import type { DocsTheme } from "../hooks/useDocsTheme";
 import { trackEvent } from "../lib/analytics";
 
 const THEMES: Array<{ key: DocsTheme; icon: string; label: string }> = [
+  { key: "quasar", icon: "⊛", label: "Quasar" },
   { key: "aurora", icon: "◉", label: "Aurora" },
+  { key: "steins-gate", icon: "⌬", label: "Steins;Gate" },
   { key: "dark", icon: "◑", label: "Dark" },
   { key: "light", icon: "○", label: "Light" },
-  { key: "steins-gate", icon: "⌬", label: "Steins;Gate" },
-  { key: "quasar", icon: "⊛", label: "Quasar" },
 ];
 
 export function ThemeToggle() {

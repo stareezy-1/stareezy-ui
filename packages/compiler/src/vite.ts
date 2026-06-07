@@ -1,5 +1,5 @@
 /**
- * Vite plugin wrapper for @stareezy-ui/compiler.
+ * Vite plugin wrapper for @quasify-ui/compiler.
  *
  * Exposes the JSX token transform as a standard Vite plugin. The plugin
  * hooks into Vite's `transform` lifecycle for `.jsx` and `.tsx` files,
@@ -12,14 +12,14 @@
 import type { Plugin } from "vite";
 import { transform } from "./transform";
 import { type CompilerConfig } from "./config";
-import { loadSzrConfig } from "./loadConfig";
+import { loadQuasifyConfig } from "./loadConfig";
 
 // ---------------------------------------------------------------------------
 // Virtual module helpers
 // ---------------------------------------------------------------------------
 
 /** Virtual module ID used to expose the accumulated CSS sheet to Vite. */
-const VIRTUAL_MODULE_ID = "virtual:stareezy-ui/styles";
+const VIRTUAL_MODULE_ID = "virtual:quasify-ui/styles";
 const RESOLVED_VIRTUAL_MODULE_ID = `\0${VIRTUAL_MODULE_ID}`;
 
 // ---------------------------------------------------------------------------
@@ -33,24 +33,24 @@ const RESOLVED_VIRTUAL_MODULE_ID = `\0${VIRTUAL_MODULE_ID}`;
  *
  * Usage in vite.config.ts:
  * ```ts
- * import { stareezyVitePlugin } from '@stareezy-ui/compiler';
- * export default { plugins: [stareezyVitePlugin()] };
+ * import { quasifyVitePlugin } from '@quasify-ui/compiler';
+ * export default { plugins: [quasifyVitePlugin()] };
  * ```
  *
  * To include the generated CSS in your app, add this import once (e.g. in
  * your entry file):
  * ```ts
- * import 'virtual:stareezy-ui/styles';
+ * import 'virtual:quasify-ui/styles';
  * ```
  *
  * @param config - Optional partial `CompilerConfig` to override defaults.
  */
-export function stareezyVitePlugin(config?: Partial<CompilerConfig>): Plugin {
+export function quasifyVitePlugin(config?: Partial<CompilerConfig>): Plugin {
   /** Accumulated CSS rules across all transformed files. */
   const cssChunks: string[] = [];
 
-  // Merge shorthands from stareezy.config.ts if present
-  const szrConfig = loadSzrConfig();
+  // Merge shorthands from quasify.config.ts if present
+  const szrConfig = loadQuasifyConfig();
   const mergedConfig: Partial<CompilerConfig> = {
     ...config,
     propMappings: {
@@ -63,7 +63,7 @@ export function stareezyVitePlugin(config?: Partial<CompilerConfig>): Plugin {
   };
 
   return {
-    name: "stareezy-ui",
+    name: "Quasify-ui",
 
     // Expose the virtual CSS module so consumers can import it.
     resolveId(id: string) {
@@ -105,7 +105,7 @@ export function stareezyVitePlugin(config?: Partial<CompilerConfig>): Plugin {
               }`
             : "";
         throw new Error(
-          `[stareezy-ui] ${stage} stage failed at ${id}${loc}: ${
+          `[Quasify-ui] ${stage} stage failed at ${id}${loc}: ${
             inner?.message ?? String(err)
           }`,
         );

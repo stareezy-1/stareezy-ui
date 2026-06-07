@@ -10,8 +10,8 @@ import {
   Button,
   EButtonType,
   EButtonSize,
-} from "@stareezy-ui/components";
-import type { ModalProps } from "@stareezy-ui/components";
+} from "@quasify-ui/components";
+import type { ModalProps } from "@quasify-ui/components";
 
 const meta: Meta<typeof Modal> = {
   title: "Components/Modal",

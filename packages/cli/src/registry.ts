@@ -1,6 +1,6 @@
 /**
  * Component registry — maps each component name to the files it ships,
- * its component-level dependencies, and the @stareezy-ui/* packages it requires.
+ * its component-level dependencies, and the @quasify-ui/* packages it requires.
  */
 
 export interface ComponentRegistryEntry {
@@ -10,12 +10,12 @@ export interface ComponentRegistryEntry {
   files: string[];
   /** Other components this component depends on (by name). */
   componentDeps: string[];
-  /** Required @stareezy-ui/* packages (full package names). */
+  /** Required @quasify-ui/* packages (full package names). */
   packageDeps: string[];
 }
 
 /** All components depend on components + tokens at minimum. */
-const BASE_PACKAGES = ["@stareezy-ui/components", "@stareezy-ui/tokens"];
+const BASE_PACKAGES = ["@quasify-ui/components", "@quasify-ui/tokens"];
 
 const REGISTRY: ComponentRegistryEntry[] = [
   {
@@ -298,7 +298,7 @@ export function resolveComponentClosure(
 }
 
 /**
- * Collect all unique @stareezy-ui/* package deps from a resolved component list.
+ * Collect all unique @quasify-ui/* package deps from a resolved component list.
  */
 export function collectPackageDeps(
   components: ComponentRegistryEntry[],

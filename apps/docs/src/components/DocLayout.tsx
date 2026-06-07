@@ -25,13 +25,13 @@ export default function DocLayout({ children }: DocLayoutProps) {
     <div className="doc-layout">
       <header className="site-header">
         <nav className="top-nav" aria-label="Site navigation">
-          <Link href="/" className="site-logo" aria-label="Stareezy UI home">
-            <span className="logo-text">Stareezy UI</span>
+          <Link href="/" className="site-logo" aria-label="Quasify UI home">
+            <span className="logo-text">Quasify UI</span>
           </Link>
           <div className="top-nav-links">
             <Link href="/docs/installation">Docs</Link>
             <a
-              href="https://github.com/stareezy-1/stareezy-ui"
+              href="https://github.com/quasify-ui/quasify-ui"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="GitHub repository (opens in new tab)"
@@ -64,7 +64,7 @@ export default function DocLayout({ children }: DocLayoutProps) {
 
       <footer className="site-footer">
         <p>
-          &copy; {new Date().getFullYear()} Stareezy UI. Built with Next.js and
+          &copy; {new Date().getFullYear()} Quasify UI. Built with Next.js and
           MDX.
         </p>
       </footer>

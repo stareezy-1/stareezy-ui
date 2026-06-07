@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import React from "react";
-import { NavBar } from "@stareezy-ui/components";
+import { NavBar } from "@quasify-ui/components";
 
 const meta: Meta<typeof NavBar> = {
   title: "Components/NavBar",
@@ -17,7 +17,7 @@ type Story = StoryObj<typeof NavBar>;
 export const Default: Story = {
   args: {
     scrolled: false,
-    logo: <span style={{ fontWeight: 800, color: "#00ff88" }}>◉ Stareezy</span>,
+    logo: <span style={{ fontWeight: 800, color: "#00ff88" }}>◉ Quasify</span>,
     links: (
       <div style={{ display: "flex", gap: 4 }}>
         {["Docs", "Components", "Tokens"].map((l) => (

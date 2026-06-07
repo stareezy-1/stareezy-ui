@@ -1,5 +1,5 @@
-// @stareezy-ui/tokens
-// Zero-dependency design token definitions for Stareezy UI.
+// @quasify-ui/tokens
+// Zero-dependency design token definitions for Quasify UI.
 // Each export lives in its own file to enable tree-shaking.
 
 export type { Token } from "./token";
@@ -73,18 +73,18 @@ export {
 export type { ThemeToken } from "./themeTokens";
 
 // ---------------------------------------------------------------------------
-// Module augmentation — users extend SzrCustomConfig in their ui.config.ts
+// Module augmentation — users extend QuasifyCustomConfig in their ui.config.ts
 // to make custom shorthands and media breakpoints flow into the type system.
 //
 // Usage in your ui.config.ts:
 //
-//   import { createUi } from '@stareezy-ui/tokens'
+//   import { createUi } from '@quasify-ui/tokens'
 //   export const ui = createUi({
 //     media: { sm: 640, md: 768, lg: 1024 } as const,
 //     shorthands: { bg: 'backgroundColor' } as const,
 //   })
-//   declare module '@stareezy-ui/tokens' {
-//     interface SzrCustomConfig extends typeof ui {}
+//   declare module '@quasify-ui/tokens' {
+//     interface QuasifyCustomConfig extends typeof ui {}
 //   }
 // ---------------------------------------------------------------------------
 
@@ -99,7 +99,7 @@ export type { ThemeToken } from "./themeTokens";
  * @example
  * ```ts
  * // ui.config.ts
- * import { createUi } from '@stareezy-ui/tokens'
+ * import { createUi } from '@quasify-ui/tokens'
  *
  * export const ui = createUi({
  *   media: {
@@ -118,26 +118,26 @@ export type { ThemeToken } from "./themeTokens";
  *   } as const,
  * })
  *
- * declare module '@stareezy-ui/tokens' {
- *   interface SzrCustomConfig extends typeof ui {}
+ * declare module '@quasify-ui/tokens' {
+ *   interface QuasifyCustomConfig extends typeof ui {}
  * }
  * ```
  *
  * Once declared, `ConfigBreakpointKey` reflects the exact media keys you
  * configured, and `<Box bg={...} />` will be a valid typed prop.
  */
-export interface SzrCustomConfig {
+export interface QuasifyCustomConfig {
   // This interface is intentionally empty.
   // Consumers augment it with their exact createUi() config type:
   //
   //   type CustomUi = typeof ui;
-  //   declare module "@stareezy-ui/tokens" {
-  //     interface SzrCustomConfig extends CustomUi {}
+  //   declare module "@quasify-ui/tokens" {
+  //     interface QuasifyCustomConfig extends CustomUi {}
   //   }
   //
   // Both `media` and `shorthands` are deliberately NOT declared here.
   // Declaring them as wide types (Record<string,number> / Record<string,string>)
-  // would cause the keyof discriminants in ConfigBreakpointKey and SzrShorthands
+  // would cause the keyof discriminants in ConfigBreakpointKey and QuasifyShorthands
   // to always evaluate to their fallback branches, making the augmentation
   // appear to have no effect.
 }
@@ -149,12 +149,12 @@ export interface SzrCustomConfig {
 export type DefaultBreakpointKey = "base" | "sm" | "md" | "lg" | "xl" | "2xl";
 
 /**
- * Derives the BreakpointKey union from the augmented SzrCustomConfig's `media` shape.
+ * Derives the BreakpointKey union from the augmented QuasifyCustomConfig's `media` shape.
  *
  * - No augmentation (no `media` key at all) → `DefaultBreakpointKey`
  * - Augmented with literal keys → `"base"` plus the exact declared media keys
  */
-export type ConfigBreakpointKey = SzrCustomConfig extends {
+export type ConfigBreakpointKey = QuasifyCustomConfig extends {
   media: infer TMedia;
 }
   ? string extends keyof TMedia
@@ -163,14 +163,14 @@ export type ConfigBreakpointKey = SzrCustomConfig extends {
   : DefaultBreakpointKey; // no media declared — use defaults
 
 /**
- * Extracts the shorthands record from SzrCustomConfig if the consumer has
+ * Extracts the shorthands record from QuasifyCustomConfig if the consumer has
  * augmented it with literal shorthand keys.
  *
  * - No augmentation (no `shorthands` key at all) → `Record<never, never>` (no extra props)
  * - Augmented with `shorthands: { bg: "backgroundColor", br: "borderRadius" }` →
  *   those keys become props on Box / BoxLayoutProps
  */
-export type SzrShorthands = SzrCustomConfig extends { shorthands: infer T }
+export type QuasifyShorthands = QuasifyCustomConfig extends { shorthands: infer T }
   ? string extends keyof T
     ? Record<never, never> // consumer accidentally used a wide type — no extra props
     : T // literal keys — expose them as props

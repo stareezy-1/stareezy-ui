@@ -1,5 +1,5 @@
 /**
- * Theme definitions for Stareezy UI.
+ * Theme definitions for Quasify UI.
  *
  * Exports:
  *  - `ThemeOverride` — a partial override of `semanticColors`

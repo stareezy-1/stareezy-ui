@@ -9,9 +9,9 @@ export default defineConfig({
   external: [
     "react",
     "react-native",
-    "@stareezy-ui/tokens",
-    "@stareezy-ui/core",
-    "@stareezy-ui/runtime",
+    "@quasify-ui/tokens",
+    "@quasify-ui/core",
+    "@quasify-ui/runtime",
   ],
   tsconfig: "tsconfig.json",
 });

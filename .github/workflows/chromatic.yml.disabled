@@ -34,7 +34,7 @@ jobs:
         run: pnpm run build
 
       - name: Build Storybook
-        run: pnpm --filter @stareezy-ui/storybook build-storybook
+        run: pnpm --filter @quasify-ui/storybook build-storybook
         env:
           NODE_OPTIONS: --max_old_space_size=4096
 

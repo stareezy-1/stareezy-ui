@@ -1,7 +1,7 @@
 {
-  "name": "@stareezy-ui/docs",
+  "name": "@quasify-ui/docs",
   "version": "1.1.0",
-  "description": "Stareezy UI documentation website — Next.js + MDX",
+  "description": "Quasify UI documentation website — Next.js + MDX",
   "private": true,
   "scripts": {
     "dev": "next dev",

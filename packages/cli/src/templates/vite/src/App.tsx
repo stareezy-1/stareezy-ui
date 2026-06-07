@@ -1,5 +1,5 @@
-import { Box, Button } from "@stareezy-ui/components";
-import { t, useThemeSwitch } from "@stareezy-ui/tokens";
+import { Box, Button } from "@quasify-ui/components";
+import { t, useThemeSwitch } from "@quasify-ui/tokens";
 import { Providers } from "./providers";
 
 function AppContent() {
@@ -39,12 +39,12 @@ function AppContent() {
         >
           Powered by{" "}
           <a
-            href="https://ui.stareezy.tech"
+            href="https://ui.quasify.app"
             target="_blank"
             rel="noopener noreferrer"
             style={{ color: t.text.importantBrand.value, fontWeight: 600 }}
           >
-            Stareezy UI
+            Quasify UI
           </a>{" "}
           — cross-platform design tokens for React and React Native.
         </p>
@@ -62,13 +62,13 @@ function AppContent() {
             type="Primary"
             text="Get Started"
             onPress={() =>
-              window.open("https://ui.stareezy.tech/docs/quick-start", "_blank")
+              window.open("https://ui.quasify.app/docs/quick-start", "_blank")
             }
           />
           <Button
             type="Secondary"
             text="Documentation"
-            onPress={() => window.open("https://ui.stareezy.tech", "_blank")}
+            onPress={() => window.open("https://ui.quasify.app", "_blank")}
           />
         </div>
 

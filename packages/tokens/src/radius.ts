@@ -1,5 +1,5 @@
 /**
- * Radius and roundness tokens for Stareezy UI.
+ * Radius and roundness tokens for Quasify UI.
  *
  * All values are raw pixel numbers (no convertSpacing).
  * Objects are declared `as const` so TypeScript infers literal numeric types.

@@ -1,16 +1,16 @@
 /**
- * useDocsTheme — docs site theme hook for Stareezy UI.
+ * useDocsTheme — docs site theme hook for Quasify UI.
  *
  * Manages the 3-way theme toggle (aurora / dark / light) for the docs app.
  * Persists the selected theme to localStorage and sets `data-theme` on
  * `document.documentElement` so CSS variables update instantly.
  *
  * Can also be used in any web app that follows the same `data-theme` +
- * CSS variable pattern as the Stareezy UI docs.
+ * CSS variable pattern as the Quasify UI docs.
  *
  * @example
  * ```ts
- * import { useDocsTheme } from '@stareezy-ui/core'
+ * import { useDocsTheme } from '@quasify-ui/core'
  *
  * function ThemeToggle() {
  *   const { theme, setTheme, isDark, isAurora } = useDocsTheme()

@@ -10,12 +10,12 @@
     "incremental": true,
     "isolatedModules": true,
     "paths": {
-      "@stareezy-ui/tokens": ["../../packages/tokens/src/index.ts"],
-      "@stareezy-ui/tokens/*": ["../../packages/tokens/src/*"],
-      "@stareezy-ui/components": ["../../packages/components/src/index.ts"],
-      "@stareezy-ui/components/*": ["../../packages/components/src/*"],
-      "@stareezy-ui/runtime": ["../../packages/runtime/src/index.ts"],
-      "@stareezy-ui/core": ["../../packages/core/src/index.ts"]
+      "@quasify-ui/tokens": ["../../packages/tokens/src/index.ts"],
+      "@quasify-ui/tokens/*": ["../../packages/tokens/src/*"],
+      "@quasify-ui/components": ["../../packages/components/src/index.ts"],
+      "@quasify-ui/components/*": ["../../packages/components/src/*"],
+      "@quasify-ui/runtime": ["../../packages/runtime/src/index.ts"],
+      "@quasify-ui/core": ["../../packages/core/src/index.ts"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

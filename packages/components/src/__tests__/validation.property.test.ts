@@ -27,7 +27,7 @@ import {
   configureBreakpoints,
   getBreakpoints,
 } from "../primitives/breakpoints";
-import { themes, t, resolveThemeTokenFromTheme } from "@stareezy-ui/tokens";
+import { themes, t, resolveThemeTokenFromTheme } from "@quasify-ui/tokens";
 
 // ---------------------------------------------------------------------------
 // Property 1 — Responsive resolution round-trip
@@ -39,7 +39,7 @@ describe("Property 1 — Responsive resolution round-trip", () => {
   // calls made in one test don't bleed into the next.
   beforeEach(() => {
     // Reset to built-in defaults before each sub-test.
-    (globalThis as Record<string, unknown>)["__stareezy_breakpoints__"] =
+    (globalThis as Record<string, unknown>)["__Quasify_breakpoints__"] =
       undefined;
     configureBreakpoints({ sm: 480, md: 768, lg: 1024, xl: 1280, "2xl": 1536 });
   });

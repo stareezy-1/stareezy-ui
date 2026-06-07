@@ -1,13 +1,13 @@
-# @stareezy-ui/compiler
+# @quasify-ui/compiler
 
-Build-time Babel/Vite plugin that extracts Stareezy UI token props from JSX and replaces them with atomic CSS class names.
+Build-time Babel/Vite plugin that extracts Quasify UI token props from JSX and replaces them with atomic CSS class names.
 
-[![npm](https://img.shields.io/npm/v/@stareezy-ui/compiler)](https://www.npmjs.com/package/@stareezy-ui/compiler)
+[![npm](https://img.shields.io/npm/v/@quasify-ui/compiler)](https://www.npmjs.com/package/@quasify-ui/compiler)
 
 ## Install
 
 ```bash
-pnpm add -D @stareezy-ui/compiler
+pnpm add -D @quasify-ui/compiler
 ```
 
 ## How it works
@@ -43,11 +43,11 @@ pnpm add -D @stareezy-ui/compiler
 
 ```ts
 // vite.config.ts
-import { stareezyVitePlugin } from "@stareezy-ui/compiler";
+import { quasifyVitePlugin } from "@quasify-ui/compiler";
 
 export default {
   plugins: [
-    stareezyVitePlugin({
+    quasifyVitePlugin({
       cssVariablePrefix: "sz",
       outputDir: "dist/styles",
     }),
@@ -60,7 +60,7 @@ export default {
 ```js
 // babel.config.js
 module.exports = {
-  plugins: [["@stareezy-ui/compiler/babel", { cssVariablePrefix: "sz" }]],
+  plugins: [["@quasify-ui/compiler/babel", { cssVariablePrefix: "sz" }]],
 };
 ```
 

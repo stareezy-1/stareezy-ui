@@ -1,5 +1,5 @@
 /**
- * Token factory for Stareezy UI design tokens.
+ * Token factory for Quasify UI design tokens.
  * Platform agnostic — no React or React Native imports.
  */
 

@@ -4,8 +4,8 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react";
-import { Table } from "@stareezy-ui/components";
-import type { TableColumn, TableRow } from "@stareezy-ui/components";
+import { Table } from "@quasify-ui/components";
+import type { TableColumn, TableRow } from "@quasify-ui/components";
 
 const COLUMNS: TableColumn[] = [
   { key: "name", header: "Name" },
@@ -61,7 +61,7 @@ export const FewColumns: Story = {
     ],
     rows: [
       { key: "version", value: "1.0.0" },
-      { key: "author", value: "stareezy-ui" },
+      { key: "author", value: "Quasify-ui" },
       { key: "license", value: "MIT" },
     ],
     caption: "Package info",

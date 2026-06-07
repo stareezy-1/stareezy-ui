@@ -1,11 +1,11 @@
 /**
  * View.presets.ts — preset style maps for EViewType values.
  *
- * All values are sourced from @stareezy-ui/tokens. No hardcoded literals
+ * All values are sourced from @quasify-ui/tokens. No hardcoded literals
  * are used where a token exists.
  */
 
-import { colors } from "@stareezy-ui/tokens";
+import { colors } from "@quasify-ui/tokens";
 import { EViewType } from "./View.types";
 
 export const VIEW_PRESETS: Record<EViewType, Record<string, unknown>> = {

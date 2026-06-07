@@ -1,5 +1,5 @@
 // Server Component — uses the RSC-safe server entry (no "use client" needed)
-import { Box } from "@stareezy-ui/components/server";
+import { Box } from "@quasify-ui/components/server";
 import { HeroSection } from "./hero-section";
 
 export default function Home() {
@@ -35,12 +35,12 @@ export default function Home() {
         >
           Powered by{" "}
           <a
-            href="https://ui.stareezy.tech"
+            href="https://ui.quasify.app"
             target="_blank"
             rel="noopener noreferrer"
             style={{ fontWeight: 600 }}
           >
-            Stareezy UI
+            Quasify UI
           </a>{" "}
           — a cross-platform design token system for React and React Native.
         </p>
