@@ -403,11 +403,11 @@ pnpm run release            # build → publish to npm
 
 ## Apps
 
-| App                                    | Description                                                      |
-| -------------------------------------- | ---------------------------------------------------------------- |
-| [`apps/docs`](./apps/docs)             | Documentation site — Next.js 14, full guide coverage             |
-| [`apps/storybook`](./apps/storybook)   | Component stories — Storybook 8 with Chromatic visual regression |
-| [`apps/playground`](./apps/playground) | Live code sandbox                                                |
+| App                                                  | Description                                                      |
+| ---------------------------------------------------- | ---------------------------------------------------------------- |
+| [`apps/docs`](./apps/docs)                           | Documentation site — Next.js 14, full guide coverage             |
+| [`apps/storybook`](./apps/storybook)                 | Component stories — Storybook 8 with Chromatic visual regression |
+| [`apps/playground`](./apps/playground)               | Live code sandbox                                                |
 | [`apps/docs/src/app/nova`](./apps/docs/src/app/nova) | Nova — Figma-like drag & drop visual builder                     |
 
 ---
