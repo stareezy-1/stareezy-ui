@@ -121,7 +121,8 @@ function generateId(): string {
 }
 
 function createNode(type: string, def?: ComponentDef): CanvasNode {
-  const d = def || COMPONENT_DEFS.find((c) => c.type === type) || COMPONENT_DEFS[0];
+  const found = def || COMPONENT_DEFS.find((c) => c.type === type);
+  const d: ComponentDef = (found || COMPONENT_DEFS[0])!;
   return {
     id: generateId(),
     type: d.type,
@@ -306,14 +307,18 @@ export default function NovaPage() {
 
   const undo = useCallback(() => {
     if (historyIdx < 0) return;
+    const entry = history[historyIdx];
+    if (!entry) return;
     setHistoryIdx((prev) => prev - 1);
-    setNodes(JSON.parse(JSON.stringify(history[historyIdx].nodes)));
+    setNodes(JSON.parse(JSON.stringify(entry.nodes)));
   }, [history, historyIdx]);
 
   const redo = useCallback(() => {
     if (historyIdx >= history.length - 1) return;
+    const entry = history[historyIdx + 1];
+    if (!entry) return;
     setHistoryIdx((prev) => prev + 1);
-    setNodes(JSON.parse(JSON.stringify(history[historyIdx + 1].nodes)));
+    setNodes(JSON.parse(JSON.stringify(entry.nodes)));
   }, [history, historyIdx]);
 
   function findNode(nodes: CanvasNode[], id: string): CanvasNode | null {
@@ -429,7 +434,7 @@ export default function NovaPage() {
         if (n.id === id) {
           const kids = [...n.children];
           const [removed] = kids.splice(fromIdx, 1);
-          kids.splice(toIdx, 0, removed);
+          if (removed) kids.splice(toIdx, 0, removed);
           return { ...n, children: kids };
         }
         if (n.children.length > 0) return { ...n, children: updater(n.children) };
@@ -443,7 +448,8 @@ export default function NovaPage() {
   }
 
   function handleExport() {
-    const code = `import { ${nodes[0]?.children.map((c) => c.type).filter((t, i, a) => a.indexOf(t) === i).join(", ")} } from "@stareezy-ui/components";\nimport { t } from "@stareezy-ui/tokens";\n\nexport default function NovaDesign() {\n  return (\n${generateCode(nodes[0]?.children || [], 2)}\n  );\n}`;
+    const pageChildren = nodes[0]?.children ?? [];
+    const code = `import { ${pageChildren.map((c) => c.type).filter((t, i, a) => a.indexOf(t) === i).join(", ")} } from "@stareezy-ui/components";\nimport { t } from "@stareezy-ui/tokens";\n\nexport default function NovaDesign() {\n  return (\n${generateCode(pageChildren, 2)}\n  );\n}`;
     const blob = new Blob([code], { type: "text/plain" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
@@ -666,16 +672,19 @@ export default function NovaPage() {
               </div>
             </div>
             <div style={{ flex: 1, overflow: "auto" }}>
-              {codeTab === "code" && (
-                <div style={style.codeContent}>
-                  {`import { ${nodes[0]?.children.map((c) => c.type).filter((t, i, a) => a.indexOf(t) === i).join(", ")} } from "@stareezy-ui/components";\nimport { t } from "@stareezy-ui/tokens";\n\nexport default function NovaDesign() {\n  return (\n`}
-                  {generateCode(nodes[0]?.children || [], 2)}
-                  {"\n  );\n}"}
-                </div>
-              )}
+              {codeTab === "code" && (() => {
+                const pageChildren = nodes[0]?.children ?? [];
+                return (
+                  <div style={style.codeContent}>
+                    {`import { ${pageChildren.map((c) => c.type).filter((t, i, a) => a.indexOf(t) === i).join(", ")} } from "@stareezy-ui/components";\nimport { t } from "@stareezy-ui/tokens";\n\nexport default function NovaDesign() {\n  return (\n`}
+                    {generateCode(pageChildren, 2)}
+                    {"\n  );\n}"}
+                  </div>
+                );
+              })()}
               {codeTab === "preview" && (
                 <div style={{ padding: 24, display: "flex", flexDirection: "column", gap: 8, alignItems: "center", justifyContent: "center", minHeight: 200 }}>
-                  {nodes[0]?.children.map((c) => renderPreview(c, theme))}
+                  {(nodes[0]?.children ?? []).map((c) => renderPreview(c, theme))}
                 </div>
               )}
               {codeTab === "export" && (
@@ -691,7 +700,7 @@ export default function NovaPage() {
 
         {/* Status Bar */}
         <div style={style.statusBar}>
-          <span>{nodes[0]?.children.length || 0} items on canvas</span>
+          <span>{(nodes[0]?.children ?? []).length} items on canvas</span>
           <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
             <button onClick={undo} style={{ background: "none", border: "none", color: "var(--color-text-2)", cursor: "pointer", fontSize: "0.65rem", opacity: historyIdx >= 0 ? 1 : 0.3 }}>↩</button>
             <button onClick={redo} style={{ background: "none", border: "none", color: "var(--color-text-2)", cursor: "pointer", fontSize: "0.65rem", opacity: historyIdx < history.length - 1 ? 1 : 0.3 }}>↪</button>
