@@ -2,9 +2,24 @@
 
 import { useState, useRef, useEffect, useCallback } from "react";
 
-type ComponentPattern = "hero" | "dashboard" | "form" | "card-grid" | "navbar" | "modal";
+type ComponentPattern =
+  | "hero"
+  | "dashboard"
+  | "form"
+  | "card-grid"
+  | "navbar"
+  | "modal";
 type ThemeMode = "quasar" | "aurora" | "steins-gate";
-type RefinementAction = "darker" | "lighter" | "more-spacing" | "less-spacing" | "larger-text" | "smaller-text" | "add-cta" | "remove-cta" | "change-layout";
+type RefinementAction =
+  | "darker"
+  | "lighter"
+  | "more-spacing"
+  | "less-spacing"
+  | "larger-text"
+  | "smaller-text"
+  | "add-cta"
+  | "remove-cta"
+  | "change-layout";
 
 interface ComponentConfig {
   pattern: ComponentPattern;
@@ -32,35 +47,100 @@ interface Message {
 function defaultConfig(pattern: ComponentPattern): ComponentConfig {
   const base: Record<ComponentPattern, ComponentConfig> = {
     hero: {
-      pattern: "hero", title: "Build Cross-Platform UIs", subtitle: "A fully typed design token system for React Native and web. Five themes, O(1) runtime, tree-shakeable.",
-      ctaText: "Get Started", ctaSecondary: "Learn More", dark: true, spacing: "normal", textSize: "large", layout: "center", showCode: true, accent: "#ff6a1a",
+      pattern: "hero",
+      title: "Build Cross-Platform UIs",
+      subtitle:
+        "A fully typed design token system for React Native and web. Five themes, O(1) runtime, tree-shakeable.",
+      ctaText: "Get Started",
+      ctaSecondary: "Learn More",
+      dark: true,
+      spacing: "normal",
+      textSize: "large",
+      layout: "center",
+      showCode: true,
+      accent: "#ff6a1a",
     },
     dashboard: {
-      pattern: "dashboard", title: "Dashboard", subtitle: "Monitor your metrics and manage your application",
-      ctaText: "View Details", ctaSecondary: "Refresh", dark: true, spacing: "spacious", textSize: "medium", layout: "grid", showCode: false, accent: "#22c55e",
+      pattern: "dashboard",
+      title: "Dashboard",
+      subtitle: "Monitor your metrics and manage your application",
+      ctaText: "View Details",
+      ctaSecondary: "Refresh",
+      dark: true,
+      spacing: "spacious",
+      textSize: "medium",
+      layout: "grid",
+      showCode: false,
+      accent: "#22c55e",
     },
     form: {
-      pattern: "form", title: "Welcome Back", subtitle: "Sign in to your account",
-      ctaText: "Sign In", ctaSecondary: "Create Account", dark: true, spacing: "normal", textSize: "medium", layout: "center", showCode: false, accent: "#dc143c",
+      pattern: "form",
+      title: "Welcome Back",
+      subtitle: "Sign in to your account",
+      ctaText: "Sign In",
+      ctaSecondary: "Create Account",
+      dark: true,
+      spacing: "normal",
+      textSize: "medium",
+      layout: "center",
+      showCode: false,
+      accent: "#dc143c",
     },
     "card-grid": {
-      pattern: "card-grid", title: "Features", subtitle: "Everything you need to build great UIs",
-      ctaText: "Learn More", ctaSecondary: "Get Started", dark: true, spacing: "spacious", textSize: "medium", layout: "grid", showCode: false, accent: "#ff6a1a",
+      pattern: "card-grid",
+      title: "Features",
+      subtitle: "Everything you need to build great UIs",
+      ctaText: "Learn More",
+      ctaSecondary: "Get Started",
+      dark: true,
+      spacing: "spacious",
+      textSize: "medium",
+      layout: "grid",
+      showCode: false,
+      accent: "#ff6a1a",
     },
     navbar: {
-      pattern: "navbar", title: "Stareezy", subtitle: "Navigation",
-      ctaText: "Sign Up", ctaSecondary: "Log In", dark: true, spacing: "compact", textSize: "medium", layout: "split", showCode: false, accent: "#ff6a1a",
+      pattern: "navbar",
+      title: "Stareezy",
+      subtitle: "Navigation",
+      ctaText: "Sign Up",
+      ctaSecondary: "Log In",
+      dark: true,
+      spacing: "compact",
+      textSize: "medium",
+      layout: "split",
+      showCode: false,
+      accent: "#ff6a1a",
     },
     modal: {
-      pattern: "modal", title: "Confirm Action", subtitle: "Are you sure you want to proceed?",
-      ctaText: "Confirm", ctaSecondary: "Cancel", dark: true, spacing: "normal", textSize: "medium", layout: "center", showCode: false, accent: "#dc143c",
+      pattern: "modal",
+      title: "Confirm Action",
+      subtitle: "Are you sure you want to proceed?",
+      ctaText: "Confirm",
+      ctaSecondary: "Cancel",
+      dark: true,
+      spacing: "normal",
+      textSize: "medium",
+      layout: "center",
+      showCode: false,
+      accent: "#dc143c",
     },
   };
   return { ...base[pattern] };
 }
 
 function generateCode(config: ComponentConfig): string {
-  const { pattern, title, subtitle, ctaText, ctaSecondary, spacing, dark, textSize, layout } = config;
+  const {
+    pattern,
+    title,
+    subtitle,
+    ctaText,
+    ctaSecondary,
+    spacing,
+    dark,
+    textSize,
+    layout,
+  } = config;
   const p = spacing === "compact" ? 16 : spacing === "spacious" ? 48 : 24;
   const fs = textSize === "large" ? "H1" : textSize === "small" ? "H3" : "H2";
   const bg = dark ? "t.backgrounds.primaryBlack" : "t.backgrounds.primary";
@@ -257,26 +337,34 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     </ThemeProvider>
   </React.StrictMode>,
 )`,
-    "package.json": JSON.stringify({
-      name: "stareezy-app",
-      private: true,
-      version: "0.0.0",
-      type: "module",
-      scripts: { dev: "vite", build: "tsc && vite build", preview: "vite preview" },
-      dependencies: {
-        react: "^18.2.0",
-        "react-dom": "^18.2.0",
-        "@stareezy-ui/components": "^0.1.0",
-        "@stareezy-ui/tokens": "^0.1.0",
+    "package.json": JSON.stringify(
+      {
+        name: "stareezy-app",
+        private: true,
+        version: "0.0.0",
+        type: "module",
+        scripts: {
+          dev: "vite",
+          build: "tsc && vite build",
+          preview: "vite preview",
+        },
+        dependencies: {
+          react: "^18.2.0",
+          "react-dom": "^18.2.0",
+          "@stareezy-ui/components": "^0.1.0",
+          "@stareezy-ui/tokens": "^0.1.0",
+        },
+        devDependencies: {
+          "@types/react": "^18.2.0",
+          "@types/react-dom": "^18.2.0",
+          "@vitejs/plugin-react": "^4.2.0",
+          typescript: "^5.2.0",
+          vite: "^5.0.0",
+        },
       },
-      devDependencies: {
-        "@types/react": "^18.2.0",
-        "@types/react-dom": "^18.2.0",
-        "@vitejs/plugin-react": "^4.2.0",
-        typescript: "^5.2.0",
-        vite: "^5.0.0",
-      },
-    }, null, 2),
+      null,
+      2,
+    ),
     "vite.config.ts": `import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { stareezyPlugin } from '@stareezy-ui/vite-plugin'
@@ -301,32 +389,107 @@ export default defineConfig({
 
 const SPACING_MAP = { compact: 12, normal: 24, spacious: 48 };
 
-function LivePreview({ config, theme }: { config: ComponentConfig; theme: ThemeMode }) {
+function LivePreview({
+  config,
+  theme,
+}: {
+  config: ComponentConfig;
+  theme: ThemeMode;
+}) {
   const p = SPACING_MAP[config.spacing];
-  const fs = config.textSize === "large" ? "clamp(1.5rem,3vw,2rem)" : config.textSize === "small" ? "0.95rem" : "1.15rem";
+  const fs =
+    config.textSize === "large"
+      ? "clamp(1.5rem,3vw,2rem)"
+      : config.textSize === "small"
+      ? "0.95rem"
+      : "1.15rem";
   const bg = config.dark ? "var(--color-bg)" : "var(--color-surface)";
 
   if (config.pattern === "hero") {
     return (
-      <div style={{ background: bg, padding: `${p}px`, textAlign: config.layout === "center" ? "center" : "left", borderRadius: 8 }}>
+      <div
+        style={{
+          background: bg,
+          padding: `${p}px`,
+          textAlign: config.layout === "center" ? "center" : "left",
+          borderRadius: 8,
+        }}
+      >
         <div style={{ display: "flex", gap: 4, marginBottom: 8 }}>
-          <span className="pill-tag orange" style={{ fontSize: "0.55rem" }}>v2.0</span>
-          <span className="pill-tag teal" style={{ fontSize: "0.55rem" }}>AI Generated</span>
+          <span className="pill-tag orange" style={{ fontSize: "0.55rem" }}>
+            v2.0
+          </span>
+          <span className="pill-tag teal" style={{ fontSize: "0.55rem" }}>
+            AI Generated
+          </span>
         </div>
-        <div style={{ fontSize: fs, fontWeight: 800, letterSpacing: "-0.03em", color: "var(--color-text)", marginBottom: 8 }}>
+        <div
+          style={{
+            fontSize: fs,
+            fontWeight: 800,
+            letterSpacing: "-0.03em",
+            color: "var(--color-text)",
+            marginBottom: 8,
+          }}
+        >
           {config.title}
         </div>
-        <div style={{ fontSize: "0.9rem", color: config.accent, fontWeight: 600, marginBottom: 12 }}>
+        <div
+          style={{
+            fontSize: "0.9rem",
+            color: config.accent,
+            fontWeight: 600,
+            marginBottom: 12,
+          }}
+        >
           {config.subtitle}
         </div>
-        <div style={{ fontSize: "0.8rem", color: "var(--color-text-2)", maxWidth: 400, margin: config.layout === "center" ? "0 auto 20px" : "0 0 20px", lineHeight: 1.6 }}>
-          Your description here. This component uses theme tokens — switch themes and every color updates automatically.
+        <div
+          style={{
+            fontSize: "0.8rem",
+            color: "var(--color-text-2)",
+            maxWidth: 400,
+            margin: config.layout === "center" ? "0 auto 20px" : "0 0 20px",
+            lineHeight: 1.6,
+          }}
+        >
+          Your description here. This component uses theme tokens — switch
+          themes and every color updates automatically.
         </div>
-        <div style={{ display: "flex", gap: 8, justifyContent: config.layout === "center" ? "center" : "flex-start", flexWrap: "wrap" }}>
-          <div style={{ padding: "8px 20px", borderRadius: 8, background: "linear-gradient(135deg, " + config.accent + ", #e05010)", color: "white", fontWeight: 700, fontSize: "0.8rem", cursor: "pointer" }}>
+        <div
+          style={{
+            display: "flex",
+            gap: 8,
+            justifyContent:
+              config.layout === "center" ? "center" : "flex-start",
+            flexWrap: "wrap",
+          }}
+        >
+          <div
+            style={{
+              padding: "8px 20px",
+              borderRadius: 8,
+              background:
+                "linear-gradient(135deg, " + config.accent + ", #e05010)",
+              color: "white",
+              fontWeight: 700,
+              fontSize: "0.8rem",
+              cursor: "pointer",
+            }}
+          >
             {config.ctaText} →
           </div>
-          <div style={{ padding: "8px 20px", borderRadius: 8, border: "1px solid rgba(255,106,26,0.2)", color: "var(--color-text-2)", fontWeight: 600, fontSize: "0.8rem", cursor: "pointer" }}>
+          <div
+            style={{
+              padding: "8px 20px",
+              borderRadius: 8,
+              border: "1px solid rgba(255,106,26,0.2)",
+              color: "var(--color-text-2)",
+              fontWeight: 600,
+              fontSize: "0.8rem",
+              cursor: "pointer",
+            }}
+          >
             {config.ctaSecondary}
           </div>
         </div>
@@ -337,21 +500,100 @@ function LivePreview({ config, theme }: { config: ComponentConfig; theme: ThemeM
   if (config.pattern === "dashboard") {
     return (
       <div style={{ background: bg, padding: `${p}px`, borderRadius: 8 }}>
-        <div style={{ fontSize: fs, fontWeight: 800, color: "var(--color-text)", marginBottom: 16 }}>
+        <div
+          style={{
+            fontSize: fs,
+            fontWeight: 800,
+            color: "var(--color-text)",
+            marginBottom: 16,
+          }}
+        >
           {config.title}
         </div>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(120px, 1fr))", gap: 8, marginBottom: 16 }}>
-          {[["Users", "12.5K", "+12%"], ["Revenue", "$48.2K", "+8%"], ["Active", "3.2K", "+23%"], ["Bounce", "2.1%", "-5%"]].map(([l, v, c]) => (
-            <div key={l} style={{ background: "var(--color-surface)", borderRadius: 8, padding: 12, border: "1px solid var(--color-border)" }}>
-              <div style={{ fontSize: "0.65rem", color: "var(--color-text-2)", marginBottom: 4 }}>{l}</div>
-              <div style={{ fontSize: "1rem", fontWeight: 800, color: "var(--color-text)", marginBottom: 2 }}>{v}</div>
-              <div style={{ fontSize: "0.68rem", color: (c ?? "").startsWith("+") ? "#22c55e" : "#dc143c", fontWeight: 600 }}>{c ?? ""}</div>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(120px, 1fr))",
+            gap: 8,
+            marginBottom: 16,
+          }}
+        >
+          {[
+            ["Users", "12.5K", "+12%"],
+            ["Revenue", "$48.2K", "+8%"],
+            ["Active", "3.2K", "+23%"],
+            ["Bounce", "2.1%", "-5%"],
+          ].map(([l, v, c]) => (
+            <div
+              key={l}
+              style={{
+                background: "var(--color-surface)",
+                borderRadius: 8,
+                padding: 12,
+                border: "1px solid var(--color-border)",
+              }}
+            >
+              <div
+                style={{
+                  fontSize: "0.65rem",
+                  color: "var(--color-text-2)",
+                  marginBottom: 4,
+                }}
+              >
+                {l}
+              </div>
+              <div
+                style={{
+                  fontSize: "1rem",
+                  fontWeight: 800,
+                  color: "var(--color-text)",
+                  marginBottom: 2,
+                }}
+              >
+                {v}
+              </div>
+              <div
+                style={{
+                  fontSize: "0.68rem",
+                  color: (c ?? "").startsWith("+") ? "#22c55e" : "#dc143c",
+                  fontWeight: 600,
+                }}
+              >
+                {c ?? ""}
+              </div>
             </div>
           ))}
         </div>
-        <div style={{ background: "var(--color-surface)", borderRadius: 8, padding: 16, border: "1px solid var(--color-border)", display: "flex", alignItems: "center", justifyContent: "center", minHeight: 80 }}>
-          <div style={{ width: "60%", height: 4, borderRadius: 2, background: "var(--color-surface-2)", overflow: "hidden" }}>
-            <div style={{ width: "65%", height: "100%", background: "linear-gradient(90deg, " + config.accent + ", #dc143c)", borderRadius: 2 }} />
+        <div
+          style={{
+            background: "var(--color-surface)",
+            borderRadius: 8,
+            padding: 16,
+            border: "1px solid var(--color-border)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            minHeight: 80,
+          }}
+        >
+          <div
+            style={{
+              width: "60%",
+              height: 4,
+              borderRadius: 2,
+              background: "var(--color-surface-2)",
+              overflow: "hidden",
+            }}
+          >
+            <div
+              style={{
+                width: "65%",
+                height: "100%",
+                background:
+                  "linear-gradient(90deg, " + config.accent + ", #dc143c)",
+                borderRadius: 2,
+              }}
+            />
           </div>
         </div>
       </div>
@@ -360,23 +602,107 @@ function LivePreview({ config, theme }: { config: ComponentConfig; theme: ThemeM
 
   if (config.pattern === "form") {
     return (
-      <div style={{ background: bg, padding: `${p}px`, display: "flex", alignItems: "center", justifyContent: "center", borderRadius: 8, minHeight: 200 }}>
-        <div style={{ background: "var(--color-surface)", padding: 24, borderRadius: 12, width: "100%", maxWidth: 320, border: "1px solid var(--color-border)" }}>
-          <div style={{ fontSize: fs, fontWeight: 800, color: "var(--color-text)", marginBottom: 4 }}>{config.title}</div>
-          <div style={{ fontSize: "0.8rem", color: "var(--color-text-2)", marginBottom: 20 }}>{config.subtitle}</div>
+      <div
+        style={{
+          background: bg,
+          padding: `${p}px`,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          borderRadius: 8,
+          minHeight: 200,
+        }}
+      >
+        <div
+          style={{
+            background: "var(--color-surface)",
+            padding: 24,
+            borderRadius: 12,
+            width: "100%",
+            maxWidth: 320,
+            border: "1px solid var(--color-border)",
+          }}
+        >
+          <div
+            style={{
+              fontSize: fs,
+              fontWeight: 800,
+              color: "var(--color-text)",
+              marginBottom: 4,
+            }}
+          >
+            {config.title}
+          </div>
+          <div
+            style={{
+              fontSize: "0.8rem",
+              color: "var(--color-text-2)",
+              marginBottom: 20,
+            }}
+          >
+            {config.subtitle}
+          </div>
           {["Email", "Password"].map((f) => (
             <div key={f} style={{ marginBottom: 12 }}>
-              <div style={{ fontSize: "0.72rem", fontWeight: 600, color: "var(--color-text-2)", marginBottom: 4 }}>{f}</div>
-              <div style={{ padding: "8px 12px", borderRadius: 8, border: "1px solid var(--color-border)", background: "var(--color-bg)", fontSize: "0.8rem", color: "var(--color-muted)" }}>
+              <div
+                style={{
+                  fontSize: "0.72rem",
+                  fontWeight: 600,
+                  color: "var(--color-text-2)",
+                  marginBottom: 4,
+                }}
+              >
+                {f}
+              </div>
+              <div
+                style={{
+                  padding: "8px 12px",
+                  borderRadius: 8,
+                  border: "1px solid var(--color-border)",
+                  background: "var(--color-bg)",
+                  fontSize: "0.8rem",
+                  color: "var(--color-muted)",
+                }}
+              >
                 {f === "Email" ? "you@example.com" : "••••••••"}
               </div>
             </div>
           ))}
-          <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 20 }}>
-            <div style={{ width: 14, height: 14, borderRadius: 3, border: "2px solid rgba(255,106,26,0.3)", flexShrink: 0 }} />
-            <span style={{ fontSize: "0.75rem", color: "var(--color-text-2)" }}>Remember me</span>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 6,
+              marginBottom: 20,
+            }}
+          >
+            <div
+              style={{
+                width: 14,
+                height: 14,
+                borderRadius: 3,
+                border: "2px solid rgba(255,106,26,0.3)",
+                flexShrink: 0,
+              }}
+            />
+            <span style={{ fontSize: "0.75rem", color: "var(--color-text-2)" }}>
+              Remember me
+            </span>
           </div>
-          <div style={{ padding: "10px", borderRadius: 8, background: "linear-gradient(135deg, " + config.accent + ", #e05010)", color: "white", fontWeight: 700, fontSize: "0.85rem", textAlign: "center", cursor: "pointer", boxShadow: "0 0 10px " + config.accent + "30" }}>
+          <div
+            style={{
+              padding: "10px",
+              borderRadius: 8,
+              background:
+                "linear-gradient(135deg, " + config.accent + ", #e05010)",
+              color: "white",
+              fontWeight: 700,
+              fontSize: "0.85rem",
+              textAlign: "center",
+              cursor: "pointer",
+              boxShadow: "0 0 10px " + config.accent + "30",
+            }}
+          >
             {config.ctaText}
           </div>
         </div>
@@ -391,16 +717,73 @@ function LivePreview({ config, theme }: { config: ComponentConfig; theme: ThemeM
       { title: "Themes", desc: "5 built-in themes", color: "#dc143c" },
     ];
     return (
-      <div style={{ background: bg, padding: `${p}px`, borderRadius: 8, textAlign: "center" }}>
-        <div style={{ fontSize: fs, fontWeight: 800, color: "var(--color-text)", marginBottom: 20 }}>{config.title}</div>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))", gap: 12 }}>
+      <div
+        style={{
+          background: bg,
+          padding: `${p}px`,
+          borderRadius: 8,
+          textAlign: "center",
+        }}
+      >
+        <div
+          style={{
+            fontSize: fs,
+            fontWeight: 800,
+            color: "var(--color-text)",
+            marginBottom: 20,
+          }}
+        >
+          {config.title}
+        </div>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))",
+            gap: 12,
+          }}
+        >
           {items.map((item) => (
-            <div key={item.title} style={{ background: "var(--color-surface)", borderRadius: 10, padding: 16, border: "1px solid var(--color-border)" }}>
-              <div style={{ width: 36, height: 36, borderRadius: 8, background: item.color + "20", border: "1px solid " + item.color + "30", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 10px", fontSize: "0.85rem", color: item.color }}>
+            <div
+              key={item.title}
+              style={{
+                background: "var(--color-surface)",
+                borderRadius: 10,
+                padding: 16,
+                border: "1px solid var(--color-border)",
+              }}
+            >
+              <div
+                style={{
+                  width: 36,
+                  height: 36,
+                  borderRadius: 8,
+                  background: item.color + "20",
+                  border: "1px solid " + item.color + "30",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  margin: "0 auto 10px",
+                  fontSize: "0.85rem",
+                  color: item.color,
+                }}
+              >
                 ✦
               </div>
-              <div style={{ fontWeight: 700, fontSize: "0.85rem", color: "var(--color-text)", marginBottom: 4 }}>{item.title}</div>
-              <div style={{ fontSize: "0.75rem", color: "var(--color-text-2)" }}>{item.desc}</div>
+              <div
+                style={{
+                  fontWeight: 700,
+                  fontSize: "0.85rem",
+                  color: "var(--color-text)",
+                  marginBottom: 4,
+                }}
+              >
+                {item.title}
+              </div>
+              <div
+                style={{ fontSize: "0.75rem", color: "var(--color-text-2)" }}
+              >
+                {item.desc}
+              </div>
             </div>
           ))}
         </div>
@@ -411,21 +794,84 @@ function LivePreview({ config, theme }: { config: ComponentConfig; theme: ThemeM
   if (config.pattern === "navbar") {
     return (
       <div style={{ background: bg, borderRadius: 8, overflow: "hidden" }}>
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "10px 16px", borderBottom: "1px solid var(--color-border)" }}>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            padding: "10px 16px",
+            borderBottom: "1px solid var(--color-border)",
+          }}
+        >
           <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-            <div style={{ width: 28, height: 28, borderRadius: 6, background: "linear-gradient(135deg, " + config.accent + ", #dc143c)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "0.65rem", color: "white", fontWeight: 800 }}>Q</div>
-            <span style={{ fontWeight: 700, fontSize: "0.9rem", color: "var(--color-text)" }}>{config.title}</span>
+            <div
+              style={{
+                width: 28,
+                height: 28,
+                borderRadius: 6,
+                background:
+                  "linear-gradient(135deg, " + config.accent + ", #dc143c)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: "0.65rem",
+                color: "white",
+                fontWeight: 800,
+              }}
+            >
+              Q
+            </div>
+            <span
+              style={{
+                fontWeight: 700,
+                fontSize: "0.9rem",
+                color: "var(--color-text)",
+              }}
+            >
+              {config.title}
+            </span>
           </div>
           <div style={{ display: "flex", gap: 4 }}>
-            <div style={{ padding: "4px 10px", borderRadius: 6, fontSize: "0.72rem", color: "var(--color-text-2)", cursor: "pointer" }}>{config.ctaSecondary}</div>
-            <div style={{ padding: "4px 12px", borderRadius: 6, background: "linear-gradient(135deg, " + config.accent + ", #e05010)", color: "white", fontSize: "0.72rem", fontWeight: 600, cursor: "pointer" }}>
+            <div
+              style={{
+                padding: "4px 10px",
+                borderRadius: 6,
+                fontSize: "0.72rem",
+                color: "var(--color-text-2)",
+                cursor: "pointer",
+              }}
+            >
+              {config.ctaSecondary}
+            </div>
+            <div
+              style={{
+                padding: "4px 12px",
+                borderRadius: 6,
+                background:
+                  "linear-gradient(135deg, " + config.accent + ", #e05010)",
+                color: "white",
+                fontSize: "0.72rem",
+                fontWeight: 600,
+                cursor: "pointer",
+              }}
+            >
               {config.ctaText}
             </div>
           </div>
         </div>
-        <div style={{ display: "flex", gap: 16, padding: "12px 16px", fontSize: "0.75rem", color: "var(--color-text-2)" }}>
+        <div
+          style={{
+            display: "flex",
+            gap: 16,
+            padding: "12px 16px",
+            fontSize: "0.75rem",
+            color: "var(--color-text-2)",
+          }}
+        >
           {["Docs", "Components", "Pricing", "Blog"].map((l) => (
-            <span key={l} style={{ cursor: "pointer" }}>{l}</span>
+            <span key={l} style={{ cursor: "pointer" }}>
+              {l}
+            </span>
           ))}
         </div>
       </div>
@@ -434,16 +880,85 @@ function LivePreview({ config, theme }: { config: ComponentConfig; theme: ThemeM
 
   if (config.pattern === "modal") {
     return (
-      <div style={{ background: bg, padding: `${p}px`, borderRadius: 8, position: "relative", minHeight: 160 }}>
-        <div style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.5)", display: "flex", alignItems: "center", justifyContent: "center", borderRadius: 8 }}>
-          <div style={{ background: "var(--color-surface)", padding: 24, borderRadius: 12, width: "80%", maxWidth: 300, border: "1px solid var(--color-border)", animation: "scaleIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) both" }}>
-            <div style={{ fontSize: fs, fontWeight: 700, color: "var(--color-text)", marginBottom: 8 }}>{config.title}</div>
-            <div style={{ fontSize: "0.8rem", color: "var(--color-text-2)", marginBottom: 20, lineHeight: 1.5 }}>{config.subtitle}</div>
-            <div style={{ display: "flex", gap: 8, justifyContent: "flex-end" }}>
-              <div style={{ padding: "6px 14px", borderRadius: 8, border: "1px solid var(--color-border)", color: "var(--color-text-2)", fontSize: "0.75rem", cursor: "pointer", fontWeight: 600 }}>
+      <div
+        style={{
+          background: bg,
+          padding: `${p}px`,
+          borderRadius: 8,
+          position: "relative",
+          minHeight: 160,
+        }}
+      >
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            background: "rgba(0,0,0,0.5)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            borderRadius: 8,
+          }}
+        >
+          <div
+            style={{
+              background: "var(--color-surface)",
+              padding: 24,
+              borderRadius: 12,
+              width: "80%",
+              maxWidth: 300,
+              border: "1px solid var(--color-border)",
+              animation: "scaleIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) both",
+            }}
+          >
+            <div
+              style={{
+                fontSize: fs,
+                fontWeight: 700,
+                color: "var(--color-text)",
+                marginBottom: 8,
+              }}
+            >
+              {config.title}
+            </div>
+            <div
+              style={{
+                fontSize: "0.8rem",
+                color: "var(--color-text-2)",
+                marginBottom: 20,
+                lineHeight: 1.5,
+              }}
+            >
+              {config.subtitle}
+            </div>
+            <div
+              style={{ display: "flex", gap: 8, justifyContent: "flex-end" }}
+            >
+              <div
+                style={{
+                  padding: "6px 14px",
+                  borderRadius: 8,
+                  border: "1px solid var(--color-border)",
+                  color: "var(--color-text-2)",
+                  fontSize: "0.75rem",
+                  cursor: "pointer",
+                  fontWeight: 600,
+                }}
+              >
                 {config.ctaSecondary}
               </div>
-              <div style={{ padding: "6px 14px", borderRadius: 8, background: "linear-gradient(135deg, " + config.accent + ", #e05010)", color: "white", fontSize: "0.75rem", cursor: "pointer", fontWeight: 600 }}>
+              <div
+                style={{
+                  padding: "6px 14px",
+                  borderRadius: 8,
+                  background:
+                    "linear-gradient(135deg, " + config.accent + ", #e05010)",
+                  color: "white",
+                  fontSize: "0.75rem",
+                  cursor: "pointer",
+                  fontWeight: 600,
+                }}
+              >
                 {config.ctaText}
               </div>
             </div>
@@ -456,47 +971,156 @@ function LivePreview({ config, theme }: { config: ComponentConfig; theme: ThemeM
   return null;
 }
 
-function applyRefinement(config: ComponentConfig, action: RefinementAction): ComponentConfig {
+function applyRefinement(
+  config: ComponentConfig,
+  action: RefinementAction,
+): ComponentConfig {
   const next = { ...config };
   switch (action) {
-    case "darker": next.dark = true; break;
-    case "lighter": next.dark = false; break;
-    case "more-spacing": next.spacing = "spacious"; break;
-    case "less-spacing": next.spacing = "compact"; break;
-    case "larger-text": next.textSize = "large"; break;
-    case "smaller-text": next.textSize = "small"; break;
-    case "add-cta": next.ctaText = "Get Started"; next.ctaSecondary = "Learn More"; break;
-    case "remove-cta": next.ctaText = ""; next.ctaSecondary = ""; break;
-    case "change-layout": next.layout = next.layout === "center" ? "split" : next.layout === "split" ? "grid" : "center"; break;
+    case "darker":
+      next.dark = true;
+      break;
+    case "lighter":
+      next.dark = false;
+      break;
+    case "more-spacing":
+      next.spacing = "spacious";
+      break;
+    case "less-spacing":
+      next.spacing = "compact";
+      break;
+    case "larger-text":
+      next.textSize = "large";
+      break;
+    case "smaller-text":
+      next.textSize = "small";
+      break;
+    case "add-cta":
+      next.ctaText = "Get Started";
+      next.ctaSecondary = "Learn More";
+      break;
+    case "remove-cta":
+      next.ctaText = "";
+      next.ctaSecondary = "";
+      break;
+    case "change-layout":
+      next.layout =
+        next.layout === "center"
+          ? "split"
+          : next.layout === "split"
+          ? "grid"
+          : "center";
+      break;
   }
   return next;
 }
 
 function parseRefinement(text: string): RefinementAction | null {
   const lower = text.toLowerCase();
-  if (lower.includes("darker") || lower.includes("dark mode") || lower.includes("dark theme")) return "darker";
-  if (lower.includes("lighter") || lower.includes("light mode") || lower.includes("light theme") || lower.includes("brighter")) return "lighter";
-  if (lower.includes("more space") || lower.includes("more padding") || lower.includes("spacious") || lower.includes("wider")) return "more-spacing";
-  if (lower.includes("less space") || lower.includes("less padding") || lower.includes("compact") || lower.includes("tighter") || lower.includes("narrower")) return "less-spacing";
-  if (lower.includes("bigger text") || lower.includes("larger text") || lower.includes("bigger font") || lower.includes("increase text") || lower.includes("larger")) return "larger-text";
-  if (lower.includes("smaller text") || lower.includes("smaller font") || lower.includes("decrease text") || lower.includes("smaller")) return "smaller-text";
-  if (lower.includes("add button") || lower.includes("add cta") || lower.includes("add call to action")) return "add-cta";
-  if (lower.includes("remove button") || lower.includes("remove cta") || lower.includes("remove call")) return "remove-cta";
-  if (lower.includes("change layout") || lower.includes("different layout") || lower.includes("rearrange") || lower.includes("move")) return "change-layout";
+  if (
+    lower.includes("darker") ||
+    lower.includes("dark mode") ||
+    lower.includes("dark theme")
+  )
+    return "darker";
+  if (
+    lower.includes("lighter") ||
+    lower.includes("light mode") ||
+    lower.includes("light theme") ||
+    lower.includes("brighter")
+  )
+    return "lighter";
+  if (
+    lower.includes("more space") ||
+    lower.includes("more padding") ||
+    lower.includes("spacious") ||
+    lower.includes("wider")
+  )
+    return "more-spacing";
+  if (
+    lower.includes("less space") ||
+    lower.includes("less padding") ||
+    lower.includes("compact") ||
+    lower.includes("tighter") ||
+    lower.includes("narrower")
+  )
+    return "less-spacing";
+  if (
+    lower.includes("bigger text") ||
+    lower.includes("larger text") ||
+    lower.includes("bigger font") ||
+    lower.includes("increase text") ||
+    lower.includes("larger")
+  )
+    return "larger-text";
+  if (
+    lower.includes("smaller text") ||
+    lower.includes("smaller font") ||
+    lower.includes("decrease text") ||
+    lower.includes("smaller")
+  )
+    return "smaller-text";
+  if (
+    lower.includes("add button") ||
+    lower.includes("add cta") ||
+    lower.includes("add call to action")
+  )
+    return "add-cta";
+  if (
+    lower.includes("remove button") ||
+    lower.includes("remove cta") ||
+    lower.includes("remove call")
+  )
+    return "remove-cta";
+  if (
+    lower.includes("change layout") ||
+    lower.includes("different layout") ||
+    lower.includes("rearrange") ||
+    lower.includes("move")
+  )
+    return "change-layout";
   return null;
 }
 
-function getRefinementChips(config: ComponentConfig): Array<{ action: RefinementAction; label: string; icon: string }> {
+function getRefinementChips(
+  config: ComponentConfig,
+): Array<{ action: RefinementAction; label: string; icon: string }> {
   return [
-    { action: config.dark ? "lighter" : "darker", label: config.dark ? "Lighten" : "Darken", icon: config.dark ? "○" : "◑" },
-    { action: config.spacing === "compact" ? "more-spacing" : config.spacing === "spacious" ? "less-spacing" : "more-spacing", label: config.spacing === "compact" ? "More space" : config.spacing === "spacious" ? "Less space" : "More space", icon: "⊞" },
-    { action: config.textSize === "large" ? "smaller-text" : "larger-text", label: config.textSize === "large" ? "Smaller text" : "Larger text", icon: "A" },
+    {
+      action: config.dark ? "lighter" : "darker",
+      label: config.dark ? "Lighten" : "Darken",
+      icon: config.dark ? "○" : "◑",
+    },
+    {
+      action:
+        config.spacing === "compact"
+          ? "more-spacing"
+          : config.spacing === "spacious"
+          ? "less-spacing"
+          : "more-spacing",
+      label:
+        config.spacing === "compact"
+          ? "More space"
+          : config.spacing === "spacious"
+          ? "Less space"
+          : "More space",
+      icon: "⊞",
+    },
+    {
+      action: config.textSize === "large" ? "smaller-text" : "larger-text",
+      label: config.textSize === "large" ? "Smaller text" : "Larger text",
+      icon: "A",
+    },
     { action: "change-layout", label: "Layout", icon: "◈" },
   ];
 }
 
 const QUICK_PROMPTS = [
-  { label: "Landing Page Hero", icon: "◈", pattern: "hero" as ComponentPattern },
+  {
+    label: "Landing Page Hero",
+    icon: "◈",
+    pattern: "hero" as ComponentPattern,
+  },
   { label: "Dashboard", icon: "⊞", pattern: "dashboard" as ComponentPattern },
   { label: "Sign In Form", icon: "◻", pattern: "form" as ComponentPattern },
   { label: "Card Grid", icon: "⬡", pattern: "card-grid" as ComponentPattern },
@@ -517,7 +1141,9 @@ export default function AIPage() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [generating, setGenerating] = useState(false);
-  const [currentConfig, setCurrentConfig] = useState<ComponentConfig | null>(null);
+  const [currentConfig, setCurrentConfig] = useState<ComponentConfig | null>(
+    null,
+  );
   const [previewTheme, setPreviewTheme] = useState<ThemeMode>("quasar");
   const [activeTab, setActiveTab] = useState<"preview" | "code">("preview");
   const [codeFile, setCodeFile] = useState("src/App.tsx");
@@ -528,7 +1154,10 @@ export default function AIPage() {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  const generateId = useCallback(() => Math.random().toString(36).slice(2, 9), []);
+  const generateId = useCallback(
+    () => Math.random().toString(36).slice(2, 9),
+    [],
+  );
 
   const addMessage = useCallback((msg: Message) => {
     setMessages((prev) => [...prev, msg]);
@@ -568,16 +1197,21 @@ export default function AIPage() {
     setCurrentConfig(newConfig);
 
     const actionLabels: Record<RefinementAction, string> = {
-      darker: "Made it darker", lighter: "Made it lighter",
-      "more-spacing": "Added more spacing", "less-spacing": "Reduced spacing",
-      "larger-text": "Increased text size", "smaller-text": "Decreased text size",
-      "add-cta": "Added CTA button", "remove-cta": "Removed CTA button",
+      darker: "Made it darker",
+      lighter: "Made it lighter",
+      "more-spacing": "Added more spacing",
+      "less-spacing": "Reduced spacing",
+      "larger-text": "Increased text size",
+      "smaller-text": "Decreased text size",
+      "add-cta": "Added CTA button",
+      "remove-cta": "Removed CTA button",
       "change-layout": "Changed layout",
     };
 
     const lastPattern = messages[messages.length - 1]?.config?.pattern;
     const label = lastPattern
-      ? QUICK_PROMPTS.find(p => p.pattern === lastPattern)?.label || "Component"
+      ? QUICK_PROMPTS.find((p) => p.pattern === lastPattern)?.label ||
+        "Component"
       : "Component";
 
     addMessage({
@@ -595,7 +1229,7 @@ export default function AIPage() {
 
     const lower = input.trim().toLowerCase();
     const matchedPrompt = QUICK_PROMPTS.find(
-      (p) => lower.includes(p.label.toLowerCase()) || lower.includes(p.pattern)
+      (p) => lower.includes(p.label.toLowerCase()) || lower.includes(p.pattern),
     );
 
     if (matchedPrompt) {
@@ -612,7 +1246,7 @@ export default function AIPage() {
           addMessage({
             id: generateId(),
             role: "assistant",
-            text: "I understand you want to modify the component. Try using one of the refinement chips below, or describe a specific change like \"make it darker\" or \"add more spacing\".",
+            text: 'I understand you want to modify the component. Try using one of the refinement chips below, or describe a specific change like "make it darker" or "add more spacing".',
           });
           setGenerating(false);
         }, 500);
@@ -624,7 +1258,7 @@ export default function AIPage() {
         addMessage({
           id: generateId(),
           role: "assistant",
-          text: "Try one of the quick prompts above to generate a component, or describe what you want to build (e.g., \"Create a landing page\").",
+          text: 'Try one of the quick prompts above to generate a component, or describe what you want to build (e.g., "Create a landing page").',
         });
         setGenerating(false);
       }, 500);
@@ -666,24 +1300,58 @@ export default function AIPage() {
             background: "var(--color-surface)",
           }}
         >
-          <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 2 }}>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 8,
+              marginBottom: 2,
+            }}
+          >
             <div
               style={{
-                width: 24, height: 24, borderRadius: 6,
+                width: 24,
+                height: 24,
+                borderRadius: 6,
                 background: "linear-gradient(135deg, #ff6a1a, #dc143c)",
-                display: "flex", alignItems: "center", justifyContent: "center",
-                fontSize: "0.6rem", color: "white", fontWeight: 800, flexShrink: 0,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: "0.6rem",
+                color: "white",
+                fontWeight: 800,
+                flexShrink: 0,
               }}
             >
               AI
             </div>
-            <h1 style={{ fontSize: "0.95rem", fontWeight: 800, color: "var(--color-text)", margin: 0, letterSpacing: "-0.02em" }}>
+            <h1
+              style={{
+                fontSize: "0.95rem",
+                fontWeight: 800,
+                color: "var(--color-text)",
+                margin: 0,
+                letterSpacing: "-0.02em",
+              }}
+            >
               Stareezy AI
             </h1>
-            <span className="pill-tag orange" style={{ fontSize: "0.55rem", padding: "1px 6px" }}>Interactive</span>
+            <span
+              className="pill-tag orange"
+              style={{ fontSize: "0.55rem", padding: "1px 6px" }}
+            >
+              Interactive
+            </span>
           </div>
-          <p style={{ fontSize: "0.75rem", color: "var(--color-text-2)", margin: 0 }}>
-            Describe a UI component — I&apos;ll generate live previews and production-ready code.
+          <p
+            style={{
+              fontSize: "0.75rem",
+              color: "var(--color-text-2)",
+              margin: 0,
+            }}
+          >
+            Describe a UI component — I&apos;ll generate live previews and
+            production-ready code.
           </p>
         </div>
 
@@ -712,27 +1380,60 @@ export default function AIPage() {
             >
               <div
                 style={{
-                  width: 56, height: 56, borderRadius: 14,
-                  background: "linear-gradient(135deg, rgba(255,106,26,0.12), rgba(220,20,60,0.08))",
+                  width: 56,
+                  height: 56,
+                  borderRadius: 14,
+                  background:
+                    "linear-gradient(135deg, rgba(255,106,26,0.12), rgba(220,20,60,0.08))",
                   border: "1px solid rgba(255,106,26,0.12)",
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                  fontSize: "1.3rem", marginBottom: 14,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  fontSize: "1.3rem",
+                  marginBottom: 14,
                 }}
               >
                 ✦
               </div>
-              <h2 style={{ fontSize: "1rem", fontWeight: 700, color: "var(--color-text)", margin: "0 0 6px" }}>
+              <h2
+                style={{
+                  fontSize: "1rem",
+                  fontWeight: 700,
+                  color: "var(--color-text)",
+                  margin: "0 0 6px",
+                }}
+              >
                 What do you want to build?
               </h2>
-              <p style={{ fontSize: "0.8rem", color: "var(--color-text-2)", maxWidth: 320, lineHeight: 1.5, margin: "0 0 24px" }}>
-                Describe a UI component and I&apos;ll generate production-ready code.
+              <p
+                style={{
+                  fontSize: "0.8rem",
+                  color: "var(--color-text-2)",
+                  maxWidth: 320,
+                  lineHeight: 1.5,
+                  margin: "0 0 24px",
+                }}
+              >
+                Describe a UI component and I&apos;ll generate production-ready
+                code.
               </p>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 6, maxWidth: 340 }}>
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "1fr 1fr",
+                  gap: 6,
+                  maxWidth: 340,
+                }}
+              >
                 {QUICK_PROMPTS.map((p) => (
                   <button
                     key={p.label}
                     className="chip-button"
-                    style={{ fontSize: "0.78rem", padding: "7px 12px", textAlign: "left" }}
+                    style={{
+                      fontSize: "0.78rem",
+                      padding: "7px 12px",
+                      textAlign: "left",
+                    }}
                     onClick={() => handlePrompt(p.pattern, p.label)}
                   >
                     {p.icon} {p.label}
@@ -754,14 +1455,24 @@ export default function AIPage() {
             >
               <div
                 style={{
-                  width: 28, height: 28, borderRadius: 7, flexShrink: 0,
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                  fontSize: "0.65rem", fontWeight: 700,
-                  background: msg.role === "user"
-                    ? "linear-gradient(135deg, #ff6a1a, #dc143c)"
-                    : "rgba(255,106,26,0.08)",
+                  width: 28,
+                  height: 28,
+                  borderRadius: 7,
+                  flexShrink: 0,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  fontSize: "0.65rem",
+                  fontWeight: 700,
+                  background:
+                    msg.role === "user"
+                      ? "linear-gradient(135deg, #ff6a1a, #dc143c)"
+                      : "rgba(255,106,26,0.08)",
                   color: msg.role === "user" ? "white" : "#ff6a1a",
-                  border: msg.role === "assistant" ? "1px solid rgba(255,106,26,0.15)" : "none",
+                  border:
+                    msg.role === "assistant"
+                      ? "1px solid rgba(255,106,26,0.15)"
+                      : "none",
                 }}
               >
                 {msg.role === "user" ? "U" : "AI"}
@@ -771,42 +1482,66 @@ export default function AIPage() {
                   maxWidth: "82%",
                   padding: "8px 12px",
                   borderRadius: 10,
-                  background: msg.role === "user"
-                    ? "rgba(255,106,26,0.06)"
-                    : "var(--color-surface)",
-                  border: msg.role === "user"
-                    ? "1px solid rgba(255,106,26,0.08)"
-                    : "1px solid var(--color-border)",
+                  background:
+                    msg.role === "user"
+                      ? "rgba(255,106,26,0.06)"
+                      : "var(--color-surface)",
+                  border:
+                    msg.role === "user"
+                      ? "1px solid rgba(255,106,26,0.08)"
+                      : "1px solid var(--color-border)",
                 }}
               >
                 <div
                   style={{
                     fontSize: "0.8rem",
-                    color: msg.role === "user" ? "var(--color-text)" : "var(--color-text-2)",
+                    color:
+                      msg.role === "user"
+                        ? "var(--color-text)"
+                        : "var(--color-text-2)",
                     lineHeight: 1.6,
                     whiteSpace: "pre-wrap",
                   }}
                 >
                   {msg.role === "assistant" ? (
                     <>
-                      <div style={{ fontWeight: 600, color: "var(--color-text)", marginBottom: 4, fontSize: "0.82rem" }}>
+                      <div
+                        style={{
+                          fontWeight: 600,
+                          color: "var(--color-text)",
+                          marginBottom: 4,
+                          fontSize: "0.82rem",
+                        }}
+                      >
                         ✦ Generated
                       </div>
                       {msg.text}
                       {msg.config && (
-                        <div style={{ marginTop: 8, display: "flex", gap: 4, flexWrap: "wrap" }}>
+                        <div
+                          style={{
+                            marginTop: 8,
+                            display: "flex",
+                            gap: 4,
+                            flexWrap: "wrap",
+                          }}
+                        >
                           {getRefinementChips(msg.config).map((chip) => (
                             <button
                               key={chip.action}
                               onClick={() => handleRefine(chip.action)}
                               style={{
-                                display: "inline-flex", alignItems: "center", gap: 3,
-                                padding: "3px 8px", borderRadius: 6,
+                                display: "inline-flex",
+                                alignItems: "center",
+                                gap: 3,
+                                padding: "3px 8px",
+                                borderRadius: 6,
                                 border: "1px solid rgba(255,106,26,0.12)",
                                 background: "rgba(255,106,26,0.04)",
                                 color: "var(--color-text-2)",
-                                fontSize: "0.68rem", cursor: "pointer",
-                                fontFamily: "var(--font-sans)", fontWeight: 500,
+                                fontSize: "0.68rem",
+                                cursor: "pointer",
+                                fontFamily: "var(--font-sans)",
+                                fontWeight: 500,
                                 transition: "all 0.15s",
                               }}
                             >
@@ -817,7 +1552,9 @@ export default function AIPage() {
                       )}
                     </>
                   ) : (
-                    <span style={{ color: "var(--color-text)" }}>{msg.text}</span>
+                    <span style={{ color: "var(--color-text)" }}>
+                      {msg.text}
+                    </span>
                   )}
                 </div>
               </div>
@@ -827,14 +1564,19 @@ export default function AIPage() {
           {generating && (
             <div
               style={{
-                display: "flex", gap: 8, alignItems: "center",
-                padding: "8px 12px", color: "var(--color-text-2)",
+                display: "flex",
+                gap: 8,
+                alignItems: "center",
+                padding: "8px 12px",
+                color: "var(--color-text-2)",
                 fontSize: "0.8rem",
               }}
             >
               <div
                 style={{
-                  width: 6, height: 6, borderRadius: "50%",
+                  width: 6,
+                  height: 6,
+                  borderRadius: "50%",
                   background: "#ff6a1a",
                   animation: "glowPulse 0.8s ease-in-out infinite",
                 }}
@@ -869,7 +1611,12 @@ export default function AIPage() {
               className="ai-submit-btn"
               aria-label="Send"
               disabled={generating || !input.trim()}
-              style={{ width: 36, height: 36, fontSize: "0.95rem", opacity: generating || !input.trim() ? 0.5 : 1 }}
+              style={{
+                width: 36,
+                height: 36,
+                fontSize: "0.95rem",
+                opacity: generating || !input.trim() ? 0.5 : 1,
+              }}
             >
               →
             </button>
@@ -904,9 +1651,15 @@ export default function AIPage() {
               style={{
                 padding: "10px 16px",
                 border: "none",
-                borderBottom: activeTab === tab ? "2px solid #ff6a1a" : "2px solid transparent",
+                borderBottom:
+                  activeTab === tab
+                    ? "2px solid #ff6a1a"
+                    : "2px solid transparent",
                 background: "transparent",
-                color: activeTab === tab ? "var(--color-text)" : "var(--color-text-2)",
+                color:
+                  activeTab === tab
+                    ? "var(--color-text)"
+                    : "var(--color-text-2)",
                 fontSize: "0.8rem",
                 fontWeight: activeTab === tab ? 700 : 500,
                 cursor: "pointer",
@@ -927,12 +1680,23 @@ export default function AIPage() {
                   key={t}
                   onClick={() => setPreviewTheme(t)}
                   style={{
-                    padding: "3px 8px", borderRadius: 6,
-                    border: previewTheme === t ? "1px solid rgba(255,106,26,0.3)" : "1px solid transparent",
-                    background: previewTheme === t ? "rgba(255,106,26,0.1)" : "transparent",
-                    color: previewTheme === t ? "#ff6a1a" : "var(--color-text-2)",
-                    fontSize: "0.6rem", cursor: "pointer", fontWeight: 600,
-                    fontFamily: "var(--font-mono)", textTransform: "capitalize",
+                    padding: "3px 8px",
+                    borderRadius: 6,
+                    border:
+                      previewTheme === t
+                        ? "1px solid rgba(255,106,26,0.3)"
+                        : "1px solid transparent",
+                    background:
+                      previewTheme === t
+                        ? "rgba(255,106,26,0.1)"
+                        : "transparent",
+                    color:
+                      previewTheme === t ? "#ff6a1a" : "var(--color-text-2)",
+                    fontSize: "0.6rem",
+                    cursor: "pointer",
+                    fontWeight: 600,
+                    fontFamily: "var(--font-mono)",
+                    textTransform: "capitalize",
                     transition: "all 0.15s",
                   }}
                 >
@@ -962,29 +1726,49 @@ export default function AIPage() {
                     borderRadius: 14,
                     overflow: "hidden",
                     border: "1px solid rgba(255,106,26,0.08)",
-                    animation: "scaleIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) both",
+                    animation:
+                      "scaleIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) both",
                   }}
                 >
                   <div
                     style={{
-                      display: "flex", alignItems: "center", gap: 6,
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 6,
                       padding: "8px 14px",
                       background: "rgba(13,5,8,0.5)",
                       borderBottom: "1px solid rgba(255,106,26,0.06)",
                     }}
                   >
                     {["#ff5f57", "#febc2e", "#28c840"].map((c) => (
-                      <div key={c} style={{ width: 9, height: 9, borderRadius: "50%", background: c }} />
+                      <div
+                        key={c}
+                        style={{
+                          width: 9,
+                          height: 9,
+                          borderRadius: "50%",
+                          background: c,
+                        }}
+                      />
                     ))}
-                    <span style={{ marginLeft: 6, fontSize: "0.62rem", color: "var(--color-muted)" }}>
+                    <span
+                      style={{
+                        marginLeft: 6,
+                        fontSize: "0.62rem",
+                        color: "var(--color-muted)",
+                      }}
+                    >
                       Live Preview — {previewTheme} theme
                     </span>
                     <div style={{ flex: 1 }} />
                     <span
                       style={{
-                        fontSize: "0.55rem", fontWeight: 700, color: "#22c55e",
+                        fontSize: "0.55rem",
+                        fontWeight: 700,
+                        color: "#22c55e",
                         background: "rgba(34,197,94,0.1)",
-                        padding: "1px 6px", borderRadius: 4,
+                        padding: "1px 6px",
+                        borderRadius: 4,
                         border: "1px solid rgba(34,197,94,0.2)",
                       }}
                     >
@@ -1009,7 +1793,8 @@ export default function AIPage() {
                     borderRadius: 12,
                     overflow: "hidden",
                     border: "1px solid var(--color-border)",
-                    animation: "scaleIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) both",
+                    animation:
+                      "scaleIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) both",
                     height: "calc(100vh - 200px)",
                     maxHeight: "calc(100vh - 200px)",
                   }}
@@ -1051,32 +1836,48 @@ export default function AIPage() {
                             padding: "5px 14px",
                             paddingLeft: 14 + item.indent * 16,
                             cursor: item.path ? "pointer" : "default",
-                            background: item.path && codeFile === item.path
-                              ? "rgba(255,106,26,0.08)"
-                              : "transparent",
-                            borderLeft: item.path && codeFile === item.path
-                              ? "2px solid #ff6a1a"
-                              : "2px solid transparent",
+                            background:
+                              item.path && codeFile === item.path
+                                ? "rgba(255,106,26,0.08)"
+                                : "transparent",
+                            borderLeft:
+                              item.path && codeFile === item.path
+                                ? "2px solid #ff6a1a"
+                                : "2px solid transparent",
                             fontSize: "0.78rem",
-                            color: item.path && codeFile === item.path
-                              ? "#ff6a1a"
-                              : item.isFolder
-                                ? "var(--color-text-2)"
+                            color:
+                              item.path && codeFile === item.path
+                                ? "#ff6a1a"
                                 : "var(--color-text)",
-                            fontWeight: item.path && codeFile === item.path ? 600 : 400,
+                            fontWeight:
+                              item.path && codeFile === item.path ? 600 : 400,
                             fontFamily: "var(--font-mono)",
                             transition: "all 0.1s",
                             userSelect: "none",
                           }}
                           onMouseEnter={(e) => {
-                            if (item.path) e.currentTarget.style.background = "rgba(255,255,255,0.03)";
+                            if (item.path)
+                              e.currentTarget.style.background =
+                                "rgba(255,255,255,0.03)";
                           }}
                           onMouseLeave={(e) => {
-                            if (item.path) e.currentTarget.style.background = codeFile === item.path ? "rgba(255,106,26,0.08)" : "transparent";
+                            if (item.path)
+                              e.currentTarget.style.background =
+                                codeFile === item.path
+                                  ? "rgba(255,106,26,0.08)"
+                                  : "transparent";
                           }}
                         >
-                          <span style={{ fontSize: "0.7rem", opacity: 0.7 }}>{item.icon}</span>
-                          <span style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                          <span style={{ fontSize: "0.7rem", opacity: 0.7 }}>
+                            {item.icon}
+                          </span>
+                          <span
+                            style={{
+                              overflow: "hidden",
+                              textOverflow: "ellipsis",
+                              whiteSpace: "nowrap",
+                            }}
+                          >
                             {item.label}
                           </span>
                         </div>
@@ -1103,7 +1904,13 @@ export default function AIPage() {
                         borderBottom: "1px solid rgba(255,106,26,0.06)",
                       }}
                     >
-                      <span style={{ fontSize: "0.62rem", color: "var(--color-muted)", fontFamily: "var(--font-mono)" }}>
+                      <span
+                        style={{
+                          fontSize: "0.62rem",
+                          color: "var(--color-muted)",
+                          fontFamily: "var(--font-mono)",
+                        }}
+                      >
                         {codeFile}
                       </span>
                       <button
@@ -1111,13 +1918,18 @@ export default function AIPage() {
                           navigator.clipboard.writeText(activeCode);
                         }}
                         style={{
-                          display: "flex", alignItems: "center", gap: 3,
-                          padding: "3px 8px", borderRadius: 6,
+                          display: "flex",
+                          alignItems: "center",
+                          gap: 3,
+                          padding: "3px 8px",
+                          borderRadius: 6,
                           border: "1px solid rgba(255,106,26,0.12)",
                           background: "transparent",
                           color: "var(--color-text-2)",
-                          fontSize: "0.65rem", cursor: "pointer",
-                          fontFamily: "var(--font-sans)", fontWeight: 500,
+                          fontSize: "0.65rem",
+                          cursor: "pointer",
+                          fontFamily: "var(--font-sans)",
+                          fontWeight: 500,
                         }}
                       >
                         Copy
@@ -1125,7 +1937,8 @@ export default function AIPage() {
                     </div>
                     <pre
                       style={{
-                        margin: 0, padding: "14px 16px",
+                        margin: 0,
+                        padding: "14px 16px",
                         background: "#010103",
                         fontFamily: "var(--font-mono)",
                         fontSize: "0.75rem",
@@ -1153,9 +1966,16 @@ export default function AIPage() {
                 color: "var(--color-muted)",
               }}
             >
-              <div style={{ fontSize: "2.5rem", marginBottom: 12, opacity: 0.2 }}>✦</div>
-              <p style={{ fontSize: "0.85rem", maxWidth: 280, lineHeight: 1.5 }}>
-                Select a prompt on the left to see a live preview and generated code here.
+              <div
+                style={{ fontSize: "2.5rem", marginBottom: 12, opacity: 0.2 }}
+              >
+                ✦
+              </div>
+              <p
+                style={{ fontSize: "0.85rem", maxWidth: 280, lineHeight: 1.5 }}
+              >
+                Select a prompt on the left to see a live preview and generated
+                code here.
               </p>
             </div>
           )}
