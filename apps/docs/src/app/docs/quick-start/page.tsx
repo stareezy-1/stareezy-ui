@@ -10,17 +10,57 @@ export const metadata: Metadata = {
 };
 
 const steps = [
-  { step: "1", title: "CLI", desc: "npx stareezy create my-app --template next|vite|expo" },
-  { step: "2", title: "Install", desc: "pnpm add @stareezy-ui/tokens @stareezy-ui/components" },
-  { step: "3", title: "Config", desc: "stareezy.config.ts — createUi({ themes, media, shorthands })" },
-  { step: "4", title: "ThemeProvider", desc: 'Wrap app root with <ThemeProvider defaultTheme="aurora">' },
-  { step: "5", title: "t.* props", desc: "t.backgrounds.primary, t.text.primary — theme-reactive" },
-  { step: "6", title: "Responsive props", desc: "<Box p={{ base: 8, md: 16 }} $lg={{ flexDirection: 'row' }} />" },
-  { step: "7", title: "Static tokens", desc: "colors.celurenBlue[500], spacing[4], radius.md" },
-  { step: "8", title: "Server Components", desc: "import { Box } from '@stareezy-ui/components/server'" },
+  {
+    step: "1",
+    title: "CLI",
+    desc: "npx stareezy create my-app --template next|vite|expo",
+  },
+  {
+    step: "2",
+    title: "Install",
+    desc: "pnpm add @stareezy-ui/tokens @stareezy-ui/components",
+  },
+  {
+    step: "3",
+    title: "Config",
+    desc: "stareezy.config.ts — createUi({ themes, media, shorthands })",
+  },
+  {
+    step: "4",
+    title: "ThemeProvider",
+    desc: 'Wrap app root with <ThemeProvider defaultTheme="aurora">',
+  },
+  {
+    step: "5",
+    title: "t.* props",
+    desc: "t.backgrounds.primary, t.text.primary — theme-reactive",
+  },
+  {
+    step: "6",
+    title: "Responsive props",
+    desc: "<Box p={{ base: 8, md: 16 }} $lg={{ flexDirection: 'row' }} />",
+  },
+  {
+    step: "7",
+    title: "Static tokens",
+    desc: "colors.celurenBlue[500], spacing[4], radius.md",
+  },
+  {
+    step: "8",
+    title: "Server Components",
+    desc: "import { Box } from '@stareezy-ui/components/server'",
+  },
 ];
 
-function StepGlow({ n, title, children }: { n: number; title: string; children: ReactNode }) {
+function StepGlow({
+  n,
+  title,
+  children,
+}: {
+  n: number;
+  title: string;
+  children: ReactNode;
+}) {
   return (
     <div style={{ position: "relative" }}>
       <div
@@ -92,7 +132,9 @@ npx stareezy create my-app --template expo`}</code>
       </Callout>
 
       {/* ── 2. Manual install ─────────────────────────────────────────────── */}
-      <h2 className="gradient-text">2. Manual install (skip if you used the CLI)</h2>
+      <h2 className="gradient-text">
+        2. Manual install (skip if you used the CLI)
+      </h2>
 
       <StepGlow n={2} title="Install packages">
         <pre>
@@ -330,7 +372,9 @@ function ThemeSwitcher() {
       </StepGlow>
 
       {/* ── 10. Build-time compiler ───────────────────────────────────────── */}
-      <h2 className="gradient-text">10. Add the compiler (optional but recommended)</h2>
+      <h2 className="gradient-text">
+        10. Add the compiler (optional but recommended)
+      </h2>
 
       <StepGlow n={10} title="Vite / Next.js">
         <pre>
@@ -368,7 +412,9 @@ module.exports = config`}</code>
       </Callout>
 
       {/* ── 11. Add components ────────────────────────────────────────────── */}
-      <h2 className="gradient-text">11. Add components to an existing project</h2>
+      <h2 className="gradient-text">
+        11. Add components to an existing project
+      </h2>
       <p>
         Use <code>stareezy add</code> to install specific components with
         automatic transitive dependency resolution:
@@ -379,7 +425,9 @@ npx stareezy add drawer tooltip table pagination breadcrumb`}</code>
       </pre>
 
       {/* ── Summary (progress tracker) ─────────────────────────────────────── */}
-      <h2 className="gradient-text" style={{ marginBottom: "1.5rem" }}>Summary</h2>
+      <h2 className="gradient-text" style={{ marginBottom: "1.5rem" }}>
+        Summary
+      </h2>
 
       <div style={{ margin: "1rem 0 2rem" }}>
         {steps.map((item, idx) => (
@@ -400,7 +448,8 @@ npx stareezy add drawer tooltip table pagination breadcrumb`}</code>
                   top: 30,
                   bottom: 0,
                   width: 2,
-                  background: "linear-gradient(to bottom, var(--brand-primary), transparent)",
+                  background:
+                    "linear-gradient(to bottom, var(--brand-primary), transparent)",
                   opacity: 0.2,
                 }}
               />
@@ -411,14 +460,14 @@ npx stareezy add drawer tooltip table pagination breadcrumb`}</code>
                 height: 28,
                 borderRadius: "50%",
                 background: "var(--brand-primary)",
-                color: "#020205",
+                color: "var(--color-bg)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
                 fontSize: "0.75rem",
                 fontWeight: 800,
                 flexShrink: 0,
-                boxShadow: "0 0 12px rgba(255, 106, 26, 0.35)",
+                boxShadow: "var(--shadow-sm)",
                 marginTop: 1,
                 position: "relative",
                 zIndex: 1,

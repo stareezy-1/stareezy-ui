@@ -3,8 +3,7 @@ import Link from "next/link";
 import { TrackedLink } from "../components/TrackedLink";
 
 export const metadata: Metadata = {
-  title:
-    "Stareezy UI — Build Cross-Platform UIs with Quasar Design Tokens",
+  title: "Stareezy UI — Build Cross-Platform UIs with Quasar Design Tokens",
   description:
     "A fully typed, cross-platform design token system and component library for React Native and web. 31+ components, 300+ typed tokens, 5 themes, O(1) runtime.",
 };
@@ -93,23 +92,87 @@ const THEMES = [
 ];
 
 const QUICK_LINKS = [
-  { href: "/docs/installation", label: "Installation", icon: "↓", desc: "Get running in 5 minutes" },
-  { href: "/docs/quick-start", label: "Quick Start", icon: "▶", desc: "Build your first UI in 10 steps" },
-  { href: "/docs/theming", label: "Theming", icon: "◑", desc: "5 themes, auto-switching" },
-  { href: "/docs/components", label: "Components", icon: "⬡", desc: "31+ cross-platform" },
-  { href: "/docs/cli", label: "CLI", icon: "▶", desc: "Scaffold with one command" },
-  { href: "/docs/responsive", label: "Responsive", icon: "⊞", desc: "Config-driven breakpoints" },
-  { href: "/tokens", label: "Token Explorer", icon: "◉", desc: "Browse all 300+ tokens" },
-  { href: "/docs/compiler", label: "Compiler", icon: "⚙", desc: "Build-time optimization" },
+  {
+    href: "/docs/installation",
+    label: "Installation",
+    icon: "↓",
+    desc: "Get running in 5 minutes",
+  },
+  {
+    href: "/docs/quick-start",
+    label: "Quick Start",
+    icon: "▶",
+    desc: "Build your first UI in 10 steps",
+  },
+  {
+    href: "/docs/theming",
+    label: "Theming",
+    icon: "◑",
+    desc: "5 themes, auto-switching",
+  },
+  {
+    href: "/docs/components",
+    label: "Components",
+    icon: "⬡",
+    desc: "31+ cross-platform",
+  },
+  {
+    href: "/docs/cli",
+    label: "CLI",
+    icon: "▶",
+    desc: "Scaffold with one command",
+  },
+  {
+    href: "/docs/responsive",
+    label: "Responsive",
+    icon: "⊞",
+    desc: "Config-driven breakpoints",
+  },
+  {
+    href: "/tokens",
+    label: "Token Explorer",
+    icon: "◉",
+    desc: "Browse all 300+ tokens",
+  },
+  {
+    href: "/docs/compiler",
+    label: "Compiler",
+    icon: "⚙",
+    desc: "Build-time optimization",
+  },
 ];
 
 const TESTIMONIALS = [
-  { name: "Sarah Chen", role: "Frontend Lead @ TechCorp", text: "Stareezy's token system is the most intuitive I've ever used. The theme switching is seamless." },
-  { name: "Marcus Rivera", role: "Indie Developer", text: "Built my entire SaaS landing page in one afternoon. The CLI + component library is incredible." },
-  { name: "Aiko Tanaka", role: "Mobile Engineer", text: "Finally, a design system that works identically on web and React Native. No more platform hacks." },
-  { name: "James Wilson", role: "Design Engineer", text: "The t accessor is genius. Theme-reactive props eliminate so much boilerplate." },
-  { name: "Priya Patel", role: "Startup CTO", text: "We migrated our entire design system to Stareezy in two days. The type safety is unmatched." },
-  { name: "Alex Foster", role: "UI Developer", text: "O(1) runtime and build-time compiler? This is how a UI library should be built." },
+  {
+    name: "Sarah Chen",
+    role: "Frontend Lead @ TechCorp",
+    text: "Stareezy's token system is the most intuitive I've ever used. The theme switching is seamless.",
+  },
+  {
+    name: "Marcus Rivera",
+    role: "Indie Developer",
+    text: "Built my entire SaaS landing page in one afternoon. The CLI + component library is incredible.",
+  },
+  {
+    name: "Aiko Tanaka",
+    role: "Mobile Engineer",
+    text: "Finally, a design system that works identically on web and React Native. No more platform hacks.",
+  },
+  {
+    name: "James Wilson",
+    role: "Design Engineer",
+    text: "The t accessor is genius. Theme-reactive props eliminate so much boilerplate.",
+  },
+  {
+    name: "Priya Patel",
+    role: "Startup CTO",
+    text: "We migrated our entire design system to Stareezy in two days. The type safety is unmatched.",
+  },
+  {
+    name: "Alex Foster",
+    role: "UI Developer",
+    text: "O(1) runtime and build-time compiler? This is how a UI library should be built.",
+  },
 ];
 
 const FEATURES = [
@@ -186,9 +249,18 @@ export default function HomePage() {
         <div className="hero-grid-overlay" />
 
         {/* Glow orbs */}
-        <div className="glow-orb orange" style={{ top: "5%", right: "10%", width: 400, height: 400 }} />
-        <div className="glow-orb crimson" style={{ bottom: "10%", left: "5%", width: 300, height: 300 }} />
-        <div className="glow-orb teal" style={{ top: "40%", left: "40%", width: 250, height: 250 }} />
+        <div
+          className="glow-orb orange"
+          style={{ top: "5%", right: "10%", width: 400, height: 400 }}
+        />
+        <div
+          className="glow-orb crimson"
+          style={{ bottom: "10%", left: "5%", width: 300, height: 300 }}
+        />
+        <div
+          className="glow-orb teal"
+          style={{ top: "40%", left: "40%", width: 250, height: 250 }}
+        />
 
         {/* Stars */}
         {STARS.map((s, i) => (
@@ -206,7 +278,14 @@ export default function HomePage() {
           />
         ))}
 
-        <div style={{ maxWidth: 680, marginBottom: "3rem", position: "relative", zIndex: 1 }}>
+        <div
+          style={{
+            maxWidth: 680,
+            marginBottom: "3rem",
+            position: "relative",
+            zIndex: 1,
+          }}
+        >
           {/* Badge */}
           <div
             className="animate-scale-in"
@@ -214,13 +293,13 @@ export default function HomePage() {
               display: "inline-flex",
               alignItems: "center",
               gap: 6,
-              background: "rgba(255, 106, 26, 0.08)",
-              border: "1px solid rgba(255, 106, 26, 0.2)",
+              background: "var(--brand-50)",
+              border: "1px solid var(--brand-100)",
               borderRadius: 100,
               padding: "4px 12px 4px 6px",
               fontSize: "0.72rem",
               fontWeight: 700,
-              color: "#ff6a1a",
+              color: "var(--brand-primary)",
               marginBottom: "1.75rem",
               letterSpacing: "0.04em",
               textTransform: "uppercase",
@@ -231,7 +310,8 @@ export default function HomePage() {
                 width: 20,
                 height: 20,
                 borderRadius: 6,
-                background: "linear-gradient(135deg, #ff6a1a, #dc143c)",
+                background:
+                  "linear-gradient(135deg, var(--brand-primary), var(--brand-accent))",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -255,13 +335,9 @@ export default function HomePage() {
               marginBottom: "1.25rem",
             }}
           >
-            <span className="gradient-text">
-              Build Cross-Platform
-            </span>
+            <span className="gradient-text">Build Cross-Platform</span>
             <br />
-            <span className="gradient-text-orange">
-              UIs with Quasar
-            </span>
+            <span className="gradient-text-orange">UIs with Quasar</span>
           </h1>
 
           <p
@@ -278,8 +354,8 @@ export default function HomePage() {
             A fully typed design token system and component library for{" "}
             <span className="pill-tag orange">React Native</span>{" "}
             <span className="pill-tag teal">Web</span>{" "}
-            <span className="pill-tag crimson">Expo</span>
-            . Five premium themes, O(1) runtime, build-time compiler — all tree-shakeable.
+            <span className="pill-tag crimson">Expo</span>. Five premium themes,
+            O(1) runtime, build-time compiler — all tree-shakeable.
           </p>
 
           {/* Stats */}
@@ -319,7 +395,12 @@ export default function HomePage() {
           {/* CTAs */}
           <div
             className="animate-slide-up"
-            style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap", animationDelay: "0.3s" }}
+            style={{
+              display: "flex",
+              gap: "0.75rem",
+              flexWrap: "wrap",
+              animationDelay: "0.3s",
+            }}
           >
             <TrackedLink
               href="/docs/installation"
@@ -420,13 +501,16 @@ const ui = createUi({
           marginBottom: "4rem",
           padding: "3rem",
           borderRadius: 20,
-          background: "linear-gradient(135deg, rgba(255,106,26,0.03) 0%, rgba(220,20,60,0.02) 50%, rgba(13,5,8,0.8) 100%)",
-          border: "1px solid rgba(255,106,26,0.08)",
+          background: "var(--color-surface-2)",
+          border: "1px solid var(--brand-50)",
           position: "relative",
           overflow: "hidden",
         }}
       >
-        <div className="glow-orb orange" style={{ top: "-20%", right: "-10%", width: 300, height: 300 }} />
+        <div
+          className="glow-orb orange"
+          style={{ top: "-20%", right: "-10%", width: 300, height: 300 }}
+        />
 
         <div style={{ position: "relative", zIndex: 1 }}>
           <div
@@ -467,8 +551,9 @@ const ui = createUi({
                   lineHeight: 1.7,
                 }}
               >
-                Describe the UI you want in plain English — Stareezy AI generates
-                production-ready code using your design tokens and components.
+                Describe the UI you want in plain English — Stareezy AI
+                generates production-ready code using your design tokens and
+                components.
               </p>
             </div>
           </div>
@@ -520,10 +605,30 @@ const ui = createUi({
             }}
           >
             {[
-              { icon: "✦", title: "AI-Powered", desc: "Natural language to components", color: "#ff6a1a" },
-              { icon: "▶", title: "Real-time Preview", desc: "See your UI as you describe it", color: "#22c55e" },
-              { icon: "⬡", title: "Export Code", desc: "Production-ready Stareezy components", color: "#f5a623" },
-              { icon: "◑", title: "Custom Themes", desc: "Auto-adapts to your theme tokens", color: "#dc143c" },
+              {
+                icon: "✦",
+                title: "AI-Powered",
+                desc: "Natural language to components",
+                color: "#ff6a1a",
+              },
+              {
+                icon: "▶",
+                title: "Real-time Preview",
+                desc: "See your UI as you describe it",
+                color: "#22c55e",
+              },
+              {
+                icon: "⬡",
+                title: "Export Code",
+                desc: "Production-ready Stareezy components",
+                color: "#f5a623",
+              },
+              {
+                icon: "◑",
+                title: "Custom Themes",
+                desc: "Auto-adapts to your theme tokens",
+                color: "#dc143c",
+              },
             ].map((f) => (
               <div
                 key={f.title}
@@ -562,7 +667,11 @@ const ui = createUi({
                   {f.title}
                 </div>
                 <div
-                  style={{ fontSize: "0.8rem", color: "var(--color-text-2)", lineHeight: 1.5 }}
+                  style={{
+                    fontSize: "0.8rem",
+                    color: "var(--color-text-2)",
+                    lineHeight: 1.5,
+                  }}
                 >
                   {f.desc}
                 </div>
@@ -595,8 +704,8 @@ const ui = createUi({
               maxWidth: 500,
             }}
           >
-            A complete toolkit — from design tokens to production components — built for
-            cross-platform development.
+            A complete toolkit — from design tokens to production components —
+            built for cross-platform development.
           </p>
         </div>
         <div
@@ -675,13 +784,16 @@ const ui = createUi({
           marginBottom: "4rem",
           padding: "3rem",
           borderRadius: 20,
-          background: "rgba(13,5,8,0.4)",
-          border: "1px solid rgba(255,106,26,0.06)",
+          background: "var(--color-surface)",
+          border: "1px solid var(--color-border)",
           position: "relative",
           overflow: "hidden",
         }}
       >
-        <div className="glow-orb crimson" style={{ bottom: "-30%", right: "-10%", width: 350, height: 350 }} />
+        <div
+          className="glow-orb crimson"
+          style={{ bottom: "-30%", right: "-10%", width: 350, height: 350 }}
+        />
 
         <div style={{ position: "relative", zIndex: 1 }}>
           <div
@@ -818,7 +930,7 @@ const ui = createUi({
             href="/docs/theming"
             style={{
               fontSize: "0.78rem",
-              color: "#ff6a1a",
+              color: "var(--brand-primary)",
               textDecoration: "none",
               fontWeight: 600,
             }}
@@ -981,7 +1093,17 @@ const ui = createUi({
                   {pkg.icon}
                 </div>
                 <span
-                  className={`pill-tag ${pkg.color === "#ff6a1a" ? "orange" : pkg.color === "#22c55e" ? "teal" : pkg.color === "#dc143c" ? "crimson" : pkg.color === "#f5a623" ? "amber" : "orange"}`}
+                  className={`pill-tag ${
+                    pkg.color === "#ff6a1a"
+                      ? "orange"
+                      : pkg.color === "#22c55e"
+                      ? "teal"
+                      : pkg.color === "#dc143c"
+                      ? "crimson"
+                      : pkg.color === "#f5a623"
+                      ? "amber"
+                      : "orange"
+                  }`}
                   style={{ fontSize: "0.62rem" }}
                 >
                   {pkg.badge}
@@ -1024,8 +1146,7 @@ const ui = createUi({
               margin: "0 0 0.5rem",
             }}
           >
-            Loved by{" "}
-            <span className="gradient-text-orange">developers</span>
+            Loved by <span className="gradient-text-orange">developers</span>
           </h2>
           <p
             style={{
@@ -1041,8 +1162,10 @@ const ui = createUi({
         <div
           style={{
             overflow: "hidden",
-            maskImage: "linear-gradient(to right, transparent, black 5%, black 95%, transparent)",
-            WebkitMaskImage: "linear-gradient(to right, transparent, black 5%, black 95%, transparent)",
+            maskImage:
+              "linear-gradient(to right, transparent, black 5%, black 95%, transparent)",
+            WebkitMaskImage:
+              "linear-gradient(to right, transparent, black 5%, black 95%, transparent)",
           }}
         >
           <div
@@ -1078,7 +1201,8 @@ const ui = createUi({
                       width: 36,
                       height: 36,
                       borderRadius: "50%",
-                      background: "linear-gradient(135deg, #ff6a1a, #dc143c)",
+                      background:
+                        "linear-gradient(135deg, var(--brand-primary), var(--brand-accent))",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
@@ -1088,7 +1212,10 @@ const ui = createUi({
                       flexShrink: 0,
                     }}
                   >
-                    {t.name.split(" ").map(n => n[0]).join("")}
+                    {t.name
+                      .split(" ")
+                      .map((n) => n[0])
+                      .join("")}
                   </div>
                   <div>
                     <div
@@ -1175,7 +1302,7 @@ const ui = createUi({
               <span
                 style={{
                   fontSize: "1rem",
-                  color: "#ff6a1a",
+                  color: "var(--brand-primary)",
                   flexShrink: 0,
                   width: 20,
                   textAlign: "center",
@@ -1220,8 +1347,14 @@ const ui = createUi({
           overflow: "hidden",
         }}
       >
-        <div className="glow-orb orange" style={{ top: "-50%", right: "-10%", width: 400, height: 400 }} />
-        <div className="glow-orb teal" style={{ bottom: "-50%", left: "-10%", width: 300, height: 300 }} />
+        <div
+          className="glow-orb orange"
+          style={{ top: "-50%", right: "-10%", width: 400, height: 400 }}
+        />
+        <div
+          className="glow-orb teal"
+          style={{ bottom: "-50%", left: "-10%", width: 300, height: 300 }}
+        />
 
         <div style={{ position: "relative", zIndex: 1 }}>
           <div
@@ -1233,8 +1366,7 @@ const ui = createUi({
               letterSpacing: "-0.02em",
             }}
           >
-            Ready to{" "}
-            <span className="gradient-text-orange">build?</span>
+            Ready to <span className="gradient-text-orange">build?</span>
           </div>
           <div
             style={{
@@ -1244,7 +1376,8 @@ const ui = createUi({
               lineHeight: 1.6,
             }}
           >
-            Install Stareezy UI and be up and running in minutes. Cross-platform from day one.
+            Install Stareezy UI and be up and running in minutes. Cross-platform
+            from day one.
           </div>
         </div>
 
@@ -1262,7 +1395,6 @@ const ui = createUi({
             className="code-window"
             style={{
               borderRadius: 10,
-              border: "1px solid rgba(255,106,26,0.08)",
             }}
           >
             <pre
@@ -1277,7 +1409,7 @@ const ui = createUi({
                 gap: "0.75rem",
               }}
             >
-              <span style={{ color: "#ff6a1a" }}>$</span>
+              <span style={{ color: "var(--brand-primary)" }}>$</span>
               <span>npx stareezy create my-app --template next</span>
             </pre>
           </div>

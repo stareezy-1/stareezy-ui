@@ -483,7 +483,7 @@ function LivePreview({
             style={{
               padding: "8px 20px",
               borderRadius: 8,
-              border: "1px solid rgba(255,106,26,0.2)",
+              border: "1px solid var(--brand-100)",
               color: "var(--color-text-2)",
               fontWeight: 600,
               fontSize: "0.8rem",
@@ -555,7 +555,9 @@ function LivePreview({
               <div
                 style={{
                   fontSize: "0.68rem",
-                  color: (c ?? "").startsWith("+") ? "#22c55e" : "#dc143c",
+                  color: (c ?? "").startsWith("+")
+                    ? "#22c55e"
+                    : "var(--brand-accent)",
                   fontWeight: 600,
                 }}
               >
@@ -590,7 +592,9 @@ function LivePreview({
                 width: "65%",
                 height: "100%",
                 background:
-                  "linear-gradient(90deg, " + config.accent + ", #dc143c)",
+                  "linear-gradient(90deg, " +
+                  config.accent +
+                  ", var(--brand-accent))",
                 borderRadius: 2,
               }}
             />
@@ -681,7 +685,7 @@ function LivePreview({
                 width: 14,
                 height: 14,
                 borderRadius: 3,
-                border: "2px solid rgba(255,106,26,0.3)",
+                border: "2px solid var(--brand-100)",
                 flexShrink: 0,
               }}
             />
@@ -810,7 +814,9 @@ function LivePreview({
                 height: 28,
                 borderRadius: 6,
                 background:
-                  "linear-gradient(135deg, " + config.accent + ", #dc143c)",
+                  "linear-gradient(135deg, " +
+                  config.accent +
+                  ", var(--brand-accent))",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -1313,7 +1319,8 @@ export default function AIPage() {
                 width: 24,
                 height: 24,
                 borderRadius: 6,
-                background: "linear-gradient(135deg, #ff6a1a, #dc143c)",
+                background:
+                  "linear-gradient(135deg, var(--brand-primary), var(--brand-accent))",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -1334,7 +1341,7 @@ export default function AIPage() {
                 letterSpacing: "-0.02em",
               }}
             >
-              Stareezy AI
+              Stareezy Playground
             </h1>
             <span
               className="pill-tag orange"
@@ -1384,8 +1391,8 @@ export default function AIPage() {
                   height: 56,
                   borderRadius: 14,
                   background:
-                    "linear-gradient(135deg, rgba(255,106,26,0.12), rgba(220,20,60,0.08))",
-                  border: "1px solid rgba(255,106,26,0.12)",
+                    "linear-gradient(135deg, var(--brand-50), rgba(0,0,0,0))",
+                  border: "1px solid var(--brand-100)",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
@@ -1466,12 +1473,12 @@ export default function AIPage() {
                   fontWeight: 700,
                   background:
                     msg.role === "user"
-                      ? "linear-gradient(135deg, #ff6a1a, #dc143c)"
-                      : "rgba(255,106,26,0.08)",
-                  color: msg.role === "user" ? "white" : "#ff6a1a",
+                      ? "linear-gradient(135deg, var(--brand-primary), var(--brand-accent))"
+                      : "var(--brand-50)",
+                  color: msg.role === "user" ? "white" : "var(--brand-primary)",
                   border:
                     msg.role === "assistant"
-                      ? "1px solid rgba(255,106,26,0.15)"
+                      ? "1px solid var(--brand-100)"
                       : "none",
                 }}
               >
@@ -1484,11 +1491,11 @@ export default function AIPage() {
                   borderRadius: 10,
                   background:
                     msg.role === "user"
-                      ? "rgba(255,106,26,0.06)"
+                      ? "var(--brand-50)"
                       : "var(--color-surface)",
                   border:
                     msg.role === "user"
-                      ? "1px solid rgba(255,106,26,0.08)"
+                      ? "1px solid var(--brand-100)"
                       : "1px solid var(--color-border)",
                 }}
               >
@@ -1535,8 +1542,8 @@ export default function AIPage() {
                                 gap: 3,
                                 padding: "3px 8px",
                                 borderRadius: 6,
-                                border: "1px solid rgba(255,106,26,0.12)",
-                                background: "rgba(255,106,26,0.04)",
+                                border: "1px solid var(--brand-100)",
+                                background: "var(--brand-50)",
                                 color: "var(--color-text-2)",
                                 fontSize: "0.68rem",
                                 cursor: "pointer",
@@ -1577,7 +1584,7 @@ export default function AIPage() {
                   width: 6,
                   height: 6,
                   borderRadius: "50%",
-                  background: "#ff6a1a",
+                  background: "var(--brand-primary)",
                   animation: "glowPulse 0.8s ease-in-out infinite",
                 }}
               />
@@ -1653,7 +1660,7 @@ export default function AIPage() {
                 border: "none",
                 borderBottom:
                   activeTab === tab
-                    ? "2px solid #ff6a1a"
+                    ? "2px solid var(--brand-primary)"
                     : "2px solid transparent",
                 background: "transparent",
                 color:
@@ -1684,14 +1691,14 @@ export default function AIPage() {
                     borderRadius: 6,
                     border:
                       previewTheme === t
-                        ? "1px solid rgba(255,106,26,0.3)"
+                        ? "1px solid var(--brand-200)"
                         : "1px solid transparent",
                     background:
-                      previewTheme === t
-                        ? "rgba(255,106,26,0.1)"
-                        : "transparent",
+                      previewTheme === t ? "var(--brand-50)" : "transparent",
                     color:
-                      previewTheme === t ? "#ff6a1a" : "var(--color-text-2)",
+                      previewTheme === t
+                        ? "var(--brand-primary)"
+                        : "var(--color-text-2)",
                     fontSize: "0.6rem",
                     cursor: "pointer",
                     fontWeight: 600,
@@ -1725,7 +1732,7 @@ export default function AIPage() {
                   style={{
                     borderRadius: 14,
                     overflow: "hidden",
-                    border: "1px solid rgba(255,106,26,0.08)",
+                    border: "1px solid var(--brand-50)",
                     animation:
                       "scaleIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) both",
                   }}
@@ -1736,8 +1743,8 @@ export default function AIPage() {
                       alignItems: "center",
                       gap: 6,
                       padding: "8px 14px",
-                      background: "rgba(13,5,8,0.5)",
-                      borderBottom: "1px solid rgba(255,106,26,0.06)",
+                      background: "var(--color-surface)",
+                      borderBottom: "1px solid var(--color-border)",
                     }}
                   >
                     {["#ff5f57", "#febc2e", "#28c840"].map((c) => (
@@ -1804,8 +1811,8 @@ export default function AIPage() {
                     style={{
                       width: 220,
                       flexShrink: 0,
-                      background: "#0a0a0f",
-                      borderRight: "1px solid rgba(255,106,26,0.06)",
+                      background: "var(--color-code-bg)",
+                      borderRight: "1px solid var(--color-border)",
                       overflow: "auto",
                       display: "flex",
                       flexDirection: "column",
@@ -1819,7 +1826,7 @@ export default function AIPage() {
                         color: "var(--color-text-2)",
                         textTransform: "uppercase",
                         letterSpacing: "0.08em",
-                        borderBottom: "1px solid rgba(255,106,26,0.04)",
+                        borderBottom: "1px solid var(--color-border)",
                       }}
                     >
                       EXPLORER
@@ -1838,16 +1845,16 @@ export default function AIPage() {
                             cursor: item.path ? "pointer" : "default",
                             background:
                               item.path && codeFile === item.path
-                                ? "rgba(255,106,26,0.08)"
+                                ? "var(--brand-50)"
                                 : "transparent",
                             borderLeft:
                               item.path && codeFile === item.path
-                                ? "2px solid #ff6a1a"
+                                ? "2px solid var(--brand-primary)"
                                 : "2px solid transparent",
                             fontSize: "0.78rem",
                             color:
                               item.path && codeFile === item.path
-                                ? "#ff6a1a"
+                                ? "var(--brand-primary)"
                                 : "var(--color-text)",
                             fontWeight:
                               item.path && codeFile === item.path ? 600 : 400,
@@ -1864,7 +1871,7 @@ export default function AIPage() {
                             if (item.path)
                               e.currentTarget.style.background =
                                 codeFile === item.path
-                                  ? "rgba(255,106,26,0.08)"
+                                  ? "var(--brand-50)"
                                   : "transparent";
                           }}
                         >
@@ -1900,8 +1907,8 @@ export default function AIPage() {
                         alignItems: "center",
                         justifyContent: "space-between",
                         padding: "8px 14px",
-                        background: "rgba(13,5,8,0.6)",
-                        borderBottom: "1px solid rgba(255,106,26,0.06)",
+                        background: "var(--color-surface)",
+                        borderBottom: "1px solid var(--color-border)",
                       }}
                     >
                       <span
@@ -1923,7 +1930,7 @@ export default function AIPage() {
                           gap: 3,
                           padding: "3px 8px",
                           borderRadius: 6,
-                          border: "1px solid rgba(255,106,26,0.12)",
+                          border: "1px solid var(--color-border)",
                           background: "transparent",
                           color: "var(--color-text-2)",
                           fontSize: "0.65rem",
@@ -1939,7 +1946,7 @@ export default function AIPage() {
                       style={{
                         margin: 0,
                         padding: "14px 16px",
-                        background: "#010103",
+                        background: "var(--color-code-bg)",
                         fontFamily: "var(--font-mono)",
                         fontSize: "0.75rem",
                         lineHeight: 1.6,

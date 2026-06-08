@@ -23,7 +23,7 @@ const NAV_SECTIONS = [
   {
     title: "Integrations",
     links: [
-      // { href: "/docs/mcp-server", label: "MCP Server", icon: "⚡" },
+      { href: "/docs/mcp-server", label: "MCP Server", icon: "⚡" },
       { href: "/docs/claude-skills", label: "Skills for Claude", icon: "✦" },
     ],
   },
