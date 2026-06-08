@@ -33,14 +33,40 @@ interface HistoryEntry {
 const THEMES: ThemeMode[] = ["quasar", "aurora", "steins-gate"];
 
 const ICONS: Record<string, string> = {
-  Box: "▣", Stack: "▤", Grid: "⊞", Button: "▢",
-  Input: "⌨", Checkbox: "☑", Switch: "⬡", Slider: "━",
-  Table: "⊟", Progress: "▨", CircularProgress: "◎", Badge: "◉", Tag: "◈",
-  NavBar: "≡", Tabs: "≣", Breadcrumb: "›", Pagination: "◀▶",
-  Modal: "◻", Drawer: "▤", Tooltip: "◊", Dropdown: "▾", CommandPalette: "⌘",
-  Avatar: "◒", Skeleton: "▭", Divider: "─", Card: "▢",
-  Toast: "◐", Clipboard: "📋", Resizer: "⤡", ProgressPanel: "▦",
-  FileDropZone: "📂", IconButton: "◎", HStack: "▤", VStack: "▥",
+  Box: "▣",
+  Stack: "▤",
+  Grid: "⊞",
+  Button: "▢",
+  Input: "⌨",
+  Checkbox: "☑",
+  Switch: "⬡",
+  Slider: "━",
+  Table: "⊟",
+  Progress: "▨",
+  CircularProgress: "◎",
+  Badge: "◉",
+  Tag: "◈",
+  NavBar: "≡",
+  Tabs: "≣",
+  Breadcrumb: "›",
+  Pagination: "◀▶",
+  Modal: "◻",
+  Drawer: "▤",
+  Tooltip: "◊",
+  Dropdown: "▾",
+  CommandPalette: "⌘",
+  Avatar: "◒",
+  Skeleton: "▭",
+  Divider: "─",
+  Card: "▢",
+  Toast: "◐",
+  Clipboard: "📋",
+  Resizer: "⤡",
+  ProgressPanel: "▦",
+  FileDropZone: "📂",
+  IconButton: "◎",
+  HStack: "▤",
+  VStack: "▥",
   Page: "◻",
 };
 
@@ -89,8 +115,14 @@ const COMPONENT_DEFS: ComponentDef[] = [
 ];
 
 const CATEGORY_ICONS: Record<string, string> = {
-  Layout: "◇", Buttons: "▤", Inputs: "⌨", Data: "⊟",
-  Navigation: "≡", Overlay: "◻", Media: "◒", Feedback: "◐",
+  Layout: "◇",
+  Buttons: "▤",
+  Inputs: "⌨",
+  Data: "⊟",
+  Navigation: "≡",
+  Overlay: "◻",
+  Media: "◒",
+  Feedback: "◐",
 };
 
 const TOKENS_CATEGORIES: Record<string, Record<string, string>> = {
@@ -102,23 +134,41 @@ const TOKENS_CATEGORIES: Record<string, Record<string, string>> = {
     "Error": "#dc143c", "Warning": "#f59e0b",
   },
   Spacing: {
-    "xs": "4px", "sm": "8px", "md": "16px", "lg": "24px",
-    "xl": "32px", "2xl": "48px", "3xl": "64px", "4xl": "96px",
+    xs: "4px",
+    sm: "8px",
+    md: "16px",
+    lg: "24px",
+    xl: "32px",
+    "2xl": "48px",
+    "3xl": "64px",
+    "4xl": "96px",
   },
   Typography: {
-    "H1": "2.5rem", "H2": "2rem", "H3": "1.5rem", "H4": "1.25rem",
-    "Body": "1rem", "Small": "0.875rem", "XS": "0.75rem",
-    "Weight-Bold": "700", "Weight-Medium": "500", "Weight-Regular": "400",
+    H1: "2.5rem",
+    H2: "2rem",
+    H3: "1.5rem",
+    H4: "1.25rem",
+    Body: "1rem",
+    Small: "0.875rem",
+    XS: "0.75rem",
+    "Weight-Bold": "700",
+    "Weight-Medium": "500",
+    "Weight-Regular": "400",
   },
   Radius: {
-    "none": "0", "sm": "4px", "md": "8px", "lg": "12px",
-    "xl": "16px", "2xl": "24px", "full": "9999px",
+    none: "0",
+    sm: "4px",
+    md: "8px",
+    lg: "12px",
+    xl: "16px",
+    "2xl": "24px",
+    full: "9999px",
   },
   Shadow: {
-    "sm": "0 1px 2px rgba(0,0,0,0.3)",
-    "md": "0 4px 12px rgba(0,0,0,0.3)",
-    "lg": "0 8px 24px rgba(0,0,0,0.4)",
-    "xl": "0 12px 48px rgba(0,0,0,0.5)",
+    sm: "0 1px 2px rgba(0,0,0,0.3)",
+    md: "0 4px 12px rgba(0,0,0,0.3)",
+    lg: "0 8px 24px rgba(0,0,0,0.4)",
+    xl: "0 12px 48px rgba(0,0,0,0.5)",
   },
 };
 
@@ -150,7 +200,10 @@ function generateCode(nodes: CanvasNode[], indent = 0): string {
         .join(" ");
       const tag = node.type;
       if (node.children.length > 0) {
-        return `${pad}<${tag} ${props}>\n${generateCode(node.children, indent + 1)}${pad}</${tag}>`;
+        return `${pad}<${tag} ${props}>\n${generateCode(
+          node.children,
+          indent + 1,
+        )}${pad}</${tag}>`;
       }
       if (node.text) {
         return `${pad}<${tag} ${props}>${node.text}</${tag}>`;
@@ -164,10 +217,14 @@ function renderPreview(node: CanvasNode): JSX.Element {
   const s: React.CSSProperties = {
     background: typeof node.props.bg === "string" ? node.props.bg : undefined,
     padding: typeof node.props.p === "number" ? node.props.p : undefined,
-    borderRadius: typeof node.props.borderRadius === "number" ? node.props.borderRadius : undefined,
+    borderRadius:
+      typeof node.props.borderRadius === "number"
+        ? node.props.borderRadius
+        : undefined,
     display: "flex",
     flexDirection: node.props.direction === "horizontal" ? "row" : "column",
-    gap: typeof node.props.spacing === "number" ? node.props.spacing : undefined,
+    gap:
+      typeof node.props.spacing === "number" ? node.props.spacing : undefined,
     color: "var(--color-text)",
     fontSize: "0.85rem",
     width: "100%",
@@ -182,7 +239,13 @@ function renderPreview(node: CanvasNode): JSX.Element {
   };
 
   const label = (
-    <span style={{ fontSize: "0.65rem", opacity: 0.5, pointerEvents: "none" as const }}>
+    <span
+      style={{
+        fontSize: "0.65rem",
+        opacity: 0.5,
+        pointerEvents: "none" as const,
+      }}
+    >
       {node.type}
     </span>
   );
@@ -293,13 +356,21 @@ export default function NovaPage() {
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
       if (e.key === "Delete" || e.key === "Backspace") {
-        if (selectedId && document.activeElement?.tagName !== "INPUT" && document.activeElement?.tagName !== "TEXTAREA") {
+        if (
+          selectedId &&
+          document.activeElement?.tagName !== "INPUT" &&
+          document.activeElement?.tagName !== "TEXTAREA"
+        ) {
           removeNode(selectedId);
           e.preventDefault();
         }
       }
       if ((e.metaKey || e.ctrlKey) && e.key === "z") {
-        if (e.shiftKey) { redo(); } else { undo(); }
+        if (e.shiftKey) {
+          redo();
+        } else {
+          undo();
+        }
         e.preventDefault();
       }
     };
@@ -397,7 +468,8 @@ export default function NovaPage() {
     const updater = (ns: CanvasNode[]): CanvasNode[] =>
       ns.map((n) => {
         if (n.id === id) return { ...n, props: { ...n.props, [key]: value } };
-        if (n.children.length > 0) return { ...n, children: updater(n.children) };
+        if (n.children.length > 0)
+          return { ...n, children: updater(n.children) };
         return n;
       });
     setNodes((prev) => {
@@ -411,7 +483,8 @@ export default function NovaPage() {
     const updater = (ns: CanvasNode[]): CanvasNode[] =>
       ns.map((n) => {
         if (n.id === id) return { ...n, text };
-        if (n.children.length > 0) return { ...n, children: updater(n.children) };
+        if (n.children.length > 0)
+          return { ...n, children: updater(n.children) };
         return n;
       });
     setNodes((prev) => {
@@ -473,7 +546,10 @@ export default function NovaPage() {
   }
 
   function handleCanvasClick(e: React.MouseEvent) {
-    if (e.target === canvasRef.current || (e.target as HTMLElement).closest("[data-nova-canvas]")) {
+    if (
+      e.target === canvasRef.current ||
+      (e.target as HTMLElement).closest("[data-nova-canvas]")
+    ) {
       setSelectedId(null);
     }
   }
@@ -541,7 +617,7 @@ export default function NovaPage() {
 
   const categories = [...new Set(COMPONENT_DEFS.map((c) => c.category))];
   const [openCats, setOpenCats] = useState<Record<string, boolean>>(
-    Object.fromEntries(categories.map((c) => [c, true]))
+    Object.fromEntries(categories.map((c) => [c, true])),
   );
 
   const pageNode = nodes[0];
@@ -571,7 +647,9 @@ export default function NovaPage() {
               <div style={s.catH} onClick={() => setOpenCats((p) => ({ ...p, [cat]: !p[cat] }))}>
                 <span>{CATEGORY_ICONS[cat] || "◇"}</span>
                 <span>{cat}</span>
-                <span style={{ marginLeft: "auto", opacity: 0.4 }}>{openCats[cat] ? "−" : "+"}</span>
+                <span style={{ marginLeft: "auto", opacity: 0.4 }}>
+                  {openCats[cat] ? "−" : "+"}
+                </span>
               </div>
               {openCats[cat] && COMPONENT_DEFS.filter((c) => c.category === cat).map((def) => (
                 <div key={def.type} style={s.pItem} draggable onDragStart={(e) => handleDragStart(e, def.type)} onDoubleClick={() => addNodeToCanvas(def.type, 20 + nextDropPos.current * 10, 20 + nextDropPos.current * 10)} onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(255,106,26,0.08)"; }} onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; }}>
@@ -588,8 +666,20 @@ export default function NovaPage() {
       <div style={s.canvasArea}>
         <div style={s.topBar}>
           <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-            <span style={{ fontWeight: 800, fontSize: "0.85rem", background: "linear-gradient(135deg, #ff6a1a, #dc143c)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>✦ Nova</span>
-            <span style={{ fontSize: "0.65rem", opacity: 0.4 }}>Design Builder</span>
+            <span
+              style={{
+                fontWeight: 800,
+                fontSize: "0.85rem",
+                background: "linear-gradient(135deg, #ff6a1a, #dc143c)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+              }}
+            >
+              ✦ Nova
+            </span>
+            <span style={{ fontSize: "0.65rem", opacity: 0.4 }}>
+              Design Builder
+            </span>
           </div>
           <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
             {THEMES.map((t) => (
@@ -714,11 +804,57 @@ export default function NovaPage() {
         <div style={s.statusBar}>
           <span>{(nodes[0]?.children ?? []).length} items</span>
           <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
-            <button onClick={undo} style={{ background: "none", border: "none", color: "var(--color-text-2)", cursor: "pointer", fontSize: "0.65rem", opacity: historyIdx >= 0 ? 1 : 0.3 }}>↩</button>
-            <button onClick={redo} style={{ background: "none", border: "none", color: "var(--color-text-2)", cursor: "pointer", fontSize: "0.65rem", opacity: historyIdx < history.length - 1 ? 1 : 0.3 }}>↪</button>
-            <button onClick={() => setZoom(Math.max(25, zoom - 25))} style={{ background: "none", border: "none", color: "var(--color-text-2)", cursor: "pointer", fontSize: "0.65rem" }}>−</button>
+            <button
+              onClick={undo}
+              style={{
+                background: "none",
+                border: "none",
+                color: "var(--color-text-2)",
+                cursor: "pointer",
+                fontSize: "0.65rem",
+                opacity: historyIdx >= 0 ? 1 : 0.3,
+              }}
+            >
+              ↩
+            </button>
+            <button
+              onClick={redo}
+              style={{
+                background: "none",
+                border: "none",
+                color: "var(--color-text-2)",
+                cursor: "pointer",
+                fontSize: "0.65rem",
+                opacity: historyIdx < history.length - 1 ? 1 : 0.3,
+              }}
+            >
+              ↪
+            </button>
+            <button
+              onClick={() => setZoom(Math.max(25, zoom - 25))}
+              style={{
+                background: "none",
+                border: "none",
+                color: "var(--color-text-2)",
+                cursor: "pointer",
+                fontSize: "0.65rem",
+              }}
+            >
+              −
+            </button>
             <span>{zoom}%</span>
-            <button onClick={() => setZoom(Math.min(200, zoom + 25))} style={{ background: "none", border: "none", color: "var(--color-text-2)", cursor: "pointer", fontSize: "0.65rem" }}>+</button>
+            <button
+              onClick={() => setZoom(Math.min(200, zoom + 25))}
+              style={{
+                background: "none",
+                border: "none",
+                color: "var(--color-text-2)",
+                cursor: "pointer",
+                fontSize: "0.65rem",
+              }}
+            >
+              +
+            </button>
             <span>Theme: {theme}</span>
           </div>
         </div>
@@ -797,7 +933,9 @@ export default function NovaPage() {
                   <div style={s.pGroup}>
                     <div style={{ fontSize: "0.65rem", color: "var(--color-text-2)", fontWeight: 600, marginBottom: 4, textTransform: "uppercase", letterSpacing: "0.05em", cursor: "pointer", display: "flex", justifyContent: "space-between" }} onClick={() => setShowTokens(!showTokens)}>
                       <span>Tokens</span>
-                      <span style={{ opacity: 0.4 }}>{showTokens ? "−" : "+"}</span>
+                      <span style={{ opacity: 0.4 }}>
+                        {showTokens ? "−" : "+"}
+                      </span>
                     </div>
                     {showTokens && Object.entries(TOKENS_CATEGORIES).map(([cat, tokens]) => (
                       <div key={cat} style={{ marginBottom: 6 }}>
@@ -810,8 +948,7 @@ export default function NovaPage() {
                             </button>
                           ))}
                         </div>
-                      </div>
-                    ))}
+                      ))}
                   </div>
                 </>
               ) : (
