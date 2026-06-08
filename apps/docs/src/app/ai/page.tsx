@@ -575,8 +575,9 @@ export default function AIPage() {
       "change-layout": "Changed layout",
     };
 
-    const label = messages[messages.length - 1]?.config?.pattern
-      ? QUICK_PROMPTS.find(p => p.pattern === messages[messages.length - 1].config?.pattern)?.label || "Component"
+    const lastPattern = messages[messages.length - 1]?.config?.pattern;
+    const label = lastPattern
+      ? QUICK_PROMPTS.find(p => p.pattern === lastPattern)?.label || "Component"
       : "Component";
 
     addMessage({
