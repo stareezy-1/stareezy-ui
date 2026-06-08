@@ -227,27 +227,28 @@ export function renderPreview(node: CanvasNode): JSX.Element {
 
 function RenderNode({ node }: { node: CanvasNode }): JSX.Element {
   const p = node.props;
-  const common = {
+
+  // Layout props forwarded to Box-based primitives (no width/height —
+  // those are controlled by the card wrapper, not the component itself)
+  const layoutProps = {
     ...(typeof p.p === "number" && { p: p.p }),
     ...(typeof p.bg === "string" && { bg: p.bg }),
-    ...(typeof p.width === "number" && { width: p.width }),
-    ...(typeof p.height === "number" && { height: p.height }),
   } as const;
 
   switch (node.type) {
     case "Box":
       return (
         <Box
-          {...common}
+          {...layoutProps}
           {...(typeof p.borderRadius === "number" && {
             rounded: p.borderRadius,
           })}
-          style={{ width: "100%", height: "100%" }}
+          style={{ width: "100%", height: "100%", minHeight: 40 }}
         >
           {node.children.length > 0 ? (
             node.children.map((c) => <RenderNode key={c.id} node={c} />)
           ) : (
-            <Text text={node.type} />
+            <Text text="Box" />
           )}
         </Box>
       );
@@ -255,47 +256,46 @@ function RenderNode({ node }: { node: CanvasNode }): JSX.Element {
     case "VStack":
       return (
         <VStack
-          {...common}
+          {...layoutProps}
           gap={typeof p.spacing === "number" ? p.spacing : 8}
-          style={{ width: "100%", height: "100%" }}
+          style={{ width: "100%", minHeight: 40 }}
         >
           {node.children.length > 0 ? (
             node.children.map((c) => <RenderNode key={c.id} node={c} />)
           ) : (
-            <Text text={node.type} />
+            <Text text="VStack" />
           )}
         </VStack>
       );
     case "HStack":
       return (
         <HStack
-          {...common}
+          {...layoutProps}
           gap={typeof p.spacing === "number" ? p.spacing : 8}
-          style={{ width: "100%", height: "100%" }}
+          style={{ width: "100%" }}
         >
           {node.children.length > 0 ? (
             node.children.map((c) => <RenderNode key={c.id} node={c} />)
           ) : (
-            <Text text={node.type} />
+            <Text text="HStack" />
           )}
         </HStack>
       );
     case "Grid":
       return (
         <Box
-          {...common}
+          {...layoutProps}
           style={{
             display: "grid",
             gridTemplateColumns: `repeat(${p.columns || 2}, 1fr)`,
             gap: typeof p.gap === "number" ? p.gap : 12,
             width: "100%",
-            height: "100%",
           }}
         >
           {node.children.length > 0 ? (
             node.children.map((c) => <RenderNode key={c.id} node={c} />)
           ) : (
-            <Text text={node.type} />
+            <Text text="Grid" />
           )}
         </Box>
       );
@@ -305,7 +305,8 @@ function RenderNode({ node }: { node: CanvasNode }): JSX.Element {
           text={node.text || "Button"}
           type={btnType(p.type as string)}
           size={btnSize(p.size as string)}
-          style={{ width: "100%", height: "100%" }}
+          {...(!!p.loading && { loading: true })}
+          {...(!!p.disabled && { disabled: true })}
         />
       );
     case "IconButton":
@@ -313,7 +314,6 @@ function RenderNode({ node }: { node: CanvasNode }): JSX.Element {
         <Button
           icon={<Text text={String(p.icon || "★")} />}
           size={btnSize(p.size as string)}
-          style={{ width: "100%", height: "100%" }}
         />
       );
     case "Input":
@@ -328,7 +328,7 @@ function RenderNode({ node }: { node: CanvasNode }): JSX.Element {
               ? EInputSize.Sm
               : EInputSize.Md
           }
-          style={{ width: "100%", height: "100%" }}
+          style={{ width: "100%" }}
         />
       );
     case "Checkbox":
@@ -336,7 +336,7 @@ function RenderNode({ node }: { node: CanvasNode }): JSX.Element {
         <Checkbox
           label={String(p.label || "Option")}
           checked={!!p.checked}
-          color={p.color as string}
+          {...(typeof p.color === "string" && { color: p.color })}
         />
       );
     case "Switch":
@@ -344,25 +344,22 @@ function RenderNode({ node }: { node: CanvasNode }): JSX.Element {
         <Switch
           value={!!p.value}
           label={String(p.label || "Toggle")}
-          activeColor={p.color as string}
+          {...(typeof p.activeColor === "string" && {
+            activeColor: p.activeColor,
+          })}
         />
       );
     case "Slider":
-      return (
-        <Slider
-          value={typeof p.value === "number" ? p.value : 50}
-          min={typeof p.min === "number" ? p.min : 0}
-          max={typeof p.max === "number" ? p.max : 100}
-          color={p.color as string}
-        />
-      );
+      return <></>;
     case "FileDropZone":
       return (
         <FileDropZone
           onFiles={() => {}}
           accept={String(p.accept || "image/*")}
-          multiple={!!p.maxFiles && Number(p.maxFiles) > 1}
-          label="Drop files"
+          multiple={!!p.multiple}
+          label={String(p.label || "Drop files here")}
+          {...(typeof p.hint === "string" && p.hint ? { hint: p.hint } : {})}
+          style={{ width: "100%" }}
         />
       );
     case "Table":
@@ -380,7 +377,8 @@ function RenderNode({ node }: { node: CanvasNode }): JSX.Element {
         <Progress
           value={typeof p.value === "number" ? p.value : 65}
           max={typeof p.max === "number" ? p.max : 100}
-          color={p.color as string}
+          {...(typeof p.color === "string" && { color: p.color })}
+          style={{ width: "100%" }}
         />
       );
     case "CircularProgress": {
@@ -417,8 +415,14 @@ function RenderNode({ node }: { node: CanvasNode }): JSX.Element {
       return (
         <Tag
           label={String(p.label || "Tag")}
-          variant={ETagVariant.Solid}
-          color={p.color as string}
+          variant={
+            (p.variant as "solid" | "outline" | "subtle") === "outline"
+              ? ETagVariant.Outline
+              : (p.variant as "solid" | "outline" | "subtle") === "subtle"
+              ? ETagVariant.Subtle
+              : ETagVariant.Solid
+          }
+          {...(typeof p.color === "string" && { color: p.color })}
         />
       );
     case "NavBar":
@@ -435,6 +439,7 @@ function RenderNode({ node }: { node: CanvasNode }): JSX.Element {
             </HStack>
           }
           actions={<Button text="Action" size={EButtonSize.SM} />}
+          style={{ width: "100%" }}
         />
       );
     case "Tabs":
@@ -444,6 +449,8 @@ function RenderNode({ node }: { node: CanvasNode }): JSX.Element {
           defaultActiveKey={
             typeof p.active === "number" ? `tab-${p.active}` : "tab-0"
           }
+          variant={(p.variant as "underline" | "pills" | "card") || "underline"}
+          style={{ width: "100%" }}
         />
       );
     case "Breadcrumb":
@@ -465,9 +472,10 @@ function RenderNode({ node }: { node: CanvasNode }): JSX.Element {
         <Modal
           open
           title={String(p.title || "Modal Title")}
-          size={(p.size as "sm" | "md" | "lg" | "xl" | "full") || "md"}
+          size={(p.size as "xs" | "sm" | "md" | "lg" | "xl" | "full") || "sm"}
+          onClose={() => {}}
         >
-          <Text text={node.text || "Modal content"} />
+          <Text text={node.text || "Modal content goes here."} />
         </Modal>
       );
     case "Drawer":
@@ -489,7 +497,7 @@ function RenderNode({ node }: { node: CanvasNode }): JSX.Element {
             (p.placement as "top" | "bottom" | "left" | "right") || "top"
           }
         >
-          <Text text={node.type} />
+          <Text text="Hover me" />
         </Tooltip>
       );
     case "Dropdown":
@@ -499,6 +507,7 @@ function RenderNode({ node }: { node: CanvasNode }): JSX.Element {
             typeof p.items === "number" ? p.items : 3,
           )}
           placeholder={String(p.placeholder || "Select...")}
+          style={{ width: "100%" }}
         />
       );
     case "CommandPalette":
@@ -513,7 +522,9 @@ function RenderNode({ node }: { node: CanvasNode }): JSX.Element {
       return (
         <Avatar
           name={String(p.name || "SU")}
-          size={(p.size as "sm" | "md" | "lg" | "xl") || "md"}
+          size={(p.size as "xs" | "sm" | "md" | "lg" | "xl" | "2xl") || "md"}
+          shape={(p.shape as "circle" | "rounded" | "square") || "circle"}
+          {...(typeof p.src === "string" && p.src ? { src: p.src } : {})}
         />
       );
     case "Skeleton":
@@ -521,16 +532,34 @@ function RenderNode({ node }: { node: CanvasNode }): JSX.Element {
         <Skeleton
           width={typeof p.width === "number" ? p.width : "100%"}
           height={typeof p.height === "number" ? p.height : 16}
+          variant={
+            (p.variant as "text" | "circular" | "rectangular" | "rounded") ||
+            "rectangular"
+          }
         />
       );
     case "Divider":
-      return <Divider color={p.color as string} />;
+      return (
+        <Divider
+          {...(typeof p.color === "string" && { color: p.color })}
+          orientation={
+            (p.orientation as "horizontal" | "vertical") || "horizontal"
+          }
+          variant={(p.variant as "solid" | "dashed" | "dotted") || "solid"}
+        />
+      );
     case "Card":
       return (
         <Card
-          {...common}
-          title={String(p.title || "")}
-          description={String(p.description || "")}
+          {...layoutProps}
+          title={typeof p.title === "string" ? p.title : "Card Title"}
+          description={
+            typeof p.description === "string"
+              ? p.description
+              : "Card description"
+          }
+          variant={(p.variant as "border" | "shadow" | "glow") || "border"}
+          style={{ width: "100%" }}
         >
           {node.children.length > 0
             ? node.children.map((c) => <RenderNode key={c.id} node={c} />)
@@ -544,17 +573,24 @@ function RenderNode({ node }: { node: CanvasNode }): JSX.Element {
             (p.variant as "success" | "error" | "warning" | "info") || "success"
           }
           message={String(p.message || "Toast message")}
+          style={{ width: "100%" }}
         />
       );
     case "Clipboard":
-      return <Clipboard value={String(p.value || "Copy me!")} />;
+      return (
+        <Clipboard
+          value={String(p.value || "Copy me!")}
+          showValue={p.showValue !== false}
+          style={{ width: "100%" }}
+        />
+      );
     case "Resizer":
       return (
         <Resizer
           defaultWidth={
-            typeof p.defaultWidth === "number" ? p.defaultWidth : 400
+            typeof p.defaultWidth === "number" ? p.defaultWidth : 240
           }
-          minWidth={typeof p.minWidth === "number" ? p.minWidth : 200}
+          minWidth={typeof p.minWidth === "number" ? p.minWidth : 100}
         >
           <Text text="Resize me" />
         </Resizer>
@@ -567,13 +603,15 @@ function RenderNode({ node }: { node: CanvasNode }): JSX.Element {
             typeof p.current === "number" ? p.current : 2,
           )}
           currentStep={typeof p.current === "number" ? p.current : 2}
+          style={{ width: "100%" }}
         />
       );
     case "Spinner":
       return (
         <Spinner
-          size={(p.size as "sm" | "md" | "lg") || "md"}
-          color={p.color as string}
+          size={(p.size as "xs" | "sm" | "md" | "lg" | "xl") || "md"}
+          variant={(p.variant as "ring" | "dots" | "pulse") || "ring"}
+          {...(typeof p.color === "string" && { color: p.color })}
         />
       );
     default:
@@ -585,6 +623,7 @@ function RenderNode({ node }: { node: CanvasNode }): JSX.Element {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
+            opacity: 0.4,
           }}
         >
           <Text text={node.type} />

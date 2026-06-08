@@ -28,7 +28,7 @@ const nextConfig = {
   images: {
     formats: ["image/avif", "image/webp"],
   },
-  webpack(config, { webpack }) {
+  webpack(config, { webpack, isServer }) {
     config.resolve.alias = {
       ...config.resolve.alias,
 
@@ -51,47 +51,56 @@ const nextConfig = {
         root,
         "packages/components/src/index.ts",
       ),
-
-      // ── react-native → web stub ─────────────────────────────────────────
-      // The components package and its deps (e.g. @react-native-community/slider)
-      // conditionally require react-native. Alias the package AND all known
-      // sub-paths so webpack never tries to parse real RN files (Flow syntax).
-      "react-native": path.resolve(__dirname, "src/lib/react-native-stub.js"),
-      "react-native/Libraries/Image/resolveAssetSource": path.resolve(
-        __dirname,
-        "src/lib/react-native-stub.js",
-      ),
-      "react-native/Libraries/NativeComponent/ViewConfigIgnore": path.resolve(
-        __dirname,
-        "src/lib/react-native-stub.js",
-      ),
-      "react-native/Libraries/StyleSheet/processColor": path.resolve(
-        __dirname,
-        "src/lib/react-native-stub.js",
-      ),
-      "react-native/Libraries/Utilities/codegenNativeCommands": path.resolve(
-        __dirname,
-        "src/lib/react-native-stub.js",
-      ),
-      "react-native/Libraries/Utilities/Platform": path.resolve(
-        __dirname,
-        "src/lib/react-native-stub.js",
-      ),
-      "react-native/Libraries/Components/View/ViewNativeComponent":
-        path.resolve(__dirname, "src/lib/react-native-stub.js"),
-      "react-native/Libraries/Components/View/ViewAccessibility": path.resolve(
-        __dirname,
-        "src/lib/react-native-stub.js",
-      ),
-      "react-native/Libraries/Renderer/shims/ReactNative": path.resolve(
-        __dirname,
-        "src/lib/react-native-stub.js",
-      ),
-      "@react-native-community/slider": path.resolve(
-        __dirname,
-        "src/lib/react-native-stub.js",
-      ),
     };
+
+    // ── react-native: two-tier stub strategy ────────────────────────────────
+    //
+    // The stareezy-ui platform detection does:
+    //   const hasReactNative = (() => { try { require("react-native"); return true; } catch { return false; } })();
+    //   isWeb = !hasReactNative
+    //
+    // We need require("react-native") to THROW at runtime so hasReactNative=false
+    // and isWeb=true, enabling the correct web render path for all components.
+    //
+    // Strategy:
+    //   1. Top-level "react-native" → a module that throws when evaluated.
+    //      webpack can bundle a module that throws (it only fails if the throw
+    //      is not inside a try/catch at the call site — but here every call IS
+    //      inside try/catch in the library source).
+    //   2. react-native/Libraries/* sub-paths → the safe stub (no throw), so
+    //      @react-native-community/slider sub-imports bundle without error.
+    //
+    // We achieve (1) by making "react-native" an external that resolves to
+    // a tiny inline module expression that throws.
+
+    // Make require("react-native") throw MODULE_NOT_FOUND at runtime.
+    // "commonjs2" externals wrap the expression so webpack treats it as a
+    // module that the runtime must load — but we use a function external
+    // that returns a special error-throwing value.
+    config.plugins.push(
+      // Sub-paths (Libraries/*, @react-native-community/*, @react-native/*):
+      // redirect to safe stub so webpack can parse them (they have Flow syntax).
+      new webpack.NormalModuleReplacementPlugin(
+        /^react-native\/(?!$)/, // react-native/anything (but not bare "react-native")
+        path.resolve(__dirname, "src/lib/react-native-stub.js"),
+      ),
+      new webpack.NormalModuleReplacementPlugin(
+        /^@react-native-community\//,
+        path.resolve(__dirname, "src/lib/react-native-stub.js"),
+      ),
+      new webpack.NormalModuleReplacementPlugin(
+        /^@react-native\//,
+        path.resolve(__dirname, "src/lib/react-native-stub.js"),
+      ),
+    );
+
+    // Top-level "react-native" → throws at runtime via a throwing module.
+    // We alias it to a separate file that does `throw new Error(...)`.
+    // This is safe because all call-sites in the library are inside try/catch.
+    config.resolve.alias["react-native"] = path.resolve(
+      __dirname,
+      "src/lib/react-native-throws.js",
+    );
 
     // Transpile stareezy-ui TypeScript source through Next.js SWC
     config.module.rules.push({
@@ -116,26 +125,6 @@ const nextConfig = {
         },
       ],
     });
-
-    // ── NormalModuleReplacementPlugin: catch ALL react-native/* sub-paths ──
-    // @react-native-community/slider imports react-native/Libraries/... paths
-    // that aren't caught by resolve.alias exact-match. This plugin intercepts
-    // any require/import whose request starts with "react-native/" or is
-    // "@react-native-community/slider" and redirects it to the stub.
-    config.plugins.push(
-      new webpack.NormalModuleReplacementPlugin(
-        /^react-native(\/|$)/,
-        path.resolve(__dirname, "src/lib/react-native-stub.js"),
-      ),
-      new webpack.NormalModuleReplacementPlugin(
-        /^@react-native-community\//,
-        path.resolve(__dirname, "src/lib/react-native-stub.js"),
-      ),
-      new webpack.NormalModuleReplacementPlugin(
-        /^@react-native\//,
-        path.resolve(__dirname, "src/lib/react-native-stub.js"),
-      ),
-    );
 
     return config;
   },

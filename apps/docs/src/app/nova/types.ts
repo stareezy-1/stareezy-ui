@@ -1,4 +1,4 @@
-export type ThemeMode = "quasar" | "aurora" | "steins-gate";
+export type ThemeMode = "quasar" | "aurora" | "steins-gate" | "light";
 export type TabId = "style" | "content" | "layers";
 export type CodeTab = "code" | "preview" | "export";
 

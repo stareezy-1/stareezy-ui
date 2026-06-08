@@ -1,6 +1,6 @@
 import { type ComponentDef, type ThemeMode, type PropMeta } from "./types";
 
-export const THEMES: ThemeMode[] = ["quasar", "aurora", "steins-gate"];
+export const THEMES: ThemeMode[] = ["quasar", "aurora", "steins-gate", "light"];
 
 export const ICONS: Record<string, string> = {
   Box: "▣",

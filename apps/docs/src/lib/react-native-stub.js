@@ -1,16 +1,19 @@
 /**
- * Minimal react-native stub for Next.js web builds.
+ * react-native web stub for Next.js builds.
  *
- * The stareezy-ui components use react-native APIs only inside isNative guards
- * (Platform.OS !== "web"). This stub prevents webpack from trying to parse
- * the real react-native package (which contains Flow syntax) while still
- * satisfying any runtime require() calls.
+ * Sub-path imports (react-native/Libraries/...) from @react-native-community
+ * packages get redirected here by NormalModuleReplacementPlugin so webpack
+ * never tries to parse Flow-typed RN source files.
  *
- * Only the APIs actually referenced in the packages are stubbed out.
+ * The TOP-LEVEL "react-native" import is handled differently (see next.config.mjs):
+ * it uses webpack `externals` so that require("react-native") throws a
+ * MODULE_NOT_FOUND error at runtime, which makes stareezy-ui's `hasReactNative`
+ * check return false and `isWeb` return true — enabling the correct web render path.
+ *
+ * This file is only ever loaded for SUB-PATH imports and must be a valid JS module.
  */
 
 const noop = () => {};
-const noopObj = {};
 
 const Platform = {
   OS: "web",
@@ -18,100 +21,57 @@ const Platform = {
   select: (spec) => ("web" in spec ? spec.web : spec.default ?? undefined),
 };
 
+const StyleSheet = {
+  create: (s) => s,
+  flatten: (s) => s ?? {},
+  hairlineWidth: 1,
+};
+
 const Dimensions = {
   get: () => ({ width: 0, height: 0, scale: 1, fontScale: 1 }),
   addEventListener: () => ({ remove: noop }),
-  removeEventListener: noop,
 };
-
-const StyleSheet = {
-  create: (styles) => styles,
-  flatten: (style) => style ?? {},
-  hairlineWidth: 1,
-  absoluteFill: { position: "absolute", top: 0, left: 0, bottom: 0, right: 0 },
-  absoluteFillObject: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    bottom: 0,
-    right: 0,
-  },
-};
-
-const Animated = {
-  Value: class {
-    constructor(v) {
-      this._value = v;
-    }
-  },
-  View: (props) => props.children ?? null,
-  Text: (props) => props.children ?? null,
-  timing: () => ({ start: noop, stop: noop, reset: noop }),
-  spring: () => ({ start: noop, stop: noop, reset: noop }),
-  sequence: () => ({ start: noop, stop: noop, reset: noop }),
-  parallel: () => ({ start: noop, stop: noop, reset: noop }),
-  createAnimatedComponent: (C) => C,
-};
-
-class TouchableOpacityStub extends Function {
-  constructor() {
-    super();
-    return () => null;
-  }
-}
 
 module.exports = {
   Platform,
-  Dimensions,
   StyleSheet,
-  Animated,
-  View: (props) => props.children ?? null,
-  Text: (props) => props.children ?? null,
-  TouchableOpacity: () => null,
-  Pressable: () => null,
-  ScrollView: (props) => props.children ?? null,
-  FlatList: () => null,
-  SafeAreaView: (props) => props.children ?? null,
+  Dimensions,
+  View: ({ children }) => children ?? null,
+  Text: ({ children }) => children ?? null,
+  TouchableOpacity: ({ children }) => children ?? null,
+  Pressable: ({ children }) => children ?? null,
+  ScrollView: ({ children }) => children ?? null,
+  SafeAreaView: ({ children }) => children ?? null,
   Modal: () => null,
   Image: () => null,
   TextInput: () => null,
   ActivityIndicator: () => null,
-  Alert: { alert: noop },
-  AppRegistry: { registerComponent: noop, runApplication: noop },
-  NativeModules: noopObj,
+  Animated: {
+    Value: class {
+      constructor(v) {
+        this._v = v;
+      }
+    },
+    View: ({ children }) => children ?? null,
+    createAnimatedComponent: (C) => C,
+    timing: () => ({ start: noop }),
+    spring: () => ({ start: noop }),
+  },
+  NativeModules: {},
   NativeEventEmitter: class {
     addListener() {
       return { remove: noop };
     }
-    removeAllListeners() {}
-  },
-  DeviceEventEmitter: {
-    addListener: () => ({ remove: noop }),
-    removeAllListeners: noop,
   },
   PixelRatio: {
     get: () => 1,
     getFontScale: () => 1,
     roundToNearestPixel: (v) => v,
   },
-  LayoutAnimation: { configureNext: noop, create: () => ({}) },
-  Keyboard: {
-    addListener: () => ({ remove: noop }),
-    removeAllListeners: noop,
-    dismiss: noop,
-  },
-  BackHandler: {
-    addEventListener: () => ({ remove: noop }),
-    removeEventListener: noop,
-  },
-  Linking: {
-    openURL: () => Promise.resolve(),
-    canOpenURL: () => Promise.resolve(false),
-    getInitialURL: () => Promise.resolve(null),
-  },
-  Share: { share: () => Promise.resolve() },
-  Clipboard: { getString: () => Promise.resolve(""), setString: noop },
-  Vibration: { vibrate: noop, cancel: noop },
   useColorScheme: () => "light",
   useWindowDimensions: () => ({ width: 0, height: 0, scale: 1, fontScale: 1 }),
+  processColor: (c) => c,
+  findNodeHandle: () => null,
+  // RNCSlider placeholder for @react-native-community/slider sub-imports
+  default: null,
 };

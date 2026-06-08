@@ -3,9 +3,18 @@ import Link from "next/link";
 import { TrackedLink } from "../components/TrackedLink";
 
 export const metadata: Metadata = {
-  title: "Stareezy UI — Build Cross-Platform UIs with Quasar Design Tokens",
+  title: "Stareezy UI — The Typed Design Token System for React Native & Web",
   description:
-    "A fully typed, cross-platform design token system and component library for React Native and web. 31+ components, 300+ typed tokens, 5 themes, O(1) runtime.",
+    "The typed design token system and cross-platform component library for React Native and web. One token API, every platform — 31+ theme-reactive components, 300+ typed tokens, 5 themes (Quasar, Aurora, Steins;Gate, Dark, Light), O(1) runtime, build-time compiler. Works with React 18/19, Next.js 14–16, Expo 54–56, Vite 4–7.",
+  openGraph: {
+    title: "Stareezy UI — The Typed Design Token System for React Native & Web",
+    description:
+      "One token API, every platform. 31+ cross-platform components, 300+ typed tokens, 5 themes, O(1) runtime. Scaffold in one command: npx stareezy create my-app --template next",
+  },
+  alternates: {
+    canonical:
+      process.env["NEXT_PUBLIC_SITE_URL"] ?? "https://ui.stareezy.tech",
+  },
 };
 
 const PACKAGES = [
@@ -13,42 +22,42 @@ const PACKAGES = [
     name: "@stareezy-ui/tokens",
     icon: "◉",
     color: "#ff6a1a",
-    desc: "Zero-dependency token definitions. Colors, spacing, radius, typography, motion — all typed. Includes ThemeProvider and the t accessor.",
+    desc: "Token definitions, theme system, createUi — zero dependencies. Every design value is a typed Token<T> object. Includes ThemeProvider and the t.* accessor.",
     badge: "Core",
   },
   {
     name: "@stareezy-ui/components",
     icon: "⬡",
     color: "#22c55e",
-    desc: "31+ cross-platform components. All theme-reactive. ./server RSC-safe entry. Every component accepts BoxLayoutProps + $-prefixed breakpoint props.",
+    desc: "31+ cross-platform UI components. All theme-reactive via useThemedColors(). ./server RSC-safe entry. Every component accepts BoxLayoutProps and $-prefixed breakpoint props.",
     badge: "31+ components",
   },
   {
     name: "@stareezy-ui/runtime",
     icon: "⚡",
     color: "#f5a623",
-    desc: "O(1) style registry. resolve(token) is a single Map.get() — no parsing, no re-computation.",
+    desc: "O(1) style registry, web + RN adapters. Token resolution is a single Map.get() call — no parsing, no re-computation, no runtime style overhead.",
     badge: "Core",
   },
   {
     name: "@stareezy-ui/compiler",
     icon: "⚙",
     color: "#dc143c",
-    desc: "Babel/Vite/Metro plugin. Extracts token props at build time and emits atomic CSS — zero runtime cost. Works on Vite 4–7, Next.js 14–16, Expo 54–56.",
+    desc: "Babel/Vite/Metro build-time transform. Extracts token props at build time and emits atomic CSS — zero runtime cost. Works on Vite 4–7, Next.js 14–16, Expo 54–56.",
     badge: "Optional",
   },
   {
     name: "@stareezy-ui/core",
     icon: "⬢",
     color: "#a78bfa",
-    desc: "Utilities, hooks, and platform helpers. useDeviceLayout, platform detection, string/date/currency utils.",
+    desc: "Utilities, hooks, and platform helpers. useDeviceLayout, isWeb/isNative, platform detection, spacing helpers.",
     badge: "Utilities",
   },
   {
     name: "@stareezy-ui/cli",
     icon: "▶",
     color: "#f59e0b",
-    desc: "First-party CLI. `stareezy create` scaffolds pre-wired Next.js, Vite, or Expo projects. `stareezy add` installs components with dep resolution.",
+    desc: "First-party CLI: create / add / init. `stareezy create` scaffolds pre-wired Next.js, Vite, or Expo projects. `stareezy add` installs components with dependency resolution.",
     badge: "New",
   },
 ];
@@ -178,38 +187,38 @@ const TESTIMONIALS = [
 const FEATURES = [
   {
     icon: "◉",
-    title: "Design Tokens",
-    desc: "300+ fully typed tokens spanning colors, spacing, typography, radius, shadows, motion — all tree-shakeable and theme-reactive.",
+    title: "Typed Token<T> System",
+    desc: "Every design value — color, spacing, radius, typography, shadow, motion — is a typed Token<T> object. t.* resolves to the current theme at render time with full TypeScript autocomplete.",
     color: "#ff6a1a",
   },
   {
     icon: "⬡",
-    title: "Cross-Platform",
-    desc: "One codebase for React Native and web. Every component works identically on iOS, Android, and the browser with zero platform-specific code.",
+    title: "True Cross-Platform",
+    desc: "One codebase for React Native (0.81–0.86), Expo (54–56), and web. The same component code renders identically on iOS, Android, and the browser — zero platform-specific workarounds.",
     color: "#22c55e",
   },
   {
     icon: "⚡",
     title: "O(1) Runtime",
-    desc: "Zero parsing overhead. Token resolution is a single Map.get() call. No runtime style computation means faster renders and smaller bundles.",
+    desc: "Token resolution is a single Map.get() call — no parsing, no re-computation. Theme switching is pure CSS variable mutation — zero JavaScript re-renders.",
     color: "#f5a623",
   },
   {
     icon: "⚙",
     title: "Build-Time Compiler",
-    desc: "Optional Babel/Vite/Metro plugin that extracts token props at build time and emits atomic CSS. Zero runtime cost for production builds.",
+    desc: "Optional Babel/Vite/Metro plugin extracts token props at build time and emits atomic CSS. Zero runtime token overhead in production builds.",
     color: "#dc143c",
   },
   {
     icon: "◑",
-    title: "5 Themes",
-    desc: "Quasar, Aurora, Steins;Gate, Dark, and Light — all with semantic color mappings. Switch themes at runtime and every component updates automatically.",
+    title: "5 Built-In Themes",
+    desc: "Quasar, Aurora, Steins;Gate, Dark, and Light — all with semantic color mappings. Every component resolves colors from useThemedColors() at render time — no hardcoded values anywhere.",
     color: "#a78bfa",
   },
   {
     icon: "▶",
     title: "CLI + Templates",
-    desc: "One command to scaffold a pre-wired Next.js, Vite, or Expo project with Stareezy configured. Add individual components with dependency resolution.",
+    desc: "One command: `npx stareezy create my-app --template next`. Ships pre-wired with stareezy.config.ts, compiler setup, and ThemeProvider. Add components with `stareezy add`.",
     color: "#f59e0b",
   },
 ];
@@ -321,10 +330,10 @@ export default function HomePage() {
             >
               S
             </span>
-            v1.1.0 — CLI + Stabilization Release
+            v1.1.0 — CLI + Nova Builder Release
           </div>
 
-          {/* Heading */}
+          {/* Heading — matches README tagline exactly */}
           <h1
             className="animate-slide-up"
             style={{
@@ -335,9 +344,9 @@ export default function HomePage() {
               marginBottom: "1.25rem",
             }}
           >
-            <span className="gradient-text">Build Cross-Platform</span>
+            <span className="gradient-text">The Typed Design</span>
             <br />
-            <span className="gradient-text-orange">UIs with Quasar</span>
+            <span className="gradient-text-orange">Token System</span>
           </h1>
 
           <p
@@ -347,18 +356,22 @@ export default function HomePage() {
               color: "var(--color-text-2)",
               lineHeight: 1.75,
               marginBottom: "2rem",
-              maxWidth: 520,
+              maxWidth: 540,
               animationDelay: "0.1s",
             }}
           >
-            A fully typed design token system and component library for{" "}
+            One token API, every platform.{" "}
+            <strong style={{ color: "var(--color-text)" }}>
+              Fully typed, object-based design tokens
+            </strong>{" "}
+            and cross-platform components for{" "}
             <span className="pill-tag orange">React Native</span>{" "}
             <span className="pill-tag teal">Web</span>{" "}
-            <span className="pill-tag crimson">Expo</span>. Five premium themes,
-            O(1) runtime, build-time compiler — all tree-shakeable.
+            <span className="pill-tag crimson">Expo</span>. Theme switching is
+            pure CSS variables — zero JavaScript re-renders.
           </p>
 
-          {/* Stats */}
+          {/* Stats — accurate to README */}
           <div
             className="animate-slide-up"
             style={{
@@ -410,11 +423,11 @@ export default function HomePage() {
               Get Started →
             </TrackedLink>
             <TrackedLink
-              href="/tokens"
-              trackLabel="Token Explorer"
+              href="/nova"
+              trackLabel="Nova Builder"
               className="cta-outline"
             >
-              ◉ Token Explorer
+              ✦ Nova Builder
             </TrackedLink>
             <a
               href="https://github.com/stareezy-1/stareezy-ui"
@@ -835,20 +848,20 @@ const ui = createUi({
             {[
               {
                 n: 1,
-                title: "Install",
-                desc: "Run `npx stareezy create my-app --template next` to scaffold a new project with Stareezy pre-configured.",
+                title: "Scaffold",
+                desc: "`npx stareezy create my-app --template next` (or vite / expo). Ships pre-wired with stareezy.config.ts, compiler setup, and ThemeProvider.",
                 color: "#ff6a1a",
               },
               {
                 n: 2,
                 title: "Configure",
-                desc: "Call `createUi()` with your themes, breakpoints, and shorthands. Wrap your app in `<ThemeProvider>`.",
+                desc: "Call `createUi()` with your themes, media breakpoints, and shorthands. TypeScript derives BoxLayoutProps for every component automatically.",
                 color: "#dc143c",
               },
               {
                 n: 3,
                 title: "Build",
-                desc: "Use components with the `t.*` accessor for theme-reactive props. Switch themes at runtime — every component updates.",
+                desc: "Use the t.* accessor for theme-reactive props. Add components with `stareezy add`. Switch themes at runtime — every component updates, zero re-renders.",
                 color: "#22c55e",
               },
             ].map((step) => (
