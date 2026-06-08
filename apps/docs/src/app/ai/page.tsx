@@ -1060,7 +1060,7 @@ export default function AIPage() {
                             fontSize: "0.78rem",
                             color: item.path && codeFile === item.path
                               ? "#ff6a1a"
-                              : item.isFolder
+                              : !item.path
                                 ? "var(--color-text-2)"
                                 : "var(--color-text)",
                             fontWeight: item.path && codeFile === item.path ? 600 : 400,
