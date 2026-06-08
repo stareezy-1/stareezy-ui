@@ -124,6 +124,7 @@ npx stareezy add button input card drawer    # add components with dep resolutio
 | [`@stareezy-ui/compiler`](./packages/compiler)     | Babel/Vite/Metro build-time transform                               | [![npm](https://img.shields.io/npm/v/@stareezy-ui/compiler)](https://www.npmjs.com/package/@stareezy-ui/compiler)     |
 | [`@stareezy-ui/core`](./packages/core)             | Utilities, hooks, platform helpers                                  | [![npm](https://img.shields.io/npm/v/@stareezy-ui/core)](https://www.npmjs.com/package/@stareezy-ui/core)             |
 | [`@stareezy-ui/stylesheet`](./packages/stylesheet) | Atomic CSS sheet management                                         | [![npm](https://img.shields.io/npm/v/@stareezy-ui/stylesheet)](https://www.npmjs.com/package/@stareezy-ui/stylesheet) |
+| [`@stareezy-ui/mcp-server`](./packages/mcp-server) | MCP protocol server for AI tool integration                         | [![npm](https://img.shields.io/npm/v/@stareezy-ui/mcp-server)](https://www.npmjs.com/package/@stareezy-ui/mcp-server) |
 
 ---
 
@@ -288,6 +289,44 @@ All components accept `BoxLayoutProps` — responsive spacing/sizing/flex props 
 
 ---
 
+## MCP Server
+
+Connect Claude, Cursor, and other AI tools to your design tokens and components via the [Model Context Protocol](https://modelcontextprotocol.io).
+
+```bash
+npx @stareezy-ui/mcp
+```
+
+Configure in your AI tool's MCP settings:
+
+```json
+{
+  "mcpServers": {
+    "stareezy-ui": {
+      "command": "npx",
+      "args": ["-y", "@stareezy-ui/mcp"],
+      "env": { "STAREEZY_PROJECT_PATH": "/path/to/your/project" }
+    }
+  }
+}
+```
+
+Exposes tools for token discovery, component generation, theme analysis, and code generation — all respecting your `stareezy.config.ts`.
+
+---
+
+## Skills for Claude
+
+Give Claude deep knowledge of the Stareezy UI design system with installable skills covering tokens, components, theming, and best practices.
+
+```
+git clone https://github.com/stareezy-1/claude-skills.git
+```
+
+Add to Claude Desktop or Claude Code config to enable context-aware UI generation that uses your actual design tokens and component APIs.
+
+---
+
 ## Theming
 
 Five built-in themes — switch with a single call, zero re-renders:
@@ -369,6 +408,21 @@ pnpm run release            # build → publish to npm
 | [`apps/docs`](./apps/docs)             | Documentation site — Next.js 14, full guide coverage             |
 | [`apps/storybook`](./apps/storybook)   | Component stories — Storybook 8 with Chromatic visual regression |
 | [`apps/playground`](./apps/playground) | Live code sandbox                                                |
+| [`apps/docs/src/app/nova`](./apps/docs/src/app/nova) | Nova — Figma-like drag & drop visual builder                     |
+
+---
+
+## Nova — Visual Drag & Drop Builder
+
+[Nova](./apps/docs/src/app/nova) is a Figma-inspired visual builder at `/nova` that lets you construct UIs by dragging components onto a canvas.
+
+- **30+ draggable components** across 8 categories (Layout, Buttons, Inputs, Data, Navigation, Overlay, Media, Feedback)
+- **Canvas** with grid background, zoom (25%-200%), and component selection with orange highlight
+- **Properties panel** with Style, Content, and Layers tabs
+- **Token Browser** — click to apply any token (Colors, Spacing, Typography, Radius, Shadow) to the selected component
+- **Code generation** with copy and `.tsx` download
+- **Live preview** tab and theme switcher (quasar / aurora / steins-gate)
+- **Undo/redo**, auto-save to localStorage, keyboard shortcuts
 
 ---
 
