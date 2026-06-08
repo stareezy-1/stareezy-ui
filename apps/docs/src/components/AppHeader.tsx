@@ -20,11 +20,11 @@ const SECTIONS = [
       p === "/" || p.startsWith("/docs") || p.startsWith("/tokens"),
   },
   {
-    href: "/playground",
-    label: "Playground",
+    href: "/nova",
+    label: "UI Builder",
     icon: "▶",
     external: false,
-    match: (p: string) => p.startsWith("/playground"),
+    match: (p: string) => p.startsWith("/nova"),
   },
   {
     href: STORYBOOK_URL,
