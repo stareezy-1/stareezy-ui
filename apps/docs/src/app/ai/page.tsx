@@ -345,7 +345,7 @@ function LivePreview({ config, theme }: { config: ComponentConfig; theme: ThemeM
             <div key={l} style={{ background: "var(--color-surface)", borderRadius: 8, padding: 12, border: "1px solid var(--color-border)" }}>
               <div style={{ fontSize: "0.65rem", color: "var(--color-text-2)", marginBottom: 4 }}>{l}</div>
               <div style={{ fontSize: "1rem", fontWeight: 800, color: "var(--color-text)", marginBottom: 2 }}>{v}</div>
-              <div style={{ fontSize: "0.68rem", color: c.startsWith("+") ? "#22c55e" : "#dc143c", fontWeight: 600 }}>{c}</div>
+              <div style={{ fontSize: "0.68rem", color: (c ?? "").startsWith("+") ? "#22c55e" : "#dc143c", fontWeight: 600 }}>{c ?? ""}</div>
             </div>
           ))}
         </div>
@@ -575,8 +575,9 @@ export default function AIPage() {
       "change-layout": "Changed layout",
     };
 
-    const label = messages[messages.length - 1]?.config?.pattern
-      ? QUICK_PROMPTS.find(p => p.pattern === messages[messages.length - 1].config?.pattern)?.label || "Component"
+    const lastPattern = messages[messages.length - 1]?.config?.pattern;
+    const label = lastPattern
+      ? QUICK_PROMPTS.find(p => p.pattern === lastPattern)?.label || "Component"
       : "Component";
 
     addMessage({

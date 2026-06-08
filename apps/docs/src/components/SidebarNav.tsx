@@ -18,14 +18,12 @@ const NAV_SECTIONS = [
   },
   {
     title: "Stareezy AI",
-    links: [
-      { href: "/ai", label: "AI UI Builder", icon: "✦" },
-    ],
+    links: [{ href: "/ai", label: "AI UI Builder", icon: "✦" }],
   },
   {
     title: "Integrations",
     links: [
-      { href: "/docs/mcp-server", label: "MCP Server", icon: "⚡" },
+      // { href: "/docs/mcp-server", label: "MCP Server", icon: "⚡" },
       { href: "/docs/claude-skills", label: "Skills for Claude", icon: "✦" },
     ],
   },
