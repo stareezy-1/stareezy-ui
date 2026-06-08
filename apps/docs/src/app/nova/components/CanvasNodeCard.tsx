@@ -1,4 +1,4 @@
-import { type CanvasNode, type DragState, type ResizeState } from "../types";
+import { type CanvasNode, type DragState } from "../types";
 import { ICONS } from "../data";
 import { renderPreview } from "../utils";
 

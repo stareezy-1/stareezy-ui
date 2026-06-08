@@ -1,3 +1,4 @@
+import { ThemeProvider } from "@stareezy-ui/tokens";
 import { type CodeTab, type ThemeMode, type CanvasNode } from "../types";
 import { generateCode, renderPreview } from "../utils";
 
@@ -48,9 +49,11 @@ export function CodePanel({ showCode, codeTab, theme, pageChildren, onCodeTabCha
           );
         })()}
         {codeTab === "preview" && (
-          <div data-theme={theme} style={{ padding: 24, display: "flex", flexDirection: "column", gap: 8, minHeight: 160, alignItems: "center", justifyContent: "center" }}>
-            {pageChildren.map((c) => renderPreview(c))}
-          </div>
+          <ThemeProvider theme={theme}>
+            <div style={{ padding: 24, display: "flex", flexDirection: "column", gap: 8, minHeight: 160, alignItems: "center", justifyContent: "center" }}>
+              {pageChildren.map((c) => renderPreview(c))}
+            </div>
+          </ThemeProvider>
         )}
         {codeTab === "export" && (
           <div style={{ padding: 24, display: "flex", flexDirection: "column", gap: 16, alignItems: "center", justifyContent: "center", minHeight: 160 }}>
