@@ -18,7 +18,10 @@ const NAV_SECTIONS = [
   },
   {
     title: "Playground",
-    links: [{ href: "/playground", label: "UI Playground", icon: "⬡" }],
+    links: [
+      { href: "/playground", label: "UI Playground", icon: "⬡" },
+      { href: "/nova", label: "Nova Builder", icon: "✦" },
+    ],
   },
   {
     title: "Integrations",
