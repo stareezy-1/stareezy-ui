@@ -17,10 +17,8 @@ const NAV_SECTIONS = [
     ],
   },
   {
-    title: "Stareezy AI",
-    links: [
-      { href: "/ai", label: "AI UI Builder", icon: "✦" },
-    ],
+    title: "Playground",
+    links: [{ href: "/playground", label: "UI Playground", icon: "⬡" }],
   },
   {
     title: "Integrations",

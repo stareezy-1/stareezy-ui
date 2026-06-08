@@ -20,13 +20,6 @@ const SECTIONS = [
       p === "/" || p.startsWith("/docs") || p.startsWith("/tokens"),
   },
   {
-    href: "/ai",
-    label: "AI",
-    icon: "✦",
-    external: false,
-    match: (p: string) => p.startsWith("/ai"),
-  },
-  {
     href: "/playground",
     label: "Playground",
     icon: "▶",
@@ -77,14 +70,7 @@ export function AppHeader({
     >
       {/* Logo */}
       <Link href="/" className="app-header-logo" aria-label="Stareezy UI home">
-        <div
-          className="app-header-logo-icon"
-          aria-hidden="true"
-          style={{
-            background: "linear-gradient(135deg, #ff6a1a, #dc143c)",
-            boxShadow: "0 2px 8px rgba(255,106,26,0.3)",
-          }}
-        >
+        <div className="app-header-logo-icon" aria-hidden="true">
           Q
         </div>
         <span className="app-header-logo-text">Stareezy</span>
