@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { DocPage, Callout, PropRow } from "../../../../components/DocPage";
+import { TooltipPreview } from "../ComponentPreview";
 
 export const metadata: Metadata = {
   title: "Tooltip",
@@ -15,21 +16,22 @@ export default function TooltipPage() {
       description="Contextual hint overlay with flexible placement, show/hide delays, and keyboard + screen reader support."
       badge="Component"
       icon="⬦"
-      badgeColor="#C20219"
+      badgeColor="#ff6a1a"
     >
-      <h2>Import</h2>
+      <h2 className="gradient-text">Import</h2>
       <pre>
         <code>{`import { Tooltip } from '@stareezy-ui/components'`}</code>
       </pre>
 
-      <h2>Basic usage</h2>
+      <h2 className="gradient-text">Basic usage</h2>
+      <TooltipPreview />
       <pre>
         <code>{`<Tooltip content="Save your changes">
   <Button>Save</Button>
 </Tooltip>`}</code>
       </pre>
 
-      <h2>Placement</h2>
+      <h2 className="gradient-text">Placement</h2>
       <pre>
         <code>{`<Tooltip content="Above" placement="top">
   <Button>Top</Button>
@@ -48,7 +50,7 @@ export default function TooltipPage() {
 </Tooltip>`}</code>
       </pre>
 
-      <h2>Delay</h2>
+      <h2 className="gradient-text">Delay</h2>
       <pre>
         <code>{`// Show after 500ms, hide after 200ms
 <Tooltip content="Delayed tooltip" showDelay={500} hideDelay={200}>
@@ -56,7 +58,7 @@ export default function TooltipPage() {
 </Tooltip>`}</code>
       </pre>
 
-      <h2>Rich content</h2>
+      <h2 className="gradient-text">Rich content</h2>
       <pre>
         <code>{`<Tooltip
   content={
@@ -70,7 +72,7 @@ export default function TooltipPage() {
 </Tooltip>`}</code>
       </pre>
 
-      <h2>Controlled</h2>
+      <h2 className="gradient-text">Controlled</h2>
       <pre>
         <code>{`const [open, setOpen] = useState(false)
 
@@ -83,7 +85,7 @@ export default function TooltipPage() {
 </Tooltip>`}</code>
       </pre>
 
-      <h2>Props</h2>
+      <h2 className="gradient-text">Props</h2>
       <table>
         <thead>
           <tr>
@@ -139,7 +141,7 @@ export default function TooltipPage() {
         </tbody>
       </table>
 
-      <h2>Accessibility</h2>
+      <h2 className="gradient-text">Accessibility</h2>
       <Callout type="info">
         Tooltip renders with <code>role=&quot;tooltip&quot;</code> and is linked
         to its trigger via <code>aria-describedby</code>. The tooltip is shown
@@ -153,11 +155,11 @@ export default function TooltipPage() {
         is not available.
       </Callout>
 
-      <h2>Themes</h2>
+      <h2 className="gradient-text">Themes</h2>
       <p>
         Tooltip is Theme_Reactive — background, text color, and shadow are
         resolved from the Active_Theme at render time. Works across all five
-        built-in themes.
+        built-in themes: quasar, light, dark, aurora, and steins-gate.
       </p>
     </DocPage>
   );

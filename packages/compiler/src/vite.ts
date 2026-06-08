@@ -12,7 +12,7 @@
 import type { Plugin } from "vite";
 import { transform } from "./transform";
 import { type CompilerConfig } from "./config";
-import { loadSzrConfig } from "./loadConfig";
+import { loadStareezyConfig } from "./loadConfig";
 
 // ---------------------------------------------------------------------------
 // Virtual module helpers
@@ -50,7 +50,7 @@ export function stareezyVitePlugin(config?: Partial<CompilerConfig>): Plugin {
   const cssChunks: string[] = [];
 
   // Merge shorthands from stareezy.config.ts if present
-  const szrConfig = loadSzrConfig();
+  const szrConfig = loadStareezyConfig();
   const mergedConfig: Partial<CompilerConfig> = {
     ...config,
     propMappings: {
@@ -63,7 +63,7 @@ export function stareezyVitePlugin(config?: Partial<CompilerConfig>): Plugin {
   };
 
   return {
-    name: "stareezy-ui",
+    name: "Stareezy-ui",
 
     // Expose the virtual CSS module so consumers can import it.
     resolveId(id: string) {

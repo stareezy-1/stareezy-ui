@@ -15,26 +15,41 @@ export default function UseUiConfigPage() {
       description="Access the active UiConfig reactively from any component — tokens, themes, breakpoints, fonts, and shorthands."
       badge="API Reference"
       icon="⚛"
-      badgeColor="#7c3aed"
+      badgeColor="#dc143c"
     >
-      <h2>Overview</h2>
-      <p>
-        <code>useUiConfig()</code> returns the active <code>UiConfig</code>{" "}
-        created by <code>createUi()</code>. It reads from the nearest{" "}
-        <code>UiConfigProvider</code> in the tree, falling back to the global
-        singleton if no provider is present.
-      </p>
+      <div
+        style={{
+          borderLeft: "3px solid #dc143c",
+          paddingLeft: "1rem",
+          marginBottom: "2rem",
+          borderRadius: "0 8px 8px 0",
+          background: "rgba(220,20,60,0.03)",
+        }}
+      >
+        <h2 className="gradient-text">Overview</h2>
+        <p>
+          <code>useUiConfig()</code> returns the active <code>UiConfig</code>{" "}
+          created by <code>createUi()</code>. It reads from the nearest{" "}
+          <code>UiConfigProvider</code> in the tree, falling back to the global
+          singleton if no provider is present.
+        </p>
 
-      <Callout type="tip">
-        For most use cases you don&apos;t need <code>useUiConfig()</code> — use
-        the <code>t</code> accessor for theme-reactive props and{" "}
-        <code>useTheme()</code> for raw theme values. Reserve{" "}
-        <code>useUiConfig()</code> for when you need breakpoints, fonts, or
-        custom token groups inside a component.
-      </Callout>
+        <Callout type="tip">
+          For most use cases you don&apos;t need <code>useUiConfig()</code> — use
+          the <code>t</code> accessor for theme-reactive props and{" "}
+          <code>useTheme()</code> for raw theme values. Reserve{" "}
+          <code>useUiConfig()</code> for when you need breakpoints, fonts, or
+          custom token groups inside a component.
+        </Callout>
+      </div>
 
-      <h2>Basic usage</h2>
-      <pre>
+      <h2 className="gradient-text">Basic usage</h2>
+      <pre
+        style={{
+          border: "1px solid var(--color-border)",
+          boxShadow: "0 0 40px rgba(255,106,26,0.03)",
+        }}
+      >
         <code>{`import { useUiConfig } from '@stareezy-ui/tokens'
 
 function MyComponent() {
@@ -62,12 +77,17 @@ function MyComponent() {
 }`}</code>
       </pre>
 
-      <h2>Setup: UiConfigProvider</h2>
+      <h2 className="gradient-text">Setup: UiConfigProvider</h2>
       <p>
         Wrap your app with <code>UiConfigProvider</code> to make the config
         available to all descendants without relying on the singleton:
       </p>
-      <pre>
+      <pre
+        style={{
+          border: "1px solid var(--color-border)",
+          boxShadow: "0 0 40px rgba(255,106,26,0.03)",
+        }}
+      >
         <code>{`// app/layout.tsx (Next.js)
 import { UiConfigProvider, ThemeProvider } from '@stareezy-ui/tokens'
 import { ui } from '../stareezy.config'
@@ -85,8 +105,13 @@ export default function RootLayout({ children }) {
 }`}</code>
       </pre>
 
-      <h2>Accessing themes</h2>
-      <pre>
+      <h2 className="gradient-text">Accessing themes</h2>
+      <pre
+        style={{
+          border: "1px solid var(--color-border)",
+          boxShadow: "0 0 40px rgba(255,106,26,0.03)",
+        }}
+      >
         <code>{`import { useUiConfig } from '@stareezy-ui/tokens'
 
 function ThemedCard() {
@@ -105,8 +130,13 @@ function ThemedCard() {
 }`}</code>
       </pre>
 
-      <h2>Accessing breakpoints</h2>
-      <pre>
+      <h2 className="gradient-text">Accessing breakpoints</h2>
+      <pre
+        style={{
+          border: "1px solid var(--color-border)",
+          boxShadow: "0 0 40px rgba(255,106,26,0.03)",
+        }}
+      >
         <code>{`import { useUiConfig } from '@stareezy-ui/tokens'
 
 function ResponsiveGrid({ children }) {
@@ -124,8 +154,13 @@ function ResponsiveGrid({ children }) {
 }`}</code>
       </pre>
 
-      <h2>Accessing custom tokens</h2>
-      <pre>
+      <h2 className="gradient-text">Accessing custom tokens</h2>
+      <pre
+        style={{
+          border: "1px solid var(--color-border)",
+          boxShadow: "0 0 40px rgba(255,106,26,0.03)",
+        }}
+      >
         <code>{`import { useUiConfig } from '@stareezy-ui/tokens'
 
 function BrandButton() {
@@ -143,13 +178,18 @@ function BrandButton() {
 }`}</code>
       </pre>
 
-      <h2>Fallback behavior</h2>
+      <h2 className="gradient-text">Fallback behavior</h2>
       <p>
         When called outside a <code>UiConfigProvider</code>,{" "}
         <code>useUiConfig()</code> falls back to the global singleton and logs a
         dev warning. If <code>createUi()</code> was never called, it throws.
       </p>
-      <pre>
+      <pre
+        style={{
+          border: "1px solid var(--color-border)",
+          boxShadow: "0 0 40px rgba(255,106,26,0.03)",
+        }}
+      >
         <code>{`// Works without UiConfigProvider — uses the singleton
 const ui = useUiConfig()  // dev warning in console, but works
 
@@ -159,15 +199,28 @@ const ui = useUiConfig()  // dev warning in console, but works
 </UiConfigProvider>`}</code>
       </pre>
 
-      <Callout type="warning">
-        If <code>createUi()</code> has never been called and there&apos;s no{" "}
-        <code>UiConfigProvider</code>, <code>useUiConfig()</code> will throw.
-        Always import your <code>stareezy.config.ts</code> before rendering any
-        components.
-      </Callout>
+      <div
+        style={{
+          borderLeft: "3px solid #dc143c",
+          paddingLeft: "1rem",
+          borderRadius: "0 8px 8px 0",
+          background: "rgba(220,20,60,0.06)",
+        }}
+      >
+        <Callout type="warning">
+          If <code>createUi()</code> has never been called and there&apos;s no{" "}
+          <code>UiConfigProvider</code>, <code>useUiConfig()</code> will throw.
+          Always import your <code>stareezy.config.ts</code> before rendering any
+          components.
+        </Callout>
+      </div>
 
-      <h2>API reference</h2>
-      <table>
+      <h2 className="gradient-text">API reference</h2>
+      <style>{`
+        table.api-table thead { background: var(--brand-primary); color: #fff; }
+        table.api-table code { color: var(--brand-primary); }
+      `}</style>
+      <table className="api-table">
         <thead>
           <tr>
             <th>Method / Property</th>
@@ -229,7 +282,7 @@ const ui = useUiConfig()  // dev warning in console, but works
         </tbody>
       </table>
 
-      <h2>Related</h2>
+      <h2 className="gradient-text">Related</h2>
       <ul>
         <li>
           <a href="/docs/create-ui">

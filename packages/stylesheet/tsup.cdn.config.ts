@@ -1,7 +1,7 @@
 import { defineConfig } from "tsup";
 
 export default defineConfig({
-  entry: { "stareezy-stylesheet": "src/index.ts" },
+  entry: { "Stareezy-stylesheet": "src/index.ts" },
   format: ["iife"],
   globalName: "StareezyStylesheet",
   minify: true,

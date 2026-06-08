@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { DocPage, Callout, PropRow } from "../../../../components/DocPage";
+import { TablePreview } from "../ComponentPreview";
 
 export const metadata: Metadata = {
   title: "Table",
@@ -15,14 +16,15 @@ export default function TablePage() {
       description="Data table with sortable columns, striped rows, sticky headers, and ARIA table roles."
       badge="Component"
       icon="⊞"
-      badgeColor="#C98B25"
+      badgeColor="#f5a623"
     >
-      <h2>Import</h2>
+      <h2 className="gradient-text">Import</h2>
       <pre>
         <code>{`import { Table } from '@stareezy-ui/components'`}</code>
       </pre>
 
-      <h2>Basic usage</h2>
+      <h2 className="gradient-text">Basic usage</h2>
+      <TablePreview />
       <pre>
         <code>{`const columns = [
   { key: 'name',  header: 'Name',   width: 200 },
@@ -39,7 +41,7 @@ const data = [
 <Table columns={columns} data={data} />`}</code>
       </pre>
 
-      <h2>Sortable columns</h2>
+      <h2 className="gradient-text">Sortable columns</h2>
       <pre>
         <code>{`const [sortKey, setSortKey] = useState<string | null>(null)
 const [sortDir, setSortDir] = useState<'asc' | 'desc'>('asc')
@@ -56,7 +58,7 @@ const [sortDir, setSortDir] = useState<'asc' | 'desc'>('asc')
 />`}</code>
       </pre>
 
-      <h2>Striped rows and sticky header</h2>
+      <h2 className="gradient-text">Striped rows and sticky header</h2>
       <pre>
         <code>{`<Table
   columns={columns}
@@ -67,7 +69,7 @@ const [sortDir, setSortDir] = useState<'asc' | 'desc'>('asc')
 />`}</code>
       </pre>
 
-      <h2>Custom cell rendering</h2>
+      <h2 className="gradient-text">Custom cell rendering</h2>
       <pre>
         <code>{`const columns = [
   { key: 'name', header: 'Name' },
@@ -83,7 +85,7 @@ const [sortDir, setSortDir] = useState<'asc' | 'desc'>('asc')
 ]`}</code>
       </pre>
 
-      <h2>With BoxLayoutProps</h2>
+      <h2 className="gradient-text">With BoxLayoutProps</h2>
       <pre>
         <code>{`<Table
   columns={columns}
@@ -93,7 +95,7 @@ const [sortDir, setSortDir] = useState<'asc' | 'desc'>('asc')
 />`}</code>
       </pre>
 
-      <h2>Props</h2>
+      <h2 className="gradient-text">Props</h2>
       <table>
         <thead>
           <tr>
@@ -153,7 +155,7 @@ const [sortDir, setSortDir] = useState<'asc' | 'desc'>('asc')
         </tbody>
       </table>
 
-      <h2>Accessibility</h2>
+      <h2 className="gradient-text">Accessibility</h2>
       <Callout type="info">
         Table renders with <code>role=&quot;table&quot;</code>,{" "}
         <code>role=&quot;rowgroup&quot;</code>,{" "}
@@ -166,11 +168,12 @@ const [sortDir, setSortDir] = useState<'asc' | 'desc'>('asc')
         keyboard-activatable with Enter and Space.
       </Callout>
 
-      <h2>Themes</h2>
+      <h2 className="gradient-text">Themes</h2>
       <p>
         Table is Theme_Reactive — header background, row hover, stripe color,
         border color, and sort indicator color are all resolved from the
-        Active_Theme at render time.
+        Active_Theme at render time. Works across all five built-in themes:
+        quasar, light, dark, aurora, and steins-gate.
       </p>
     </DocPage>
   );

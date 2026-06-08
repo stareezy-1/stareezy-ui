@@ -1,7 +1,7 @@
 /**
- * create command — scaffold a stareezy-ui starter using the official CLI of
+ * create command — scaffold a Stareezy-ui starter using the official CLI of
  * each framework (create-next-app / create-vite / create-expo-app), then
- * layer on the stareezy config, compiler wiring and ThemeProvider.
+ * layer on the Stareezy config, compiler wiring and ThemeProvider.
  *
  * Strategy:
  *   1. Run the upstream scaffolder (honours their defaults / prompts)
@@ -120,15 +120,15 @@ function buildScaffoldCmd(
 }
 
 // ---------------------------------------------------------------------------
-// stareezy packages installer
+// Stareezy packages installer
 // ---------------------------------------------------------------------------
 
-const STAREEZY_DEPS = [
+const Stareezy_DEPS = [
   "@stareezy-ui/tokens",
   "@stareezy-ui/components",
   "@stareezy-ui/runtime",
 ];
-const STAREEZY_DEV_DEPS = ["@stareezy-ui/compiler"];
+const Stareezy_DEV_DEPS = ["@stareezy-ui/compiler"];
 
 function buildInstallCmd(pkgs: string[], pm: string, dev: boolean): string {
   const flag = dev ? (pm === "npm" ? "--save-dev" : "-D") : "";
@@ -148,7 +148,7 @@ function buildInstallCmd(pkgs: string[], pm: string, dev: boolean): string {
 function installStareezyPackages(targetDir: string, pm: string): void {
   console.log("\n  Installing @stareezy-ui/* packages...");
 
-  const depCmd = buildInstallCmd(STAREEZY_DEPS, pm, false);
+  const depCmd = buildInstallCmd(Stareezy_DEPS, pm, false);
   console.log(`  Running: ${depCmd}`);
   try {
     execSync(depCmd, { cwd: targetDir, stdio: "inherit" });
@@ -158,7 +158,7 @@ function installStareezyPackages(targetDir: string, pm: string): void {
     );
   }
 
-  const devCmd = buildInstallCmd(STAREEZY_DEV_DEPS, pm, true);
+  const devCmd = buildInstallCmd(Stareezy_DEV_DEPS, pm, true);
   console.log(`  Running: ${devCmd}`);
   try {
     execSync(devCmd, { cwd: targetDir, stdio: "inherit" });
@@ -249,11 +249,11 @@ export async function runCreate(options: CreateOptions = {}): Promise<void> {
     process.exit(1);
   }
 
-  // 6. Install stareezy packages into the new project
+  // 6. Install Stareezy packages into the new project
   installStareezyPackages(targetDir, pm);
 
-  // 7. Layer on stareezy: config, compiler wiring, ThemeProvider
-  console.log("\n  Wiring stareezy-ui...");
+  // 7. Layer on Stareezy: config, compiler wiring, ThemeProvider
+  console.log("\n  Wiring Stareezy-ui...");
   await runInit({ cwd: targetDir, yes: true });
 
   // 8. Done — print next steps

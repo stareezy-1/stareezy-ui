@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   description:
     "Use Stareezy UI directly from a CDN — no build step required. Drop a script tag and start using tokens and components in any HTML page.",
   keywords: [
-    "stareezy ui cdn",
+    "Stareezy ui cdn",
     "script tag",
     "no build step",
     "jsdelivr",
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
 const CDN_BUNDLES = [
   {
     pkg: "@stareezy-ui/tokens",
-    file: "stareezy-tokens.global.js",
+    file: "Stareezy-tokens.global.js",
     global: "StareezyTokens",
     size: "~25 KB",
     desc: "All design tokens — colors, spacing, radius, typography, etc.",
@@ -35,7 +35,7 @@ const CDN_BUNDLES = [
   },
   {
     pkg: "@stareezy-ui/components",
-    file: "stareezy-ui.global.js",
+    file: "Stareezy-ui.global.js",
     global: "StareezyUI",
     size: "~118 KB",
     desc: "Full component library — includes all tokens, runtime, and stylesheet.",
@@ -44,7 +44,7 @@ const CDN_BUNDLES = [
   },
   {
     pkg: "@stareezy-ui/runtime",
-    file: "stareezy-runtime.global.js",
+    file: "Stareezy-runtime.global.js",
     global: "StareezyRuntime",
     size: "~3 KB",
     desc: "O(1) style registry and web adapter — use if you need the runtime without components.",
@@ -53,7 +53,7 @@ const CDN_BUNDLES = [
   },
   {
     pkg: "@stareezy-ui/stylesheet",
-    file: "stareezy-stylesheet.global.js",
+    file: "Stareezy-stylesheet.global.js",
     global: "StareezyStylesheet",
     size: "~1.5 KB",
     desc: "Atomic CSS sheet management — low-level, rarely needed standalone.",
@@ -62,7 +62,7 @@ const CDN_BUNDLES = [
   },
   {
     pkg: "@stareezy-ui/core",
-    file: "stareezy-core.global.js",
+    file: "Stareezy-core.global.js",
     global: "StareezyCore",
     size: "~5 KB",
     desc: "Utilities and platform helpers — use if you need core without components.",
@@ -78,8 +78,9 @@ export default function CdnPage() {
       description="Use Stareezy UI directly from a CDN — no bundler, no build step, just a script tag."
       badge="Installation"
       icon="↗"
+      badgeColor="#f5a623"
     >
-      <h2>Overview</h2>
+      <h2 className="gradient-text">Overview</h2>
       <p>
         Every Stareezy UI package ships a minified IIFE bundle in{" "}
         <code>dist/cdn/</code>. These are served automatically by jsDelivr and
@@ -93,7 +94,7 @@ export default function CdnPage() {
         not bundled — you must load it separately.
       </Callout>
 
-      <h2>Available Bundles</h2>
+      <h2 className="gradient-text">Available Bundles</h2>
       <div
         style={{
           display: "grid",
@@ -108,8 +109,11 @@ export default function CdnPage() {
             style={{
               background: "var(--color-surface)",
               border: "1px solid var(--color-border-2)",
+              borderTop: "3px solid var(--brand-primary)",
               borderRadius: 10,
               padding: "0.9rem 1rem",
+              backdropFilter: "blur(8px)",
+              boxShadow: "0 0 40px rgba(245,166,35,0.03)",
             }}
           >
             <div
@@ -167,14 +171,19 @@ export default function CdnPage() {
         ))}
       </div>
 
-      <h2>Quick Start</h2>
+      <h2 className="gradient-text">Quick Start</h2>
       <p>
         The most common use case: load tokens only (25 KB) or the full component
         library (118 KB). Both require React to be loaded first.
       </p>
 
       <h3>Tokens only</h3>
-      <pre>
+      <pre
+        style={{
+          border: "1px solid var(--color-border)",
+          boxShadow: "0 0 40px rgba(245,166,35,0.03)",
+        }}
+      >
         <code>{`<!DOCTYPE html>
 <html>
 <head>
@@ -183,7 +192,7 @@ export default function CdnPage() {
   <script src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.production.min.js"></script>
 
   <!-- 2. Stareezy tokens -->
-  <script src="https://cdn.jsdelivr.net/npm/@stareezy-ui/tokens/dist/cdn/stareezy-tokens.global.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@stareezy-ui/tokens/dist/cdn/Stareezy-tokens.global.js"></script>
 </head>
 <body>
   <script>
@@ -198,7 +207,12 @@ export default function CdnPage() {
       </pre>
 
       <h3>Full component library</h3>
-      <pre>
+      <pre
+        style={{
+          border: "1px solid var(--color-border)",
+          boxShadow: "0 0 40px rgba(245,166,35,0.03)",
+        }}
+      >
         <code>{`<!DOCTYPE html>
 <html>
 <head>
@@ -207,7 +221,7 @@ export default function CdnPage() {
   <script src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.production.min.js"></script>
 
   <!-- 2. Stareezy UI (includes tokens, runtime, stylesheet) -->
-  <script src="https://cdn.jsdelivr.net/npm/@stareezy-ui/components/dist/cdn/stareezy-ui.global.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@stareezy-ui/components/dist/cdn/Stareezy-ui.global.js"></script>
 </head>
 <body>
   <div id="root"></div>
@@ -235,60 +249,236 @@ export default function CdnPage() {
         full library.
       </Callout>
 
-      <h2>Step-by-Step Setup</h2>
+      <h2 className="gradient-text">Step-by-Step Setup</h2>
 
-      <Step n={1} title="Load React from CDN">
-        React must be on the page before any Stareezy script. Use the UMD builds
-        from jsDelivr or unpkg:
-        <pre>
-          <code>{`<!-- Development (with warnings) -->
+      <div style={{ display: "flex", gap: "1rem", marginBottom: "1.75rem" }}>
+        <div
+          style={{
+            width: 32,
+            height: 32,
+            flexShrink: 0,
+            background: "var(--brand-primary)",
+            color: "var(--color-bg)",
+            borderRadius: "50%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            fontWeight: 800,
+            fontSize: "0.85rem",
+            boxShadow: "0 2px 8px rgba(0,0,0,0.25)",
+            marginTop: 2,
+          }}
+        >
+          1
+        </div>
+        <div style={{ flex: 1 }}>
+          <div
+            style={{
+              fontWeight: 700,
+              fontSize: "1rem",
+              color: "var(--color-text)",
+              marginBottom: "0.5rem",
+            }}
+          >
+            Load React from CDN
+          </div>
+          <div
+            style={{
+              fontSize: "0.9rem",
+              color: "var(--color-text-2)",
+              lineHeight: 1.7,
+            }}
+          >
+            React must be on the page before any Stareezy script. Use the UMD builds
+            from jsDelivr or unpkg:
+            <pre
+              style={{
+                border: "1px solid var(--color-border)",
+                boxShadow: "0 0 40px rgba(245,166,35,0.03)",
+              }}
+            >
+              <code>{`<!-- Development (with warnings) -->
 <script src="https://cdn.jsdelivr.net/npm/react@18/umd/react.development.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.development.js"></script>
 
 <!-- Production (minified) -->
 <script src="https://cdn.jsdelivr.net/npm/react@18/umd/react.production.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.production.min.js"></script>`}</code>
-        </pre>
-      </Step>
+            </pre>
+          </div>
+        </div>
+      </div>
 
-      <Step n={2} title="Load the Stareezy bundle">
-        Pick the bundle you need. For most use cases, one of these two:
-        <pre>
-          <code>{`<!-- Tokens only — 25 KB, zero component overhead -->
-<script src="https://cdn.jsdelivr.net/npm/@stareezy-ui/tokens/dist/cdn/stareezy-tokens.global.js"></script>
+      <div style={{ display: "flex", gap: "1rem", marginBottom: "1.75rem" }}>
+        <div
+          style={{
+            width: 32,
+            height: 32,
+            flexShrink: 0,
+            background: "var(--brand-primary)",
+            color: "var(--color-bg)",
+            borderRadius: "50%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            fontWeight: 800,
+            fontSize: "0.85rem",
+            boxShadow: "0 2px 8px rgba(0,0,0,0.25)",
+            marginTop: 2,
+          }}
+        >
+          2
+        </div>
+        <div style={{ flex: 1 }}>
+          <div
+            style={{
+              fontWeight: 700,
+              fontSize: "1rem",
+              color: "var(--color-text)",
+              marginBottom: "0.5rem",
+            }}
+          >
+            Load the Stareezy bundle
+          </div>
+          <div
+            style={{
+              fontSize: "0.9rem",
+              color: "var(--color-text-2)",
+              lineHeight: 1.7,
+            }}
+          >
+            Pick the bundle you need. For most use cases, one of these two:
+            <pre
+              style={{
+                border: "1px solid var(--color-border)",
+                boxShadow: "0 0 40px rgba(245,166,35,0.03)",
+              }}
+            >
+              <code>{`<!-- Tokens only — 25 KB, zero component overhead -->
+<script src="https://cdn.jsdelivr.net/npm/@stareezy-ui/tokens/dist/cdn/Stareezy-tokens.global.js"></script>
 
 <!-- Full library — 118 KB, includes all components -->
-<script src="https://cdn.jsdelivr.net/npm/@stareezy-ui/components/dist/cdn/stareezy-ui.global.js"></script>`}</code>
-        </pre>
-      </Step>
+<script src="https://cdn.jsdelivr.net/npm/@stareezy-ui/components/dist/cdn/Stareezy-ui.global.js"></script>`}</code>
+            </pre>
+          </div>
+        </div>
+      </div>
 
-      <Step n={3} title="Pin a version (recommended for production)">
-        Always pin to a specific version in production to avoid unexpected
-        breaking changes:
-        <pre>
-          <code>{`<!-- Pinned to 0.2.3 -->
-<script src="https://cdn.jsdelivr.net/npm/@stareezy-ui/tokens@0.2.3/dist/cdn/stareezy-tokens.global.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@stareezy-ui/components@0.2.3/dist/cdn/stareezy-ui.global.js"></script>`}</code>
-        </pre>
-      </Step>
+      <div style={{ display: "flex", gap: "1rem", marginBottom: "1.75rem" }}>
+        <div
+          style={{
+            width: 32,
+            height: 32,
+            flexShrink: 0,
+            background: "var(--brand-primary)",
+            color: "var(--color-bg)",
+            borderRadius: "50%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            fontWeight: 800,
+            fontSize: "0.85rem",
+            boxShadow: "0 2px 8px rgba(0,0,0,0.25)",
+            marginTop: 2,
+          }}
+        >
+          3
+        </div>
+        <div style={{ flex: 1 }}>
+          <div
+            style={{
+              fontWeight: 700,
+              fontSize: "1rem",
+              color: "var(--color-text)",
+              marginBottom: "0.5rem",
+            }}
+          >
+            Pin a version (recommended for production)
+          </div>
+          <div
+            style={{
+              fontSize: "0.9rem",
+              color: "var(--color-text-2)",
+              lineHeight: 1.7,
+            }}
+          >
+            Always pin to a specific version in production to avoid unexpected
+            breaking changes:
+            <pre
+              style={{
+                border: "1px solid var(--color-border)",
+                boxShadow: "0 0 40px rgba(245,166,35,0.03)",
+              }}
+            >
+              <code>{`<!-- Pinned to 0.2.3 -->
+<script src="https://cdn.jsdelivr.net/npm/@stareezy-ui/tokens@0.2.3/dist/cdn/Stareezy-tokens.global.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@stareezy-ui/components@0.2.3/dist/cdn/Stareezy-ui.global.js"></script>`}</code>
+            </pre>
+          </div>
+        </div>
+      </div>
 
-      <Step n={4} title="Use the globals">
-        All exports are available on the global variable. Destructure what you
-        need:
-        <pre>
-          <code>{`// Tokens
+      <div style={{ display: "flex", gap: "1rem", marginBottom: "1.75rem" }}>
+        <div
+          style={{
+            width: 32,
+            height: 32,
+            flexShrink: 0,
+            background: "var(--brand-primary)",
+            color: "var(--color-bg)",
+            borderRadius: "50%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            fontWeight: 800,
+            fontSize: "0.85rem",
+            boxShadow: "0 2px 8px rgba(0,0,0,0.25)",
+            marginTop: 2,
+          }}
+        >
+          4
+        </div>
+        <div style={{ flex: 1 }}>
+          <div
+            style={{
+              fontWeight: 700,
+              fontSize: "1rem",
+              color: "var(--color-text)",
+              marginBottom: "0.5rem",
+            }}
+          >
+            Use the globals
+          </div>
+          <div
+            style={{
+              fontSize: "0.9rem",
+              color: "var(--color-text-2)",
+              lineHeight: 1.7,
+            }}
+          >
+            All exports are available on the global variable. Destructure what you
+            need:
+            <pre
+              style={{
+                border: "1px solid var(--color-border)",
+                boxShadow: "0 0 40px rgba(245,166,35,0.03)",
+              }}
+            >
+              <code>{`// Tokens
 const { colors, spacing, radius, typography, shadow, timing } = StareezyTokens;
 
 // Components + tokens (from the full bundle)
 const { Box, Text, Button, Input, Badge, Card, ThemeProvider } = StareezyUI;
 const { colors, spacing } = StareezyUI;`}</code>
-        </pre>
-      </Step>
+            </pre>
+          </div>
+        </div>
+      </div>
 
-      <h2>Global Variable Reference</h2>
+      <h2 className="gradient-text">Global Variable Reference</h2>
       <table>
         <thead>
-          <tr>
+          <tr style={{ borderTop: "2px solid var(--brand-primary)" }}>
             <th>Script</th>
             <th>Global</th>
             <th>Contains</th>
@@ -297,10 +487,10 @@ const { colors, spacing } = StareezyUI;`}</code>
         <tbody>
           <tr>
             <td>
-              <code>stareezy-tokens.global.js</code>
+              <code>Stareezy-tokens.global.js</code>
             </td>
             <td>
-              <code>StareezyTokens</code>
+              <code style={{ color: "#f5a623" }}>StareezyTokens</code>
             </td>
             <td>
               colors, spacing, radius, typography, shadow, timing, motion,
@@ -309,10 +499,10 @@ const { colors, spacing } = StareezyUI;`}</code>
           </tr>
           <tr>
             <td>
-              <code>stareezy-ui.global.js</code>
+              <code>Stareezy-ui.global.js</code>
             </td>
             <td>
-              <code>StareezyUI</code>
+              <code style={{ color: "#f5a623" }}>StareezyUI</code>
             </td>
             <td>
               Everything in StareezyTokens + all components (Box, Text, Button,
@@ -321,44 +511,49 @@ const { colors, spacing } = StareezyUI;`}</code>
           </tr>
           <tr>
             <td>
-              <code>stareezy-runtime.global.js</code>
+              <code>Stareezy-runtime.global.js</code>
             </td>
             <td>
-              <code>StareezyRuntime</code>
+              <code style={{ color: "#f5a623" }}>StareezyRuntime</code>
             </td>
             <td>styleRegistry, resolve, webAdapter</td>
           </tr>
           <tr>
             <td>
-              <code>stareezy-stylesheet.global.js</code>
+              <code>Stareezy-stylesheet.global.js</code>
             </td>
             <td>
-              <code>StareezyStylesheet</code>
+              <code style={{ color: "#f5a623" }}>StareezyStylesheet</code>
             </td>
             <td>injectSheet, flushSheet</td>
           </tr>
           <tr>
             <td>
-              <code>stareezy-core.global.js</code>
+              <code>Stareezy-core.global.js</code>
             </td>
             <td>
-              <code>StareezyCore</code>
+              <code style={{ color: "#f5a623" }}>StareezyCore</code>
             </td>
             <td>platform helpers, useDeviceLayout, spacing utilities</td>
           </tr>
         </tbody>
       </table>
 
-      <h2>Using with JSX (Babel standalone)</h2>
+      <h2 className="gradient-text">Using with JSX (Babel standalone)</h2>
       <p>
         If you want JSX syntax in the browser, add Babel standalone before your
         script and mark it <code>type="text/babel"</code>:
       </p>
-      <pre>
+      <pre
+        style={{
+          border: "1px solid var(--color-border)",
+          boxShadow: "0 0 40px rgba(245,166,35,0.03)",
+        }}
+      >
         <code>{`<script src="https://cdn.jsdelivr.net/npm/@babel/standalone/babel.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/react@18/umd/react.production.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.production.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@stareezy-ui/components/dist/cdn/stareezy-ui.global.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@stareezy-ui/components/dist/cdn/Stareezy-ui.global.js"></script>
 
 <div id="root"></div>
 
@@ -387,15 +582,20 @@ const { colors, spacing } = StareezyUI;`}</code>
         a bundler instead.
       </Callout>
 
-      <h2>Tokens-only (no React)</h2>
+      <h2 className="gradient-text">Tokens-only (no React)</h2>
       <p>
         If you only need design values (colors, spacing, etc.) and don&apos;t
         use React at all, the tokens bundle still works — just ignore the
         ThemeProvider export:
       </p>
-      <pre>
+      <pre
+        style={{
+          border: "1px solid var(--color-border)",
+          boxShadow: "0 0 40px rgba(245,166,35,0.03)",
+        }}
+      >
         <code>{`<script src="https://cdn.jsdelivr.net/npm/react@18/umd/react.production.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@stareezy-ui/tokens/dist/cdn/stareezy-tokens.global.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@stareezy-ui/tokens/dist/cdn/Stareezy-tokens.global.js"></script>
 
 <script>
   const { colors, spacing, radius } = StareezyTokens;
@@ -412,17 +612,23 @@ const { colors, spacing } = StareezyUI;`}</code>
         future tokens-only build without React is planned.
       </Callout>
 
-      <h2>CDN Providers</h2>
+      <h2 className="gradient-text">CDN Providers</h2>
       <p>
         The bundles are served from any CDN that mirrors npm. Both jsDelivr and
         unpkg work out of the box:
       </p>
-      <pre>
+      <pre
+        style={{
+          border: "1px solid var(--color-border)",
+          boxShadow: "0 0 40px rgba(245,166,35,0.03)",
+          background: "var(--color-surface)",
+        }}
+      >
         <code>{`<!-- jsDelivr (recommended — global CDN, SRI support) -->
-https://cdn.jsdelivr.net/npm/@stareezy-ui/tokens@{version}/dist/cdn/stareezy-tokens.global.js
+https://cdn.jsdelivr.net/npm/@stareezy-ui/tokens@{version}/dist/cdn/Stareezy-tokens.global.js
 
 <!-- unpkg -->
-https://unpkg.com/@stareezy-ui/tokens@{version}/dist/cdn/stareezy-tokens.global.js`}</code>
+https://unpkg.com/@stareezy-ui/tokens@{version}/dist/cdn/Stareezy-tokens.global.js`}</code>
       </pre>
 
       <Callout type="tip">
@@ -437,7 +643,7 @@ https://unpkg.com/@stareezy-ui/tokens@{version}/dist/cdn/stareezy-tokens.global.
         hashes. Use them in production to protect against CDN compromise:
         <pre style={{ marginTop: "0.5rem" }}>
           <code>{`<script
-  src="https://cdn.jsdelivr.net/npm/@stareezy-ui/tokens@0.2.3/dist/cdn/stareezy-tokens.global.js"
+  src="https://cdn.jsdelivr.net/npm/@stareezy-ui/tokens@0.2.3/dist/cdn/Stareezy-tokens.global.js"
   integrity="sha256-..."
   crossorigin="anonymous"
 ></script>`}</code>

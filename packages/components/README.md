@@ -68,7 +68,7 @@ module.exports = config;
 
 #### Babel config
 
-Add the stareezy babel plugin to your `babel.config.js`. Keep it before any Tamagui plugin:
+Add the Stareezy babel plugin to your `babel.config.js`. Keep it before any Tamagui plugin:
 
 ```js
 const { stareezyBabelPlugin } = require("@stareezy-ui/compiler/babel");

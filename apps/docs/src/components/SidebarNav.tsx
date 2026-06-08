@@ -17,6 +17,17 @@ const NAV_SECTIONS = [
     ],
   },
   {
+    title: "Playground",
+    links: [{ href: "/playground", label: "UI Playground", icon: "⬡" }],
+  },
+  {
+    title: "Integrations",
+    links: [
+      { href: "/docs/mcp-server", label: "MCP Server", icon: "⚡" },
+      { href: "/docs/claude-skills", label: "Skills for Claude", icon: "✦" },
+    ],
+  },
+  {
     title: "CLI",
     links: [{ href: "/docs/cli", label: "CLI", icon: "▶" }],
   },
@@ -57,6 +68,7 @@ const NAV_SECTIONS = [
     title: "Tokens",
     links: [
       { href: "/tokens", label: "Token Explorer", icon: "◉" },
+      { href: "/tokens/builder", label: "Theme Builder", icon: "✦" },
       { href: "/tokens/aurora", label: "Aurora", icon: "◉" },
       { href: "/tokens/steins-gate", label: "Steins;Gate", icon: "⌬" },
       { href: "/tokens/quasar", label: "Quasar", icon: "⊛" },

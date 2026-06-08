@@ -21,7 +21,7 @@ import {
 // Template strings
 // ---------------------------------------------------------------------------
 
-const STAREEZY_CONFIG_TS = `import { createUi } from "@stareezy-ui/tokens";
+const Stareezy_CONFIG_TS = `import { createUi } from "@stareezy-ui/tokens";
 
 const ui = createUi({
   media: {
@@ -115,7 +115,7 @@ import { stareezyVitePlugin } from "@stareezy-ui/compiler";
 
 export default defineConfig(({ command }) => ({
   plugins: [
-    // Only run the stareezy compiler during production builds.
+    // Only run the Stareezy compiler during production builds.
     // @babel/traverse has CJS/ESM interop issues in Vite's dev transform
     // pipeline; Box's inline responsive style injection handles dev-time
     // styling without the compiler.
@@ -219,7 +219,7 @@ export async function runInit(options: InitOptions = {}): Promise<InitResult> {
     console.log("  ✓ stareezy.config.ts already exists — skipping");
     result.skippedConfig = true;
   } else {
-    writeFileSync(join(cwd, "stareezy.config.ts"), STAREEZY_CONFIG_TS, "utf8");
+    writeFileSync(join(cwd, "stareezy.config.ts"), Stareezy_CONFIG_TS, "utf8");
     console.log("  + created stareezy.config.ts");
     result.createdConfig = true;
   }

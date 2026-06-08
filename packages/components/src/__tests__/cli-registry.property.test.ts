@@ -128,7 +128,7 @@ function getAllComponentNames(): string[] {
 // Inlined idempotent init logic (mirrors packages/cli/src/commands/init.ts)
 // ---------------------------------------------------------------------------
 
-const STAREEZY_CONFIG_CONTENT = `import { createUi } from "@stareezy-ui/tokens";\nconst ui = createUi({});\nexport default ui;\n`;
+const Stareezy_CONFIG_CONTENT = `import { createUi } from "@stareezy-ui/tokens";\nconst ui = createUi({});\nexport default ui;\n`;
 
 const PROVIDERS_CONTENT = `import { ThemeProvider } from "@stareezy-ui/tokens";\nexport function Providers({ children }) { return <ThemeProvider>{children}</ThemeProvider>; }\n`;
 
@@ -174,7 +174,7 @@ function runIdempotentInit(dir: string): InitResult {
   if (existsSync(configPath)) {
     result.skippedConfig = true;
   } else {
-    writeFileSync(configPath, STAREEZY_CONFIG_CONTENT, "utf8");
+    writeFileSync(configPath, Stareezy_CONFIG_CONTENT, "utf8");
     result.createdConfig = true;
   }
 

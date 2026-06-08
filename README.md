@@ -392,4 +392,4 @@ Six consolidated correctness properties (fast-check, ≥100 iterations each):
 
 ## License
 
-MIT © [Stareezy UI](https://github.com/stareezy-1)
+MIT © [Stareezy UI](https://github.com/Stareezy-1)

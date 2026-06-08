@@ -61,7 +61,7 @@ export const FewColumns: Story = {
     ],
     rows: [
       { key: "version", value: "1.0.0" },
-      { key: "author", value: "stareezy-ui" },
+      { key: "author", value: "Stareezy-ui" },
       { key: "license", value: "MIT" },
     ],
     caption: "Package info",

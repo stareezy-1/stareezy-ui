@@ -269,7 +269,7 @@ export type UiConfig<
   breakpoints: UiBreakpointConfig;
   /**
    * The media config as passed to createUi, with literal keys preserved.
-   * Used for module augmentation via `SzrCustomConfig extends typeof ui`.
+   * Used for module augmentation via `stareezyCustomConfig extends typeof ui`.
    */
   media: TMedia;
   /** The default theme name or override object. */

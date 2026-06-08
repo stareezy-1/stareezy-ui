@@ -14,7 +14,7 @@ export default function App() {
       {/* Token-valued spacing prop — exercises the Metro transformer path */}
       <Box p={16}>
         <Text style={styles.heading}>
-          stareezy-ui × Expo SDK 56 integration
+          Stareezy-ui × Expo SDK 56 integration
         </Text>
         <Text style={styles.body}>
           Box component with token-valued props rendered successfully.

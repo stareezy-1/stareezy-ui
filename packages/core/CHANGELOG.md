@@ -45,7 +45,7 @@
     - React Native style keys (elevation, tintColor, textAlignVertical, etc.)
     - Index signature escape hatch for any other raw style key
   - resolveSxWeb / resolveSxNative — full responsive resolver, reads from
-    **stareezy_breakpoints** (same channel as Box), handles $-group syntax
+    **Stareezy_breakpoints** (same channel as Box), handles $-group syntax
 
   ### componentSheet utility
 
@@ -81,7 +81,7 @@
   - buildBreakpointEntries — convert responsive map to sorted { minWidth, value } entries
   - resolveResponsive(value, windowWidth) — React Native helper
   - isResponsiveValue(value) — type guard
-  - getBreakpoints() — reads from **stareezy_breakpoints** global channel
+  - getBreakpoints() — reads from **Stareezy_breakpoints** global channel
   - buildScopeClass(uid) — builds szr-<uid> scope class
   - #sz-responsive dedicated style tag with per-breakpoint deduplication
 
@@ -197,8 +197,8 @@
   ## @stareezy-ui/tokens
 
   - `createUi({ media, shorthands })` now preserves literal media keys via `TMedia` generic — drives `ConfigBreakpointKey` inference
-  - Added `SzrCustomConfig` module-augmentation interface with `media` and `shorthands` fields
-  - Added `DefaultBreakpointKey`, `ConfigBreakpointKey`, `MediaConfig`, `ShorthandConfig`, `SzrShorthands` exports
+  - Added `stareezyCustomConfig` module-augmentation interface with `media` and `shorthands` fields
+  - Added `DefaultBreakpointKey`, `ConfigBreakpointKey`, `MediaConfig`, `ShorthandConfig`, `stareezyShorthands` exports
   - Added `applyRuntimeBreakpoints(resolved)` — writes to `globalThis.__stareezy_breakpoints__` without importing components/runtime
   - `createUi` now auto-syncs `media` into the runtime breakpoint store on call; leaves defaults untouched when `media` is absent
   - Added `react: "^18 || ^19"` as optional peerDependency
@@ -207,7 +207,7 @@
 
   ### Config-driven responsive type system
 
-  - `BreakpointKey` now re-exports `ConfigBreakpointKey` from tokens — derives from `SzrCustomConfig["media"]` augmentation
+  - `BreakpointKey` now re-exports `ConfigBreakpointKey` from tokens — derives from `stareezyCustomConfig["media"]` augmentation
   - `Responsive<T>` and all runtime helpers iterate resolved `BreakpointConfig` keys (not a hardcoded list)
   - `configureBreakpoints`/`getBreakpoints` read from `globalThis.__stareezy_breakpoints__` on first access
   - `CustomShorthandProps` values wrapped in `Responsive<T>` — `<Box br={{ base: 4, md: 8 }} />` is now valid
@@ -322,8 +322,8 @@
   ## @stareezy-ui/tokens
 
   - `createUi({ media, shorthands })` now preserves literal media keys via `TMedia` generic — drives `ConfigBreakpointKey` inference
-  - Added `SzrCustomConfig` module-augmentation interface with `media` and `shorthands` fields
-  - Added `DefaultBreakpointKey`, `ConfigBreakpointKey`, `MediaConfig`, `ShorthandConfig`, `SzrShorthands` exports
+  - Added `stareezyCustomConfig` module-augmentation interface with `media` and `shorthands` fields
+  - Added `DefaultBreakpointKey`, `ConfigBreakpointKey`, `MediaConfig`, `ShorthandConfig`, `stareezyShorthands` exports
   - Added `applyRuntimeBreakpoints(resolved)` — writes to `globalThis.__stareezy_breakpoints__` without importing components/runtime
   - `createUi` now auto-syncs `media` into the runtime breakpoint store on call; leaves defaults untouched when `media` is absent
   - Added `react: "^18 || ^19"` as optional peerDependency
@@ -332,7 +332,7 @@
 
   ### Config-driven responsive type system
 
-  - `BreakpointKey` now re-exports `ConfigBreakpointKey` from tokens — derives from `SzrCustomConfig["media"]` augmentation
+  - `BreakpointKey` now re-exports `ConfigBreakpointKey` from tokens — derives from `stareezyCustomConfig["media"]` augmentation
   - `Responsive<T>` and all runtime helpers iterate resolved `BreakpointConfig` keys (not a hardcoded list)
   - `configureBreakpoints`/`getBreakpoints` read from `globalThis.__stareezy_breakpoints__` on first access
   - `CustomShorthandProps` values wrapped in `Responsive<T>` — `<Box br={{ base: 4, md: 8 }} />` is now valid

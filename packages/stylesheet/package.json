@@ -1,6 +1,6 @@
 {
   "name": "@stareezy-ui/stylesheet",
-  "version": "1.1.1",
+  "version": "1.1.0",
   "description": "Stareezy UI stylesheet — atomic CSS sheet management and CSS variable injection",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -18,7 +18,7 @@
   ],
   "license": "MIT",
   "keywords": [
-    "stareezy-ui",
+    "Stareezy-ui",
     "stylesheet",
     "atomic-css",
     "css-variables"

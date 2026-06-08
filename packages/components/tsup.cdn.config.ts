@@ -2,7 +2,7 @@ import { defineConfig } from "tsup";
 import { reactGlobalPlugin } from "./cdn-react-global-plugin";
 
 export default defineConfig({
-  entry: { "stareezy-ui": "src/index.ts" },
+  entry: { "Stareezy-ui": "src/index.ts" },
   format: ["iife"],
   globalName: "StareezyUI",
   minify: true,

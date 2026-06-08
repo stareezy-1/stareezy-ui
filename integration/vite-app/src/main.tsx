@@ -16,7 +16,7 @@ import { Box } from "@stareezy-ui/components";
 const App = () => (
   <Box p={16} display="flex" flexDirection="column" gap={8}>
     <Box p={8} style={{ background: "white", borderRadius: 4 }}>
-      <p>stareezy-ui × Vite integration test</p>
+      <p>Stareezy-ui × Vite integration test</p>
     </Box>
   </Box>
 );

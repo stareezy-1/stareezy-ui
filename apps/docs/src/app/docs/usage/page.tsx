@@ -15,14 +15,20 @@ export default function UsagePage() {
       description="Tokens, the t accessor, createUi, and theme-reactive component props."
       badge="Guide"
       icon="◈"
+      badgeColor="#ff6a1a"
     >
       {/* ── Token<T> ──────────────────────────────────────────────────────── */}
-      <h2>Token&lt;T&gt;</h2>
+      <h2 className="gradient-text">Token&lt;T&gt;</h2>
       <p>
         Every design value is a frozen <code>Token&lt;T&gt;</code> object with
         three fields:
       </p>
-      <pre>
+      <pre
+        style={{
+          border: "1px solid var(--color-border)",
+          boxShadow: "0 0 40px rgba(255,106,26,0.03)",
+        }}
+      >
         <code>{`type Token<T> = {
   readonly __token: true  // discriminant — lets the compiler detect token props
   readonly id: string     // stable unique identifier, e.g. "celurenBlue-500"
@@ -32,7 +38,12 @@ export default function UsagePage() {
       <p>
         Create your own tokens with the <code>token()</code> factory:
       </p>
-      <pre>
+      <pre
+        style={{
+          border: "1px solid var(--color-border)",
+          boxShadow: "0 0 40px rgba(255,106,26,0.03)",
+        }}
+      >
         <code>{`import { token } from '@stareezy-ui/tokens'
 
 const brandPrimary = token('#FF6B35', 'brand-primary')
@@ -47,12 +58,17 @@ brandPrimary.id    // "brand-primary"`}</code>
       </Callout>
 
       {/* ── Static token props ────────────────────────────────────────────── */}
-      <h2>Static token props</h2>
+      <h2 className="gradient-text">Static token props</h2>
       <p>
         Pass token objects directly as props on <code>Box</code> and other
         primitives. TypeScript autocompletes and validates every value:
       </p>
-      <pre>
+      <pre
+        style={{
+          border: "1px solid var(--color-border)",
+          boxShadow: "0 0 40px rgba(255,106,26,0.03)",
+        }}
+      >
         <code>{`import { colors, spacing, radius } from '@stareezy-ui/tokens'
 import { Box, Text } from '@stareezy-ui/components'
 
@@ -75,7 +91,7 @@ function Card() {
       </p>
 
       {/* ── t accessor ────────────────────────────────────────────────────── */}
-      <h2>
+      <h2 className="gradient-text">
         Theme-reactive props with <code>t</code>
       </h2>
       <p>
@@ -85,7 +101,12 @@ function Card() {
         switches, every component using a ThemeToken re-renders with the correct
         color automatically.
       </p>
-      <pre>
+      <pre
+        style={{
+          border: "1px solid var(--color-border)",
+          boxShadow: "0 0 40px rgba(255,106,26,0.03)",
+        }}
+      >
         <code>{`import { t } from '@stareezy-ui/tokens'
 import { Box, Text } from '@stareezy-ui/components'
 
@@ -117,7 +138,7 @@ function Card() {
         <code>t.border.danger</code> — all autocomplete and type-check.
       </Callout>
 
-      <h2>
+      <h2 className="gradient-text">
         Available <code>t</code> slots
       </h2>
       <div
@@ -131,7 +152,7 @@ function Card() {
         {[
           {
             group: "t.text",
-            color: "#024CCE",
+            color: "var(--brand-primary)",
             slots: [
               "primary",
               "secondary",
@@ -149,12 +170,12 @@ function Card() {
           },
           {
             group: "t.backgrounds",
-            color: "#4D8D01",
+            color: "var(--brand-primary)",
             slots: ["primary", "secondary", "disabled", "primaryBlack"],
           },
           {
             group: "t.border",
-            color: "#C98B25",
+            color: "var(--brand-primary)",
             slots: [
               "default",
               "secondary",
@@ -210,12 +231,17 @@ function Card() {
       </div>
 
       {/* ── useResolveThemeToken ──────────────────────────────────────────── */}
-      <h2>Resolving ThemeTokens manually</h2>
+      <h2 className="gradient-text">Resolving ThemeTokens manually</h2>
       <p>
         When you need the raw string value inside a component (e.g. for a
         non-Box element), use <code>useResolveThemeToken</code>:
       </p>
-      <pre>
+      <pre
+        style={{
+          border: "1px solid var(--color-border)",
+          boxShadow: "0 0 40px rgba(255,106,26,0.03)",
+        }}
+      >
         <code>{`import { t, useResolveThemeToken } from '@stareezy-ui/tokens'
 
 function MyComponent() {
@@ -229,14 +255,19 @@ function MyComponent() {
       </pre>
 
       {/* ── createUi ─────────────────────────────────────────────────────── */}
-      <h2>createUi</h2>
+      <h2 className="gradient-text">createUi</h2>
       <p>
         Call <code>createUi()</code> once at app startup to register themes,
         custom tokens, breakpoints, fonts, and shorthands. The returned{" "}
         <code>ui</code> object exposes <code>ui.t</code> (same as the standalone{" "}
         <code>t</code>), <code>ui.tokens</code>, and helper methods.
       </p>
-      <pre>
+      <pre
+        style={{
+          border: "1px solid var(--color-border)",
+          boxShadow: "0 0 40px rgba(255,106,26,0.03)",
+        }}
+      >
         <code>{`import { createUi, token, themes } from '@stareezy-ui/tokens'
 
 export const ui = createUi({
@@ -278,13 +309,18 @@ ui.tokens.colors.celurenBlue[500].value // "#024CCE"
       </Callout>
 
       {/* ── Accessing .value ─────────────────────────────────────────────── */}
-      <h2>Accessing raw values</h2>
+      <h2 className="gradient-text">Accessing raw values</h2>
       <p>
         Every token exposes its raw value via <code>.value</code>. Use this when
         you need a plain string or number (e.g. inline styles, RN StyleSheet,
         canvas):
       </p>
-      <pre>
+      <pre
+        style={{
+          border: "1px solid var(--color-border)",
+          boxShadow: "0 0 40px rgba(255,106,26,0.03)",
+        }}
+      >
         <code>{`import { colors, spacing, radius } from '@stareezy-ui/tokens'
 
 colors.celurenBlue[500].value  // "#024CCE"
@@ -300,7 +336,7 @@ const style = {
       </pre>
 
       {/* ── Token categories ─────────────────────────────────────────────── */}
-      <h2>Token categories</h2>
+      <h2 className="gradient-text">Token categories</h2>
       <div
         style={{
           display: "grid",
@@ -358,6 +394,8 @@ const style = {
               border: "1px solid var(--color-border)",
               borderRadius: "var(--radius-md)",
               padding: "0.85rem 1rem",
+              backdropFilter: "blur(12px)",
+              boxShadow: "0 4px 20px rgba(0,0,0,0.04), 0 0 40px rgba(255,106,26,0.02)",
             }}
           >
             <div
@@ -373,11 +411,11 @@ const style = {
                   width: 8,
                   height: 8,
                   borderRadius: "50%",
-                  background: c.color,
+                  background: "var(--brand-primary)",
                 }}
               />
               <code
-                style={{ fontSize: "0.82rem", fontWeight: 700, color: c.color }}
+                style={{ fontSize: "0.82rem", fontWeight: 700, color: "var(--brand-primary)" }}
               >
                 {c.name}
               </code>

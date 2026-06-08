@@ -15,9 +15,9 @@ export default function CreateUiPage() {
       description="The Stareezy UI configuration factory — themes, tokens, shorthands, breakpoints, and module augmentation."
       badge="API Reference"
       icon="◎"
-      badgeColor="#024CCE"
+      badgeColor="#ff6a1a"
     >
-      <h2>Overview</h2>
+      <h2 className="gradient-text">Overview</h2>
       <p>
         <code>createUi()</code> is the single entry point for configuring
         Stareezy UI. Call it once at app startup in a{" "}
@@ -32,8 +32,13 @@ export default function CreateUiPage() {
       </Callout>
 
       {/* ── Full config example ───────────────────────────────────────────── */}
-      <h2>Full config example</h2>
-      <pre>
+      <h2 className="gradient-text">Full config example</h2>
+      <pre
+        style={{
+          border: "1px solid var(--color-border)",
+          boxShadow: "0 0 40px rgba(255,106,26,0.03)",
+        }}
+      >
         <code>{`// stareezy.config.ts
 import { createUi, token, themes, motion } from '@stareezy-ui/tokens'
 
@@ -103,22 +108,40 @@ declare module '@stareezy-ui/tokens' {
 export default ui`}</code>
       </pre>
 
-      <Callout type="info">
+      <div
+        style={{
+          border: "1px solid rgba(255, 106, 26, 0.25)",
+          borderLeft: "4px solid #ff6a1a",
+          borderRadius: "0 10px 10px 0",
+          padding: "0.85rem 1.1rem",
+          margin: "1.25rem 0",
+          background: "rgba(255, 106, 26, 0.04)",
+        }}
+      >
         The <code>as const</code> on <code>shorthands</code> is required — it
         tells TypeScript to infer the literal key types so the module
         augmentation works. Without it, shorthands are typed as{" "}
         <code>Record&lt;string, string&gt;</code> and no props are added.
-      </Callout>
+      </div>
 
       {/* ── Module augmentation ───────────────────────────────────────────── */}
-      <h2>Module augmentation — typed shorthands</h2>
-      <p>
-        The <code>declare module</code> block is what makes custom shorthands
-        appear as valid <code>BoxProps</code>. Once declared, TypeScript
-        autocompletes them everywhere:
-      </p>
-      <pre>
-        <code>{`// After module augmentation:
+      <h2 className="gradient-text">Module augmentation — typed shorthands</h2>
+      <div
+        style={{
+          border: "1px solid rgba(255, 106, 26, 0.2)",
+          borderRadius: "var(--radius-lg)",
+          padding: "1.25rem",
+          background: "rgba(255, 106, 26, 0.03)",
+          marginBottom: "1.5rem",
+        }}
+      >
+        <p>
+          The <code>declare module</code> block is what makes custom shorthands
+          appear as valid <code>BoxProps</code>. Once declared, TypeScript
+          autocompletes them everywhere:
+        </p>
+        <pre>
+          <code>{`// After module augmentation:
 <Box bg={t.backgrounds.primary} br={12} f={1} />
 //   ↑ typed    ↑ typed          ↑ typed  ↑ typed
 
@@ -127,10 +150,11 @@ export default ui`}</code>
 
 // With augmentation — valid:
 <Box br={12} />  // ✅ br → borderRadius, fully typed`}</code>
-      </pre>
+        </pre>
+      </div>
 
       {/* ── ui.t accessor ─────────────────────────────────────────────────── */}
-      <h2>ui.t — theme-reactive accessor</h2>
+      <h2 className="gradient-text">ui.t — theme-reactive accessor</h2>
       <p>
         The returned config exposes <code>ui.t</code> — the same <code>t</code>{" "}
         accessor available from the standalone import. Pass these as component
@@ -154,7 +178,7 @@ export default ui`}</code>
       </pre>
 
       {/* ── Framework integration ─────────────────────────────────────────── */}
-      <h2>Framework integration</h2>
+      <h2 className="gradient-text">Framework integration</h2>
 
       <Step n={1} title="Next.js (App Router)">
         <pre>
@@ -217,13 +241,37 @@ export default function App() {
       </Callout>
 
       {/* ── API reference ─────────────────────────────────────────────────── */}
-      <h2>createUi() options</h2>
+      <h2 className="gradient-text">createUi() options</h2>
       <table>
         <thead>
           <tr>
-            <th>Option</th>
-            <th>Type</th>
-            <th>Description</th>
+            <th
+              style={{
+                background: "rgba(255, 106, 26, 0.08)",
+                color: "#ff6a1a",
+                borderBottom: "2px solid #ff6a1a",
+              }}
+            >
+              Option
+            </th>
+            <th
+              style={{
+                background: "rgba(255, 106, 26, 0.08)",
+                color: "#ff6a1a",
+                borderBottom: "2px solid #ff6a1a",
+              }}
+            >
+              Type
+            </th>
+            <th
+              style={{
+                background: "rgba(255, 106, 26, 0.08)",
+                color: "#ff6a1a",
+                borderBottom: "2px solid #ff6a1a",
+              }}
+            >
+              Description
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -270,13 +318,37 @@ export default function App() {
         </tbody>
       </table>
 
-      <h2>UiConfig return value</h2>
+      <h2 className="gradient-text">UiConfig return value</h2>
       <table>
         <thead>
           <tr>
-            <th>Property / Method</th>
-            <th>Type</th>
-            <th>Description</th>
+            <th
+              style={{
+                background: "rgba(255, 106, 26, 0.08)",
+                color: "#ff6a1a",
+                borderBottom: "2px solid #ff6a1a",
+              }}
+            >
+              Property / Method
+            </th>
+            <th
+              style={{
+                background: "rgba(255, 106, 26, 0.08)",
+                color: "#ff6a1a",
+                borderBottom: "2px solid #ff6a1a",
+              }}
+            >
+              Type
+            </th>
+            <th
+              style={{
+                background: "rgba(255, 106, 26, 0.08)",
+                color: "#ff6a1a",
+                borderBottom: "2px solid #ff6a1a",
+              }}
+            >
+              Description
+            </th>
           </tr>
         </thead>
         <tbody>

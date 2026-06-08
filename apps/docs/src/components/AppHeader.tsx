@@ -71,9 +71,9 @@ export function AppHeader({
       {/* Logo */}
       <Link href="/" className="app-header-logo" aria-label="Stareezy UI home">
         <div className="app-header-logo-icon" aria-hidden="true">
-          S
+          Q
         </div>
-        <span className="app-header-logo-text">Stareezy UI</span>
+        <span className="app-header-logo-text">Stareezy</span>
         <span className="app-header-version" suppressHydrationWarning>
           v1.1.0
         </span>

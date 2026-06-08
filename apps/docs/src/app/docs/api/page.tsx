@@ -360,7 +360,7 @@ const KIND_COLORS: Record<ApiEntry["kind"], { bg: string; color: string }> = {
 function ApiTable({ entries }: { entries: ApiEntry[] }) {
   return (
     <div style={{ overflowX: "auto", margin: "0.75rem 0 2rem" }}>
-      <table>
+      <table style={{ borderTop: "2px solid var(--brand-primary)" }}>
         <thead>
           <tr>
             <th>Export</th>
@@ -374,7 +374,9 @@ function ApiTable({ entries }: { entries: ApiEntry[] }) {
             return (
               <tr key={e.name}>
                 <td>
-                  <code style={{ fontSize: "0.8em" }}>{e.name}</code>
+                  <code style={{ fontSize: "0.8em", color: "var(--brand-500)" }}>
+                    {e.name}
+                  </code>
                 </td>
                 <td>
                   <span
@@ -412,7 +414,7 @@ export default function ApiPage() {
       description="Exported symbols from every @stareezy-ui/* package — types, functions, hooks, and components."
       badge="Reference"
       icon="◉"
-      badgeColor="#024CCE"
+      badgeColor="#ff6a1a"
     >
       <Callout type="info">
         All packages are written in TypeScript with strict mode. Type
@@ -421,24 +423,24 @@ export default function ApiPage() {
       </Callout>
 
       {/* ── @stareezy-ui/tokens ─────────────────────────────────────────── */}
-      <h2>@stareezy-ui/tokens</h2>
+      <h2 className="gradient-text">@stareezy-ui/tokens</h2>
       <p>
         Zero-dependency token definitions and the <code>createUi()</code>{" "}
         configuration factory. This package builds first in the dependency
         chain.
       </p>
-      <pre>
+      <pre style={{ border: "1px solid var(--color-border)" }}>
         <code>{`import { createUi, t, token, colors, spacing, radius, themes } from '@stareezy-ui/tokens'`}</code>
       </pre>
       <ApiTable entries={TOKENS_EXPORTS} />
 
       {/* ── @stareezy-ui/components ─────────────────────────────────────── */}
-      <h2>@stareezy-ui/components</h2>
+      <h2 className="gradient-text">@stareezy-ui/components</h2>
       <p>
         31 cross-platform UI components (26 existing + 6 new in v0.4) plus
         layout primitives and shared types.
       </p>
-      <pre>
+      <pre style={{ border: "1px solid var(--color-border)" }}>
         <code>{`import { Box, Button, Input, Modal, Breadcrumb, Drawer } from '@stareezy-ui/components'
 // RSC-safe primitives:
 import { Box, Stack, Text } from '@stareezy-ui/components/server'`}</code>
@@ -446,7 +448,7 @@ import { Box, Stack, Text } from '@stareezy-ui/components/server'`}</code>
       <ApiTable entries={COMPONENTS_EXPORTS} />
 
       {/* ── @stareezy-ui/components/server ──────────────────────────────── */}
-      <h2>@stareezy-ui/components/server</h2>
+      <h2 className="gradient-text">@stareezy-ui/components/server</h2>
       <p>
         Hook-free, RSC-safe primitives. Safe to use in Next.js App Router Server
         Components without a <code>&quot;use client&quot;</code> boundary.
@@ -454,12 +456,12 @@ import { Box, Stack, Text } from '@stareezy-ui/components/server'`}</code>
       <ApiTable entries={SERVER_EXPORTS} />
 
       {/* ── @stareezy-ui/compiler ───────────────────────────────────────── */}
-      <h2>@stareezy-ui/compiler</h2>
+      <h2 className="gradient-text">@stareezy-ui/compiler</h2>
       <p>
         Build-time transforms for Vite, Babel, and Metro. Reads{" "}
         <code>stareezy.config.ts</code> automatically.
       </p>
-      <pre>
+      <pre style={{ border: "1px solid var(--color-border)" }}>
         <code>{`import { stareezyVitePlugin } from '@stareezy-ui/compiler'
 const { stareezyBabelPlugin } = require('@stareezy-ui/compiler')
 // Metro: require.resolve('@stareezy-ui/compiler/metro')`}</code>
@@ -467,12 +469,12 @@ const { stareezyBabelPlugin } = require('@stareezy-ui/compiler')
       <ApiTable entries={COMPILER_EXPORTS} />
 
       {/* ── @stareezy-ui/cli ────────────────────────────────────────────── */}
-      <h2>@stareezy-ui/cli</h2>
+      <h2 className="gradient-text">@stareezy-ui/cli</h2>
       <p>
-        First-party scaffolding CLI. Invoke via <code>npx stareezy</code> or
+        First-party scaffolding CLI. Invoke via <code>npx Stareezy</code> or
         install globally as <code>@stareezy-ui/cli</code>.
       </p>
-      <pre>
+      <pre style={{ border: "1px solid var(--color-border)" }}>
         <code>{`npx stareezy create my-app --template next
 npx stareezy init
 npx stareezy add button input card`}</code>
@@ -480,25 +482,25 @@ npx stareezy add button input card`}</code>
       <ApiTable entries={CLI_EXPORTS} />
 
       {/* ── @stareezy-ui/runtime ────────────────────────────────────────── */}
-      <h2>@stareezy-ui/runtime</h2>
+      <h2 className="gradient-text">@stareezy-ui/runtime</h2>
       <p>
         O(1) style registry with web and React Native adapters. Used internally
         by the Components_Package — not typically imported directly.
       </p>
-      <pre>
+      <pre style={{ border: "1px solid var(--color-border)" }}>
         <code>{`import { configureBreakpoints, getBreakpoints, applyRuntimeBreakpoints } from '@stareezy-ui/runtime'`}</code>
       </pre>
 
       {/* ── @stareezy-ui/core ───────────────────────────────────────────── */}
-      <h2>@stareezy-ui/core</h2>
+      <h2 className="gradient-text">@stareezy-ui/core</h2>
       <p>
         Utilities, platform helpers, and hooks shared across packages. Used
         internally — only import from this package if you are building on top of
-        stareezy-ui internals.
+        Stareezy-ui internals.
       </p>
 
       {/* ── @stareezy-ui/stylesheet ─────────────────────────────────────── */}
-      <h2>@stareezy-ui/stylesheet</h2>
+      <h2 className="gradient-text">@stareezy-ui/stylesheet</h2>
       <p>
         Atomic CSS sheet management using <code>@stitches/core</code> under the
         hood. Used internally by the runtime. Not imported directly in

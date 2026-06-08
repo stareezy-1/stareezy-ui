@@ -25,7 +25,7 @@
 
 import { transform as szrTransform } from "./transform";
 import { type CompilerConfig } from "./config";
-import { loadSzrConfig } from "./loadConfig";
+import { loadStareezyConfig } from "./loadConfig";
 
 export interface MetroTransformOptions {
   filename: string;
@@ -46,7 +46,7 @@ export interface MetroTransformResult {
  */
 export function stareezyMetroTransformer(config?: Partial<CompilerConfig>) {
   // Merge shorthands from stareezy.config.ts
-  const szrConfig = loadSzrConfig();
+  const szrConfig = loadStareezyConfig();
   const mergedConfig: Partial<CompilerConfig> = {
     ...config,
     propMappings: {

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { DocPage, Callout, PropRow } from "../../../../components/DocPage";
+import { PaginationPreview } from "../ComponentPreview";
 
 export const metadata: Metadata = {
   title: "Pagination",
@@ -17,14 +18,15 @@ export default function PaginationPage() {
       description="Page navigation with smart range display, ellipsis, prev/next controls, and full keyboard support."
       badge="Component"
       icon="◁▷"
-      badgeColor="#0C9182"
+      badgeColor="#22c55e"
     >
-      <h2>Import</h2>
+      <h2 className="gradient-text">Import</h2>
       <pre>
         <code>{`import { Pagination } from '@stareezy-ui/components'`}</code>
       </pre>
 
-      <h2>Basic usage</h2>
+      <h2 className="gradient-text">Basic usage</h2>
+      <PaginationPreview />
       <pre>
         <code>{`const [page, setPage] = useState(1)
 
@@ -35,14 +37,14 @@ export default function PaginationPage() {
 />`}</code>
       </pre>
 
-      <h2>Size variants</h2>
+      <h2 className="gradient-text">Size variants</h2>
       <pre>
         <code>{`<Pagination page={1} totalPages={10} onPageChange={setPage} size="sm" />
 <Pagination page={1} totalPages={10} onPageChange={setPage} size="md" />  // default
 <Pagination page={1} totalPages={10} onPageChange={setPage} size="lg" />`}</code>
       </pre>
 
-      <h2>Show first and last buttons</h2>
+      <h2 className="gradient-text">Show first and last buttons</h2>
       <pre>
         <code>{`<Pagination
   page={page}
@@ -52,7 +54,7 @@ export default function PaginationPage() {
 />`}</code>
       </pre>
 
-      <h2>Sibling page count</h2>
+      <h2 className="gradient-text">Sibling page count</h2>
       <pre>
         <code>{`// How many pages to show on each side of the current page
 <Pagination
@@ -63,7 +65,7 @@ export default function PaginationPage() {
 />`}</code>
       </pre>
 
-      <h2>With BoxLayoutProps</h2>
+      <h2 className="gradient-text">With BoxLayoutProps</h2>
       <pre>
         <code>{`<Pagination
   page={page}
@@ -74,7 +76,7 @@ export default function PaginationPage() {
 />`}</code>
       </pre>
 
-      <h2>Props</h2>
+      <h2 className="gradient-text">Props</h2>
       <table>
         <thead>
           <tr>
@@ -125,7 +127,7 @@ export default function PaginationPage() {
         </tbody>
       </table>
 
-      <h2>Accessibility</h2>
+      <h2 className="gradient-text">Accessibility</h2>
       <Callout type="info">
         Pagination renders a <code>&lt;nav&gt;</code> with{" "}
         <code>aria-label=&quot;Pagination&quot;</code>. Each page button has an{" "}
@@ -135,11 +137,12 @@ export default function PaginationPage() {
         The component is fully keyboard-navigable with Tab and Enter/Space.
       </Callout>
 
-      <h2>Themes</h2>
+      <h2 className="gradient-text">Themes</h2>
       <p>
         Pagination is Theme_Reactive — active page, hover, focus, and disabled
         colors are all resolved from the Active_Theme at render time. Works
-        correctly in all five built-in themes.
+        correctly in all five built-in themes: quasar, light, dark, aurora, and
+        steins-gate.
       </p>
     </DocPage>
   );

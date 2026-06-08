@@ -28,9 +28,9 @@ export default function CompilerPage() {
       description="Build-time Babel/Vite/Metro plugin — extracts token props, emits atomic CSS, reads stareezy.config.ts automatically."
       badge="Advanced"
       icon="⚙"
-      badgeColor="#C98B25"
+      badgeColor="#f5a623"
     >
-      <h2>How it works</h2>
+      <h2 className="gradient-text">How it works</h2>
       <p>
         The compiler traverses your JSX AST at build time, detects props whose
         values are <code>Token</code> objects (<code>__token: true</code>), and
@@ -64,13 +64,13 @@ export default function CompilerPage() {
           >
             <div
               style={{
-                background: "var(--brand-50)",
-                border: "1px solid var(--brand-100)",
+                background: "var(--brand-primary)",
+                border: "1px solid var(--brand-primary)",
                 borderRadius: 8,
                 padding: "0.4rem 0.75rem",
                 fontSize: "0.8rem",
                 fontWeight: 600,
-                color: "var(--brand-600)",
+                color: "#fff",
                 whiteSpace: "nowrap",
               }}
             >
@@ -83,7 +83,7 @@ export default function CompilerPage() {
         ))}
       </div>
 
-      <h2>Before & after</h2>
+      <h2 className="gradient-text">Before & after</h2>
       <div
         style={{
           display: "grid",
@@ -112,15 +112,22 @@ export default function CompilerPage() {
 />`}</code>
           </pre>
         </div>
-        <div>
+        <div
+          style={{
+            border: "1px solid var(--brand-500)",
+            borderRadius: "var(--radius-md)",
+            padding: "0 0.75rem",
+          }}
+        >
           <div
             style={{
               fontSize: "0.72rem",
               fontWeight: 700,
               textTransform: "uppercase",
               letterSpacing: "0.08em",
-              color: "#4D8D01",
+              color: "var(--brand-500)",
               marginBottom: "0.5rem",
+              marginTop: "0.75rem",
             }}
           >
             After
@@ -153,7 +160,7 @@ export default function CompilerPage() {
       </Callout>
 
       {/* ── stareezy.config.ts auto-read ──────────────────────────────────── */}
-      <h2>stareezy.config.ts — automatic shorthand pickup</h2>
+      <h2 className="gradient-text">stareezy.config.ts — automatic shorthand pickup</h2>
       <p>
         The compiler reads your <code>stareezy.config.ts</code> at build time
         and merges your custom shorthands into its prop mappings. You{" "}
@@ -187,7 +194,20 @@ module.exports = {
       </pre>
 
       {/* ── Vite ──────────────────────────────────────────────────────────── */}
-      <h2>Vite plugin</h2>
+      <h2
+        className="gradient-text"
+        style={{
+          display: "inline-block",
+          background: "var(--brand-50)",
+          border: "1px solid var(--brand-500)",
+          borderRadius: "var(--radius-md)",
+          padding: "0.4rem 1rem",
+          marginTop: "1.5rem",
+          color: "var(--brand-500)",
+        }}
+      >
+        Vite plugin
+      </h2>
       <p>
         Add the plugin to <code>vite.config.ts</code>. It reads{" "}
         <code>stareezy.config.ts</code> from your project root automatically —
@@ -208,7 +228,20 @@ import 'virtual:stareezy-ui/styles'`}</code>
       </pre>
 
       {/* ── Babel ─────────────────────────────────────────────────────────── */}
-      <h2>Babel plugin</h2>
+      <h2
+        className="gradient-text"
+        style={{
+          display: "inline-block",
+          background: "var(--brand-50)",
+          border: "1px solid var(--brand-500)",
+          borderRadius: "var(--radius-md)",
+          padding: "0.4rem 1rem",
+          marginTop: "1.5rem",
+          color: "var(--brand-500)",
+        }}
+      >
+        Babel plugin
+      </h2>
       <p>
         Add the plugin to <code>babel.config.js</code>. Same deal — reads{" "}
         <code>stareezy.config.ts</code> automatically.
@@ -226,7 +259,20 @@ module.exports = {
       </pre>
 
       {/* ── Metro ─────────────────────────────────────────────────────────── */}
-      <h2>Metro transformer (React Native)</h2>
+      <h2
+        className="gradient-text"
+        style={{
+          display: "inline-block",
+          background: "var(--brand-50)",
+          border: "1px solid var(--brand-500)",
+          borderRadius: "var(--radius-md)",
+          padding: "0.4rem 1rem",
+          marginTop: "1.5rem",
+          color: "var(--brand-500)",
+        }}
+      >
+        Metro transformer (React Native)
+      </h2>
       <p>
         For React Native projects using Metro, point{" "}
         <code>babelTransformerPath</code> at the Metro transformer. It reads{" "}
@@ -255,7 +301,7 @@ module.exports = config`}</code>
       </Callout>
 
       {/* ── Built-in prop mappings ────────────────────────────────────────── */}
-      <h2>Built-in prop mappings</h2>
+      <h2 className="gradient-text">Built-in prop mappings</h2>
       <p>
         These are the default mappings. Custom shorthands from{" "}
         <code>stareezy.config.ts</code> are merged on top.
@@ -281,7 +327,7 @@ module.exports = config`}</code>
         </tbody>
       </table>
 
-      <h2>Non-token props pass through</h2>
+      <h2 className="gradient-text">Non-token props pass through</h2>
       <pre>
         <code>{`// Token prop → replaced with class name ✓
 <Box bg={colors.celurenBlue[500]} />

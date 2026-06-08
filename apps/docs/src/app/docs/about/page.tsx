@@ -32,7 +32,7 @@ export default function AboutPage() {
       title="About"
       description="The person behind the library."
       badge="About"
-      badgeColor="#7c3aed"
+      badgeColor="#ff6a1a"
       icon="◎"
     >
       {/* Builder card */}
@@ -62,7 +62,7 @@ export default function AboutPage() {
             right: 0,
             height: 3,
             background:
-              "linear-gradient(90deg, var(--brand-primary), var(--brand-accent, #7c3aed))",
+              "linear-gradient(90deg, #ff6a1a, #dc143c)",
           }}
         />
         {/* Glow */}
@@ -74,7 +74,7 @@ export default function AboutPage() {
             width: 260,
             height: 260,
             background:
-              "radial-gradient(circle, rgba(124,58,237,0.1) 0%, transparent 65%)",
+              "radial-gradient(circle, rgba(255,106,26,0.12) 0%, transparent 65%)",
             pointerEvents: "none",
           }}
         />
@@ -96,16 +96,16 @@ export default function AboutPage() {
               height: 72,
               borderRadius: "50%",
               background:
-                "linear-gradient(135deg, var(--brand-primary), var(--brand-accent, #7c3aed))",
+                "linear-gradient(135deg, #ff6a1a, #dc143c)",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
               fontSize: "1.75rem",
               flexShrink: 0,
-              boxShadow: "0 0 28px rgba(124,58,237,0.25)",
+              boxShadow: "0 0 28px rgba(255,106,26,0.35)",
             }}
           >
-            👨‍💻
+            ◈
           </div>
 
           <div style={{ flex: 1, minWidth: 200 }}>
@@ -115,7 +115,7 @@ export default function AboutPage() {
                 fontWeight: 700,
                 letterSpacing: "0.1em",
                 textTransform: "uppercase",
-                color: "var(--brand-primary)",
+                color: "#ff6a1a",
                 marginBottom: "0.4rem",
               }}
             >
@@ -143,7 +143,7 @@ export default function AboutPage() {
                 fontFamily: "var(--font-mono)",
               }}
             >
-              stareezy
+              Stareezy
             </div>
 
             <p
@@ -169,15 +169,15 @@ export default function AboutPage() {
                 display: "inline-flex",
                 alignItems: "center",
                 gap: "0.5rem",
-                background: "var(--brand-primary)",
-                color: "var(--color-bg)",
+                background: "linear-gradient(135deg, #ff6a1a, #e05010)",
+                color: "#ffffff",
                 padding: "0.6rem 1.4rem",
                 borderRadius: "var(--radius-md)",
                 fontWeight: 700,
                 fontSize: "0.875rem",
                 textDecoration: "none",
                 boxShadow:
-                  "0 0 20px color-mix(in srgb, var(--brand-primary) 30%, transparent)",
+                  "0 0 24px rgba(255,106,26,0.3)",
               }}
             >
               stareezy.tech ↗
@@ -186,7 +186,7 @@ export default function AboutPage() {
         </div>
       </div>
 
-      <h2>Why this library exists</h2>
+      <h2 className="gradient-text">Why this library exists</h2>
       <p>
         Most design token libraries are either too opinionated, not typed deeply
         enough, or only work on one platform. I wanted something where every
@@ -207,7 +207,7 @@ export default function AboutPage() {
         cosmic purples.
       </Callout>
 
-      <h2>What&apos;s in the box</h2>
+      <h2 className="gradient-text">What&apos;s in the box</h2>
 
       <div
         style={{
@@ -221,8 +221,10 @@ export default function AboutPage() {
           <div
             key={item.label}
             style={{
-              background: "var(--color-surface)",
-              border: "1px solid var(--color-border)",
+              background: "rgba(255, 255, 255, 0.03)",
+              backdropFilter: "blur(8px)",
+              WebkitBackdropFilter: "blur(8px)",
+              border: "1px solid rgba(255, 255, 255, 0.06)",
               borderRadius: "var(--radius-md)",
               padding: "0.85rem 1rem",
             }}
@@ -235,8 +237,21 @@ export default function AboutPage() {
                 letterSpacing: "0.08em",
                 color: "var(--color-muted)",
                 marginBottom: "0.3rem",
+                display: "flex",
+                alignItems: "center",
+                gap: "0.4rem",
               }}
             >
+              <span
+                style={{
+                  width: 6,
+                  height: 6,
+                  borderRadius: "50%",
+                  background: "#ff6a1a",
+                  display: "inline-block",
+                  flexShrink: 0,
+                }}
+              />
               {item.label}
             </div>
             <div
@@ -252,7 +267,7 @@ export default function AboutPage() {
         ))}
       </div>
 
-      <h2>Get in touch</h2>
+      <h2 className="gradient-text">Get in touch</h2>
       <p>
         If you&apos;re using Stareezy UI, found a bug, or want to contribute —
         reach out. The best place is the GitHub repo or my personal site.
@@ -274,8 +289,8 @@ export default function AboutPage() {
             display: "inline-flex",
             alignItems: "center",
             gap: "0.4rem",
-            background: "var(--brand-primary)",
-            color: "var(--color-bg)",
+            background: "#ff6a1a",
+            color: "#ffffff",
             padding: "0.6rem 1.25rem",
             borderRadius: "var(--radius-md)",
             fontWeight: 700,

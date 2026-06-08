@@ -1,5 +1,5 @@
 /**
- * stareezy CLI — main entry point.
+ * Stareezy CLI — main entry point.
  *
  * Usage:
  *   stareezy create [project-name] [--template next|vite|expo]
@@ -62,7 +62,7 @@ Commands:
 Options:
   --template   Template to use with create (next | vite | expo)
   --yes        Answer yes to all prompts
-  --skip-init  Skip the init offer when running add
+  --skip-init  Skip the init offer when adding components
 
 Available components:
   ${getAllComponents()
@@ -100,7 +100,7 @@ async function main(): Promise<void> {
     }
 
     case "init": {
-      console.log("Initialising stareezy in the current project...\n");
+      console.log("Initialising Stareezy in the current project...\n");
       const result = await runInit({ cwd, yes });
       if (
         result.skippedConfig &&

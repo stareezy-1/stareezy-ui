@@ -17,6 +17,7 @@
     "build:compiler": "pnpm --filter @stareezy-ui/compiler build",
     "build:components": "pnpm --filter @stareezy-ui/components build",
     "build:cli": "pnpm --filter @stareezy-ui/cli build",
+    "build:mcp": "pnpm --filter @stareezy-ui/mcp-server build",
     "build:cdn": "pnpm --filter @stareezy-ui/tokens build:cdn && pnpm --filter @stareezy-ui/stylesheet build:cdn && pnpm --filter @stareezy-ui/core build:cdn && pnpm --filter @stareezy-ui/runtime build:cdn && pnpm --filter @stareezy-ui/components build:cdn",
     "build:apps": "pnpm --filter './apps/**' build",
     "typecheck": "pnpm -r typecheck",

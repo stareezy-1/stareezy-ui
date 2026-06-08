@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import type { ReactNode } from "react";
 import { DocPage, Callout, Step } from "../../../components/DocPage";
 
 export const metadata: Metadata = {
@@ -8,6 +9,81 @@ export const metadata: Metadata = {
   alternates: { canonical: "https://ui.stareezy.tech/docs/quick-start" },
 };
 
+const steps = [
+  {
+    step: "1",
+    title: "CLI",
+    desc: "npx stareezy create my-app --template next|vite|expo",
+  },
+  {
+    step: "2",
+    title: "Install",
+    desc: "pnpm add @stareezy-ui/tokens @stareezy-ui/components",
+  },
+  {
+    step: "3",
+    title: "Config",
+    desc: "stareezy.config.ts — createUi({ themes, media, shorthands })",
+  },
+  {
+    step: "4",
+    title: "ThemeProvider",
+    desc: 'Wrap app root with <ThemeProvider defaultTheme="aurora">',
+  },
+  {
+    step: "5",
+    title: "t.* props",
+    desc: "t.backgrounds.primary, t.text.primary — theme-reactive",
+  },
+  {
+    step: "6",
+    title: "Responsive props",
+    desc: "<Box p={{ base: 8, md: 16 }} $lg={{ flexDirection: 'row' }} />",
+  },
+  {
+    step: "7",
+    title: "Static tokens",
+    desc: "colors.celurenBlue[500], spacing[4], radius.md",
+  },
+  {
+    step: "8",
+    title: "Server Components",
+    desc: "import { Box } from '@stareezy-ui/components/server'",
+  },
+];
+
+function StepGlow({
+  n,
+  title,
+  children,
+}: {
+  n: number;
+  title: string;
+  children: ReactNode;
+}) {
+  return (
+    <div style={{ position: "relative" }}>
+      <div
+        style={{
+          position: "absolute",
+          left: 0,
+          top: 2,
+          width: 32,
+          height: 32,
+          borderRadius: "50%",
+          background: "var(--brand-primary)",
+          opacity: 0.2,
+          filter: "blur(14px)",
+          pointerEvents: "none",
+        }}
+      />
+      <Step n={n} title={title}>
+        {children}
+      </Step>
+    </div>
+  );
+}
+
 export default function QuickStartPage() {
   return (
     <DocPage
@@ -15,7 +91,7 @@ export default function QuickStartPage() {
       description="From zero to a fully themed, type-safe, responsive component tree — in one page."
       badge="Guide"
       icon="▶"
-      badgeColor="#00cc6a"
+      badgeColor="#22c55e"
     >
       <Callout type="tip">
         Fastest path: <code>npx stareezy create my-app --template next</code>.
@@ -24,13 +100,13 @@ export default function QuickStartPage() {
       </Callout>
 
       {/* ── 1. Scaffold with the CLI ──────────────────────────────────────── */}
-      <h2>1. Scaffold with the CLI</h2>
+      <h2 className="gradient-text">1. Scaffold with the CLI</h2>
       <p>
         The <code>@stareezy-ui/cli</code> creates a fully pre-wired project with
         one command. Choose your template:
       </p>
 
-      <Step n={1} title="Create a new project">
+      <StepGlow n={1} title="Create a new project">
         <pre>
           <code>{`# Next.js 15 App Router (React 19)
 npx stareezy create my-app --template next
@@ -46,7 +122,7 @@ npx stareezy create my-app --template expo`}</code>
           template ships with <code>stareezy.config.ts</code>, the compiler
           plugin, <code>ThemeProvider</code>, and a demo screen.
         </p>
-      </Step>
+      </StepGlow>
 
       <Callout type="info">
         If you already have a project, use <code>npx stareezy init</code> to add
@@ -56,9 +132,11 @@ npx stareezy create my-app --template expo`}</code>
       </Callout>
 
       {/* ── 2. Manual install ─────────────────────────────────────────────── */}
-      <h2>2. Manual install (skip if you used the CLI)</h2>
+      <h2 className="gradient-text">
+        2. Manual install (skip if you used the CLI)
+      </h2>
 
-      <Step n={2} title="Install packages">
+      <StepGlow n={2} title="Install packages">
         <pre>
           <code>{`# pnpm (recommended)
 pnpm add @stareezy-ui/tokens @stareezy-ui/components
@@ -72,17 +150,17 @@ yarn add -D @stareezy-ui/compiler
 npm install @stareezy-ui/tokens @stareezy-ui/components
 npm install -D @stareezy-ui/compiler`}</code>
         </pre>
-      </Step>
+      </StepGlow>
 
       {/* ── 3. Create config ──────────────────────────────────────────────── */}
-      <h2>3. Create your config</h2>
+      <h2 className="gradient-text">3. Create your config</h2>
       <p>
         Create <code>stareezy.config.ts</code> at the root of your project. The
         module augmentation makes your config flow into the type system — so
         autocomplete and type errors reflect your exact setup.
       </p>
 
-      <Step n={3} title="stareezy.config.ts">
+      <StepGlow n={3} title="stareezy.config.ts">
         <pre>
           <code>{`// stareezy.config.ts
 import { createUi, themes } from '@stareezy-ui/tokens'
@@ -118,12 +196,12 @@ declare module '@stareezy-ui/tokens' {
 
 export default ui`}</code>
         </pre>
-      </Step>
+      </StepGlow>
 
       {/* ── 4. Wrap your app ──────────────────────────────────────────────── */}
-      <h2>4. Wrap your app with ThemeProvider</h2>
+      <h2 className="gradient-text">4. Wrap your app with ThemeProvider</h2>
 
-      <Step n={4} title="App root / layout">
+      <StepGlow n={4} title="App root / layout">
         <pre>
           <code>{`// Next.js: app/providers.tsx  (note: "use client" required)
 'use client'
@@ -149,17 +227,17 @@ function App() {
   return <ThemeProvider defaultTheme="aurora"><AppContent /></ThemeProvider>
 }`}</code>
         </pre>
-      </Step>
+      </StepGlow>
 
       {/* ── 5. Theme-reactive props ───────────────────────────────────────── */}
-      <h2>5. Use theme-reactive props</h2>
+      <h2 className="gradient-text">5. Use theme-reactive props</h2>
       <p>
         The <code>t</code> accessor returns <strong>ThemeToken</strong>{" "}
         references. They resolve to the current theme&apos;s value at render
         time and update automatically when the theme switches.
       </p>
 
-      <Step n={5} title="Theme-reactive component">
+      <StepGlow n={5} title="Theme-reactive component">
         <pre>
           <code>{`import { t } from '@stareezy-ui/tokens'
 import { Box, Text, Button } from '@stareezy-ui/components'
@@ -190,17 +268,17 @@ function Card() {
 // quasar → bg: deep violet, border: #a855f7
 // light  → bg: white,       border: #024cce`}</code>
         </pre>
-      </Step>
+      </StepGlow>
 
       {/* ── 6. Responsive props ───────────────────────────────────────────── */}
-      <h2>6. Use responsive props</h2>
+      <h2 className="gradient-text">6. Use responsive props</h2>
       <p>
         All components accept responsive objects and <code>$</code>-prefixed
         breakpoint groups — derived from your{" "}
         <code>createUi({"{ media }"})</code> config.
       </p>
 
-      <Step n={6} title="Responsive layout props on any component">
+      <StepGlow n={6} title="Responsive layout props on any component">
         <pre>
           <code>{`// Responsive object syntax — mobile-first cascade
 <Box p={{ base: 8, md: 16, lg: 24 }} flexDirection={{ base: 'column', lg: 'row' }} />
@@ -218,12 +296,12 @@ function Card() {
 <Box br={{ base: 4, md: 8, lg: 12 }} />    // borderRadius
 <Box w={{ base: '100%', md: 320 }} />      // width`}</code>
         </pre>
-      </Step>
+      </StepGlow>
 
       {/* ── 7. Static tokens ──────────────────────────────────────────────── */}
-      <h2>7. Use static tokens</h2>
+      <h2 className="gradient-text">7. Use static tokens</h2>
 
-      <Step n={7} title="Static token props">
+      <StepGlow n={7} title="Static token props">
         <pre>
           <code>{`import { colors, spacing, radius } from '@stareezy-ui/tokens'
 
@@ -237,16 +315,16 @@ const style = {
   borderRadius: radius.md.value,                    // 8
 }`}</code>
         </pre>
-      </Step>
+      </StepGlow>
 
       {/* ── 8. RSC server entry ───────────────────────────────────────────── */}
-      <h2>8. React Server Components</h2>
+      <h2 className="gradient-text">8. React Server Components</h2>
       <p>
         Import layout primitives from the <code>&quot;./server&quot;</code>{" "}
         entry — hook-free, safe in Next.js App Router Server Components.
       </p>
 
-      <Step n={8} title="Server Component">
+      <StepGlow n={8} title="Server Component">
         <pre>
           <code>{`// app/page.tsx — Server Component (default in Next.js App Router)
 import { Box, Stack, Text } from '@stareezy-ui/components/server'
@@ -264,12 +342,12 @@ export default async function Page() {
   )
 }`}</code>
         </pre>
-      </Step>
+      </StepGlow>
 
       {/* ── 9. Theme switching ────────────────────────────────────────────── */}
-      <h2>9. Switch themes</h2>
+      <h2 className="gradient-text">9. Switch themes</h2>
 
-      <Step n={9} title="useThemeSwitch">
+      <StepGlow n={9} title="useThemeSwitch">
         <pre>
           <code>{`import { useThemeSwitch } from '@stareezy-ui/tokens'
 
@@ -291,12 +369,14 @@ function ThemeSwitcher() {
   )
 }`}</code>
         </pre>
-      </Step>
+      </StepGlow>
 
       {/* ── 10. Build-time compiler ───────────────────────────────────────── */}
-      <h2>10. Add the compiler (optional but recommended)</h2>
+      <h2 className="gradient-text">
+        10. Add the compiler (optional but recommended)
+      </h2>
 
-      <Step n={10} title="Vite / Next.js">
+      <StepGlow n={10} title="Vite / Next.js">
         <pre>
           <code>{`// vite.config.ts
 import { stareezyVitePlugin } from '@stareezy-ui/compiler'
@@ -311,9 +391,9 @@ export default {
   }
 }`}</code>
         </pre>
-      </Step>
+      </StepGlow>
 
-      <Step n={11} title="Expo / Metro">
+      <StepGlow n={11} title="Expo / Metro">
         <pre>
           <code>{`// metro.config.js
 const { getDefaultConfig } = require('expo/metro-config')
@@ -324,7 +404,7 @@ config.transformer = {
 }
 module.exports = config`}</code>
         </pre>
-      </Step>
+      </StepGlow>
 
       <Callout type="tip">
         The compiler reads <code>stareezy.config.ts</code> from your project
@@ -332,7 +412,9 @@ module.exports = config`}</code>
       </Callout>
 
       {/* ── 11. Add components ────────────────────────────────────────────── */}
-      <h2>11. Add components to an existing project</h2>
+      <h2 className="gradient-text">
+        11. Add components to an existing project
+      </h2>
       <p>
         Use <code>stareezy add</code> to install specific components with
         automatic transitive dependency resolution:
@@ -342,88 +424,65 @@ module.exports = config`}</code>
 npx stareezy add drawer tooltip table pagination breadcrumb`}</code>
       </pre>
 
-      {/* ── Summary ───────────────────────────────────────────────────────── */}
-      <h2>Summary</h2>
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))",
-          gap: "0.75rem",
-          margin: "1rem 0",
-        }}
-      >
-        {[
-          {
-            step: "1",
-            title: "CLI",
-            desc: "npx stareezy create my-app --template next|vite|expo",
-          },
-          {
-            step: "2",
-            title: "Install",
-            desc: "pnpm add @stareezy-ui/tokens @stareezy-ui/components",
-          },
-          {
-            step: "3",
-            title: "Config",
-            desc: "stareezy.config.ts — createUi({ themes, media, shorthands })",
-          },
-          {
-            step: "4",
-            title: "ThemeProvider",
-            desc: 'Wrap app root with <ThemeProvider defaultTheme="aurora">',
-          },
-          {
-            step: "5",
-            title: "t.* props",
-            desc: "t.backgrounds.primary, t.text.primary — theme-reactive",
-          },
-          {
-            step: "6",
-            title: "Responsive props",
-            desc: "<Box p={{ base: 8, md: 16 }} $lg={{ flexDirection: 'row' }} />",
-          },
-          {
-            step: "7",
-            title: "Static tokens",
-            desc: "colors.celurenBlue[500], spacing[4], radius.md",
-          },
-          {
-            step: "8",
-            title: "Server Components",
-            desc: "import { Box } from '@stareezy-ui/components/server'",
-          },
-        ].map((item) => (
+      {/* ── Summary (progress tracker) ─────────────────────────────────────── */}
+      <h2 className="gradient-text" style={{ marginBottom: "1.5rem" }}>
+        Summary
+      </h2>
+
+      <div style={{ margin: "1rem 0 2rem" }}>
+        {steps.map((item, idx) => (
           <div
             key={item.step}
             style={{
-              background: "var(--color-surface)",
-              border: "1px solid var(--color-border)",
-              borderRadius: "var(--radius-md)",
-              padding: "0.85rem 1rem",
               display: "flex",
-              gap: "0.75rem",
-              alignItems: "flex-start",
+              gap: "1rem",
+              position: "relative",
+              paddingBottom: idx < steps.length - 1 ? "0.85rem" : 0,
             }}
           >
+            {idx < steps.length - 1 && (
+              <div
+                style={{
+                  position: "absolute",
+                  left: 13,
+                  top: 30,
+                  bottom: 0,
+                  width: 2,
+                  background:
+                    "linear-gradient(to bottom, var(--brand-primary), transparent)",
+                  opacity: 0.2,
+                }}
+              />
+            )}
             <div
               style={{
-                width: 24,
-                height: 24,
+                width: 28,
+                height: 28,
                 borderRadius: "50%",
-                background: "var(--brand-500)",
+                background: "var(--brand-primary)",
                 color: "var(--color-bg)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                fontSize: "0.72rem",
+                fontSize: "0.75rem",
                 fontWeight: 800,
                 flexShrink: 0,
+                boxShadow: "var(--shadow-sm)",
+                marginTop: 1,
+                position: "relative",
+                zIndex: 1,
               }}
             >
               {item.step}
             </div>
-            <div>
+            <div
+              className="glass-card"
+              style={{
+                flex: 1,
+                padding: "0.75rem 1rem",
+                borderRadius: "var(--radius-md)",
+              }}
+            >
               <div
                 style={{
                   fontWeight: 700,

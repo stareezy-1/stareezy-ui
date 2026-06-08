@@ -4,7 +4,7 @@ import { create } from "@storybook/theming/create";
  * Storybook custom theme derived from Stareezy UI design tokens.
  * Uses the same brand colors, fonts, and radius values as the design system.
  */
-export const stareezyTheme = create({
+export const StareezyTheme = create({
   base: "light",
 
   // Brand
@@ -45,7 +45,7 @@ export const stareezyTheme = create({
   fontCode: '"JetBrains Mono", "Fira Code", monospace',
 });
 
-export const stareezyDarkTheme = create({
+export const StareezyDarkTheme = create({
   base: "dark",
 
   brandTitle: "Stareezy UI",

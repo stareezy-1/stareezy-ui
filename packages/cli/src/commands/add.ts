@@ -1,5 +1,5 @@
 /**
- * add command — install named stareezy-ui components into an existing project.
+ * add command — install named Stareezy-ui components into an existing project.
  *
  * Steps:
  *  1. Detect framework + package manager
@@ -296,7 +296,7 @@ export async function runAdd(options: AddOptions): Promise<void> {
     if (!project.hasConfig) missing.push("stareezy.config.ts");
     if (!project.hasWiring) missing.push("compiler wiring");
     if (!project.hasThemeProvider) missing.push("ThemeProvider");
-    console.log(`\n⚠ Missing stareezy-ui setup: ${missing.join(", ")}`);
+    console.log(`\n⚠ Missing Stareezy-ui setup: ${missing.join(", ")}`);
 
     const shouldInit =
       options.yes ||

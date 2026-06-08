@@ -10,5 +10,5 @@ export { transform, TokenCompilerError } from "./transform";
 export { stareezyBabelPlugin } from "./babel";
 export { stareezyVitePlugin } from "./vite";
 export { stareezyMetroTransformer } from "./metro";
-export type { SzrBuildConfig } from "./loadConfig";
-export { loadSzrConfig } from "./loadConfig";
+export type { StareezyBuildConfig } from "./loadConfig";
+export { loadStareezyConfig } from "./loadConfig";

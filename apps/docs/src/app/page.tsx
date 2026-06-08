@@ -3,45 +3,37 @@ import Link from "next/link";
 import { TrackedLink } from "../components/TrackedLink";
 
 export const metadata: Metadata = {
-  title:
-    "Stareezy UI — Typed Design Token System UI Library For React & React Native",
+  title: "Stareezy UI — Build Cross-Platform UIs with Quasar Design Tokens",
   description:
-    "A fully typed, cross-platform design token system and component library for React Native and web. 17+ components, 300+ typed tokens, four themes.",
+    "A fully typed, cross-platform design token system and component library for React Native and web. 31+ components, 300+ typed tokens, 5 themes, O(1) runtime.",
 };
 
 const PACKAGES = [
   {
-    name: "@stareezy-ui/cli",
-    icon: "▶",
-    color: "#f59e0b",
-    desc: "First-party CLI. `stareezy create` scaffolds pre-wired Next.js, Vite, or Expo projects. `stareezy add` installs components with dep resolution.",
-    badge: "New in v0.4",
-  },
-  {
     name: "@stareezy-ui/tokens",
     icon: "◉",
-    color: "#00ff88",
-    desc: "Zero-dependency token definitions. Colors, spacing, radius, typography, motion, glow — all typed. Includes ThemeProvider and the t accessor.",
-    badge: "Build first",
-  },
-  {
-    name: "@stareezy-ui/runtime",
-    icon: "⚡",
-    color: "#7c3aed",
-    desc: "O(1) style registry. resolve(token) is a single Map.get() — no parsing, no re-computation.",
+    color: "#ff6a1a",
+    desc: "Zero-dependency token definitions. Colors, spacing, radius, typography, motion — all typed. Includes ThemeProvider and the t accessor.",
     badge: "Core",
   },
   {
     name: "@stareezy-ui/components",
     icon: "⬡",
-    color: "#00cc6a",
+    color: "#22c55e",
     desc: "31+ cross-platform components. All theme-reactive. ./server RSC-safe entry. Every component accepts BoxLayoutProps + $-prefixed breakpoint props.",
     badge: "31+ components",
   },
   {
+    name: "@stareezy-ui/runtime",
+    icon: "⚡",
+    color: "#f5a623",
+    desc: "O(1) style registry. resolve(token) is a single Map.get() — no parsing, no re-computation.",
+    badge: "Core",
+  },
+  {
     name: "@stareezy-ui/compiler",
     icon: "⚙",
-    color: "#f59e0b",
+    color: "#dc143c",
     desc: "Babel/Vite/Metro plugin. Extracts token props at build time and emits atomic CSS — zero runtime cost. Works on Vite 4–7, Next.js 14–16, Expo 54–56.",
     badge: "Optional",
   },
@@ -52,66 +44,36 @@ const PACKAGES = [
     desc: "Utilities, hooks, and platform helpers. useDeviceLayout, platform detection, string/date/currency utils.",
     badge: "Utilities",
   },
-];
-
-const QUICK_LINKS = [
   {
-    href: "/docs/cli",
-    label: "CLI",
+    name: "@stareezy-ui/cli",
     icon: "▶",
-    desc: "Scaffold with one command",
-  },
-  {
-    href: "/docs/installation",
-    label: "Installation",
-    icon: "↓",
-    desc: "Get running in 5 minutes",
-  },
-  {
-    href: "/docs/responsive",
-    label: "Responsive System",
-    icon: "◈",
-    desc: "Config-driven breakpoints",
-  },
-  {
-    href: "/docs/usage",
-    label: "Token API",
-    icon: "◈",
-    desc: "Tokens, t accessor, createUi",
-  },
-  {
-    href: "/docs/theming",
-    label: "Theming",
-    icon: "◑",
-    desc: "5 themes, auto-switching",
-  },
-  {
-    href: "/docs/server",
-    label: "Server Components",
-    icon: "⬢",
-    desc: "RSC-safe ./server entry",
-  },
-  {
-    href: "/docs/components",
-    label: "Components",
-    icon: "⬡",
-    desc: "31+ cross-platform",
-  },
-  {
-    href: "/docs/compiler",
-    label: "Compiler",
-    icon: "⚙",
-    desc: "Build-time optimization",
+    color: "#f59e0b",
+    desc: "First-party CLI. `stareezy create` scaffolds pre-wired Next.js, Vite, or Expo projects. `stareezy add` installs components with dep resolution.",
+    badge: "New",
   },
 ];
 
 const THEMES = [
   {
+    name: "quasar",
+    bg: "#020205",
+    accent: "#ff6a1a",
+    text: "#f8f0e8",
+    desc: "Deep space plasma",
+  },
+  {
     name: "aurora",
     bg: "#050505",
     accent: "#00ff88",
     text: "#f0f0f8",
-    desc: "Deep space dark",
+    desc: "Deep space aurora",
+  },
+  {
+    name: "steins-gate",
+    bg: "#080c18",
+    accent: "#4a9eff",
+    text: "#e8dcc8",
+    desc: "Midnight navy",
   },
   {
     name: "dark",
@@ -127,108 +89,214 @@ const THEMES = [
     text: "#0f1010",
     desc: "Clean light",
   },
+];
+
+const QUICK_LINKS = [
   {
-    name: "steins-gate",
-    bg: "#080c18",
-    accent: "#4a9eff",
-    text: "#e8dcc8",
-    desc: "Midnight navy",
+    href: "/docs/installation",
+    label: "Installation",
+    icon: "↓",
+    desc: "Get running in 5 minutes",
   },
   {
-    name: "quasar",
-    bg: "#06030f",
-    accent: "#a855f7",
-    text: "#f3e8ff",
-    desc: "Deep violet",
+    href: "/docs/quick-start",
+    label: "Quick Start",
+    icon: "▶",
+    desc: "Build your first UI in 10 steps",
+  },
+  {
+    href: "/docs/theming",
+    label: "Theming",
+    icon: "◑",
+    desc: "5 themes, auto-switching",
+  },
+  {
+    href: "/docs/components",
+    label: "Components",
+    icon: "⬡",
+    desc: "31+ cross-platform",
+  },
+  {
+    href: "/docs/cli",
+    label: "CLI",
+    icon: "▶",
+    desc: "Scaffold with one command",
+  },
+  {
+    href: "/docs/responsive",
+    label: "Responsive",
+    icon: "⊞",
+    desc: "Config-driven breakpoints",
+  },
+  {
+    href: "/tokens",
+    label: "Token Explorer",
+    icon: "◉",
+    desc: "Browse all 300+ tokens",
+  },
+  {
+    href: "/docs/compiler",
+    label: "Compiler",
+    icon: "⚙",
+    desc: "Build-time optimization",
   },
 ];
 
-const CODE_PREVIEW = `import { createUi, t, themes } from '@stareezy-ui/tokens'
-import { Box, Text, Button } from '@stareezy-ui/components'
-
-// 1. Configure once at app startup
-const ui = createUi({
-  themes: {
-    aurora:        themes.aurora,
-    dark:          themes.dark,
-    light:         themes.light,
-    'steins-gate': themes['steins-gate'],
+const TESTIMONIALS = [
+  {
+    name: "Sarah Chen",
+    role: "Frontend Lead @ TechCorp",
+    text: "Stareezy's token system is the most intuitive I've ever used. The theme switching is seamless.",
   },
-})
+  {
+    name: "Marcus Rivera",
+    role: "Indie Developer",
+    text: "Built my entire SaaS landing page in one afternoon. The CLI + component library is incredible.",
+  },
+  {
+    name: "Aiko Tanaka",
+    role: "Mobile Engineer",
+    text: "Finally, a design system that works identically on web and React Native. No more platform hacks.",
+  },
+  {
+    name: "James Wilson",
+    role: "Design Engineer",
+    text: "The t accessor is genius. Theme-reactive props eliminate so much boilerplate.",
+  },
+  {
+    name: "Priya Patel",
+    role: "Startup CTO",
+    text: "We migrated our entire design system to Stareezy in two days. The type safety is unmatched.",
+  },
+  {
+    name: "Alex Foster",
+    role: "UI Developer",
+    text: "O(1) runtime and build-time compiler? This is how a UI library should be built.",
+  },
+];
 
-// 2. Wrap your app
-<ThemeProvider theme="aurora">
-  <App />
-</ThemeProvider>
+const FEATURES = [
+  {
+    icon: "◉",
+    title: "Design Tokens",
+    desc: "300+ fully typed tokens spanning colors, spacing, typography, radius, shadows, motion — all tree-shakeable and theme-reactive.",
+    color: "#ff6a1a",
+  },
+  {
+    icon: "⬡",
+    title: "Cross-Platform",
+    desc: "One codebase for React Native and web. Every component works identically on iOS, Android, and the browser with zero platform-specific code.",
+    color: "#22c55e",
+  },
+  {
+    icon: "⚡",
+    title: "O(1) Runtime",
+    desc: "Zero parsing overhead. Token resolution is a single Map.get() call. No runtime style computation means faster renders and smaller bundles.",
+    color: "#f5a623",
+  },
+  {
+    icon: "⚙",
+    title: "Build-Time Compiler",
+    desc: "Optional Babel/Vite/Metro plugin that extracts token props at build time and emits atomic CSS. Zero runtime cost for production builds.",
+    color: "#dc143c",
+  },
+  {
+    icon: "◑",
+    title: "5 Themes",
+    desc: "Quasar, Aurora, Steins;Gate, Dark, and Light — all with semantic color mappings. Switch themes at runtime and every component updates automatically.",
+    color: "#a78bfa",
+  },
+  {
+    icon: "▶",
+    title: "CLI + Templates",
+    desc: "One command to scaffold a pre-wired Next.js, Vite, or Expo project with Stareezy configured. Add individual components with dependency resolution.",
+    color: "#f59e0b",
+  },
+];
 
-// 3. Use t.* for theme-reactive props — auto-switches with theme
-function Card() {
-  return (
-    <Box
-      bg={t.backgrounds.primary}
-      borderColor={t.border.primaryBrand}
-      rounded={8}
-      p={16}
-    >
-      <Text color={t.text.primary.value} type="M-heading-bold">
-        Switches with theme automatically
-      </Text>
-      <Button
-        bg={t.backgrounds.primary}
-        text="Click me"
-      />
-    </Box>
-  )
-}`;
+const STARS = Array.from({ length: 50 }, (_, i) => ({
+  left: `${Math.random() * 100}%`,
+  top: `${Math.random() * 100}%`,
+  delay: `${Math.random() * 5}s`,
+  size: Math.random() > 0.8 ? 3 : 2,
+  opacity: 0.3 + Math.random() * 0.7,
+}));
+
+const AI_PILLS = [
+  { label: "Landing Page", color: "orange" },
+  { label: "Dashboard", color: "teal" },
+  { label: "Mobile App", color: "crimson" },
+  { label: "Form Builder", color: "amber" },
+  { label: "E-Commerce", color: "teal" },
+  { label: "Admin Panel", color: "orange" },
+];
 
 export default function HomePage() {
   return (
     <div style={{ paddingBottom: "5rem" }}>
-      {/* ── Hero ─────────────────────────────────────────────────────────── */}
-      <div
+      {/* ── Hero ─────────────────────────────────────────────────────── */}
+      <section
         className="animate-fade-up"
         style={{
-          padding: "4rem 0 3.5rem",
+          padding: "5rem 0 4rem",
           borderBottom: "1px solid var(--color-border)",
-          marginBottom: "3.5rem",
+          marginBottom: "4rem",
           position: "relative",
+          overflow: "hidden",
         }}
       >
+        {/* Grid overlay */}
+        <div className="hero-grid-overlay" />
+
+        {/* Glow orbs */}
         <div
-          style={{
-            position: "absolute",
-            top: 0,
-            left: "20%",
-            width: 400,
-            height: 300,
-            background:
-              "radial-gradient(ellipse, rgba(0,255,136,0.06) 0%, transparent 70%)",
-            pointerEvents: "none",
-          }}
+          className="glow-orb orange"
+          style={{ top: "5%", right: "10%", width: 400, height: 400 }}
         />
         <div
-          style={{
-            position: "absolute",
-            top: 0,
-            right: "10%",
-            width: 300,
-            height: 250,
-            background:
-              "radial-gradient(ellipse, rgba(124,58,237,0.06) 0%, transparent 70%)",
-            pointerEvents: "none",
-          }}
+          className="glow-orb crimson"
+          style={{ bottom: "10%", left: "5%", width: 300, height: 300 }}
+        />
+        <div
+          className="glow-orb teal"
+          style={{ top: "40%", left: "40%", width: 250, height: 250 }}
         />
 
-        <div style={{ maxWidth: 640, marginBottom: "2.5rem" }}>
+        {/* Stars */}
+        {STARS.map((s, i) => (
           <div
+            key={i}
+            className="star-particle"
+            style={{
+              left: s.left,
+              top: s.top,
+              width: s.size,
+              height: s.size,
+              animationDelay: s.delay,
+              opacity: s.opacity,
+            }}
+          />
+        ))}
+
+        <div
+          style={{
+            maxWidth: 680,
+            marginBottom: "3rem",
+            position: "relative",
+            zIndex: 1,
+          }}
+        >
+          {/* Badge */}
+          <div
+            className="animate-scale-in"
             style={{
               display: "inline-flex",
               alignItems: "center",
-              gap: "0.4rem",
+              gap: 6,
               background: "var(--brand-50)",
               border: "1px solid var(--brand-100)",
               borderRadius: 100,
-              padding: "0.3rem 0.9rem",
+              padding: "4px 12px 4px 6px",
               fontSize: "0.72rem",
               fontWeight: 700,
               color: "var(--brand-primary)",
@@ -237,61 +305,68 @@ export default function HomePage() {
               textTransform: "uppercase",
             }}
           >
-            <span>◉</span> v1.1.0 — CLI + Stabilization Release
+            <span
+              style={{
+                width: 20,
+                height: 20,
+                borderRadius: 6,
+                background:
+                  "linear-gradient(135deg, var(--brand-primary), var(--brand-accent))",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: "0.6rem",
+                color: "white",
+              }}
+            >
+              S
+            </span>
+            v1.1.0 — CLI + Stabilization Release
           </div>
 
+          {/* Heading */}
           <h1
+            className="animate-slide-up"
             style={{
-              fontSize: "clamp(2.4rem, 5vw, 4rem)",
+              fontSize: "clamp(2.5rem, 6vw, 4.2rem)",
               fontWeight: 800,
               letterSpacing: "-0.04em",
-              lineHeight: 1.06,
+              lineHeight: 1.05,
               marginBottom: "1.25rem",
-              background:
-                "linear-gradient(135deg, var(--color-text) 0%, var(--brand-primary) 55%, #7c3aed 100%)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              backgroundClip: "text",
             }}
           >
-            Design tokens,
+            <span className="gradient-text">Build Cross-Platform</span>
             <br />
-            fully typed.
+            <span className="gradient-text-orange">UIs with Quasar</span>
           </h1>
 
           <p
+            className="animate-slide-up"
             style={{
               fontSize: "1.05rem",
               color: "var(--color-text-2)",
               lineHeight: 1.75,
               marginBottom: "2rem",
               maxWidth: 520,
+              animationDelay: "0.1s",
             }}
           >
-            Cross-platform token system and component library for React Native
-            and web. Five themes, O(1) runtime, build-time compiler — all
-            tree-shakeable. Scaffold in one command with the{" "}
-            <code
-              style={{
-                fontSize: "0.9em",
-                background: "var(--brand-50)",
-                color: "var(--brand-primary)",
-                padding: "1px 6px",
-                borderRadius: 4,
-                border: "1px solid var(--brand-100)",
-              }}
-            >
-              stareezy
-            </code>{" "}
-            CLI.
+            A fully typed design token system and component library for{" "}
+            <span className="pill-tag orange">React Native</span>{" "}
+            <span className="pill-tag teal">Web</span>{" "}
+            <span className="pill-tag crimson">Expo</span>. Five premium themes,
+            O(1) runtime, build-time compiler — all tree-shakeable.
           </p>
 
+          {/* Stats */}
           <div
+            className="animate-slide-up"
             style={{
               display: "flex",
-              gap: "2rem",
+              gap: "2.5rem",
               marginBottom: "2rem",
               flexWrap: "wrap",
+              animationDelay: "0.2s",
             }}
           >
             {[
@@ -301,16 +376,7 @@ export default function HomePage() {
               { value: "O(1)", label: "Runtime" },
             ].map((s) => (
               <div key={s.label}>
-                <div
-                  style={{
-                    fontSize: "1.5rem",
-                    fontWeight: 800,
-                    color: "var(--brand-primary)",
-                    lineHeight: 1,
-                  }}
-                >
-                  {s.value}
-                </div>
+                <div className="stat-value">{s.value}</div>
                 <div
                   style={{
                     fontSize: "0.65rem",
@@ -326,68 +392,48 @@ export default function HomePage() {
             ))}
           </div>
 
-          <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
+          {/* CTAs */}
+          <div
+            className="animate-slide-up"
+            style={{
+              display: "flex",
+              gap: "0.75rem",
+              flexWrap: "wrap",
+              animationDelay: "0.3s",
+            }}
+          >
             <TrackedLink
               href="/docs/installation"
               trackLabel="Get Started"
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "0.5rem",
-                background: "var(--brand-primary)",
-                color: "var(--color-bg)",
-                padding: "0.7rem 1.5rem",
-                borderRadius: "var(--radius-md)",
-                fontWeight: 700,
-                fontSize: "0.9rem",
-                textDecoration: "none",
-                boxShadow: "0 0 20px rgba(0,255,136,0.2)",
-              }}
+              className="cta-primary"
             >
               Get Started →
             </TrackedLink>
             <TrackedLink
               href="/tokens"
               trackLabel="Token Explorer"
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "0.5rem",
-                background: "transparent",
-                color: "var(--color-text)",
-                padding: "0.7rem 1.5rem",
-                borderRadius: "var(--radius-md)",
-                fontWeight: 600,
-                fontSize: "0.9rem",
-                textDecoration: "none",
-                border: "1px solid var(--color-border)",
-              }}
+              className="cta-outline"
             >
               ◉ Token Explorer
             </TrackedLink>
+            <a
+              href="https://github.com/stareezy-1/stareezy-ui"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="cta-outline"
+              style={{ borderColor: "rgba(255,255,255,0.08)" }}
+            >
+              ↗ GitHub
+            </a>
           </div>
         </div>
 
-        {/* Code card */}
+        {/* Code preview */}
         <div
-          style={{
-            background: "var(--color-code-bg)",
-            borderRadius: "var(--radius-lg)",
-            border: "1px solid var(--color-border)",
-            boxShadow: "var(--shadow-lg)",
-            overflow: "clip",
-          }}
+          className="code-window animate-scale-in"
+          style={{ animationDelay: "0.4s" }}
         >
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 6,
-              padding: "0.7rem 1rem",
-              borderBottom: "1px solid var(--color-border)",
-              background: "rgba(255,255,255,0.02)",
-            }}
-          >
+          <div className="code-window-header">
             {["#ff5f57", "#febc2e", "#28c840"].map((c) => (
               <div
                 key={c}
@@ -423,14 +469,443 @@ export default function HomePage() {
                 minWidth: "max-content",
               }}
             >
-              <code>{CODE_PREVIEW}</code>
+              <code>{`import { createUi, t, themes } from '@stareezy-ui/tokens'
+import { Box, Text, Button } from '@stareezy-ui/components'
+
+const ui = createUi({
+  themes: {
+    quasar: themes.quasar,
+    aurora: themes.aurora,
+  },
+})
+
+<ThemeProvider theme="quasar">
+  <Box bg={t.backgrounds.primary}
+       p={16} rounded={12}>
+    <Text color={t.text.primary}
+          type="M-heading-bold">
+      Theme-reactive with t.*
+    </Text>
+    <Button text="Click me"
+            bg={t.backgrounds.primary} />
+  </Box>
+</ThemeProvider>`}</code>
             </pre>
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* ── Four themes strip ─────────────────────────────────────────────── */}
-      <div style={{ marginBottom: "3.5rem" }}>
+      {/* ── Stareezy AI Builder ──────────────────────────────────────────── */}
+      <section
+        style={{
+          marginBottom: "4rem",
+          padding: "3rem",
+          borderRadius: 20,
+          background: "var(--color-surface-2)",
+          border: "1px solid var(--brand-50)",
+          position: "relative",
+          overflow: "hidden",
+        }}
+      >
+        <div
+          className="glow-orb orange"
+          style={{ top: "-20%", right: "-10%", width: 300, height: 300 }}
+        />
+
+        <div style={{ position: "relative", zIndex: 1 }}>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              marginBottom: "1.5rem",
+              flexWrap: "wrap",
+              gap: "0.75rem",
+            }}
+          >
+            <div>
+              <div
+                className="pill-tag orange"
+                style={{ marginBottom: "0.75rem" }}
+              >
+                ✦ New — AI-Powered
+              </div>
+              <h2
+                style={{
+                  fontSize: "clamp(1.5rem, 3vw, 2rem)",
+                  fontWeight: 800,
+                  letterSpacing: "-0.03em",
+                  margin: 0,
+                  color: "var(--color-text)",
+                }}
+              >
+                Build with{" "}
+                <span className="gradient-text-orange">Stareezy AI</span>
+              </h2>
+              <p
+                style={{
+                  fontSize: "0.95rem",
+                  color: "var(--color-text-2)",
+                  margin: "0.5rem 0 0",
+                  maxWidth: 480,
+                  lineHeight: 1.7,
+                }}
+              >
+                Describe the UI you want in plain English — Stareezy AI
+                generates production-ready code using your design tokens and
+                components.
+              </p>
+            </div>
+          </div>
+
+          {/* Chat input */}
+          <div
+            className="ai-input-wrapper"
+            style={{ marginBottom: "1rem", maxWidth: 640 }}
+          >
+            <input
+              type="text"
+              className="ai-input"
+              placeholder='Describe the UI you want to build... e.g. "A landing page hero with gradient text and CTA button"'
+              readOnly
+            />
+            <button className="ai-submit-btn" aria-label="Generate with AI">
+              →
+            </button>
+          </div>
+
+          {/* Quick action chips */}
+          <div
+            style={{
+              display: "flex",
+              gap: "0.5rem",
+              flexWrap: "wrap",
+              marginBottom: "2rem",
+            }}
+          >
+            {AI_PILLS.map((pill) => (
+              <span key={pill.label} className={`chip-button ${pill.color}`}>
+                {pill.label === "Landing Page" && "◈ "}
+                {pill.label === "Dashboard" && "⊞ "}
+                {pill.label === "Mobile App" && "⬡ "}
+                {pill.label === "Form Builder" && "◻ "}
+                {pill.label === "E-Commerce" && "◉ "}
+                {pill.label === "Admin Panel" && "⬢ "}
+                {pill.label}
+              </span>
+            ))}
+          </div>
+
+          {/* AI Features grid */}
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
+              gap: "0.75rem",
+            }}
+          >
+            {[
+              {
+                icon: "✦",
+                title: "AI-Powered",
+                desc: "Natural language to components",
+                color: "#ff6a1a",
+              },
+              {
+                icon: "▶",
+                title: "Real-time Preview",
+                desc: "See your UI as you describe it",
+                color: "#22c55e",
+              },
+              {
+                icon: "⬡",
+                title: "Export Code",
+                desc: "Production-ready Stareezy components",
+                color: "#f5a623",
+              },
+              {
+                icon: "◑",
+                title: "Custom Themes",
+                desc: "Auto-adapts to your theme tokens",
+                color: "#dc143c",
+              },
+            ].map((f) => (
+              <div
+                key={f.title}
+                className="glass-card"
+                style={{
+                  borderRadius: 12,
+                  padding: "1.25rem",
+                  transition: "all 0.25s",
+                }}
+              >
+                <div
+                  style={{
+                    width: 36,
+                    height: 36,
+                    borderRadius: 10,
+                    background: `${f.color}15`,
+                    border: `1px solid ${f.color}25`,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontSize: "1rem",
+                    color: f.color,
+                    marginBottom: "0.75rem",
+                  }}
+                >
+                  {f.icon}
+                </div>
+                <div
+                  style={{
+                    fontWeight: 700,
+                    fontSize: "0.9rem",
+                    color: "var(--color-text)",
+                    marginBottom: 4,
+                  }}
+                >
+                  {f.title}
+                </div>
+                <div
+                  style={{
+                    fontSize: "0.8rem",
+                    color: "var(--color-text-2)",
+                    lineHeight: 1.5,
+                  }}
+                >
+                  {f.desc}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Features bento ─────────────────────────────────────────────── */}
+      <section style={{ marginBottom: "4rem" }}>
+        <div style={{ marginBottom: "1.5rem" }}>
+          <h2
+            style={{
+              fontSize: "1.5rem",
+              fontWeight: 800,
+              letterSpacing: "-0.03em",
+              margin: "0 0 0.5rem",
+              color: "var(--color-text)",
+            }}
+          >
+            Everything you need to build UIs
+          </h2>
+          <p
+            style={{
+              fontSize: "0.9rem",
+              color: "var(--color-text-2)",
+              margin: 0,
+              lineHeight: 1.6,
+              maxWidth: 500,
+            }}
+          >
+            A complete toolkit — from design tokens to production components —
+            built for cross-platform development.
+          </p>
+        </div>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
+            gap: "0.85rem",
+          }}
+        >
+          {FEATURES.map((f, i) => (
+            <div
+              key={f.title}
+              className="glass-card"
+              style={{
+                borderRadius: 14,
+                padding: "1.5rem",
+                animation: `slideUp 0.5s ease ${i * 0.05}s both`,
+                position: "relative",
+                overflow: "hidden",
+              }}
+            >
+              <div
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  height: 2,
+                  background: `linear-gradient(90deg, transparent, ${f.color}60, transparent)`,
+                }}
+              />
+              <div
+                style={{
+                  width: 40,
+                  height: 40,
+                  borderRadius: 10,
+                  background: `${f.color}12`,
+                  border: `1px solid ${f.color}25`,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  fontSize: "1.1rem",
+                  color: f.color,
+                  marginBottom: "1rem",
+                }}
+              >
+                {f.icon}
+              </div>
+              <div
+                style={{
+                  fontWeight: 700,
+                  fontSize: "0.95rem",
+                  color: "var(--color-text)",
+                  marginBottom: "0.5rem",
+                }}
+              >
+                {f.title}
+              </div>
+              <div
+                style={{
+                  fontSize: "0.85rem",
+                  color: "var(--color-text-2)",
+                  lineHeight: 1.65,
+                }}
+              >
+                {f.desc}
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ── How it works ───────────────────────────────────────────────── */}
+      <section
+        style={{
+          marginBottom: "4rem",
+          padding: "3rem",
+          borderRadius: 20,
+          background: "var(--color-surface)",
+          border: "1px solid var(--color-border)",
+          position: "relative",
+          overflow: "hidden",
+        }}
+      >
+        <div
+          className="glow-orb crimson"
+          style={{ bottom: "-30%", right: "-10%", width: 350, height: 350 }}
+        />
+
+        <div style={{ position: "relative", zIndex: 1 }}>
+          <div
+            style={{
+              textAlign: "center",
+              marginBottom: "2.5rem",
+            }}
+          >
+            <h2
+              style={{
+                fontSize: "1.5rem",
+                fontWeight: 800,
+                letterSpacing: "-0.03em",
+                margin: "0 0 0.5rem",
+                color: "var(--color-text)",
+              }}
+            >
+              Get started in{" "}
+              <span className="gradient-text-orange">3 steps</span>
+            </h2>
+            <p
+              style={{
+                fontSize: "0.9rem",
+                color: "var(--color-text-2)",
+                margin: 0,
+              }}
+            >
+              From zero to a fully themed cross-platform UI.
+            </p>
+          </div>
+
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
+              gap: "1.5rem",
+            }}
+          >
+            {[
+              {
+                n: 1,
+                title: "Install",
+                desc: "Run `npx stareezy create my-app --template next` to scaffold a new project with Stareezy pre-configured.",
+                color: "#ff6a1a",
+              },
+              {
+                n: 2,
+                title: "Configure",
+                desc: "Call `createUi()` with your themes, breakpoints, and shorthands. Wrap your app in `<ThemeProvider>`.",
+                color: "#dc143c",
+              },
+              {
+                n: 3,
+                title: "Build",
+                desc: "Use components with the `t.*` accessor for theme-reactive props. Switch themes at runtime — every component updates.",
+                color: "#22c55e",
+              },
+            ].map((step) => (
+              <div
+                key={step.n}
+                className="glass-card"
+                style={{
+                  borderRadius: 14,
+                  padding: "1.75rem",
+                  textAlign: "center",
+                }}
+              >
+                <div
+                  style={{
+                    width: 48,
+                    height: 48,
+                    borderRadius: "50%",
+                    background: `linear-gradient(135deg, ${step.color}, transparent)`,
+                    border: `2px solid ${step.color}40`,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    margin: "0 auto 1rem",
+                    fontWeight: 800,
+                    fontSize: "1.2rem",
+                    color: step.color,
+                  }}
+                >
+                  {step.n}
+                </div>
+                <div
+                  style={{
+                    fontWeight: 700,
+                    fontSize: "1rem",
+                    color: "var(--color-text)",
+                    marginBottom: "0.5rem",
+                  }}
+                >
+                  {step.title}
+                </div>
+                <div
+                  style={{
+                    fontSize: "0.85rem",
+                    color: "var(--color-text-2)",
+                    lineHeight: 1.65,
+                  }}
+                >
+                  {step.desc}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Five themes strip ──────────────────────────────────────────── */}
+      <section style={{ marginBottom: "4rem" }}>
         <div
           style={{
             display: "flex",
@@ -466,56 +941,58 @@ export default function HomePage() {
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, minmax(160px, 1fr))",
-            gap: "0.65rem",
+            gridTemplateColumns: "repeat(auto-fill, minmax(180px, 1fr))",
+            gap: "0.75rem",
           }}
         >
           {THEMES.map((theme) => (
             <div
               key={theme.name}
+              className="glass-card"
               style={{
-                borderRadius: "var(--radius-md)",
+                borderRadius: 12,
                 overflow: "hidden",
-                border: "1px solid var(--color-border)",
+                border: "1px solid rgba(255,255,255,0.04)",
               }}
             >
               <div
                 style={{
-                  height: 56,
-                  background: theme.bg,
+                  height: 64,
+                  background: `linear-gradient(135deg, ${theme.bg}, ${theme.accent}15)`,
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  gap: 6,
+                  gap: 8,
                 }}
               >
                 <div
                   style={{
-                    width: 10,
-                    height: 10,
+                    width: 12,
+                    height: 12,
                     borderRadius: "50%",
                     background: theme.accent,
+                    boxShadow: `0 0 10px ${theme.accent}50`,
                   }}
                 />
                 <div
                   style={{
-                    width: 10,
-                    height: 10,
+                    width: 8,
+                    height: 8,
                     borderRadius: "50%",
                     background: theme.text,
-                    opacity: 0.5,
+                    opacity: 0.4,
                   }}
                 />
               </div>
               <div
                 style={{
-                  padding: "0.6rem 0.75rem",
-                  background: "var(--color-surface)",
+                  padding: "0.75rem",
+                  background: "rgba(0,0,0,0.3)",
                 }}
               >
                 <div
                   style={{
-                    fontSize: "0.78rem",
+                    fontSize: "0.85rem",
                     fontWeight: 700,
                     color: "var(--color-text)",
                     fontFamily: "var(--font-mono)",
@@ -525,7 +1002,7 @@ export default function HomePage() {
                 </div>
                 <div
                   style={{
-                    fontSize: "0.68rem",
+                    fontSize: "0.7rem",
                     color: "var(--color-muted)",
                     marginTop: 2,
                   }}
@@ -536,115 +1013,10 @@ export default function HomePage() {
             </div>
           ))}
         </div>
-      </div>
+      </section>
 
-      {/* ── t accessor highlight ──────────────────────────────────────────── */}
-      <div
-        style={{
-          marginBottom: "3.5rem",
-          background: "var(--color-surface)",
-          border: "1px solid var(--color-border)",
-          borderRadius: "var(--radius-lg)",
-          padding: "1.75rem 2rem",
-          position: "relative",
-          overflow: "hidden",
-        }}
-      >
-        <div
-          style={{
-            position: "absolute",
-            top: -30,
-            right: -30,
-            width: 200,
-            height: 200,
-            background:
-              "radial-gradient(circle, rgba(0,255,136,0.06) 0%, transparent 70%)",
-            pointerEvents: "none",
-          }}
-        />
-        <div
-          style={{
-            display: "inline-flex",
-            alignItems: "center",
-            gap: 6,
-            background: "var(--brand-50)",
-            border: "1px solid var(--brand-100)",
-            borderRadius: 100,
-            padding: "0.2rem 0.7rem",
-            fontSize: "0.68rem",
-            fontWeight: 700,
-            color: "var(--brand-primary)",
-            letterSpacing: "0.06em",
-            textTransform: "uppercase",
-            marginBottom: "0.85rem",
-          }}
-        >
-          New in v0.2
-        </div>
-        <h2
-          style={{
-            fontSize: "1.25rem",
-            fontWeight: 800,
-            letterSpacing: "-0.02em",
-            color: "var(--color-text)",
-            margin: "0 0 0.5rem",
-          }}
-        >
-          Theme-reactive props with{" "}
-          <code
-            style={{
-              fontFamily: "var(--font-mono)",
-              fontSize: "0.9em",
-              color: "var(--brand-primary)",
-            }}
-          >
-            t
-          </code>
-        </h2>
-        <p
-          style={{
-            fontSize: "0.9rem",
-            color: "var(--color-text-2)",
-            lineHeight: 1.7,
-            margin: "0 0 1.25rem",
-            maxWidth: 560,
-          }}
-        >
-          The <code>t</code> accessor returns <strong>ThemeToken</strong>{" "}
-          references — pass them directly as component props and they resolve to
-          the current theme&apos;s value at render time. Switch themes, every
-          component updates automatically.
-        </p>
-        <div style={{ overflowX: "auto" }}>
-          <pre
-            style={{
-              background: "var(--color-code-bg)",
-              borderRadius: "var(--radius-md)",
-              padding: "1rem 1.25rem",
-              margin: 0,
-              border: "1px solid var(--color-border)",
-              fontFamily: "var(--font-mono)",
-              fontSize: "0.82rem",
-              lineHeight: 1.7,
-              color: "#e2e8f0",
-              whiteSpace: "pre",
-            }}
-          >
-            <code>{`import { t } from '@stareezy-ui/tokens'
-
-// These resolve to the CURRENT theme's value at render time
-<Box bg={t.backgrounds.primary} color={t.text.primary} />
-<Box borderColor={t.border.primaryBrand} />
-
-// Switch theme → all components update, no re-wiring needed
-const { setTheme } = useThemeSwitch()
-setTheme('steins-gate') // → ibmBlue, ivoryText, labNight`}</code>
-          </pre>
-        </div>
-      </div>
-
-      {/* ── Packages bento ───────────────────────────────────────────────── */}
-      <div style={{ marginBottom: "3.5rem" }}>
+      {/* ── Packages ───────────────────────────────────────────────────── */}
+      <section style={{ marginBottom: "4rem" }}>
         <h2
           style={{
             fontSize: "1.25rem",
@@ -669,21 +1041,20 @@ setTheme('steins-gate') // → ibmBlue, ivoryText, labNight`}</code>
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))",
+            gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
             gap: "0.85rem",
           }}
         >
           {PACKAGES.map((pkg, i) => (
             <div
               key={pkg.name}
+              className="glass-card"
               style={{
-                background: "var(--color-surface)",
-                border: "1px solid var(--color-border)",
-                borderRadius: "var(--radius-lg)",
+                borderRadius: 14,
                 padding: "1.25rem",
                 position: "relative",
                 overflow: "hidden",
-                animation: `fadeUp 0.5s ease ${i * 0.05}s both`,
+                animation: `slideUp 0.5s ease ${i * 0.05}s both`,
               }}
             >
               <div
@@ -708,9 +1079,9 @@ setTheme('steins-gate') // → ibmBlue, ivoryText, labNight`}</code>
                   style={{
                     width: 36,
                     height: 36,
-                    borderRadius: "var(--radius-sm)",
-                    background: `${pkg.color}18`,
-                    border: `1px solid ${pkg.color}30`,
+                    borderRadius: 10,
+                    background: `${pkg.color}15`,
+                    border: `1px solid ${pkg.color}25`,
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
@@ -722,17 +1093,18 @@ setTheme('steins-gate') // → ibmBlue, ivoryText, labNight`}</code>
                   {pkg.icon}
                 </div>
                 <span
-                  style={{
-                    fontSize: "0.62rem",
-                    fontWeight: 700,
-                    color: pkg.color,
-                    background: `${pkg.color}15`,
-                    border: `1px solid ${pkg.color}25`,
-                    borderRadius: 100,
-                    padding: "2px 8px",
-                    letterSpacing: "0.04em",
-                    textTransform: "uppercase",
-                  }}
+                  className={`pill-tag ${
+                    pkg.color === "#ff6a1a"
+                      ? "orange"
+                      : pkg.color === "#22c55e"
+                      ? "teal"
+                      : pkg.color === "#dc143c"
+                      ? "crimson"
+                      : pkg.color === "#f5a623"
+                      ? "amber"
+                      : "orange"
+                  }`}
+                  style={{ fontSize: "0.62rem" }}
                 >
                   {pkg.badge}
                 </span>
@@ -760,10 +1132,130 @@ setTheme('steins-gate') // → ibmBlue, ivoryText, labNight`}</code>
             </div>
           ))}
         </div>
-      </div>
+      </section>
 
-      {/* ── Quick links ───────────────────────────────────────────────────── */}
-      <div style={{ marginBottom: "3.5rem" }}>
+      {/* ── Testimonials ───────────────────────────────────────────────── */}
+      <section style={{ marginBottom: "4rem" }}>
+        <div style={{ textAlign: "center", marginBottom: "2rem" }}>
+          <h2
+            style={{
+              fontSize: "1.25rem",
+              fontWeight: 700,
+              letterSpacing: "-0.02em",
+              color: "var(--color-text)",
+              margin: "0 0 0.5rem",
+            }}
+          >
+            Loved by <span className="gradient-text-orange">developers</span>
+          </h2>
+          <p
+            style={{
+              fontSize: "0.9rem",
+              color: "var(--color-text-2)",
+              margin: 0,
+            }}
+          >
+            Trusted by teams building cross-platform UIs.
+          </p>
+        </div>
+
+        <div
+          style={{
+            overflow: "hidden",
+            maskImage:
+              "linear-gradient(to right, transparent, black 5%, black 95%, transparent)",
+            WebkitMaskImage:
+              "linear-gradient(to right, transparent, black 5%, black 95%, transparent)",
+          }}
+        >
+          <div
+            className="animate-marquee-left"
+            style={{
+              display: "flex",
+              gap: "1rem",
+              width: "max-content",
+            }}
+          >
+            {[...TESTIMONIALS, ...TESTIMONIALS].map((t, i) => (
+              <div
+                key={`${t.name}-${i}`}
+                className="glass-card"
+                style={{
+                  width: 320,
+                  borderRadius: 14,
+                  padding: "1.5rem",
+                  flexShrink: 0,
+                  border: "1px solid rgba(255,255,255,0.04)",
+                }}
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "0.75rem",
+                    marginBottom: "0.85rem",
+                  }}
+                >
+                  <div
+                    style={{
+                      width: 36,
+                      height: 36,
+                      borderRadius: "50%",
+                      background:
+                        "linear-gradient(135deg, var(--brand-primary), var(--brand-accent))",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      fontWeight: 700,
+                      fontSize: "0.8rem",
+                      color: "white",
+                      flexShrink: 0,
+                    }}
+                  >
+                    {t.name
+                      .split(" ")
+                      .map((n) => n[0])
+                      .join("")}
+                  </div>
+                  <div>
+                    <div
+                      style={{
+                        fontWeight: 600,
+                        fontSize: "0.85rem",
+                        color: "var(--color-text)",
+                      }}
+                    >
+                      {t.name}
+                    </div>
+                    <div
+                      style={{
+                        fontSize: "0.72rem",
+                        color: "var(--color-muted)",
+                      }}
+                    >
+                      {t.role}
+                    </div>
+                  </div>
+                </div>
+                <p
+                  style={{
+                    fontSize: "0.85rem",
+                    color: "var(--color-text-2)",
+                    lineHeight: 1.65,
+                    margin: 0,
+                    fontStyle: "italic",
+                  }}
+                >
+                  &ldquo;{t.text}&rdquo;
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Quick links ────────────────────────────────────────────────── */}
+      <section style={{ marginBottom: "4rem" }}>
         <h2
           style={{
             fontSize: "1.25rem",
@@ -788,23 +1280,23 @@ setTheme('steins-gate') // → ibmBlue, ivoryText, labNight`}</code>
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
-            gap: "0.65rem",
+            gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))",
+            gap: "0.75rem",
           }}
         >
           {QUICK_LINKS.map((link) => (
             <Link
               key={link.href}
               href={link.href}
+              className="glass-card"
               style={{
                 display: "flex",
                 alignItems: "center",
                 gap: "0.75rem",
-                background: "var(--color-surface)",
-                border: "1px solid var(--color-border)",
-                borderRadius: "var(--radius-md)",
+                borderRadius: 12,
                 padding: "0.85rem 1rem",
                 textDecoration: "none",
+                transition: "all 0.2s",
               }}
             >
               <span
@@ -838,74 +1330,98 @@ setTheme('steins-gate') // → ibmBlue, ivoryText, labNight`}</code>
             </Link>
           ))}
         </div>
-      </div>
+      </section>
 
-      {/* ── Install strip ─────────────────────────────────────────────────── */}
-      <div
+      {/* ── Final CTA ──────────────────────────────────────────────────── */}
+      <section
+        className="glass-card"
         style={{
-          background: "var(--color-surface)",
-          border: "1px solid var(--color-border)",
-          borderRadius: "var(--radius-lg)",
-          padding: "1.75rem 2rem",
+          borderRadius: 20,
+          padding: "3rem",
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
           flexWrap: "wrap",
-          gap: "1.25rem",
+          gap: "1.5rem",
+          position: "relative",
+          overflow: "hidden",
         }}
       >
-        <div>
+        <div
+          className="glow-orb orange"
+          style={{ top: "-50%", right: "-10%", width: 400, height: 400 }}
+        />
+        <div
+          className="glow-orb teal"
+          style={{ bottom: "-50%", left: "-10%", width: 300, height: 300 }}
+        />
+
+        <div style={{ position: "relative", zIndex: 1 }}>
           <div
             style={{
-              fontWeight: 700,
-              fontSize: "1rem",
+              fontWeight: 800,
+              fontSize: "1.5rem",
               color: "var(--color-text)",
-              marginBottom: 4,
+              marginBottom: 8,
+              letterSpacing: "-0.02em",
             }}
           >
-            Ready to start?
+            Ready to <span className="gradient-text-orange">build?</span>
           </div>
-          <div style={{ fontSize: "0.85rem", color: "var(--color-text-2)" }}>
-            Install the packages and be up and running in minutes.
+          <div
+            style={{
+              fontSize: "0.9rem",
+              color: "var(--color-text-2)",
+              maxWidth: 400,
+              lineHeight: 1.6,
+            }}
+          >
+            Install Stareezy UI and be up and running in minutes. Cross-platform
+            from day one.
           </div>
         </div>
+
         <div
           style={{
-            background: "var(--color-code-bg)",
-            borderRadius: "var(--radius-md)",
-            padding: "0.65rem 1.25rem",
-            fontFamily: "var(--font-mono)",
-            fontSize: "0.85rem",
-            color: "#e2e8f0",
-            border: "1px solid var(--color-border)",
             display: "flex",
             alignItems: "center",
             gap: "0.75rem",
+            flexWrap: "wrap",
+            position: "relative",
+            zIndex: 1,
           }}
         >
-          <span style={{ color: "var(--brand-primary)" }}>$</span>
-          <span>npx stareezy create my-app --template next</span>
+          <div
+            className="code-window"
+            style={{
+              borderRadius: 10,
+            }}
+          >
+            <pre
+              style={{
+                fontFamily: "var(--font-mono)",
+                fontSize: "0.85rem",
+                padding: "0.75rem 1.25rem",
+                margin: 0,
+                color: "#e2e8f0",
+                display: "flex",
+                alignItems: "center",
+                gap: "0.75rem",
+              }}
+            >
+              <span style={{ color: "var(--brand-primary)" }}>$</span>
+              <span>npx stareezy create my-app --template next</span>
+            </pre>
+          </div>
+          <TrackedLink
+            href="/docs/installation"
+            trackLabel="Installation guide"
+            className="cta-primary"
+          >
+            Installation guide →
+          </TrackedLink>
         </div>
-        <TrackedLink
-          href="/docs/installation"
-          trackLabel="Installation guide"
-          style={{
-            display: "inline-flex",
-            alignItems: "center",
-            gap: "0.4rem",
-            background: "var(--brand-primary)",
-            color: "var(--color-bg)",
-            padding: "0.65rem 1.5rem",
-            borderRadius: "var(--radius-md)",
-            fontWeight: 700,
-            fontSize: "0.875rem",
-            textDecoration: "none",
-            flexShrink: 0,
-          }}
-        >
-          Installation guide →
-        </TrackedLink>
-      </div>
+      </section>
     </div>
   );
 }

@@ -130,10 +130,10 @@ export default function ThemingPage() {
       description="Five built-in themes, theme-reactive components, ThemeProvider, and full control over theme switching."
       badge="Guide"
       icon="◑"
-      badgeColor="#5D2555"
+      badgeColor="#ff6a1a"
     >
       {/* ── Theme-reactive components ─────────────────────────────────────── */}
-      <h2>Every component is Theme_Reactive</h2>
+      <h2 className="gradient-text">Every component is Theme_Reactive</h2>
       <p>
         Every component in <code>@stareezy-ui/components</code> resolves its
         colors through <code>useThemedColors()</code> at render time. There are
@@ -158,7 +158,7 @@ setTheme('steins-gate')  // → electric blue brand`}</code>
       </pre>
 
       {/* ── Five built-in themes ─────────────────────────────────────────── */}
-      <h2>Five built-in themes</h2>
+      <h2 className="gradient-text">Five built-in themes</h2>
       <p>
         Stareezy UI ships five themes. Each maps the same semantic color slots
         to different primitive values.
@@ -167,84 +167,121 @@ setTheme('steins-gate')  // → electric blue brand`}</code>
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))",
-          gap: "0.85rem",
+          gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))",
+          gap: "1rem",
           margin: "1.25rem 0 2rem",
         }}
       >
         {THEMES.map((theme) => (
           <div
             key={theme.name}
+            className="glass-card"
             style={{
               borderRadius: "var(--radius-lg)",
               overflow: "hidden",
-              border: "1px solid var(--color-border)",
+              border: `1px solid ${theme.brand}30`,
+              boxShadow: `0 0 20px ${theme.brand}15, 0 0 60px ${theme.brand}08`,
+              transition: "box-shadow 0.3s, border-color 0.3s",
             }}
           >
-            <div style={{ background: theme.bg, padding: "1.25rem" }}>
-              <div style={{ display: "flex", gap: 6, marginBottom: "0.75rem" }}>
-                <div
-                  style={{
-                    width: 10,
-                    height: 10,
-                    borderRadius: "50%",
-                    background: theme.brand,
-                  }}
-                />
-                <div
-                  style={{
-                    width: 10,
-                    height: 10,
-                    borderRadius: "50%",
-                    background: theme.accent,
-                  }}
-                />
-                <div
-                  style={{
-                    width: 10,
-                    height: 10,
-                    borderRadius: "50%",
-                    background: theme.text,
-                    opacity: 0.4,
-                  }}
-                />
-              </div>
+            <div
+              style={{
+                background: `linear-gradient(135deg, ${theme.bg} 0%, ${theme.surface} 100%)`,
+                padding: "1.25rem",
+                position: "relative",
+                overflow: "hidden",
+              }}
+            >
               <div
                 style={{
-                  background: theme.surface,
-                  borderRadius: 8,
-                  padding: "0.6rem 0.75rem",
-                  border: `1px solid ${theme.brand}20`,
+                  position: "absolute",
+                  top: "-50%",
+                  right: "-50%",
+                  width: "100%",
+                  height: "100%",
+                  borderRadius: "50%",
+                  background: `radial-gradient(circle, ${theme.brand}20 0%, transparent 70%)`,
+                  pointerEvents: "none",
                 }}
-              >
+              />
+              <div style={{ position: "relative", zIndex: 1 }}>
+                <div style={{ display: "flex", gap: 6, marginBottom: "0.75rem" }}>
+                  <div
+                    style={{
+                      width: 10,
+                      height: 10,
+                      borderRadius: "50%",
+                      background: theme.brand,
+                      boxShadow: `0 0 6px ${theme.brand}`,
+                    }}
+                  />
+                  <div
+                    style={{
+                      width: 10,
+                      height: 10,
+                      borderRadius: "50%",
+                      background: theme.accent,
+                      boxShadow: `0 0 6px ${theme.accent}`,
+                    }}
+                  />
+                  <div
+                    style={{
+                      width: 10,
+                      height: 10,
+                      borderRadius: "50%",
+                      background: theme.text,
+                      opacity: 0.5,
+                    }}
+                  />
+                </div>
                 <div
                   style={{
-                    width: "60%",
-                    height: 6,
-                    borderRadius: 3,
-                    background: theme.brand,
-                    marginBottom: 5,
+                    background: theme.surface,
+                    borderRadius: 8,
+                    padding: "0.6rem 0.75rem",
+                    border: `1px solid ${theme.brand}30`,
+                    boxShadow: `inset 0 1px 0 ${theme.text}08`,
                   }}
-                />
-                <div
-                  style={{
-                    width: "80%",
-                    height: 4,
-                    borderRadius: 2,
-                    background: theme.text,
-                    opacity: 0.3,
-                  }}
-                />
-                <div
-                  style={{
-                    width: "50%",
-                    height: 4,
-                    borderRadius: 2,
-                    background: theme.text,
-                    opacity: 0.2,
-                    marginTop: 4,
-                  }}
-                />
+                >
+                  <div
+                    style={{
+                      width: "60%",
+                      height: 6,
+                      borderRadius: 3,
+                      background: theme.brand,
+                      marginBottom: 5,
+                    }}
+                  />
+                  <div
+                    style={{
+                      width: "80%",
+                      height: 4,
+                      borderRadius: 2,
+                      background: theme.text,
+                      opacity: 0.3,
+                    }}
+                  />
+                  <div
+                    style={{
+                      width: "50%",
+                      height: 4,
+                      borderRadius: 2,
+                      background: theme.text,
+                      opacity: 0.2,
+                      marginTop: 4,
+                    }}
+                  />
+                  <div
+                    style={{
+                      width: "40%",
+                      height: 4,
+                      borderRadius: 2,
+                      background: theme.accent,
+                      opacity: 0.5,
+                      marginTop: 6,
+                    }}
+                  />
+                </div>
               </div>
             </div>
             <div
@@ -257,7 +294,7 @@ setTheme('steins-gate')  // → electric blue brand`}</code>
                 style={{
                   fontSize: "0.82rem",
                   fontWeight: 700,
-                  color: "var(--color-text)",
+                  color: theme.brand,
                   display: "block",
                   marginBottom: 3,
                 }}
@@ -274,6 +311,48 @@ setTheme('steins-gate')  // → electric blue brand`}</code>
               >
                 {theme.desc}
               </p>
+              <div style={{ display: "flex", gap: 4, marginTop: 8 }}>
+                <span
+                  style={{
+                    width: 8,
+                    height: 8,
+                    borderRadius: "50%",
+                    background: theme.brand,
+                    display: "inline-block",
+                    boxShadow: `0 0 4px ${theme.brand}`,
+                  }}
+                />
+                <span
+                  style={{
+                    width: 8,
+                    height: 8,
+                    borderRadius: "50%",
+                    background: theme.accent,
+                    display: "inline-block",
+                    boxShadow: `0 0 4px ${theme.accent}`,
+                  }}
+                />
+                <span
+                  style={{
+                    width: 8,
+                    height: 8,
+                    borderRadius: "50%",
+                    background: theme.text,
+                    display: "inline-block",
+                    opacity: 0.4,
+                  }}
+                />
+                <span
+                  style={{
+                    width: 8,
+                    height: 8,
+                    borderRadius: 2,
+                    background: theme.surface,
+                    display: "inline-block",
+                    border: `1px solid ${theme.brand}40`,
+                  }}
+                />
+              </div>
             </div>
           </div>
         ))}
@@ -308,7 +387,7 @@ setTheme('steins-gate')  // → electric blue brand`}</code>
       </Callout>
 
       {/* ── t accessor ──────────────────────────────────────────────────── */}
-      <h2>
+      <h2 className="gradient-text">
         Theme-reactive props with <code>t</code>
       </h2>
       <p>
@@ -333,7 +412,7 @@ setTheme('steins-gate')  // → electric blue brand`}</code>
       </pre>
 
       {/* ── Semantic slot reference ──────────────────────────────────────── */}
-      <h2>Semantic slot reference</h2>
+      <h2 className="gradient-text">Semantic slot reference</h2>
       <div style={{ overflowX: "auto", margin: "1rem 0 1.5rem" }}>
         <table>
           <thead>
@@ -350,7 +429,7 @@ setTheme('steins-gate')  // → electric blue brand`}</code>
             {SEMANTIC_SLOTS.map((row) => (
               <tr key={row.slot}>
                 <td>
-                  <code>{`t.${row.slot}`}</code>
+                  <code style={{ fontFamily: "var(--font-mono)" }}>{`t.${row.slot}`}</code>
                 </td>
                 {[row.light, row.dark, row.aurora, row.sg, row.quasar].map(
                   (hex, i) => (
@@ -364,16 +443,24 @@ setTheme('steins-gate')  // → electric blue brand`}</code>
                       >
                         <span
                           style={{
-                            width: 12,
-                            height: 12,
-                            borderRadius: 3,
+                            width: 14,
+                            height: 14,
+                            borderRadius: 4,
                             background: hex,
                             display: "inline-block",
-                            border: "1px solid rgba(0,0,0,0.1)",
+                            border: `1px solid ${hex}80`,
+                            boxShadow: `0 0 4px ${hex}40`,
                             flexShrink: 0,
                           }}
                         />
-                        <code style={{ fontSize: "0.72rem" }}>{hex}</code>
+                        <code
+                          style={{
+                            fontSize: "0.72rem",
+                            fontFamily: "var(--font-mono)",
+                          }}
+                        >
+                          {hex}
+                        </code>
                       </span>
                     </td>
                   ),
@@ -447,7 +534,7 @@ function MyComponent() {
       </Callout>
 
       {/* ── Custom themes via createUi ───────────────────────────────────── */}
-      <h2>Custom themes via createUi</h2>
+      <h2 className="gradient-text">Custom themes via createUi</h2>
       <pre>
         <code>{`import { createUi, themes, token } from '@stareezy-ui/tokens'
 

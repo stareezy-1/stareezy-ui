@@ -12,10 +12,10 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@stareezy-ui/components": "latest",
-    "@stareezy-ui/compiler": "latest",
-    "@stareezy-ui/tokens": "latest",
-    "@stareezy-ui/runtime": "latest",
+    "@quasify-ui/components": "latest",
+    "@quasify-ui/compiler": "latest",
+    "@quasify-ui/tokens": "latest",
+    "@quasify-ui/runtime": "latest",
     "expo": "~56.0.0",
     "expo-router": "~7.0.0",
     "expo-status-bar": "~4.0.0",

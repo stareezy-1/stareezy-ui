@@ -67,7 +67,7 @@ export default function ThanksPage() {
       title="Special Thanks"
       description="The design foundation of Stareezy UI was shaped by one person."
       badge="Credits"
-      badgeColor="#7c3aed"
+      badgeColor="#dc143c"
       icon="✦"
     >
       {/* Hero card */}
@@ -77,16 +77,16 @@ export default function ThanksPage() {
           borderRadius: 20,
           overflow: "hidden",
           marginBottom: "2.5rem",
-          border: "1px solid rgba(124,58,237,0.2)",
+          border: "1px solid rgba(255,106,26,0.2)",
         }}
       >
-        {/* Aurora gradient background */}
+        {/* Quasar deep-space gradient background */}
         <div
           style={{
             position: "absolute",
             inset: 0,
             background:
-              "linear-gradient(135deg, #050505 0%, #0a0a1a 40%, #1a0a2e 100%)",
+              "linear-gradient(135deg, #080400 0%, #0a0a1a 35%, #1a0505 70%, #050005 100%)",
           }}
         />
         {/* Glow orbs */}
@@ -98,7 +98,7 @@ export default function ThanksPage() {
             width: 280,
             height: 280,
             background:
-              "radial-gradient(circle, rgba(0,255,136,0.15) 0%, transparent 65%)",
+              "radial-gradient(circle, rgba(255,106,26,0.15) 0%, transparent 65%)",
             pointerEvents: "none",
           }}
         />
@@ -110,7 +110,7 @@ export default function ThanksPage() {
             width: 220,
             height: 220,
             background:
-              "radial-gradient(circle, rgba(124,58,237,0.18) 0%, transparent 65%)",
+              "radial-gradient(circle, rgba(220,20,60,0.18) 0%, transparent 65%)",
             pointerEvents: "none",
           }}
         />
@@ -128,16 +128,16 @@ export default function ThanksPage() {
               width: 72,
               height: 72,
               borderRadius: "50%",
-              background: "linear-gradient(135deg, #00ff88, #7c3aed)",
+              background: "linear-gradient(135deg, #ff6a1a, #dc143c)",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
               fontSize: "1.75rem",
               marginBottom: "1.5rem",
-              boxShadow: "0 0 32px rgba(0,255,136,0.3)",
+              boxShadow: "0 0 32px rgba(255,106,26,0.3)",
             }}
           >
-            🎨
+            ◈
           </div>
 
           <div
@@ -146,7 +146,7 @@ export default function ThanksPage() {
               fontWeight: 700,
               letterSpacing: "0.12em",
               textTransform: "uppercase",
-              color: "#00ff88",
+              color: "#ff6a1a",
               marginBottom: "0.6rem",
             }}
           >
@@ -161,7 +161,7 @@ export default function ThanksPage() {
               lineHeight: 1.1,
               margin: "0 0 1rem",
               background:
-                "linear-gradient(135deg, #ffffff 0%, #00ff88 50%, #7c3aed 100%)",
+                "linear-gradient(135deg, #f8f0e8 0%, #ff6a1a 50%, #dc143c 100%)",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
               backgroundClip: "text",
@@ -192,7 +192,7 @@ export default function ThanksPage() {
         exactly what Kukuh delivered.
       </Callout>
 
-      <h2>What he designed</h2>
+      <h2 className="gradient-text">What he designed</h2>
       <p>
         Kukuh&apos;s work covers every foundational token category. Here&apos;s
         a breakdown of what he contributed:
@@ -216,6 +216,7 @@ export default function ThanksPage() {
               padding: "1.1rem 1.25rem",
               position: "relative",
               overflow: "hidden",
+              boxShadow: "0 0 20px rgba(255,106,26,0.06)",
             }}
           >
             <div
@@ -225,7 +226,7 @@ export default function ThanksPage() {
                 left: 0,
                 right: 0,
                 height: 2,
-                background: `linear-gradient(90deg, transparent, ${item.color}80, transparent)`,
+                background: `linear-gradient(90deg, transparent, ${item.color}, transparent)`,
               }}
             />
             <div
@@ -296,11 +297,11 @@ export default function ThanksPage() {
         ))}
       </div>
 
-      <h2>A note from the dev</h2>
+      <h2 className="gradient-text">A note from the dev</h2>
       <div
         style={{
           background: "var(--color-surface)",
-          border: "1px solid var(--color-border)",
+          border: "1px solid rgba(255,106,26,0.12)",
           borderRadius: 16,
           padding: "1.5rem 1.75rem",
           position: "relative",
@@ -311,8 +312,8 @@ export default function ThanksPage() {
           style={{
             fontSize: "3rem",
             lineHeight: 1,
-            color: "var(--brand-primary)",
-            opacity: 0.25,
+            color: "#ff6a1a",
+            opacity: 0.35,
             position: "absolute",
             top: "0.75rem",
             left: "1.25rem",
@@ -351,14 +352,14 @@ export default function ThanksPage() {
               width: 32,
               height: 32,
               borderRadius: "50%",
-              background: "linear-gradient(135deg, #024CCE, #14F1D8)",
+              background: "linear-gradient(135deg, #ff6a1a, #dc143c)",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
               fontSize: "0.8rem",
             }}
           >
-            👨‍💻
+            ◈
           </div>
           <div>
             <div

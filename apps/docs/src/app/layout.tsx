@@ -22,11 +22,11 @@ const SITE_URL =
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Stareezy UI — Typed Design Token System & Component Library",
+    default: "Stareezy UI — Build Cross-Platform UIs with Quasar Design Tokens",
     template: "%s | Stareezy UI",
   },
   description:
-    "A fully typed, cross-platform design token system and component library for React Native and web. 17 beautiful components, 300+ typed tokens, O(1) runtime, tree-shakeable.",
+    "A fully typed, cross-platform design token system and component library for React Native and web. 31+ components, 300+ typed tokens, 5 themes, O(1) runtime, tree-shakeable.",
   keywords: [
     "design tokens",
     "react native",
@@ -37,11 +37,14 @@ export const metadata: Metadata = {
     "design system",
     "UI library",
     "stareezy",
+    "quasar ui",
     "token system",
     "typed tokens",
     "expo",
     "mobile UI",
     "web UI",
+    "plasma orange",
+    "deep space theme",
   ],
   authors: [{ name: "Stareezy", url: "https://stareezy.tech" }],
   creator: "Stareezy",
@@ -52,25 +55,25 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: SITE_URL,
     siteName: "Stareezy UI",
-    title: "Stareezy UI — Typed Design Token System & Component Library",
+    title: "Stareezy UI — Build Cross-Platform UIs with Quasar Design Tokens",
     description:
-      "A fully typed, cross-platform design token system and component library for React Native and web. 17 beautiful components, 300+ typed tokens.",
+      "A fully typed, cross-platform design token system and component library for React Native and web. 31+ components, 300+ typed tokens, 5 themes.",
     images: [
       {
         url: "/og-image.svg",
         width: 1200,
         height: 630,
-        alt: "Stareezy UI — Typed Design Token System",
+        alt: "Stareezy UI — Cross-Platform UI Library",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Stareezy UI — Typed Design Token System",
+    title: "Stareezy UI — Build Cross-Platform UIs with Quasar",
     description:
       "A fully typed, cross-platform design token system and component library for React Native and web.",
     images: ["/og-image.svg"],
-    creator: "@stareezy",
+    creator: "@Stareezy",
   },
   robots: {
     index: true,
@@ -88,7 +91,6 @@ export const metadata: Metadata = {
   },
   manifest: "/manifest.webmanifest",
   icons: {
-    // Google Search prefers a discoverable PNG icon, so list it first.
     icon: [
       { url: "/favicon.png", type: "image/png", sizes: "32x32" },
       { url: "/favicon.svg", type: "image/svg+xml" },
@@ -100,12 +102,12 @@ export const metadata: Metadata = {
       { url: "/icon-192.svg", sizes: "192x192" },
       { url: "/icon-512.svg", sizes: "512x512" },
     ],
-    other: [{ rel: "mask-icon", url: "/favicon.svg", color: "#0d1117" }],
+    other: [{ rel: "mask-icon", url: "/favicon.svg", color: "#020205" }],
   },
   other: {
     "google-site-verification": "76720285c6e99e6d",
-    "theme-color": "#0d1117",
-    "color-scheme": "dark light",
+    "theme-color": "#020205",
+    "color-scheme": "dark",
     "mobile-web-app-capable": "yes",
     "apple-mobile-web-app-capable": "yes",
     "apple-mobile-web-app-status-bar-style": "black-translucent",
@@ -128,12 +130,12 @@ const jsonLd = {
       offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
       featureList: [
         "300+ typed design tokens",
-        "17 cross-platform components",
+        "31+ cross-platform components",
         "O(1) style registry",
         "Babel/Vite build compiler",
-        "Light/dark theme system",
+        "5 premium themes",
         "Tree-shakeable",
-        "React Native + Web support",
+        "React Native + Web + Expo support",
       ],
       creator: {
         "@type": "Organization",
@@ -160,13 +162,13 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html
       lang="en"
-      data-theme="aurora"
+      data-theme="quasar"
       className={`${inter.variable} ${jetbrainsMono.variable}`}
     >
       <head>
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){var t=localStorage.getItem('szr-docs-theme')||'aurora';document.documentElement.setAttribute('data-theme',t);})();`,
+            __html: `(function(){var t=localStorage.getItem('szr-docs-theme')||'quasar';document.documentElement.setAttribute('data-theme',t);})();`,
           }}
         />
         <script

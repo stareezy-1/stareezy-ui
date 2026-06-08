@@ -1,7 +1,7 @@
 /**
  * Property tests for ETextType presets in Text.tsx
  *
- * Feature: portfolio-stareezy-ui-migration
+ * Feature: portfolio-Stareezy-ui-migration
  * Property 3: Enum completeness — ETextType new values
  * Validates: Requirements 7.1, 7.16
  */
@@ -31,7 +31,7 @@ const NEW_TEXT_TYPES = [
 ] as const;
 
 describe("PRESETS — new portfolio ETextType values", () => {
-  // Feature: portfolio-stareezy-ui-migration, Property 3: Enum completeness
+  // Feature: portfolio-Stareezy-ui-migration, Property 3: Enum completeness
   it("has a defined entry for every new ETextType value", () => {
     // Validates: Requirements 7.1, 7.16
     fc.assert(

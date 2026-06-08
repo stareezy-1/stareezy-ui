@@ -10,7 +10,7 @@
  *   - Arrays of any of the above (falsy entries are skipped)
  */
 
-import React, { useId } from "react";
+import React, { useId, useEffect, useRef } from "react";
 import type { Token } from "@stareezy-ui/tokens";
 import { getUiConfig, useTheme } from "@stareezy-ui/tokens";
 import type { ThemeToken } from "@stareezy-ui/tokens";
@@ -513,14 +513,20 @@ const ResponsiveStyleTag: React.FC<{ css: string; scopeClass: string }> = ({
   css,
   scopeClass,
 }) => {
-  if (!css) return null;
-  return (
-    <style
-      data-szr={scopeClass}
-      // eslint-disable-next-line react/no-danger
-      dangerouslySetInnerHTML={{ __html: css }}
-    />
-  );
+  const styleRef = useRef<HTMLStyleElement | null>(null);
+  useEffect(() => {
+    if (!css) return;
+    const el = document.createElement("style");
+    el.setAttribute("data-szr", scopeClass);
+    el.textContent = css;
+    document.head.appendChild(el);
+    styleRef.current = el;
+    return () => {
+      styleRef.current?.parentNode?.removeChild(styleRef.current);
+      styleRef.current = null;
+    };
+  }, [css, scopeClass]);
+  return null;
 };
 
 // ---------------------------------------------------------------------------
@@ -634,8 +640,22 @@ function resolveWebProps(
     }
   }
 
-  // Resolve plain (longhand) style props first — shorthands resolve after and win on collision.
-  // e.g. <Box p={6} paddingLeft={10}> → p wins → padding:6px (paddingLeft is overridden)
+  // Resolve built-in token props
+  for (const propName of TOKEN_PROP_NAMES) {
+    resolveOneProp(propName, props[propName]);
+  }
+
+  // Resolve custom shorthand props from createUi({ shorthands }) config
+  // These are any keys in effectivePropMap not already in TOKEN_PROP_NAMES
+  const builtinSet = new Set<string>(TOKEN_PROP_NAMES);
+  for (const propName of Object.keys(effectivePropMap)) {
+    if (builtinSet.has(propName)) continue;
+    const rawVal = (props as Record<string, unknown>)[propName];
+    if (rawVal !== undefined && rawVal !== null)
+      resolveOneProp(propName, rawVal);
+  }
+
+  // Plain style props
   for (const propName of PLAIN_STYLE_PROPS) {
     const rawVal = props[propName];
     if (rawVal === undefined || rawVal === null) continue;
@@ -653,7 +673,7 @@ function resolveWebProps(
     }
   }
 
-  // Expand paddingHorizontal / paddingVertical / marginHorizontal / marginVertical (longhands)
+  // Expand paddingHorizontal / paddingVertical / marginHorizontal / marginVertical
   const expandPairs: Array<[keyof BoxProps, string, string]> = [
     ["paddingHorizontal", "paddingLeft", "paddingRight"],
     ["paddingVertical", "paddingTop", "paddingBottom"],
@@ -679,21 +699,6 @@ function resolveWebProps(
       inlineStyle[a] = toCssValue(a, rawVal);
       inlineStyle[b] = toCssValue(b, rawVal);
     }
-  }
-
-  // Resolve built-in token shorthand props AFTER longhands so shorthands win on collision.
-  // e.g. p wins over paddingLeft, m wins over marginTop, etc.
-  for (const propName of TOKEN_PROP_NAMES) {
-    resolveOneProp(propName, props[propName]);
-  }
-
-  // Resolve custom shorthand props from createUi({ shorthands }) config
-  const builtinSet = new Set<string>(TOKEN_PROP_NAMES);
-  for (const propName of Object.keys(effectivePropMap)) {
-    if (builtinSet.has(propName)) continue;
-    const rawVal = (props as Record<string, unknown>)[propName];
-    if (rawVal !== undefined && rawVal !== null)
-      resolveOneProp(propName, rawVal);
   }
 
   // ── $-group pass (Req 4.4 / 4.5) ─────────────────────────────────────────

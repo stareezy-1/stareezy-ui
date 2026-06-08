@@ -1,5 +1,5 @@
 /**
- * loadSzrConfig — reads the user's stareezy.config.ts / stareezy.config.js
+ * loadStareezyConfig — reads the user's stareezy.config.ts / stareezy.config.js
  * at build time and extracts shorthands + boxPropsComponents for the compiler.
  *
  * The config file is resolved relative to the project root (process.cwd()).
@@ -15,7 +15,7 @@
 import path from "path";
 import fs from "fs";
 
-export interface SzrBuildConfig {
+export interface StareezyBuildConfig {
   /** Shorthand → CSS property mappings extracted from createUi({ shorthands }) */
   shorthands: Record<string, string | string[]>;
   /** Component names that accept BoxProps (for compiler scoping) */
@@ -37,7 +37,7 @@ const CONFIG_FILENAMES = [
  * and ts-node / tsx is not available, falls back to parsing the shorthands
  * statically from the source text.
  */
-export function loadSzrConfig(cwd = process.cwd()): SzrBuildConfig | null {
+export function loadStareezyConfig(cwd = process.cwd()): StareezyBuildConfig | null {
   for (const filename of CONFIG_FILENAMES) {
     const fullPath = path.join(cwd, filename);
     if (!fs.existsSync(fullPath)) continue;

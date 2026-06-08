@@ -15,9 +15,9 @@ export default function ResponsivePage() {
       description="Config-driven breakpoints, responsive object syntax, and $-prefixed breakpoint props — all fully typed from your createUi configuration."
       badge="Guide"
       icon="◈"
-      badgeColor="#024CCE"
+      badgeColor="#ff6a1a"
     >
-      <h2>Overview</h2>
+      <h2 className="gradient-text">Overview</h2>
       <p>
         Stareezy UI&apos;s responsive system is driven by your{" "}
         <code>stareezy.config.ts</code>. Declare breakpoints once in{" "}
@@ -32,13 +32,18 @@ export default function ResponsivePage() {
       </Callout>
 
       {/* ── Declaring breakpoints ────────────────────────────────────────── */}
-      <h2>Declaring breakpoints with createUi</h2>
+      <h2 className="gradient-text">Declaring breakpoints with createUi</h2>
       <p>
         Pass a <code>media</code> record to <code>createUi()</code>. Keys are
         breakpoint names, values are <code>min-width</code> thresholds in
         pixels.
       </p>
-      <pre>
+      <pre
+        style={{
+          boxShadow: "0 0 40px rgba(255,106,26,0.03)",
+          border: "1px solid var(--color-border)",
+        }}
+      >
         <code>{`// stareezy.config.ts
 import { createUi, themes } from '@stareezy-ui/tokens'
 
@@ -82,14 +87,19 @@ export default ui`}</code>
       </Callout>
 
       {/* ── BreakpointKey autocomplete ───────────────────────────────────── */}
-      <h2>Config-driven BreakpointKey autocomplete</h2>
+      <h2 className="gradient-text">Config-driven BreakpointKey autocomplete</h2>
       <p>
         After the module augmentation above, <code>BreakpointKey</code> is
         derived directly from your <code>media</code> configuration. TypeScript
         autocompletes only the keys you declared, and reports a type error for
         any other key.
       </p>
-      <pre>
+      <pre
+        style={{
+          boxShadow: "0 0 40px rgba(255,106,26,0.03)",
+          border: "1px solid var(--color-border)",
+        }}
+      >
         <code>{`// After augmenting SzrCustomConfig with the config above,
 // BreakpointKey = "base" | "sm" | "md" | "lg" | "xl" | "2xl"
 
@@ -107,14 +117,19 @@ export default ui`}</code>
       </p>
 
       {/* ── Responsive object syntax ─────────────────────────────────────── */}
-      <h2>Responsive object syntax</h2>
+      <h2 className="gradient-text">Responsive object syntax</h2>
       <p>
         Pass a <code>{"{ base?, sm?, md?, lg?, xl?, '2xl'? }"}</code> object to
         any layout or shorthand prop. The <code>base</code> value applies
         unconditionally; each named breakpoint applies at and above its
         configured threshold (mobile-first).
       </p>
-      <pre>
+      <pre
+        style={{
+          boxShadow: "0 0 40px rgba(255,106,26,0.03)",
+          border: "1px solid var(--color-border)",
+        }}
+      >
         <code>{`import { Box, Button, Card } from '@stareezy-ui/components'
 
 // Responsive padding
@@ -133,14 +148,46 @@ export default ui`}</code>
 </Box>`}</code>
       </pre>
 
+      <div
+        style={{
+          background: "var(--color-surface)",
+          border: "1px solid var(--brand-primary)",
+          borderRadius: 10,
+          padding: "1rem 1.25rem",
+          margin: "1.5rem 0",
+        }}
+      >
+        <p
+          style={{
+            margin: 0,
+            fontSize: "0.9rem",
+            color: "var(--color-text-2)",
+            lineHeight: 1.65,
+          }}
+        >
+          <span style={{ color: "var(--brand-primary)", fontWeight: 700 }}>
+            ▸ Responsive object syntax
+          </span>{" "}
+          — Every layout prop accepts a{" "}
+          <code>{"{ base?, sm?, md?, lg?, xl?, '2xl'? }"}</code> object. The{" "}
+          <code>base</code> value applies unconditionally; each named breakpoint
+          activates at and above its <code>min-width</code> threshold.
+        </p>
+      </div>
+
       {/* ── Responsive values on custom shorthands ───────────────────────── */}
-      <h2>Responsive values on custom shorthands</h2>
+      <h2 className="gradient-text">Responsive values on custom shorthands</h2>
       <p>
         Custom shorthands declared through{" "}
         <code>createUi({"{ shorthands }"})</code> accept responsive objects with
         the same syntax as built-in props.
       </p>
-      <pre>
+      <pre
+        style={{
+          boxShadow: "0 0 40px rgba(255,106,26,0.03)",
+          border: "1px solid var(--color-border)",
+        }}
+      >
         <code>{`// With the shorthands declared above:
 <Box br={{ base: 4, md: 8, lg: 12 }} />  // borderRadius responsive
 <Box px={{ base: 12, lg: 24 }} />        // paddingHorizontal responsive
@@ -151,14 +198,19 @@ export default ui`}</code>
       </pre>
 
       {/* ── $-prefixed breakpoint-as-prop syntax ─────────────────────────── */}
-      <h2>$-prefixed breakpoint-as-prop syntax</h2>
+      <h2 className="gradient-text">$-prefixed breakpoint-as-prop syntax</h2>
       <p>
         As an alternative to responsive objects, you can group multiple style
         props under a single <code>$breakpoint</code> key (Tamagui-style). Each{" "}
         <code>$</code>-prefixed prop accepts a partial set of Box style and
         shorthand props scoped to that breakpoint.
       </p>
-      <pre>
+      <pre
+        style={{
+          boxShadow: "0 0 40px rgba(255,106,26,0.03)",
+          border: "1px solid var(--color-border)",
+        }}
+      >
         <code>{`// Equivalent to writing individual responsive objects on each prop
 <Box
   $md={{ p: 16, br: 8 }}
@@ -179,7 +231,39 @@ export default ui`}</code>
         the <code>$</code>-prefixed value wins.
       </Callout>
 
-      <pre>
+      <div
+        style={{
+          background: "var(--color-surface)",
+          border: "1px solid var(--brand-primary)",
+          borderRadius: 10,
+          padding: "1rem 1.25rem",
+          margin: "1.5rem 0",
+        }}
+      >
+        <p
+          style={{
+            margin: 0,
+            fontSize: "0.9rem",
+            color: "var(--color-text-2)",
+            lineHeight: 1.65,
+          }}
+        >
+          <span style={{ color: "var(--brand-primary)", fontWeight: 700 }}>
+            ▸ $-prefixed syntax
+          </span>{" "}
+          — Use <code>$breakpoint</code> groups to co-locate props for the same
+          breakpoint. They are concise alternatives to responsive objects. When
+          both forms set the same property, the <code>$</code>-group takes
+          precedence.
+        </p>
+      </div>
+
+      <pre
+        style={{
+          boxShadow: "0 0 40px rgba(255,106,26,0.03)",
+          border: "1px solid var(--color-border)",
+        }}
+      >
         <code>{`// $md value wins over the responsive object's md value
 <Box
   p={{ base: 8, md: 12 }}  // md = 12 from responsive object
@@ -189,13 +273,18 @@ export default ui`}</code>
       </pre>
 
       {/* ── All components accept responsive props ───────────────────────── */}
-      <h2>All components accept responsive props</h2>
+      <h2 className="gradient-text">All components accept responsive props</h2>
       <p>
         Every component in <code>@stareezy-ui/components</code> extends{" "}
         <code>BoxLayoutProps</code>, so responsive layout props work on all of
         them — not just <code>Box</code>.
       </p>
-      <pre>
+      <pre
+        style={{
+          boxShadow: "0 0 40px rgba(255,106,26,0.03)",
+          border: "1px solid var(--color-border)",
+        }}
+      >
         <code>{`import { Button, Input, Card, Badge } from '@stareezy-ui/components'
 
 <Button
@@ -221,7 +310,7 @@ export default ui`}</code>
       </pre>
 
       {/* ── Default breakpoints ──────────────────────────────────────────── */}
-      <h2>Default breakpoints</h2>
+      <h2 className="gradient-text">Default breakpoints</h2>
       <p>
         If you do not augment <code>SzrCustomConfig</code> with a{" "}
         <code>media</code> configuration, the following defaults apply:
@@ -229,7 +318,11 @@ export default ui`}</code>
       <div style={{ overflowX: "auto" }}>
         <table>
           <thead>
-            <tr>
+            <tr
+              style={{
+                borderBottom: "2px solid color-mix(in srgb, var(--brand-500) 30%, transparent)",
+              }}
+            >
               <th>Key</th>
               <th>min-width</th>
               <th>Typical target</th>
@@ -246,7 +339,9 @@ export default ui`}</code>
             ].map(([key, width, target]) => (
               <tr key={key}>
                 <td>
-                  <code>{key}</code>
+                  <code style={{ color: "var(--brand-500)", fontWeight: 600 }}>
+                    {key}
+                  </code>
                 </td>
                 <td>
                   <code>{width}</code>

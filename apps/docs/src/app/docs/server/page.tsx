@@ -15,9 +15,9 @@ export default function ServerPage() {
       description="Import RSC-safe layout primitives from the ./server entry for use in Next.js App Router Server Components, with a client boundary pattern for interactive components."
       badge="Guide"
       icon="⬢"
-      badgeColor="#4D8D01"
+      badgeColor="#22c55e"
     >
-      <h2>Overview</h2>
+      <h2 className="gradient-text">Overview</h2>
       <p>
         Next.js App Router renders Server Components (RSC) by default. React
         hooks, context, and <code>&quot;use client&quot;</code> are not allowed
@@ -34,7 +34,7 @@ export default function ServerPage() {
       </Callout>
 
       {/* ── What is in the server entry ──────────────────────────────────── */}
-      <h2>Server-safe primitives</h2>
+      <h2 className="gradient-text">Server-safe primitives</h2>
       <p>
         The following primitives are exported from the{" "}
         <code>&quot;./server&quot;</code> entry. They resolve theme tokens via
@@ -53,9 +53,9 @@ export default function ServerPage() {
           <code
             key={name}
             style={{
-              background: "var(--brand-50)",
-              color: "var(--brand-600)",
-              border: "1px solid var(--brand-100)",
+              background: "var(--brand-500)",
+              color: "white",
+              border: "1px solid var(--brand-500)",
               borderRadius: 6,
               padding: "4px 12px",
               fontSize: "0.85rem",
@@ -72,7 +72,7 @@ import { Box, View, Stack, Text, Divider } from '@stareezy-ui/components/server'
       </pre>
 
       {/* ── Client entry unchanged ───────────────────────────────────────── */}
-      <h2>Client entry — interactive components</h2>
+      <h2 className="gradient-text">Client entry — interactive components</h2>
       <p>
         The default <code>&quot;.&quot;</code> client entry is unchanged and
         continues to export all interactive components with their{" "}
@@ -84,7 +84,7 @@ import { Button, Input, Modal, Tabs, Dropdown } from '@stareezy-ui/components'`}
       </pre>
 
       {/* ── Next.js App Router example ───────────────────────────────────── */}
-      <h2>Next.js App Router example</h2>
+      <h2 className="gradient-text">Next.js App Router example</h2>
       <p>
         Here is a complete example of a page that uses both RSC-safe primitives
         and interactive client components:
@@ -181,7 +181,7 @@ export default function RootLayout({
       </Step>
 
       {/* ── Client boundary pattern ──────────────────────────────────────── */}
-      <h2>Client boundary pattern</h2>
+      <h2 className="gradient-text">Client boundary pattern</h2>
       <p>
         The recommended pattern is to push <code>&quot;use client&quot;</code>{" "}
         as deep as possible — only the components that actually need hooks or
@@ -209,22 +209,41 @@ import { Box, Stack, Text } from '@stareezy-ui/components'  // ← not needed
 ...`}</code>
       </pre>
 
-      <Callout type="tip">
-        Server primitives (<code>Box</code>, <code>Stack</code>, etc.) from the{" "}
-        <code>&quot;./server&quot;</code> entry can be used as wrappers around
-        Client Components. Props including <code>BoxLayoutProps</code> work
-        exactly as on the client entry.
-      </Callout>
+      <div
+        style={{
+          background: "var(--color-surface)",
+          border: "1px solid var(--brand-500)",
+          borderRadius: 10,
+          padding: "0.5rem",
+          margin: "1.5rem 0",
+        }}
+      >
+        <Callout type="tip">
+          Server primitives (<code>Box</code>, <code>Stack</code>, etc.) from the{" "}
+          <code>&quot;./server&quot;</code> entry can be used as wrappers around
+          Client Components. Props including <code>BoxLayoutProps</code> work
+          exactly as on the client entry.
+        </Callout>
+      </div>
 
       {/* ── ThemeProvider in App Router ──────────────────────────────────── */}
-      <h2>ThemeProvider in App Router</h2>
+      <h2 className="gradient-text">ThemeProvider in App Router</h2>
       <p>
         <code>ThemeProvider</code> from <code>@stareezy-ui/tokens</code> is a{" "}
         <code>&quot;use client&quot;</code> component because it manages theme
         state. Wrap it in a client component shell when used in the root layout:
       </p>
-      <pre>
-        <code>{`// app/Providers.tsx
+      <div
+        style={{
+          background: "var(--color-surface)",
+          border: "1px solid var(--brand-500)",
+          borderRadius: 10,
+          padding: "0.5rem",
+          margin: "1.5rem 0",
+        }}
+      >
+        <pre>
+          <code>{`// app/Providers.tsx
 'use client'
 
 import { ThemeProvider } from '@stareezy-ui/tokens'
@@ -249,7 +268,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     </html>
   )
 }`}</code>
-      </pre>
+        </pre>
+      </div>
 
       <Callout type="info">
         On web, the server-entry primitives resolve token values through CSS

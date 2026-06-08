@@ -8,6 +8,56 @@ export const metadata: Metadata = {
   alternates: { canonical: "https://ui.stareezy.tech/docs/cli" },
 };
 
+const cmdCard: React.CSSProperties = {
+  background: "var(--color-surface)",
+  borderLeft: "3px solid var(--brand-primary)",
+  borderRadius: 12,
+  padding: "1.25rem 1.5rem",
+  margin: "1.25rem 0",
+  boxShadow: "var(--shadow-md)",
+};
+
+const cmdCode: React.CSSProperties = {
+  fontFamily: "var(--font-mono)",
+  fontSize: "0.95rem",
+  color: "var(--brand-primary)",
+  fontWeight: 600,
+  marginBottom: "0.35rem",
+};
+
+const cmdDesc: React.CSSProperties = {
+  fontSize: "0.875rem",
+  color: "var(--color-text-2)",
+  lineHeight: 1.6,
+  margin: 0,
+};
+
+const sectionHeader: React.CSSProperties = {
+  fontSize: "1.5rem",
+  fontWeight: 700,
+  letterSpacing: "-0.02em",
+  margin: "2.5rem 0 0.75rem",
+  color: "var(--color-text)",
+};
+
+const codeBlock: React.CSSProperties = {
+  background: "var(--color-code-bg)",
+  borderRadius: 12,
+  padding: "1.5rem",
+  overflowX: "auto" as const,
+  margin: "1.5rem 0",
+  border: "1px solid var(--brand-100)",
+  boxShadow: "var(--shadow-md)",
+};
+
+const codeBlockInner: React.CSSProperties = {
+  fontFamily: "var(--font-mono)",
+  fontSize: "0.875rem",
+  color: "var(--color-text)",
+  lineHeight: 1.7,
+  whiteSpace: "pre" as const,
+};
+
 export default function CliPage() {
   return (
     <DocPage
@@ -15,20 +65,26 @@ export default function CliPage() {
       description="Scaffold new projects and add components with a single command — no manual wiring of createUi, the compiler, the runtime, or ThemeProvider."
       badge="CLI"
       icon="▶"
-      badgeColor="#C98B25"
+      badgeColor="#f5a623"
     >
-      <h2>Installation</h2>
-      <pre>
-        <code>{`# Use directly with npx (no install required)
+      <h2 className="gradient-text" style={sectionHeader}>
+        Installation
+      </h2>
+      <div style={codeBlock}>
+        <code
+          style={codeBlockInner}
+        >{`# Use directly with npx (no install required)
 npx stareezy create my-app
 
 # Or install globally
 npm install -g @stareezy-ui/cli
 stareezy create my-app`}</code>
-      </pre>
+      </div>
 
       {/* ── create command ───────────────────────────────────────────────── */}
-      <h2>create — scaffold a new project</h2>
+      <h2 className="gradient-text" style={sectionHeader}>
+        create — scaffold a new project
+      </h2>
       <p>
         The <code>create</code> command scaffolds a new project from one of the
         three pre-wired templates. Each template ships with{" "}
@@ -36,106 +92,138 @@ stareezy create my-app`}</code>
         <code>ThemeProvider</code>, and a curated set of components — ready to
         run without any additional setup.
       </p>
-      <pre>
-        <code>{`stareezy create my-app --template next   # Next.js 14 App Router
+
+      <div style={cmdCard}>
+        <div style={cmdCode}>
+          stareezy create &lt;name&gt; [--template next|vite|expo]
+        </div>
+        <p style={cmdDesc}>
+          Scaffold a new pre-wired project from one of the starter templates.
+        </p>
+      </div>
+
+      <div style={codeBlock}>
+        <code
+          style={codeBlockInner}
+        >{`stareezy create my-app --template next   # Next.js 14 App Router
 stareezy create my-app --template vite   # Vite + React
 stareezy create my-app --template expo   # Expo SDK 55`}</code>
-      </pre>
+      </div>
+
       <p>
         If you omit <code>--template</code>, the CLI prompts you to choose:
       </p>
-      <pre>
-        <code>{`$ stareezy create my-app
+
+      <div style={codeBlock}>
+        <code style={codeBlockInner}>{`$ stareezy create my-app
 
 ? Select a template:
   ❯ next   — Next.js 14 App Router
     vite   — Vite + React
     expo   — Expo SDK 55`}</code>
-      </pre>
+      </div>
 
       <Step n={1} title="next — Next.js App Router template">
         <p>Scaffolds a Next.js 14 App Router project pre-wired with:</p>
-        <ul>
-          <li>
-            <code>stareezy.config.ts</code> with <code>media</code> breakpoints
-            and <code>shorthands</code>
-          </li>
-          <li>
-            <code>@stareezy-ui/compiler</code> Vite plugin in{" "}
-            <code>next.config.ts</code>
-          </li>
-          <li>
-            Server primitives imported from <code>&quot;./server&quot;</code>
-          </li>
-          <li>
-            Interactive components wrapped in a{" "}
-            <code>&quot;use client&quot;</code> boundary
-          </li>
-          <li>
-            <code>ThemeProvider</code> in a client <code>Providers</code>{" "}
-            component
-          </li>
+        <ul
+          style={{ listStyle: "none", padding: 0, margin: "0.75rem 0 1rem 0" }}
+        >
+          {[
+            "<code>stareezy.config.ts</code> with <code>media</code> breakpoints and <code>shorthands</code>",
+            "<code>@stareezy-ui/compiler</code> Vite plugin in <code>next.config.ts</code>",
+            "Server primitives imported from <code>&quot;./server&quot;</code>",
+            "Interactive components wrapped in a <code>&quot;use client&quot;</code> boundary",
+            "<code>ThemeProvider</code> in a client <code>Providers</code> component",
+          ].map((item, i) => (
+            <li
+              key={i}
+              style={{ marginBottom: "0.4rem", color: "var(--color-text-2)" }}
+            >
+              <span style={{ color: "var(--brand-primary)", marginRight: 8 }}>
+                ●
+              </span>
+              <span dangerouslySetInnerHTML={{ __html: item }} />
+            </li>
+          ))}
         </ul>
-        <pre>
-          <code>{`stareezy create my-next-app --template next
+        <div style={codeBlock}>
+          <code
+            style={codeBlockInner}
+          >{`stareezy create my-next-app --template next
 cd my-next-app
 pnpm install
 pnpm dev`}</code>
-        </pre>
+        </div>
       </Step>
 
       <Step n={2} title="vite — Vite + React template">
         <p>Scaffolds a Vite + React project pre-wired with:</p>
-        <ul>
-          <li>
-            <code>stareezy.config.ts</code> with <code>media</code> and{" "}
-            <code>shorthands</code>
-          </li>
-          <li>
-            <code>stareezyVitePlugin()</code> in <code>vite.config.ts</code>
-          </li>
-          <li>
-            <code>import &apos;virtual:stareezy-ui/styles&apos;</code> in the
-            entry file
-          </li>
-          <li>
-            <code>ThemeProvider</code> wrapping the app in <code>main.tsx</code>
-          </li>
+        <ul
+          style={{ listStyle: "none", padding: 0, margin: "0.75rem 0 1rem 0" }}
+        >
+          {[
+            "<code>stareezy.config.ts</code> with <code>media</code> and <code>shorthands</code>",
+            "<code>stareezyVitePlugin()</code> in <code>vite.config.ts</code>",
+            "<code>import &apos;virtual:stareezy-ui/styles&apos;</code> in the entry file",
+            "<code>ThemeProvider</code> wrapping the app in <code>main.tsx</code>",
+          ].map((item, i) => (
+            <li
+              key={i}
+              style={{ marginBottom: "0.4rem", color: "var(--color-text-2)" }}
+            >
+              <span style={{ color: "var(--brand-primary)", marginRight: 8 }}>
+                ●
+              </span>
+              <span dangerouslySetInnerHTML={{ __html: item }} />
+            </li>
+          ))}
         </ul>
-        <pre>
-          <code>{`stareezy create my-vite-app --template vite
+        <div style={codeBlock}>
+          <code
+            style={codeBlockInner}
+          >{`stareezy create my-vite-app --template vite
 cd my-vite-app
 npm install
 npm run dev`}</code>
-        </pre>
+        </div>
       </Step>
 
       <Step n={3} title="expo — Expo SDK 55 template">
         <p>Scaffolds an Expo SDK 55 project pre-wired with:</p>
-        <ul>
-          <li>
-            <code>stareezy.config.ts</code> with <code>media</code> and{" "}
-            <code>shorthands</code>
-          </li>
-          <li>
-            <code>stareezyMetroTransformer</code> in{" "}
-            <code>metro.config.js</code>
-          </li>
-          <li>
-            <code>ThemeProvider</code> in <code>App.tsx</code>
-          </li>
-          <li>Compatible with Expo SDK 54 and 56 (see Compatibility guide)</li>
+        <ul
+          style={{ listStyle: "none", padding: 0, margin: "0.75rem 0 1rem 0" }}
+        >
+          {[
+            "<code>stareezy.config.ts</code> with <code>media</code> and <code>shorthands</code>",
+            "<code>stareezyMetroTransformer</code> in <code>metro.config.js</code>",
+            "<code>ThemeProvider</code> in <code>App.tsx</code>",
+            "Compatible with Expo SDK 54 and 56 (see Compatibility guide)",
+          ].map((item, i) => (
+            <li
+              key={i}
+              style={{ marginBottom: "0.4rem", color: "var(--color-text-2)" }}
+            >
+              <span style={{ color: "var(--brand-primary)", marginRight: 8 }}>
+                ●
+              </span>
+              <span dangerouslySetInnerHTML={{ __html: item }} />
+            </li>
+          ))}
         </ul>
-        <pre>
-          <code>{`stareezy create my-expo-app --template expo
+        <div style={codeBlock}>
+          <code
+            style={codeBlockInner}
+          >{`stareezy create my-expo-app --template expo
 cd my-expo-app
 yarn install
 expo start`}</code>
-        </pre>
+        </div>
       </Step>
 
       {/* ── init command ─────────────────────────────────────────────────── */}
-      <h2>init — wire an existing project</h2>
+      <h2 className="gradient-text" style={sectionHeader}>
+        init — wire an existing project
+      </h2>
       <p>
         The <code>init</code> command adds Stareezy UI wiring to an existing
         project. It detects your framework and package manager automatically,
@@ -154,10 +242,15 @@ expo start`}</code>
           <code>ThemeProvider</code> setup in your entry file
         </li>
       </ul>
-      <pre>
-        <code>{`# Run from your project root
-stareezy init`}</code>
-      </pre>
+
+      <div style={cmdCard}>
+        <div style={cmdCode}>stareezy init</div>
+        <p style={cmdDesc}>
+          Add <code>stareezy.config.ts</code>, compiler wiring, and{" "}
+          <code>ThemeProvider</code> to an existing project — idempotent and
+          safe to re-run.
+        </p>
+      </div>
 
       <Callout type="info">
         <code>init</code> is idempotent — it checks for existing configuration
@@ -166,7 +259,9 @@ stareezy init`}</code>
       </Callout>
 
       {/* ── add command ──────────────────────────────────────────────────── */}
-      <h2>add — install components</h2>
+      <h2 className="gradient-text" style={sectionHeader}>
+        add — install components
+      </h2>
       <p>
         The <code>add</code> command installs one or more Stareezy UI components
         into an existing Next.js, Vite, or Expo project. It:
@@ -184,8 +279,17 @@ stareezy init`}</code>
           Offers to run <code>init</code> if wiring is absent
         </li>
       </ul>
-      <pre>
-        <code>{`# Install a single component
+
+      <div style={cmdCard}>
+        <div style={cmdCode}>stareezy add &lt;component...&gt;</div>
+        <p style={cmdDesc}>
+          Install one or more components (with transitive dependencies) into an
+          existing project.
+        </p>
+      </div>
+
+      <div style={codeBlock}>
+        <code style={codeBlockInner}>{`# Install a single component
 stareezy add button
 
 # Install multiple components at once
@@ -193,7 +297,7 @@ stareezy add button input card
 
 # Install new components (6 added in v0.4)
 stareezy add breadcrumb pagination table tag tooltip drawer`}</code>
-      </pre>
+      </div>
 
       <Callout type="tip">
         <code>add</code> also resolves transitive component dependencies. For
@@ -202,7 +306,9 @@ stareezy add breadcrumb pagination table tag tooltip drawer`}</code>
       </Callout>
 
       {/* ── Framework detection ──────────────────────────────────────────── */}
-      <h2>Framework and package manager detection</h2>
+      <h2 className="gradient-text" style={sectionHeader}>
+        Framework and package manager detection
+      </h2>
       <p>
         The CLI detects your framework from config files and your package
         manager from lockfiles:
@@ -229,48 +335,8 @@ stareezy add breadcrumb pagination table tag tooltip drawer`}</code>
             ].map(([signal, desc]) => (
               <tr key={signal}>
                 <td>
-                  <code>{signal}</code>
-                </td>
-                <td
-                  style={{ color: "var(--color-text-2)", fontSize: "0.875rem" }}
-                >
-                  {desc}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-
-      {/* ── What each command does ───────────────────────────────────────── */}
-      <h2>Command reference</h2>
-      <div style={{ overflowX: "auto" }}>
-        <table>
-          <thead>
-            <tr>
-              <th>Command</th>
-              <th>What it does</th>
-            </tr>
-          </thead>
-          <tbody>
-            {[
-              [
-                "stareezy create <name> [--template next|vite|expo]",
-                "Scaffold a new pre-wired project from a template",
-              ],
-              [
-                "stareezy init",
-                "Add stareezy.config.ts, compiler wiring, and ThemeProvider to an existing project (idempotent)",
-              ],
-              [
-                "stareezy add <component...>",
-                "Install one or more components (with transitive deps) into an existing project",
-              ],
-            ].map(([cmd, desc]) => (
-              <tr key={cmd}>
-                <td>
-                  <code style={{ fontSize: "0.78em", whiteSpace: "nowrap" }}>
-                    {cmd}
+                  <code style={{ color: "var(--brand-primary)" }}>
+                    {signal}
                   </code>
                 </td>
                 <td
@@ -283,6 +349,30 @@ stareezy add breadcrumb pagination table tag tooltip drawer`}</code>
           </tbody>
         </table>
       </div>
+
+      {/* ── Command reference ───────────────────────────────────────────── */}
+      <h2 className="gradient-text" style={sectionHeader}>
+        Command reference
+      </h2>
+      {[
+        {
+          cmd: "stareezy create <name> [--template next|vite|expo]",
+          desc: "Scaffold a new pre-wired project from a template",
+        },
+        {
+          cmd: "stareezy init",
+          desc: "Add stareezy.config.ts, compiler wiring, and ThemeProvider to an existing project (idempotent)",
+        },
+        {
+          cmd: "stareezy add <component...>",
+          desc: "Install one or more components (with transitive deps) into an existing project",
+        },
+      ].map(({ cmd, desc }) => (
+        <div key={cmd} style={cmdCard}>
+          <div style={cmdCode}>{cmd}</div>
+          <p style={cmdDesc}>{desc}</p>
+        </div>
+      ))}
     </DocPage>
   );
 }

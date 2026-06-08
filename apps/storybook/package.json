@@ -11,6 +11,8 @@
     "@stareezy-ui/tokens": "workspace:*"
   },
   "devDependencies": {
+    "@storybook/manager-api": "^8.4.0",
+    "@storybook/theming": "^8.4.0",
     "@storybook/addon-controls": "^8.4.0",
     "@storybook/addon-essentials": "^8.4.0",
     "@storybook/addon-interactions": "^8.4.0",
