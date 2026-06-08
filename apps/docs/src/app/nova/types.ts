@@ -64,3 +64,17 @@ export interface ResizeState {
 }
 
 export type StyleKeys = Record<string, React.CSSProperties>;
+
+// ── Session management ────────────────────────────────────────────────────────
+export interface NovaSession {
+  id: string;
+  name: string;
+  nodes: CanvasNode[];
+  updatedAt: number; // unix ms
+}
+
+/** Fixed ID for the root Page node — never changes, never random */
+export const PAGE_ROOT_ID = "page-root";
+
+export const SESSIONS_STORAGE_KEY = "nova-sessions";
+export const ACTIVE_SESSION_KEY = "nova-active-session";

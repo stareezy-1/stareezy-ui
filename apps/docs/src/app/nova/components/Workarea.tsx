@@ -60,6 +60,7 @@ export function Workarea({
   onZoomChange,
 }: WorkareaProps) {
   return (
+    /* Outer wrapper: fills the center column, uses theme background */
     <div
       style={{
         flex: 1,
@@ -67,24 +68,35 @@ export function Workarea({
         flexDirection: "column",
         overflow: "hidden",
         position: "relative",
+        background: "var(--color-bg)",
       }}
     >
       <ThemeProvider theme={theme}>
-        <div style={{ flex: 1, position: "relative", overflow: "hidden" }}>
+        {/* Canvas scroll area — fills all available space, theme-bg */}
+        <div
+          style={{
+            flex: 1,
+            position: "relative",
+            overflow: "auto",
+            background: "var(--color-bg)",
+          }}
+        >
+          {/* Inner canvas — sized to accommodate all components */}
           <div
             ref={canvasRef}
             style={{
-              flex: 1,
-              margin: 16,
-              borderRadius: 8,
-              overflow: "hidden",
+              position: "relative",
+              minWidth: "100%",
+              minHeight: "100%",
+              width: `${Math.round(100 / (zoom / 100))}%`,
+              height: `${Math.round(100 / (zoom / 100))}%`,
               backgroundImage:
                 "radial-gradient(var(--color-border) 1px, transparent 0)",
               backgroundSize: "24px 24px",
-              position: "relative",
               transform: `scale(${zoom / 100})`,
               transformOrigin: "top left",
               cursor: dragging ? "grabbing" : "default",
+              background: "var(--color-bg)",
             }}
             onDrop={onCanvasDrop}
             onDragOver={onDragOver}
@@ -92,20 +104,19 @@ export function Workarea({
             data-nova-canvas
           >
             {pageNode &&
-              (pageNode.children.length > 0 ? pageNode.children : []).map(
-                (child) => (
-                  <CanvasNodeCard
-                    key={child.id}
-                    node={child}
-                    isSelected={child.id === selectedId}
-                    dragging={dragging}
-                    onSelect={onSelect}
-                    onStartDrag={onStartDrag}
-                    onStartResize={onStartResize}
-                    onRemove={onRemove}
-                  />
-                ),
-              )}
+              pageNode.children.map((child) => (
+                <CanvasNodeCard
+                  key={child.id}
+                  node={child}
+                  isSelected={child.id === selectedId}
+                  dragging={dragging}
+                  onSelect={onSelect}
+                  onStartDrag={onStartDrag}
+                  onStartResize={onStartResize}
+                  onRemove={onRemove}
+                />
+              ))}
+
             {pageNode && pageNode.children.length === 0 && (
               <div
                 style={{
@@ -113,16 +124,30 @@ export function Workarea({
                   flexDirection: "column",
                   alignItems: "center",
                   justifyContent: "center",
-                  gap: 16,
+                  gap: 12,
                   position: "absolute",
                   inset: 0,
-                  color: "var(--color-text-2)",
-                  opacity: 0.6,
                   pointerEvents: "none",
                 }}
               >
-                <span style={{ fontSize: "2rem", opacity: 0.3 }}>✦</span>
-                <span>Drag components here</span>
+                <span
+                  style={{
+                    fontSize: "2.5rem",
+                    opacity: 0.12,
+                    filter: "grayscale(1)",
+                  }}
+                >
+                  ✦
+                </span>
+                <span
+                  style={{
+                    fontSize: "0.78rem",
+                    color: "var(--color-text-2)",
+                    opacity: 0.45,
+                  }}
+                >
+                  Drag components from the left panel
+                </span>
               </div>
             )}
           </div>
@@ -139,6 +164,7 @@ export function Workarea({
         onExport={onExport}
       />
 
+      {/* Status bar — always theme-bg so no white flash */}
       <div
         style={{
           display: "flex",
@@ -148,7 +174,8 @@ export function Workarea({
           fontSize: "0.65rem",
           color: "var(--color-text-2)",
           borderTop: "1px solid var(--color-border)",
-          background: "var(--color-surface)",
+          background: "var(--color-bg)",
+          flexShrink: 0,
         }}
       >
         <span>{(pageNode?.children ?? []).length} items</span>
@@ -204,7 +231,7 @@ export function Workarea({
           >
             +
           </button>
-          <span>Theme: {theme}</span>
+          <span style={{ opacity: 0.5 }}>Theme: {theme}</span>
         </div>
       </div>
     </div>
