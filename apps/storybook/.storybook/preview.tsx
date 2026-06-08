@@ -1,6 +1,6 @@
 import type { Preview, Decorator } from "@storybook/react";
 import React from "react";
-import { StareezyTheme } from "./Stareezy-theme";
+import { StareezyTheme } from "./stareezy-theme";
 
 // Import ThemeProvider using relative path to avoid module resolution issues
 // ThemeProvider is a client component (has "use client") so it's safe here
